@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursos - Velociclos PCM</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>Velociclos</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="cursos.html" class="nav-link active">Cursos</a>
+        <a href="artigos.html" class="nav-link">Artigos</a>
+        <a href="#" class="nav-link">Sobre</a>
+      </nav>
+      <button class="theme-switch-wrapper" id="theme-toggle" aria-label="Alternar tema">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-optimized">
+    <div class="container hero-content-grid">
+      <div class="hero-text-content">
+        <h1 class="hero-title">
+          <span class="text-break">Biblioteca de</span>
+          <span class="accent-text">Conhecimento</span>
+          <span class="text-break">Forex</span>
+        </h1>
+        <p class="hero-subtitle">
+          Aprenda trading com uma metodologia comprovada. 9 módulos completos do básico ao avançado.
+        </p>
+        <div class="hero-stats-compact">
+          <div class="stat-item">
+            <span class="stat-number">9</span>
+            <span class="stat-label">Módulos</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">40+</span>
+            <span class="stat-label">Aulas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Gratuito</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="orb">
+          <div class="orb-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="orb-title">Formação Completa</div>
+          <p class="orb-text">
+            Do básico ao avançado.<br>
+            Aprenda a operar com<br>
+            metodologia comprovada.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtros por Categoria -->
+  <section class="courses-section">
+    <div class="container">
+      <div class="courses-filters">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="iniciante">Iniciante</button>
+          <button class="filter-btn" data-filter="intermediario">Intermediário</button>
+          <button class="filter-btn" data-filter="avancado">Avançado</button>
+        </div>
+      </div>
+
+      <!-- Grid de Módulos -->
+      <div class="courses-grid-modern" id="modules-grid">
+        
+        <!-- Módulo 01: Introdução -->
+        <article class="course-card-modern show" data-category="iniciante" data-module="01" data-video="modulo-01">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-play-circle"></i></div>
+            <span class="course-badge iniciante">Módulo 01</span>
+          </div>
+          <div class="course-content">
+            <h3>Introdução ao Mercado</h3>
+            <p>Conceitos fundamentais sobre o mercado financeiro e termos básicos que você precisa conhecer.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                5 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Assistir</button>
+          </div>
+        </article>
+
+        <!-- Módulo 02: Fimathe -->
+        <article class="course-card-modern show" data-category="intermediario" data-module="02" data-video="modulo-02">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-chart-line"></i></div>
+            <span class="course-badge intermediario">Módulo 02</span>
+          </div>
+          <div class="course-content">
+            <h3>Fimathe – A Nova Análise Gráfica</h3>
+            <p>A metodologia exclusiva de análise gráfica com padrões, tendências e subciclos.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                4 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Assistir</button>
+          </div>
+        </article>
+
+        <!-- Módulo 03: Forex -->
+        <article class="course-card-modern show" data-category="intermediario" data-module="03" data-video="modulo-03">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-globe"></i></div>
+            <span class="course-badge intermediario">Módulo 03</span>
+          </div>
+          <div class="course-content">
+            <h3>Forex</h3>
+            <p>Mercado de câmbio. Operando pares de moedas com a metodologia Fimathe.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                5 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Assistir</button>
+          </div>
+        </article>
+
+        <!-- Módulo 04: HK50 -->
+        <article class="course-card-modern show" data-category="intermediario" data-module="04" data-video="modulo-04">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-chart-bar"></i></div>
+            <span class="course-badge intermediario">Módulo 04</span>
+          </div>
+          <div class="course-content">
+            <h3>HK50 (Índice de Hong Kong)</h3>
+            <p>Análise e operacional do índice HK50. Estratégias de surf e stop.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                2 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Assistir</button>
+          </div>
+        </article>
+
+        <!-- Módulo 05: Mini Contratos -->
+        <article class="course-card-modern show" data-category="avancado" data-module="05">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-coins"></i></div>
+            <span class="course-badge avancado">Módulo 05</span>
+          </div>
+          <div class="course-content">
+            <h3>Mini Contratos (B3)</h3>
+            <p>Operando mini contratos na B3. Produtos, organização de pregão e execução de ordens.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                9 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Acessar</button>
+          </div>
+        </article>
+
+        <!-- Módulo 06: Mercado Americano -->
+        <article class="course-card-modern show" data-category="avancado" data-module="06">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-building-columns"></i></div>
+            <span class="course-badge avancado">Módulo 06</span>
+          </div>
+          <div class="course-content">
+            <h3>Mercado Americano</h3>
+            <p>Acesso aos mercados americanos. Ações, ETFs e derivativos internacionais.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                Em breve
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Em Breve</button>
+          </div>
+        </article>
+
+        <!-- Módulo 07: Ouro -->
+        <article class="course-card-modern show" data-category="intermediario" data-module="07">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-gem"></i></div>
+            <span class="course-badge intermediario">Módulo 07</span>
+          </div>
+          <div class="course-content">
+            <h3>Ouro</h3>
+            <p>Análise e operacional do Ouro (XAU/USD). Estratégias específicas para este ativo.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                Em breve
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Em Breve</button>
+          </div>
+        </article>
+
+        <!-- Módulo 08: Educação Financeira -->
+        <article class="course-card-modern show" data-category="iniciante" data-module="08">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-wallet"></i></div>
+            <span class="course-badge iniciante">Módulo 08</span>
+          </div>
+          <div class="course-content">
+            <h3>Educação Financeira</h3>
+            <p>Diversificação e criação de carteira. Como investir de forma inteligente.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                Em breve
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Em Breve</button>
+          </div>
+        </article>
+
+        <!-- Módulo 09: Bônus - Aulas Práticas -->
+        <article class="course-card-modern show" data-category="iniciante" data-module="09" data-video="modulo-pratica">
+          <div class="course-header">
+            <div class="course-icon"><i class="fas fa-gift"></i></div>
+            <span class="course-badge iniciante">Bônus</span>
+          </div>
+          <div class="course-content">
+            <h3>Aulas Práticas</h3>
+            <p>Aulas extras e gravações de sessões ao vivo. Conteúdo adicional exclusivo.</p>
+            <div class="course-meta">
+              <span class="meta-item">
+                <i class="fas fa-video"></i>
+                2 aulas
+              </span>
+            </div>
+          </div>
+          <div class="course-footer">
+            <span class="price-currency">Gratuito</span>
+            <button class="btn btn-primary">Assistir</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container cta-content-modern">
+      <div class="cta-text">
+        <h2>Comece Agora Mesmo</h2>
+        <p>Todo o conteúdo é gratuito. Aprenda no seu ritmo e construa sua independência financeira.</p>
+      </div>
+      <div class="cta-features">
+        <span class="cta-feature"><i class="fas fa-check-circle text-success"></i> Acesso vitalício</span>
+        <span class="cta-feature"><i class="fas fa-check-circle text-success"></i> Certificado</span>
+        <span class="cta-feature"><i class="fas fa-check-circle text-success"></i> Suporte</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL DE VÍDEO -->
+  <div class="article-modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+    <div class="article-modal-overlay" id="video-modal-overlay"></div>
+    <div class="article-modal-content video-modal-content">
+      <button class="article-modal-close" id="video-modal-close" aria-label="Fechar vídeo">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="video-player-container">
+        <!-- Video player será inserido aqui -->
+      </div>
+      <div id="video-playlist" class="video-playlist">
+        <!-- Playlist será inserida aqui -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TEMPLATES DE VÍDEO -->
+  <template id="template-modulo-01">
+    <div class="video-template-content">
+      <h2 id="video-modal-title">Módulo 01 - Introdução ao Mercado</h2>
+      <p class="video-module-desc">Conceitos fundamentais sobre o mercado financeiro e termos básicos que você precisa conhecer.</p>
+      <div class="video-player-main" id="video-player-main">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/POAlUnMn9bI?autoplay=1&rel=0&mute=1" title="O que é o Mercado Forex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-playlist-compact">
+        <h3><i class="fas fa-list"></i> Playlist Completa</h3>
+        <div class="video-list">
+          <div class="video-item active" data-video-id="POAlUnMn9bI">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/POAlUnMn9bI/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>O que é o Mercado Forex</h4><span class="duration">Básico</span></div>
+          </div>
+          <div class="video-item" data-video-id="SBqcXJ2M5j8">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/SBqcXJ2M5j8/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Baixando e Configurando o MetaTrader</h4><span class="duration">Tutorial</span></div>
+          </div>
+          <div class="video-item" data-video-id="Le9tdUNGSW8">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/Le9tdUNGSW8/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Identificando Tendências</h4><span class="duration">Teoria</span></div>
+          </div>
+          <div class="video-item" data-video-id="2yYN6kpWD2A">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/2yYN6kpWD2A/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Definindo Take Profit e Stop Loss</h4><span class="duration">Gestão de Risco</span></div>
+          </div>
+          <div class="video-item" data-video-id="S1E2xmKJWiE">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/S1E2xmKJWiE/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Time Frames</h4><span class="duration">Análise</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-modulo-02">
+    <div class="video-template-content">
+      <h2 id="video-modal-title">Módulo 02 - Técnica Fimathe</h2>
+      <p class="video-module-desc">A metodologia exclusiva de análise gráfica com padrões, tendências e subciclos.</p>
+      <div class="video-player-main" id="video-player-main">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ypWwZ3K7wrI?autoplay=1&rel=0&mute=1" title="Introdução à Técnica Fimathe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-playlist-compact">
+        <h3><i class="fas fa-list"></i> Playlist Completa</h3>
+        <div class="video-list">
+          <div class="video-item active" data-video-id="ypWwZ3K7wrI">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/ypWwZ3K7wrI/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Introdução à Técnica Fimathe</h4><span class="duration">Aula 1</span></div>
+          </div>
+          <div class="video-item" data-video-id="ginFNrsiX5A">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/ginFNrsiX5A/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Os 3 Ciclos da Fimathe</h4><span class="duration">Fundamentos</span></div>
+          </div>
+          <div class="video-item" data-video-id="XsjE-_IQQzQ">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/XsjE-_IQQzQ/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Como fazer a marcação do Subciclo</h4><span class="duration">MQL5</span></div>
+          </div>
+          <div class="video-item" data-video-id="UkVnD4vhXg8">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/UkVnD4vhXg8/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Macro Tendências e Análise Gráfica</h4><span class="duration">Avançado</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-modulo-03">
+    <div class="video-template-content">
+      <h2 id="video-modal-title">Módulo 03 - Forex</h2>
+      <p class="video-module-desc">Mercado de câmbio. Operando pares de moedas com a metodologia Fimathe.</p>
+      <div class="video-player-main" id="video-player-main">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/POAlUnMn9bI?autoplay=1&rel=0&mute=1" title="O que é o Mercado Forex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-playlist-compact">
+        <h3><i class="fas fa-list"></i> Playlist Forex</h3>
+        <div class="video-list">
+          <div class="video-item active" data-video-id="POAlUnMn9bI">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/POAlUnMn9bI/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>O que é o Mercado Forex</h4><span class="duration">Introdução</span></div>
+          </div>
+          <div class="video-item" data-video-id="SBqcXJ2M5j8">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/SBqcXJ2M5j8/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>MetaTrader para Forex</h4><span class="duration">Configuração</span></div>
+          </div>
+          <div class="video-item" data-video-id="Le9tdUNGSW8">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/Le9tdUNGSW8/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Tendências no Forex</h4><span class="duration">Análise</span></div>
+          </div>
+          <div class="video-item" data-video-id="2yYN6kpWD2A">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/2yYN6kpWD2A/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Stop Loss e Take Profit</h4><span class="duration">Gestão</span></div>
+          </div>
+          <div class="video-item" data-video-id="S1E2xmKJWiE">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/S1E2xmKJWiE/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Time Frames no Forex</h4><span class="duration">Estratégia</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-modulo-04">
+    <div class="video-template-content">
+      <h2 id="video-modal-title">Módulo 04 - HK50 (Índice de Hong Kong)</h2>
+      <p class="video-module-desc">Análise e operacional do índice HK50. Estratégias de surf e stop.</p>
+      <div class="video-player-main" id="video-player-main">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/t38Z33ticAo?autoplay=1&rel=0&mute=1" title="Estudo Completo de Oportunidades no HK50" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-playlist-compact">
+        <h3><i class="fas fa-list"></i> Playlist HK50</h3>
+        <div class="video-list">
+          <div class="video-item active" data-video-id="t38Z33ticAo">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/t38Z33ticAo/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Estudo Completo de Oportunidades no HK50</h4><span class="duration">Análise de Pregão</span></div>
+          </div>
+          <div class="video-item" data-video-id="ZDuecZSpGZM">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/ZDuecZSpGZM/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Dinâmica de Operação no HK50</h4><span class="duration">Prática ao Vivo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-modulo-pratica">
+    <div class="video-template-content">
+      <h2 id="video-modal-title">Aulas Práticas - Fimathe</h2>
+      <p class="video-module-desc">Aulas extras e gravações de sessões ao vivo. Conteúdo adicional exclusivo.</p>
+      <div class="video-player-main" id="video-player-main">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ajSxcGSCNA0?autoplay=1&rel=0&mute=1" title="Aulão Fimathe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-playlist-compact">
+        <h3><i class="fas fa-list"></i> Aulas Práticas</h3>
+        <div class="video-list">
+          <div class="video-item active" data-video-id="ajSxcGSCNA0">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/ajSxcGSCNA0/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Aulão Fimathe</h4><span class="duration">Execução e Prática</span></div>
+          </div>
+          <div class="video-item" data-video-id="rZ2bl_CZvvU">
+            <div class="video-thumb"><img src="https://img.youtube.com/vi/rZ2bl_CZvvU/mqdefault.jpg" alt=""><span class="play-icon"><i class="fas fa-play"></i></span></div>
+            <div class="video-info"><h4>Aula Prática</h4><span class="duration">Vamos Operar!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js.js"></script>
+</body>
+</html>

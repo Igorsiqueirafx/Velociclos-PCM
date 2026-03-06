@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artigos - Velociclos PCM</title>
+  <meta name="description" content="Artigos completos sobre Forex, trading e mesas proprietárias.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="js.js" defer></script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+  <!-- CABEÇALHO -->
+  <header>
+    <div class="container header-container">
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256">
+            <g fill="#ffd700" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M32,8c-0.91125,0 -1.82195,0.30919 -2.56445,0.92969l-20.63477,17.24219c-0.765,0.639 -1.0373,1.75333 -0.5293,2.61133c0.647,1.092 2.07877,1.30534 3.00977,0.52734l0.71875,-0.59961v18.28906c0,2.761 2.239,5 5,5h30c2.761,0 5,-2.239 5,-5v-18.28711l0.71875,0.59961c0.374,0.313 0.8273,0.46484 1.2793,0.46484c0.695,0 1.38462,-0.36069 1.76563,-1.05469c0.465,-0.848 0.19122,-1.91906 -0.55078,-2.53906l-3.21289,-2.68555v-8.49805c0,-1.105 -0.895,-2 -2,-2h-2c-1.105,0 -2,0.895 -2,2v3.48438l-11.43555,-9.55469c-0.7425,-0.6205 -1.6532,-0.92969 -2.56445,-0.92969zM32,12.15234c0.11475,0 0.22877,0.03919 0.32227,0.11719l15.67773,13.09961v20.63086c0,1.105 -0.895,2 -2,2h-8v-14c0,-1.105 -0.895,-2 -2,-2h-8c-1.105,0 -2,0.895 -2,2v14h-8c-1.105,0 -2,-0.895 -2,-2v-20.63281l15.67773,-13.09766c0.0935,-0.078 0.20752,-0.11719 0.32227,-0.11719z"></path></g></g>
+          </svg>
+        </a>
+        <a href="cursos.html" class="nav-link">Velociclos PCM</a>
+      </nav>
+      <button
+        class="theme-switch-wrapper"
+        id="theme-toggle"
+        aria-label="Alternar entre tema claro e escuro"
+        aria-live="polite"
+        type="button"
+      >
+        <i class="bx bx-sun theme-icon" aria-hidden="true"></i>
+        <i class="bx bx-moon theme-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- SECÇÃO HERO -->
+    <section class="hero-optimized">
+      <div class="container">
+        <div class="hero-content-grid">
+          <div class="hero-text-content">
+            <h1 class="hero-title">
+              <span class="text-break">Nossos</span>
+              <span class="accent-text">Artigos</span>
+            </h1>
+            <p class="hero-subtitle">
+              Conteúdo exclusivo sobre trading, mesas proprietárias e estratégias.
+            </p>
+          </div>
+          <div class="hero-visual">
+            <div class="orb">
+              <div class="orb-icon"><i class="fas fa-newspaper"></i></div>
+              <div class="orb-title">Artigos</div>
+              <p class="orb-text">
+                Aprenda com conteúdo<br>
+                completo e detallado<br>
+                sobre o mercado.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECÇÃO DE ARTIGOS -->
+    <section class="courses-section" id="courses-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Nossos Artigos</h2>
+          <p class="section-subtitle">
+            Desenvolvido com dedicação para traders
+          </p>
+        </div>
+
+        <!-- Filtros -->
+        <div class="courses-filters">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all" type="button">Todos</button>
+            <button class="filter-btn" data-filter="iniciante" type="button">Iniciantes</button>
+            <button class="filter-btn" data-filter="intermediario" type="button">Intermédio</button>
+            <button class="filter-btn" data-filter="avancado" type="button">Avançado</button>
+          </div>
+        </div>
+
+        <!-- Grelha de Artigos -->
+        <div class="courses-grid-modern" id="courses-grid">
+
+          <!-- Artigo 1 -->
+          <article class="course-card-modern" data-category="iniciante" data-article="mitos-prop-firms">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-chart-bar"></i></div>
+              <div class="course-badge iniciante">Fundamentos</div>
+            </div>
+            <div class="course-content">
+              <h3>5 Mitos sobre Mesas Proprietárias no Forex</h3>
+              <p>
+                Existem muitos mitos sobre mesas proprietárias circulando no mercado. Entenda o que é verdade,
+                o que é mentira e como identificar uma empresa séria.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>9 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Básico</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+          <!-- Artigo 2 -->
+          <article class="course-card-modern" data-category="intermediario" data-article="m15-m5-timeframe">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-chart-line"></i></div>
+              <div class="course-badge intermediario">Estratégias</div>
+            </div>
+            <div class="course-content">
+              <h3>M15 ou M5: Qual Timeframe Oferece Mais Assertividade?</h3>
+              <p>
+                Entenda as diferenças entre operar no M5 e no M15, qual oferece mais precisão e qual tem maior poder de recuperação.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>8 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Intermédio</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+          <!-- Artigo 3 -->
+          <article class="course-card-modern" data-category="intermediario" data-article="operar-mesaproprietaria">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-graduation-cap"></i></div>
+              <div class="course-badge intermediario">Estratégias</div>
+            </div>
+            <div class="course-content">
+              <h3>O Que Precisa de Saber Antes de Operar em Mesa Proprietária</h3>
+              <p>
+                A maioria falha por não entender as regras do jogo. Aprenda a proteger o seu capital, usar sub-ciclos e evitar erros que destroem contas.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>10 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Intermédio</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+          <!-- Artigo 4 -->
+          <article class="course-card-modern" data-category="intermediario" data-article="overtrading">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-brain"></i></div>
+              <div class="course-badge intermediario">Psicologia</div>
+            </div>
+            <div class="course-content">
+              <h3>Overtrading: O Vício que Destrói Contas de Trading</h3>
+              <p>
+                O overtrading é um dos maiores vilões. Entenda por que acontece e como aplicar um gerenciamento rigoroso para nunca mais cair nesta armadilha.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>9 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Intermédio</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+          <!-- Artigo 5 -->
+          <article class="course-card-modern" data-category="avancado" data-article="ganhos-prop-trader">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-chart-pie"></i></div>
+              <div class="course-badge avancado">Estratégias Avançadas</div>
+            </div>
+            <div class="course-content">
+              <h3>Quanto Pode Ganhar um Trader numa Mesa Proprietária?</h3>
+              <p>
+                Descubra o potencial real de ganhos, com cálculos práticos de lotes, gestão de drawdown e exemplos em contas de 10k a 200k dólares.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>10 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Avançado</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+          <!-- Artigo 6 -->
+          <article class="course-card-modern" data-category="intermediario" data-article="noticias-volatility">
+            <div class="course-header">
+              <div class="course-icon"><i class="fas fa-newspaper"></i></div>
+              <div class="course-badge intermediario">Fundamentos</div>
+            </div>
+            <div class="course-content">
+              <h3>Devo Evitar Operar em Notícias? A Visão da Volatilidade</h3>
+              <p>
+                Muitos evitam notícias por medo. Descubra por que a volatilidade é sua aliada e como usar o calendário económico de forma inteligente.
+              </p>
+              <div class="course-meta">
+                <div class="meta-item"><i class="fas fa-clock"></i> <span>8 min de leitura</span></div>
+                <div class="meta-item"><i class="fas fa-signal"></i> <span>Intermédio</span></div>
+              </div>
+            </div>
+            <div class="course-footer">
+              <div class="course-price"><span class="price-currency">Gratuito</span></div>
+              <span class="btn btn-primary">Ler Artigo</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DE ARTIGO -->
+  <div class="article-modal" id="article-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="article-modal-overlay" id="modal-overlay"></div>
+    <div class="article-modal-content">
+      <button class="article-modal-close" id="modal-close" aria-label="Fechar artigo">
+        <i class="fas fa-times"></i>
+      </button>
+      <article class="article-full" id="article-content">
+        <!-- Conteúdo carregado dinamicamente -->
+      </article>
+    </div>
+  </div>
+
+  <!-- Template do Artigo: 5 Mitos sobre Mesas Proprietárias -->
+  <template id="template-mitos-prop-firms">
+    <header class="article-header">
+      <span class="article-badge">Fundamentos</span>
+      <h1 id="modal-title">5 Mitos sobre Mesas Proprietárias no Forex</h1>
+      <p class="article-subtitle">A verdade que você precisa saber antes de operar capital de terceiros</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 9 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Básico</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>As mesas proprietárias — conhecidas também como "prop firms" — se tornaram uma das formas mais acessíveis para traders operarem com capital significativo sem arriscar o próprio dinheiro. Mas junto com o crescimento do mercado, surgiram muitos mitos e desinformação.</p>
+      <p>Neste artigo, vou desmistificar os cinco mitos mais comuns sobre mesas proprietárias e explicar o que realmente importa na hora de escolher onde operar.</p>
+
+      <h2>Mito 1: Mesas Proprietárias são Pirâmides Financeiras</h2>
+      <p>Esse é talvez o mito mais diffused — e o mais perigoso de acreditar sem questionar. Sim, existem mesas que funcionam de forma questionável. Essas são as chamadas "bucket shops", empresas que não possuem infraestrutura real de mercado.</p>
+      <p><strong>Como identificar uma bucket shop?</strong> Simples: elas não têm servidor MetaTrader 5 próprio. Sem essa infraestrutura, a empresa não está realmente conectando suas ordens ao mercado. Ela simula tudo internamente.</p>
+
+      <h2>Mito 2: A Qualidade de Execução é Igual em Todas as Mesas</h2>
+      <p>Outro erro comum é achar que todas as plataformas são iguais. Não são.</p>
+      <p>Mesa proprietária sem MetaTrader 5 é um grande sinal de alerta. O MT5 é o padrão da indústria porque oferece transparência, velocidade de execução e rastreabilidade.</p>
+
+      <h2>Mito 3: É Impossível Passar na Avaliação</h2>
+      <p>Muitos traders acreditam que as avaliações são projetadas para reprovar. Na verdade, o que acontece é que a maioria dos candidatos não segue um método consistente.</p>
+
+      <h2>Mito 4: Não é Possível Sacar os Lucros</h2>
+      <p>Esse mito existe por um motivo: algumas mesas realmente dificultam ou impedem saques. Mas novamente, isso acontece nas bucket shops.</p>
+
+      <h2>Mito 5: Você Precisa ser um Trader Avançado</h2>
+      <p>A realidade é o oposto: a mesa proprietária é ideal para quem está em desenvolvimento.</p>
+
+      <h2>Conclusão: Escolha com Critério</h2>
+      <p>Mesas proprietárias são uma oportunidade legítima para traders que querem operar capital significativo sem arriscar seu próprio dinheiro. Mas nem todas as mesas são iguais.</p>
+    </div>
+  </template>
+
+  <template id="template-m15-m5-timeframe">
+    <header class="article-header">
+      <span class="article-badge">Estratégias</span>
+      <h1 id="modal-title">M15 ou M5: Qual Timeframe Oferece Mais Assertividade?</h1>
+      <p class="article-subtitle">Como escolher o gráfico certo para operar intraday com segurança e consistência</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 8 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Intermédio</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>Uma das dúvidas mais comuns entre traders que operam intraday é: devo usar o gráfico de 5 minutos (M5) ou o de 15 minutos (M15)?</p>
+
+      <h2>M15: Alta Precisão, Menor Frequência</h2>
+      <p>O timeframe de 15 minutos oferece o que chamamos de entradas sniper — operações com alta precisão e alvos mais longos.</p>
+
+      <h2>M5: Maior Poder de Recuperação</h2>
+      <p>O timeframe de 5 minutos oferece uma dinâmica diferente. Os alvos são menores, mas a capacidade de recuperação é muito maior.</p>
+
+      <h2>Qual Timeframe Escolher?</h2>
+      <p>A escolha entre M5 e M15 depende do seu perfil e disponibilidade.</p>
+    </div>
+  </template>
+
+  <template id="template-operar-mesaproprietaria">
+    <header class="article-header">
+      <span class="article-badge">Estratégias</span>
+      <h1 id="modal-title">O Que Você Precisa Saber Antes de Operar em Mesa Proprietária</h1>
+      <p class="article-subtitle">A realidade por trás das avaliações e como passar com consistência</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 10 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Intermédio</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>As mesas proprietárias se tornaram uma das principais portas de entrada para traders que querem operar capital significativo sem arriscar seu próprio dinheiro.</p>
+
+      <h2>A Armadilha Mental das Mesas Proprietárias</h2>
+      <p>O primeiro erro que a maioria dos traders comete é tratar a mesa proprietária como se fosse um "milagre" ou dinheiro fácil. Não é.</p>
+
+      <h2>O Conceito de Sub-Ciclos e Proteção de Capital</h2>
+      <p>O sub-ciclo é uma divisão menor do ciclo principal de movimento.</p>
+
+      <h2>Conclusão: Método Antes de Tudo</h2>
+      <p>A mesa proprietária não é um atalho. É uma oportunidade — mas apenas para quem tem método.</p>
+    </div>
+  </template>
+
+  <template id="template-overtrading">
+    <header class="article-header">
+      <span class="article-badge">Psicologia</span>
+      <h1 id="modal-title">Overtrading: O Vício que Destrói Contas de Trading</h1>
+      <p class="article-subtitle">Como identificar, controlar e superar o excesso de operações que sabota sua consistência</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 9 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Intermédio</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>Se você já se pegou fazendo operações sem critério, tentando recuperar um loss imediatamente ou simplesmente operando por ansiedade, você já experimentou o overtrading.</p>
+
+      <h2>O Que É Overtrading?</h2>
+      <p>Overtrading é o excesso de operações em um curto espaço de tempo.</p>
+
+      <h2>O Gerenciamento Semanal</h2>
+      <p>O método que uso para evitar o overtrading é baseado em um cronograma semanal rigoroso.</p>
+
+      <h2>A Regra de Ouro</h2>
+      <p><strong>Nunca perca um valor que você não pode perder.</strong></p>
+
+      <h2>Conclusão: Disciplina é Liberdade</h2>
+      <p>O overtrading não é um problema técnico. É um problema comportamental.</p>
+    </div>
+  </template>
+
+  <template id="template-ganhos-prop-trader">
+    <header class="article-header">
+      <span class="article-badge">Estratégias Avançadas</span>
+      <h1 id="modal-title">Quanto um Trader Consistente Pode Ganhar em Mesa Proprietária?</h1>
+      <p class="article-subtitle">Cálculos reais de lotes, alvos e expectativas de lucro</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 10 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Avançado</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>Uma das perguntas mais frequentes entre traders que consideram operar em mesas proprietárias é: quanto realmente dá para ganar?</p>
+
+      <h2>Como Funciona a Estrutura de Ganhos</h2>
+      <p>Após a aprovação na avaliação, o trader opera com capital real.</p>
+
+      <h2>O Cálculo de Lotes: Exemplo Prático no M5</h2>
+      <p>Para entender o potencial de ganho, precisamos primeiro definir o tamanho do canal que vamos operar.</p>
+
+      <h2>A Matemática da Consistência</h2>
+      <p>Vamos fazer um cálculo simples para uma conta de $50.000.</p>
+
+      <h2>Conclusão: O Potencial Existe — A Questão é Disciplina</h2>
+      <p>Viver de mesa proprietária não é um sonho impossível.</p>
+    </div>
+  </template>
+
+  <template id="template-noticias-volatility">
+    <header class="article-header">
+      <span class="article-badge">Fundamentos</span>
+      <h1 id="modal-title">Devo Evitar Operar em Notícias? A Visão da Volatilidade</h1>
+      <p class="article-subtitle">Como usar o calendário econômico a seu favor sem depender de análise fundamentalista</p>
+      <div class="article-meta">
+        <span><i class="fas fa-clock"></i> 8 min de leitura</span>
+        <span><i class="fas fa-signal"></i> Intermédio</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <p>Uma das perguntas mais frequentes entre traders é: "Devo evitar operar durante notícias?" A resposta pode surpreender você.</p>
+
+      <h2>O Preço é Tudo: A Filosofia</h2>
+      <p>No timeframe em que operamos, o conteúdo da notícia é secundário.</p>
+
+      <h2>Volatilidade Como Oportunidade</h2>
+      <p>A maioria dos traders trata a volatilidade como inimiga. Fazemos o oposto.</p>
+
+      <h2>A Superioridade da Análise Técnica</h2>
+      <p>Os padrões técnicos que utilizamos já antecipam o sentimento do mercado.</p>
+
+      <h2>Conclusão: Notícias Como Aliadas</h2>
+      <p>Pare de temer as notícias e comece a usá-las.</p>
+    </div>
+  </template>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>
