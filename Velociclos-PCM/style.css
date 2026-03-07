@@ -144,6 +144,13 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Zoom padrão 50% para desktop */
+@media (min-width: 1024px) {
+  body {
+    zoom: 50%;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;
