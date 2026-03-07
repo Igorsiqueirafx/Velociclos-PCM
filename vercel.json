@@ -1,8 +1,0 @@
-{
-  "buildCommand": "echo 'No build required'",
-  "outputDirectory": "Velociclos-PCM",
-  "framework": null,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/Velociclos-PCM/$1" }
-  ]
-}
