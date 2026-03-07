@@ -147,7 +147,7 @@ body {
 /* Zoom padrão 50% para desktop */
 @media (min-width: 1024px) {
   body {
-    zoom: 125%;
+    zoom: 67%;
   }
 }
 
