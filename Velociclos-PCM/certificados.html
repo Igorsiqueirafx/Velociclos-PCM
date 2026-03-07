@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificados - Velociclos PCM</title>
+  <meta name="description" content="Veja os certificados e conquistas da Velociclos PCM. Certificações em Forex, Trading e Investimentos.">
+  
+  <!-- Ícones e Fontes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Estilos locais -->
+  <link rel="stylesheet" href="style.css">
+  <script src="js.js" defer></script>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+  <style>
+    /* Estilos específicos para grid de certificados */
+    .certificates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .cert-card {
+      background: var(--cor-card);
+      border: 1px solid var(--cor-borda-leve);
+      border-radius: var(--borda-raio);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .cert-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--cor-accent);
+      box-shadow: 0 12px 30px var(--cor-sombra);
+    }
+    
+    .cert-card-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .cert-card-info {
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .cert-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      margin-bottom: 8px;
+    }
+    
+    .cert-card-desc {
+      font-size: 0.9rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.5;
+    }
+    
+    @media (max-width: 768px) {
+      .certificates-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- CABEÇALHO -->
+  <header>
+    <div class="container header-container">
+      <nav class="nav-menu">
+        <a href="artigos.html" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256">
+            <g fill="#ffd700" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+              <g transform="scale(4,4)">
+                <path d="M32,8c-0.91125,0 -1.82195,0.30919 -2.56445,0.92969l-20.63477,17.24219c-0.765,0.639 -1.0373,1.75333 -0.5293,2.61133c0.647,1.092 2.07877,1.30534 3.00977,0.52734l0.71875,-0.59961v18.28906c0,2.761 2.239,5 5,5h30c2.761,0 5,-2.239 5,-5v-18.28711l0.71875,0.59961c0.374,0.313 0.8273,0.46484 1.2793,0.46484c0.695,0 1.38462,-0.36069 1.76563,-1.05469c0.465,-0.848 0.19122,-1.91906 -0.55078,-2.53906l-3.21289,-2.68555v-8.49805c0,-1.105 -0.895,-2 -2,-2h-2c-1.105,0 -2,0.895 -2,2v3.48438l-11.43555,-9.55469c-0.7425,-0.6205 -1.6532,-0.92969 -2.56445,-0.92969zM32,12.15234c0.11475,0 0.22877,0.03919 0.32227,0.11719l15.67773,13.09961v20.63086c0,1.105 -0.895,2 -2,2h-8v-14c0,-1.105 -0.895,-2 -2,-2h-8c-1.105,0 -2,0.895 -2,2v14h-8c-1.105,0 -2,-0.895 -2,-2v-20.63281l15.67773,-13.09766c0.0935,-0.078 0.20752,-0.11719 0.32227,-0.11719z"></path>
+              </g>
+            </g>
+          </svg>
+        </a>
+        <a href="cursos.html" class="nav-link">Velociclos PCM</a>
+        <a href="certificados.html" class="nav-link active">Certificados</a>
+      </nav>
+      
+      <button
+        class="theme-switch-wrapper"
+        id="theme-toggle"
+        aria-label="Alternar entre tema claro e escuro"
+        aria-live="polite"
+        type="button"
+      >
+        <i class="bx bx-sun theme-icon" aria-hidden="true"></i>
+        <i class="bx bx-moon theme-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- SEÇÃO CERTIFICADOS -->
+  <main class="certificates-section">
+    <div class="container">
+      <div class="certificates-header">
+        <h2><i class="fas fa-award" style="color: var(--cor-accent); margin-right: 15px;"></i>Certificados</h2>
+        <p>Conquistas do Igor Siqueira durante sua trajetória no Grupo Fimathe.</p>
+      </div>
+      
+      <!-- Grid de Certificados - Visão direta -->
+      <div class="certificates-grid">
+        <!-- Certificado 1: Fórmula do Ouro -->
+        <div class="cert-card">
+          <img src="certificados/Formula do Ouro.png" alt="Certificado Fórmula do Ouro" class="cert-card-image">
+          <div class="cert-card-info">
+            <h3 class="cert-card-title">Fórmula do Ouro</h3>
+            <p class="cert-card-desc">Certificado de conclusão do curso Fórmula do Ouro</p>
+          </div>
+        </div>
+        
+        <!-- Certificado 2: Laboratório Fimathe -->
+        <div class="cert-card">
+          <img src="certificados/Laboratorio Fimathe.png" alt="Certificado Laboratório Fimathe" class="cert-card-image">
+          <div class="cert-card-info">
+            <h3 class="cert-card-title">Laboratório Fimathe</h3>
+            <p class="cert-card-desc">Certificado do Laboratório Fimathe</p>
+          </div>
+        </div>
+        
+        <!-- Certificado 3: MasterClass Fimathe -->
+        <div class="cert-card">
+          <img src="certificados/MasterClass Fimathe.png" alt="Certificado MasterClass Fimathe" class="cert-card-image">
+          <div class="cert-card-info">
+            <h3 class="cert-card-title">MasterClass Fimathe</h3>
+            <p class="cert-card-desc">Certificado de participação na MasterClass</p>
+          </div>
+        </div>
+        
+        <!-- Certificado 4: Método Fimathe -->
+        <div class="cert-card">
+          <img src="certificados/Metodo Fimathe.png" alt="Certificado Método Fimathe" class="cert-card-image">
+          <div class="cert-card-info">
+            <h3 class="cert-card-title">Método Fimathe</h3>
+            <p class="cert-card-desc">Certificado de conclusão do Método Fimathe</p>
+          </div>
+        </div>
+        
+        <!-- Certificado 5: Scalper -->
+        <div class="cert-card">
+          <img src="certificados/Scalper.png" alt="Certificado Scalper" class="cert-card-image">
+          <div class="cert-card-info">
+            <h3 class="cert-card-title">Scalper</h3>
+            <p class="cert-card-desc">Certificado de conclusão do curso de Scalper</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL DE CERTIFICADOS -->
+  <div class="certificate-modal" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-modal-title">
+    <div class="certificate-modal-overlay" id="certificate-modal-overlay"></div>
+    <div class="certificate-modal-content">
+      <button class="certificate-modal-close" id="certificate-modal-close" aria-label="Fechar certificado">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="certificate-viewer" id="certificate-viewer">
+        <!-- Certificado será exibido aqui -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

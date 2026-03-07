@@ -18,6 +18,7 @@
       </a>
       <nav class="nav-menu">
         <a href="index.html" class="nav-link">Início</a>
+        <a href="certificados.html" class="nav-link">Certificados</a>
         <a href="cursos.html" class="nav-link active">Cursos</a>
         <a href="artigos.html" class="nav-link">Artigos</a>
         <a href="#" class="nav-link">Sobre</a>
@@ -344,6 +345,79 @@
       </div>
     </div>
   </section>
+
+  <!-- MODAL DE CERTIFICADOS -->
+      
+      <!-- Carrossel de Certificados -->
+      <div class="certificates-carousel">
+        <button class="carousel-btn carousel-prev" aria-label="Certificado anterior">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="certificates-track">
+          <div class="certificates-inner">
+            
+            <!-- Certificado: Laboratório Fimathe -->
+            <article class="certificate-slide" data-certificado="laboratorio-fimathe">
+              <img src="certificados/Laboratorio Fimathe.png" alt="Laboratório Fimathe" class="cert-full-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="cert-placeholder"><i class="fas fa-file-pdf"></i><span>Laboratório Fimathe</span></div>
+            </article>
+
+            <!-- Certificado: MasterClass Fimathe -->
+            <article class="certificate-slide" data-certificado="masterclass-fimathe">
+              <img src="certificados/MasterClass Fimathe.png" alt="MasterClass Fimathe" class="cert-full-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="cert-placeholder"><i class="fas fa-file-pdf"></i><span>MasterClass Fimathe</span></div>
+            </article>
+
+            <!-- Certificado: Método Fimathe -->
+            <article class="certificate-slide" data-certificado="metodo-fimathe">
+              <img src="certificados/Metodo Fimathe.png" alt="Método Fimathe" class="cert-full-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="cert-placeholder"><i class="fas fa-file-pdf"></i><span>Método Fimathe</span></div>
+            </article>
+
+            <!-- Certificado: Scalper -->
+            <article class="certificate-slide" data-certificado="scalper">
+              <img src="certificados/scalper.png" alt="Scalper" class="cert-full-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="cert-placeholder"><i class="fas fa-file-pdf"></i><span>Scalper</span></div>
+            </article>
+
+            <!-- Certificado: Fórmula do Ouro -->
+            <article class="certificate-slide" data-certificado="formula-ouro">
+              <img src="certificados/Formula do Ouro.png" alt="Fórmula do Ouro" class="cert-full-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="cert-placeholder"><i class="fas fa-file-pdf"></i><span>Fórmula do Ouro</span></div>
+            </article>
+
+          </div>
+        </div>
+        
+        <button class="carousel-btn carousel-next" aria-label="Próximo certificado">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Indicadores do Carrossel -->
+      <div class="carousel-indicators">
+        <button class="indicator active" data-index="0" aria-label="Certificado 1"></button>
+        <button class="indicator" data-index="1" aria-label="Certificado 2"></button>
+        <button class="indicator" data-index="2" aria-label="Certificado 3"></button>
+        <button class="indicator" data-index="3" aria-label="Certificado 4"></button>
+        <button class="indicator" data-index="4" aria-label="Certificado 5"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL DE CERTIFICADOS -->
+  <div class="certificate-modal" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-modal-title">
+    <div class="certificate-modal-overlay" id="certificate-modal-overlay"></div>
+    <div class="certificate-modal-content">
+      <button class="certificate-modal-close" id="certificate-modal-close" aria-label="Fechar certificado">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="certificate-viewer" id="certificate-viewer">
+        <!-- PDF será exibido aqui -->
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL DE VÍDEO -->
   <div class="article-modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">

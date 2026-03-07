@@ -263,4 +263,157 @@ document.addEventListener('DOMContentLoaded', () => {
         closeVideoModal();
       }
     });
+
+    // 5. MODAL DE CERTIFICADOS
+    const certificateModal = document.getElementById('certificate-modal');
+    const certificateModalOverlay = document.getElementById('certificate-modal-overlay');
+    const certificateModalClose = document.getElementById('certificate-modal-close');
+    const certificateViewer = document.getElementById('certificate-viewer');
+
+    // Mapeamento de certificados para imagens PNG (pasta local)
+    const certificates = {
+      'laboratorio-fimathe': 'certificados/Laboratorio Fimathe.png',
+      'masterclass-fimathe': 'certificados/MasterClass Fimathe.png',
+      'metodo-fimathe': 'certificados/Metodo Fimathe.png',
+      'scalper': 'certificados/Scalper.png',
+      'formula-ouro': 'certificados/Formula do Ouro.png'
+    };
+
+    // Função para abrir o modal de certificado
+    const openCertificateModal = (certId) => {
+      const imgPath = certificates[certId];
+      
+      if (imgPath && certificateViewer) {
+        // Exibir a imagem PNG no modal
+        certificateViewer.innerHTML = `<img src="${imgPath}" style="width:100%;height:auto;max-height:90vh;object-fit:contain;" alt="Certificado" />`;
+        
+        certificateModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        if (certificateModalClose) {
+          certificateModalClose.focus();
+        }
+      } else {
+        console.warn(`Certificado '${certId}' não encontrado.`);
+        alert('Certificado não disponível no momento.');
+      }
+    };
+
+    // Função para fechar o modal de certificado
+    const closeCertificateModal = () => {
+      certificateModal.classList.remove('active');
+      document.body.style.overflow = '';
+      if (certificateViewer) {
+        certificateViewer.innerHTML = '';
+      }
+    };
+
+    // Adicionar evento de clique nos slides do carrossel de certificados
+    const certificateSlides = document.querySelectorAll('.certificate-slide');
+    certificateSlides.forEach((slide) => {
+      slide.addEventListener('click', () => {
+        const certId = slide.getAttribute('data-certificado');
+        if (certId) {
+          openCertificateModal(certId);
+        }
+      });
+    });
+
+    // Também adicionar eventos aos cartões de certificado na página certificados.html
+    const certCards = document.querySelectorAll('.cert-card');
+    certCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('.cert-card-image');
+        if (img) {
+          const src = img.getAttribute('src');
+          if (src && certificateViewer) {
+            certificateViewer.innerHTML = `<img src="${src}" style="width:100%;height:auto;max-height:90vh;object-fit:contain;" />`;
+            certificateModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+      });
+    });
+
+    // Fechar modal de certificado ao clicar no overlay
+    if (certificateModalOverlay) {
+      certificateModalOverlay.addEventListener('click', closeCertificateModal);
+    }
+
+    // Fechar modal de certificado ao clicar no botão de fechar
+    if (certificateModalClose) {
+      certificateModalClose.addEventListener('click', closeCertificateModal);
+    }
+
+    // Fechar modal de certificado ao pressionar Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && certificateModal.classList.contains('active')) {
+        closeCertificateModal();
+      }
+    });
+
+    // 6. CARROSSEL DE CERTIFICADOS
+    const carouselTrack = document.querySelector('.certificates-inner');
+    const carouselPrev = document.querySelector('.carousel-prev');
+    const carouselNext = document.querySelector('.carousel-next');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    let currentSlide = 0;
+    const totalSlides = indicators.length;
+    
+    const updateCarousel = (newIndex) => {
+      if (newIndex < 0) {
+        newIndex = totalSlides - 1;
+      } else if (newIndex >= totalSlides) {
+        newIndex = 0;
+      }
+      
+      currentSlide = newIndex;
+      
+      if (carouselTrack) {
+        carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+      }
+      
+      indicators.forEach((ind, i) => {
+        ind.classList.toggle('active', i === currentSlide);
+      });
+    };
+    
+    if (carouselPrev) {
+      carouselPrev.addEventListener('click', () => updateCarousel(currentSlide - 1));
+    }
+    
+    if (carouselNext) {
+      carouselNext.addEventListener('click', () => updateCarousel(currentSlide + 1));
+    }
+    
+    indicators.forEach((ind, i) => {
+      ind.addEventListener('click', () => updateCarousel(i));
+    });
+    
+    // Suporte a swipe em dispositivos móveis
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    const certificatesCarousel = document.querySelector('.certificates-carousel');
+    if (certificatesCarousel) {
+      certificatesCarousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      
+      certificatesCarousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+      
+      const handleSwipe = () => {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          updateCarousel(currentSlide + 1); // swipe left - next
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+          updateCarousel(currentSlide - 1); // swipe right - prev
+        }
+      };
+    }
   });
