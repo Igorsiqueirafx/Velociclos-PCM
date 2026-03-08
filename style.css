@@ -118,34 +118,34 @@
 @keyframes featured-pulse {
   0%, 100% {
     box-shadow: 
-      0 0 80px rgba(255, 107, 107, 0.3),
-      inset 0 0 30px rgba(255, 107, 107, 0.1),
+      0 0 80px rgba(255, 215, 0, 0.3),
+      inset 0 0 30px rgba(255, 215, 0, 0.1),
       0 20px 60px rgba(0, 0, 0, 0.5);
   }
   50% {
     box-shadow: 
-      0 0 100px rgba(255, 107, 107, 0.5),
-      inset 0 0 50px rgba(255, 107, 107, 0.2),
+      0 0 100px rgba(255, 215, 0, 0.5),
+      inset 0 0 50px rgba(255, 215, 0, 0.2),
       0 30px 80px rgba(0, 0, 0, 0.6);
   }
 }
 
 .featured-orb .orb-icon {
-  color: #ff6b6b;
-  text-shadow: 0 0 40px rgba(255, 107, 107, 0.5);
+  color: #ffd700;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
 }
 
 .featured-orb:hover {
   transform: scale(1.08) translateY(-20px);
-  border-color: #ff6b6b !important;
+  border-color: #ffd700 !important;
 }
 
 /* Featured Section Styles */
 .featured-section {
   padding: 40px 0;
   background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-  border-top: 1px solid rgba(255, 107, 107, 0.3);
-  border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 [data-theme="dark"] .course-footer {
@@ -1007,7 +1007,7 @@ header {
 }
 
 .cta-actions .btn-secondary {
-  border-color: rgba(255, 140, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.3);
   color: var(--cor-fundo);
   background-color: rgba(255, 255, 255, 0.9);
 }
@@ -1992,7 +1992,7 @@ header {
 }
 
 .playlists-section .section-header h2 i {
-  color: #ff6b6b;
+  color: #ffd700;
 }
 
 .playlists-section .section-header p {
@@ -2015,7 +2015,7 @@ header {
   text-align: center;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 215, 0, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2026,14 +2026,14 @@ header {
 
 .playlist-card:hover {
   transform: translateY(-5px);
-  border-color: #ff6b6b;
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+  border-color: #ffd700;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
 }
 
 .playlist-card .playlist-icon {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #ffdd33 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2113,7 +2113,7 @@ header {
   grid-column: span 2;
   min-height: 280px;
   background: linear-gradient(135deg, #1a1a2e 0%, #2d1f3d 50%, #1a1a2e 100%);
-  border: 2px solid #ff6b6b;
+  border: 2px solid #ffd700;
   position: relative;
 }
 
@@ -2123,7 +2123,7 @@ header {
 
 #viver-de-trade-card.featured-card:hover {
   transform: scale(1.02);
-  box-shadow: 0 20px 50px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
 }
 
 #viver-de-trade-card.featured-card h3 {
