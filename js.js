@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.9);
+          background: rgba(0, 0, 0, 0.95);
           z-index: 9999;
           display: flex;
           align-items: center;
@@ -300,24 +300,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const containerVideo = document.createElement('div');
         containerVideo.style.cssText = `
-          width: 80%;
-          max-width: 900px;
-          aspect-ratio: 16/9;
+          width: 100%;
+          height: 100%;
+          max-width: 100vw;
+          max-height: 100vh;
           background: #000;
-          border-radius: 12px;
           overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         `;
         
         const iframe = document.createElement('iframe');
-        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0`;
+        // Vídeo com som e sem controles
+        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0&controls=0&background=0&dnt=1&loop=0`;
         iframe.style.cssText = `
           width: 100%;
           height: 100%;
           border: none;
         `;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
-        iframe.allowFullscreen = true;
+        iframe.allowFullscreen = false; // Desabilita fullscreen para esconder controles
         
         containerVideo.appendChild(iframe);
         modal.appendChild(containerVideo);
@@ -359,19 +359,41 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Tentar usar a API para detectar fim do vídeo
         if (typeof Vimeo !== 'undefined') {
-          vimeoPlayer = new Vimeo.Player(iframe, {
-            id: parseInt(PLAY_VIDEO_ID),
-            h: PLAY_VIDEO_HASH,
-            autoplay: true,
-            muted: false
-          });
-          
-          vimeoPlayer.on('ended', () => {
-            console.log('Vídeo terminou!');
-            fecharModal(modal, iframe);
-            // Abrir o modal com as aulas do projeto Viver de Trade
-            openVideoModal('viver-de-trade');
-          });
+          // Espera o iframe carregar
+          setTimeout(() => {
+            try {
+              vimeoPlayer = new Vimeo.Player(iframe, {
+                id: parseInt(PLAY_VIDEO_ID),
+                h: PLAY_VIDEO_HASH,
+                autoplay: true,
+                muted: false,
+                controls: false,
+                background: false
+              });
+              
+              vimeoPlayer.on('ended', () => {
+                console.log('Vídeo terminou!');
+                fecharModal(modal, iframe);
+                // Abrir o modal com as aulas do projeto Viver de Trade
+                openVideoModal('viver-de-trade');
+              });
+              
+              // Fallback: verificar a cada 2 segundos se o vídeo terminou
+              const checkEnded = setInterval(() => {
+                vimeoPlayer.getEnded().then((ended) => {
+                  if (ended) {
+                    clearInterval(checkEnded);
+                    console.log('Vídeo terminou (polling)!');
+                    fecharModal(modal, iframe);
+                    openVideoModal('viver-de-trade');
+                  }
+                }).catch(() => {});
+              }, 2000);
+              
+            } catch (e) {
+              console.error('Erro ao criar player Vimeo:', e);
+            }
+          }, 500);
         } else {
           // Fallback: detectar fim via URL do Vimeo
           console.warn('API Vimeo não disponível, usando fallback');
