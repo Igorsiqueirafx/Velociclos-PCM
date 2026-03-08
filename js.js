@@ -193,8 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
           item.addEventListener('click', () => {
             const videoId = item.getAttribute('data-video-id');
             if (videoId && videoPlayerMain) {
+              // Sanitizar o ID do vídeo para prevenir XSS
+              const sanitizeString = (str) => str.replace(/[<>"'&]/g, '');
+              const safeVideoId = sanitizeString(videoId);
+              
               // Atualizar o iframe com o novo vídeo
-              videoPlayerMain.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+              videoPlayerMain.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
               
               // Atualizar item ativo
               videoItems.forEach(i => i.classList.remove('active'));
@@ -246,6 +250,161 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+
+    // 5. MODAL DE VÍDEOS DAS PLAYLISTS (Cards de playlist)
+    const playlistCards = document.querySelectorAll('.playlist-card[data-video]');
+    
+    playlistCards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        const videoTemplateId = card.getAttribute('data-video');
+        if (videoTemplateId) {
+          openVideoModal(videoTemplateId);
+        }
+      });
+    });
+
+    // 6. VIVER DE TRADE - Video Cover with Modal Player
+    const viverDeTradeCard = document.getElementById('viver-de-trade-card');
+    const viverDeTradeIframe = document.getElementById('viver-de-trade-iframe');
+    const videoContainer = document.getElementById('viver-de-trade-video');
+    
+    // IDs dos vídeos Vimeo
+    const CAPA_VIDEO_ID = '835470455';  // Vídeo de animação (capa)
+    const PLAY_VIDEO_ID = '835469062';  // Vídeo principal (ao clicar)
+    const PLAY_VIDEO_HASH = '29cd158274';
+    
+    if (viverDeTradeCard && viverDeTradeIframe) {
+      let vimeoPlayer = null;
+      let playerReady = false;
+      let modalAberto = false;
+      
+      // Criar modal para meio screen
+      const criarModalVideo = () => {
+        const modal = document.createElement('div');
+        modal.id = 'viver-de-trade-modal';
+        modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.9);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        `;
+        
+        const containerVideo = document.createElement('div');
+        containerVideo.style.cssText = `
+          width: 80%;
+          max-width: 900px;
+          aspect-ratio: 16/9;
+          background: #000;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        `;
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0`;
+        iframe.style.cssText = `
+          width: 100%;
+          height: 100%;
+          border: none;
+        `;
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
+        iframe.allowFullscreen = true;
+        
+        containerVideo.appendChild(iframe);
+        modal.appendChild(containerVideo);
+        document.body.appendChild(modal);
+        
+        // Animação de entrada
+        requestAnimationFrame(() => {
+          modal.style.opacity = '1';
+        });
+        
+        // Fechar ao clicar fora
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            fecharModal(modal, iframe);
+          }
+        });
+        
+        return { modal, iframe };
+      };
+      
+      const fecharModal = (modal, iframe) => {
+        modal.style.opacity = '0';
+        setTimeout(() => {
+          if (modal.parentNode) {
+            modal.parentNode.removeChild(modal);
+          }
+          modalAberto = false;
+        }, 300);
+      };
+      
+      // Função para carregar o vídeo principal no modal
+      const loadMainVideo = () => {
+        console.log('Carregando vídeo principal no modal...');
+        
+        if (modalAberto) return;
+        modalAberto = true;
+        
+        const { modal, iframe } = criarModalVideo();
+        
+        // Tentar usar a API para detectar fim do vídeo
+        if (typeof Vimeo !== 'undefined') {
+          vimeoPlayer = new Vimeo.Player(iframe, {
+            id: parseInt(PLAY_VIDEO_ID),
+            h: PLAY_VIDEO_HASH,
+            autoplay: true,
+            muted: false
+          });
+          
+          vimeoPlayer.on('ended', () => {
+            console.log('Vídeo terminou!');
+            fecharModal(modal, iframe);
+            // Abrir o modal com as aulas do projeto Viver de Trade
+            openVideoModal('viver-de-trade');
+          });
+        } else {
+          // Fallback: detectar fim via URL do Vimeo
+          console.warn('API Vimeo não disponível, usando fallback');
+          
+          // Configurar redirect após 5 minutos como fallback
+          setTimeout(() => {
+            if (modalAberto) {
+              fecharModal(modal, iframe);
+              openVideoModal('viver-de-trade');
+            }
+          }, 300000); // 5 minutos
+        }
+      };
+      
+      // Evento de clique no card
+      viverDeTradeCard.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Viver de Trade card clicado!');
+        loadMainVideo();
+      });
+      
+      // Precarregar a API Vimeo em background
+      const vimeoScript = document.createElement('script');
+      vimeoScript.src = 'https://player.vimeo.com/api/player.js';
+      vimeoScript.onerror = function() {
+        console.error('Falha ao carregar API Vimeo');
+      };
+      vimeoScript.onload = function() {
+        console.log('API Vimeo carregada');
+        playerReady = true;
+      };
+      document.head.appendChild(vimeoScript);
+    }
 
     // Fechar modal de vídeo ao clicar no overlay
     if (videoModalOverlay) {

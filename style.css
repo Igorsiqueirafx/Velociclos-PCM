@@ -147,7 +147,7 @@ body {
 /* Zoom padrão 50% para desktop */
 @media (min-width: 1024px) {
   body {
-    zoom: 67%;
+    font-size: 13.4px; /* Equivalente a zoom 67% */
   }
 }
 
@@ -1796,4 +1796,185 @@ header {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* ========================================
+   PLAYLISTS SECTION - Marcelo Ferreira (Fimathe)
+======================================== */
+.playlists-section {
+  padding: 60px 0;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.playlists-section .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.playlists-section .section-header h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.playlists-section .section-header h2 i {
+  color: #ff6b6b;
+}
+
+.playlists-section .section-header p {
+  color: #aaa;
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.playlist-card {
+  background: linear-gradient(145deg, #1e1e2f 0%, #252540 100%);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 107, 107, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.playlist-card:hover {
+  transform: translateY(-5px);
+  border-color: #ff6b6b;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+}
+
+.playlist-card .playlist-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+.playlist-card h3 {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.playlist-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #1a1a2e;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.playlist-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.playlist-video-bg:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 0;
+}
+
+.playlist-video-bg iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  pointer-events: none;
+}
+
+.playlist-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+}
+
+/* Responsivo para playlists */
+@media (max-width: 768px) {
+  .playlists-section {
+    padding: 40px 0;
+  }
+  
+  .playlists-section .section-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  
+  .playlist-card {
+    padding: 18px 15px;
+  }
+  
+  .playlist-card h3 {
+    font-size: 0.85rem;
+  }
+}
+
+/* Responsivo para mobile pequeno */
+@media (max-width: 480px) {
+  .playlists-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .playlist-card {
+    padding: 15px 12px;
+  }
+  
+  .playlist-card .playlist-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .playlist-card h3 {
+    font-size: 0.8rem;
+  }
 }
