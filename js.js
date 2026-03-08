@@ -309,40 +309,60 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         const iframe = document.createElement('iframe');
-        // Vídeo com som e sem controles
-        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0&controls=0&background=0&dnt=1&loop=0`;
+        // Vídeo com som e sem controles - otimizado para mobile
+        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0&controls=0&background=0&dnt=1&loop=0&playsinline=1`;
         iframe.style.cssText = `
           width: 100%;
           height: 100%;
           border: none;
         `;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
-        iframe.allowFullscreen = false; // Desabilita fullscreen para esconder controles
+        iframe.allowFullscreen = false;
+        iframe.setAttribute('playsinline', '');
+        iframe.setAttribute('webkit-playsinline', '');
+        iframe.setAttribute('allowfullscreen', 'false');
         
         containerVideo.appendChild(iframe);
         modal.appendChild(containerVideo);
         document.body.appendChild(modal);
         
-        // Botão discreto para pular o vídeo
+        // Botão discreto para pular o vídeo - otimizado para mobile
         const pularBtn = document.createElement('button');
-        pularBtn.innerHTML = 'Pular vídeo <i class="fas fa-forward"></i>';
+        pularBtn.innerHTML = 'Pular <i class="fas fa-forward"></i>';
         pularBtn.style.cssText = `
           position: absolute;
-          bottom: 20px;
+          bottom: 40px;
           right: 20px;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba(0, 0, 0, 0.7);
           color: #fff;
           border: 1px solid rgba(255, 255, 255, 0.3);
-          padding: 8px 16px;
-          border-radius: 20px;
+          padding: 14px 24px;
+          border-radius: 30px;
           cursor: pointer;
-          font-size: 12px;
-          opacity: 0.5;
-          transition: opacity 0.3s ease;
+          font-size: 15px;
+          font-weight: 600;
+          opacity: 0.6;
+          transition: opacity 0.3s ease, transform 0.2s ease;
           z-index: 10000;
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+          min-height: 48px;
+          min-width: 100px;
         `;
         pularBtn.onmouseover = () => pularBtn.style.opacity = '1';
-        pularBtn.onmouseout = () => pularBtn.style.opacity = '0.5';
+        pularBtn.onmouseout = () => pularBtn.style.opacity = '0.6';
+        
+        // Eventos para touch em dispositivos móveis
+        pularBtn.ontouchstart = (e) => {
+          e.preventDefault();
+          pularBtn.style.transform = 'scale(0.95)';
+          pularBtn.style.opacity = '1';
+        };
+        pularBtn.ontouchend = (e) => {
+          e.preventDefault();
+          pularBtn.style.transform = 'scale(1)';
+        };
+        
         pularBtn.onclick = () => {
           console.log('Pular vídeo clicked');
           fecharModal(modal, iframe);
