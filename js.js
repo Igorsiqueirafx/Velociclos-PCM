@@ -323,6 +323,33 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.appendChild(containerVideo);
         document.body.appendChild(modal);
         
+        // Botão discreto para pular o vídeo
+        const pularBtn = document.createElement('button');
+        pularBtn.innerHTML = 'Pular vídeo <i class="fas fa-forward"></i>';
+        pularBtn.style.cssText = `
+          position: absolute;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 8px 16px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 12px;
+          opacity: 0.5;
+          transition: opacity 0.3s ease;
+          z-index: 10000;
+        `;
+        pularBtn.onmouseover = () => pularBtn.style.opacity = '1';
+        pularBtn.onmouseout = () => pularBtn.style.opacity = '0.5';
+        pularBtn.onclick = () => {
+          console.log('Pular vídeo clicked');
+          fecharModal(modal, iframe);
+          openVideoModal('viver-de-trade');
+        };
+        modal.appendChild(pularBtn);
+        
         // Animação de entrada
         requestAnimationFrame(() => {
           modal.style.opacity = '1';
