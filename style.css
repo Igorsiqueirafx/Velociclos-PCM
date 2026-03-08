@@ -184,6 +184,110 @@ header {
   gap: var(--space-fluid-lg);
 }
 
+/* Responsividade para smartphones */
+@media (max-width: 768px) {
+  .header-container {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0 12px !important;
+  }
+  
+  .nav-menu {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+  
+  .nav-link {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+  
+  .logo {
+    font-size: 18px;
+  }
+  
+  .hero-content-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .hero-title {
+    font-size: 1.8rem !important;
+  }
+  
+  .orb {
+    width: 260px !important;
+    height: 260px !important;
+  }
+  
+  .courses-grid-modern {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  
+  .course-card-modern {
+    margin: 0 8px;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    width: 90%;
+    align-items: stretch;
+  }
+  
+  .filter-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0 8px !important;
+  }
+  
+  .nav-menu {
+    gap: 8px;
+  }
+  
+  .nav-link {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .section-header h2 {
+    font-size: 1.4rem !important;
+  }
+  
+  .playlists-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+    padding: 0 10px;
+  }
+  
+  .playlist-card {
+    padding: 12px 8px !important;
+  }
+  
+  .playlist-card h3 {
+    font-size: 0.7rem !important;
+  }
+  
+  .playlist-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1rem !important;
+  }
+}
+
 .nav-link {
   color: var(--cor-texto-secundario);
   font-weight: 500;
@@ -1931,6 +2035,25 @@ header {
   position: relative;
   overflow: hidden;
   min-height: 160px;
+}
+
+/* Card Viver de Trade específico para mobile */
+#viver-de-trade-card {
+  min-height: 140px;
+}
+
+#viver-de-trade-video {
+  border-radius: 12px;
+}
+
+@media (max-width: 480px) {
+  #viver-de-trade-card {
+    min-height: 120px;
+  }
+  
+  #viver-de-trade-video iframe {
+    transform: scale(1.4);
+  }
 }
 
 /* Responsivo para playlists */
