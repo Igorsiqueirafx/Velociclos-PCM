@@ -106,6 +106,48 @@
   text-shadow: 0 2px 10px rgba(0,0,0,0.6);
 }
 
+/* Featured Orb for Viver de Trade */
+.featured-orb {
+  border-width: 2px;
+  animation: 
+    float 8s ease-in-out infinite,
+    pulse-glow 12s ease-in-out infinite,
+    featured-pulse 3s ease-in-out infinite !important;
+}
+
+@keyframes featured-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 80px rgba(255, 107, 107, 0.3),
+      inset 0 0 30px rgba(255, 107, 107, 0.1),
+      0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    box-shadow: 
+      0 0 100px rgba(255, 107, 107, 0.5),
+      inset 0 0 50px rgba(255, 107, 107, 0.2),
+      0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.featured-orb .orb-icon {
+  color: #ff6b6b;
+  text-shadow: 0 0 40px rgba(255, 107, 107, 0.5);
+}
+
+.featured-orb:hover {
+  transform: scale(1.08) translateY(-20px);
+  border-color: #ff6b6b !important;
+}
+
+/* Featured Section Styles */
+.featured-section {
+  padding: 40px 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+  border-top: 1px solid rgba(255, 107, 107, 0.3);
+  border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+}
+
 [data-theme="dark"] .course-footer {
   background: rgba(30, 35, 41, 0.5);
 }
@@ -319,6 +361,30 @@ header {
 /* ===== HERO SECTION ===== */
 .hero-optimized {
   padding: var(--space-fluid-2xl) 0;
+}
+
+.hero-with-bg {
+  background-image: url('bg-capa-marcelo.png');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.hero-with-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(15, 15, 25, 0.85) 0%, rgba(30, 35, 41, 0.75) 100%);
+  z-index: 1;
+}
+
+.hero-with-bg .hero-content-grid {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-content-grid {
@@ -2040,6 +2106,42 @@ header {
 /* Card Viver de Trade específico para mobile */
 #viver-de-trade-card {
   min-height: 140px;
+}
+
+/* Featured Viver de Trade Card - Grande e destacado */
+#viver-de-trade-card.featured-card {
+  grid-column: span 2;
+  min-height: 280px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1f3d 50%, #1a1a2e 100%);
+  border: 2px solid #ff6b6b;
+  position: relative;
+}
+
+#viver-de-trade-card.featured-card .playlist-video-bg {
+  opacity: 0.9;
+}
+
+#viver-de-trade-card.featured-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 50px rgba(255, 107, 107, 0.4);
+}
+
+#viver-de-trade-card.featured-card h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Responsivo para card destacado */
+@media (max-width: 768px) {
+  #viver-de-trade-card.featured-card {
+    grid-column: span 1;
+    min-height: 200px;
+  }
+  
+  #viver-de-trade-card.featured-card h3 {
+    font-size: 1.1rem;
+  }
 }
 
 #viver-de-trade-video {
