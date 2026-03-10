@@ -192,13 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
         videoItems.forEach((item) => {
           item.addEventListener('click', () => {
             const videoId = item.getAttribute('data-video-id');
+            const videoSource = item.getAttribute('data-video-source') || 'youtube';
             if (videoId && videoPlayerMain) {
               // Sanitizar o ID do vídeo para prevenir XSS
               const sanitizeString = (str) => str.replace(/[<>"'&]/g, '');
               const safeVideoId = sanitizeString(videoId);
               
+              let videoUrl = '';
+              if (videoSource === 'vimeo') {
+                videoUrl = `https://player.vimeo.com/video/${safeVideoId}?autoplay=1&rel=0`;
+              } else {
+                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0`;
+              }
+              
               // Atualizar o iframe com o novo vídeo
-              videoPlayerMain.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+              videoPlayerMain.innerHTML = `<iframe width="100%" height="100%" src="${videoUrl}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
               
               // Atualizar item ativo
               videoItems.forEach(i => i.classList.remove('active'));
