@@ -1970,6 +1970,7 @@ header {
 
 /* ========================================
    PLAYLISTS SECTION - Marcelo Ferreira (Fimathe)
+   NOVO DESIGN COM THUMBNAILS
 ======================================== */
 .playlists-section {
   padding: 60px 0;
@@ -2004,44 +2005,104 @@ header {
 
 .playlists-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
+/* Novo estilo dos cards de playlist com thumbnail */
 .playlist-card {
   background: linear-gradient(145deg, #1e1e2f 0%, #252540 100%);
-  border-radius: 12px;
-  padding: 24px 20px;
-  text-align: center;
+  border-radius: 16px;
+  padding: 0;
+  text-align: left;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 215, 0, 1);
+  border: 1px solid rgba(255, 215, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  position: relative;
   overflow: hidden;
+  position: relative;
 }
 
 .playlist-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
   border-color: #ffd700;
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.25);
 }
 
-.playlist-card .playlist-icon {
+/* Thumbnail do YouTube */
+.playlist-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+
+.playlist-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.playlist-card:hover .playlist-thumb img {
+  transform: scale(1.05);
+}
+
+/* Ícone de play sobre a thumbnail */
+.playlist-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffdd33 100%);
+  background: rgba(255, 215, 0, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  color: #1a1a2e;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-card:hover .playlist-play-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+  background: #ffd700;
+}
+
+/* Badge com quantidade de vídeos */
+.playlist-video-count {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
   color: #fff;
-  position: relative;
-  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  backdrop-filter: blur(4px);
+}
+
+.playlist-video-count i {
+  color: #ffd700;
+}
+
+/* Conteúdo do card */
+.playlist-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .playlist-card h3 {
@@ -2050,75 +2111,30 @@ header {
   font-weight: 600;
   line-height: 1.4;
   margin: 0;
-  position: relative;
-  z-index: 2;
 }
 
-.playlist-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #1a1a2e;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-  position: relative;
-  z-index: 2;
-}
-
-.playlist-video-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.playlist-video-bg:fullscreen {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-radius: 0;
-}
-
-.playlist-video-bg iframe {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.2);
-  pointer-events: none;
-}
-
-.playlist-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 160px;
-}
-
-/* Card Viver de Trade específico para mobile */
-#viver-de-trade-card {
-  min-height: 140px;
-}
-
-/* Featured Viver de Trade Card - Grande e destacado */
-#viver-de-trade-card.featured-card {
-  grid-column: span 2;
-  min-height: 280px;
+/* Card destacado - Viver de Trade - mesmo tamanho que os outros cards */
+.playlist-card.featured-card {
+  /* Removido: grid-column: span 2 para manter mesmo tamanho */
+  min-height: auto;
   background: linear-gradient(135deg, #1a1a2e 0%, #2d1f3d 50%, #1a1a2e 100%);
   border: 2px solid #ffd700;
   position: relative;
+  overflow: hidden;
 }
 
+/* Vídeo de background - usa thumbnail com aspect-ratio */
 #viver-de-trade-card.featured-card .playlist-video-bg {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   opacity: 0.9;
+}
+
+#viver-de-trade-card.featured-card .playlist-video-bg iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #viver-de-trade-card.featured-card:hover {
@@ -2135,12 +2151,13 @@ header {
 /* Responsivo para card destacado */
 @media (max-width: 768px) {
   #viver-de-trade-card.featured-card {
-    grid-column: span 1;
-    min-height: 200px;
+    min-height: auto;
   }
   
-  #viver-de-trade-card.featured-card h3 {
-    font-size: 1.1rem;
+  #viver-de-trade-card.featured-card .playlist-video-bg {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -2150,11 +2167,13 @@ header {
 
 @media (max-width: 480px) {
   #viver-de-trade-card {
-    min-height: 120px;
+    min-height: auto;
   }
   
-  #viver-de-trade-video iframe {
-    transform: scale(1.4);
+  #viver-de-trade-card .playlist-video-bg {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -2169,16 +2188,33 @@ header {
   }
   
   .playlists-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 10px;
   }
   
-  .playlist-card {
-    padding: 18px 15px;
+  .playlist-thumb {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  
+  .playlist-content {
+    padding: 10px;
   }
   
   .playlist-card h3 {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+  }
+  
+  .playlist-video-count {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+  
+  .playlist-play-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
 }
 
@@ -2186,20 +2222,15 @@ header {
 @media (max-width: 480px) {
   .playlists-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   
-  .playlist-card {
-    padding: 15px 12px;
+  .playlist-thumb {
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
   
-  .playlist-card .playlist-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-  
-  .playlist-card h3 {
-    font-size: 0.8rem;
+  .playlist-content {
+    padding: 8px;
   }
 }
