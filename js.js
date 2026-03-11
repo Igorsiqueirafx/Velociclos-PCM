@@ -180,21 +180,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para forçar qualidade máxima em vídeos YouTube
     const setYouTubeQuality = (player) => {
-      try {
-        // Tentar definir qualidade 1080p
-        player.setPlaybackQualityRange('hd1080', 'hd1080');
-      } catch (e) {
-        try {
-          player.setPlaybackQuality('hd1080');
-        } catch (e2) {
-          // Fallback: tentar outras qualidades
-          try {
-            player.setPlaybackQuality('hd720');
-          } catch (e3) {
-            console.log('Qualidade automática ativada');
-          }
+      // Tentar forçar qualidade máxima (1080p ou maior)
+      const qualities = ['hd2160', 'hd1440', 'hd1080', 'hd720'];
+      
+      const tryQuality = (index) => {
+        if (index >= qualities.length) {
+          console.log('Qualidade automática será usada');
+          return;
         }
-      }
+        
+        try {
+          const quality = qualities[index];
+          // Primeiro tenta setPlaybackQualityRange
+          if (typeof player.setPlaybackQualityRange === 'function') {
+            player.setPlaybackQualityRange(quality, quality);
+          }
+          // Depois tenta setPlaybackQuality
+          if (typeof player.setPlaybackQuality === 'function') {
+            player.setPlaybackQuality(quality);
+          }
+          console.log(`Qualidade definida para: ${quality}`);
+        } catch (e) {
+          // Tentar próxima qualidade
+          tryQuality(index + 1);
+        }
+      };
+      
+      tryQuality(0);
+      
+      // Verificar qualidade a cada 2 segundos e ajustar se necessário
+      const qualityInterval = setInterval(() => {
+        try {
+          if (player && player.getPlaybackQuality) {
+            const currentQuality = player.getPlaybackQuality();
+            if (currentQuality !== 'hd1080' && currentQuality !== 'hd2160' && currentQuality !== 'hd1440') {
+              tryQuality(0);
+            }
+          }
+        } catch (e) {
+          clearInterval(qualityInterval);
+        }
+      }, 2000);
     };
 
     // Função para forçar qualidade máxima em vídeos Vimeo
@@ -243,17 +269,38 @@ document.addEventListener('DOMContentLoaded', () => {
               
               // Forçar qualidade máxima após carregar o iframe
               if (videoSource !== 'vimeo') {
-                setTimeout(() => {
-                  try {
-                    const player = new YT.Player(`youtube-player-${safeVideoId}`, {
-                      events: {
-                        'onReady': (event) => setYouTubeQuality(event.target)
-                      }
-                    });
-                  } catch (e) {
-                    console.log('Player YouTube não disponível para qualidade');
+                // Usar o novo ID único para o iframe
+                const playerId = `youtube-player-${safeVideoId}`;
+                
+                // Aguardar iframe carregar e então criar player
+                const waitForIframe = () => {
+                  const iframe = document.getElementById(playerId);
+                  if (iframe) {
+                    try {
+                      // Tentar obter o player via postMessage
+                      const player = new YT.Player(playerId, {
+                        events: {
+                          'onReady': (event) => {
+                            console.log('Player YouTube pronto, definindo qualidade...');
+                            setYouTubeQuality(event.target);
+                          },
+                          'onStateChange': (event) => {
+                            // Tentar definir qualidade quando o vídeo começar
+                            if (event.data === YT.PlayerState.PLAYING) {
+                              setYouTubeQuality(event.target);
+                            }
+                          }
+                        }
+                      });
+                    } catch (e) {
+                      console.log('Erro ao criar player YouTube:', e);
+                    }
+                  } else {
+                    setTimeout(waitForIframe, 500);
                   }
-                }, 1000);
+                };
+                
+                setTimeout(waitForIframe, 500);
               }
               
               // Atualizar item ativo
