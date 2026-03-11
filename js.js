@@ -261,7 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
               if (videoSource === 'vimeo') {
                 videoUrl = `https://player.vimeo.com/video/${safeVideoId}?autoplay=1&rel=0`;
               } else {
-                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0&enablejsapi=1`;
+                // mute=1 necessário para autoplay funcionar em todos os navegadores
+                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&mute=1&rel=0&enablejsapi=1`;
               }
               
               // Atualizar o iframe com o novo vídeo
