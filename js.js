@@ -1,5 +1,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Carregar API do YouTube para controle de qualidade
+    const ytScript = document.createElement('script');
+    ytScript.src = 'https://www.youtube.com/iframe_api';
+    ytScript.onload = () => console.log('YouTube API carregada');
+    document.head.appendChild(ytScript);
     // 1. ALTERNAR TEMA CLARO/ESCURO (COM LOCALSTORAGE + ACESSIBILIDADE)
     const themeToggleBtn = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
@@ -173,6 +178,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoPlayerContainer = document.getElementById('video-player-container');
     const videoPlaylist = document.getElementById('video-playlist');
 
+    // Função para forçar qualidade máxima em vídeos YouTube
+    const setYouTubeQuality = (player) => {
+      try {
+        // Tentar definir qualidade 1080p
+        player.setPlaybackQualityRange('hd1080', 'hd1080');
+      } catch (e) {
+        try {
+          player.setPlaybackQuality('hd1080');
+        } catch (e2) {
+          // Fallback: tentar outras qualidades
+          try {
+            player.setPlaybackQuality('hd720');
+          } catch (e3) {
+            console.log('Qualidade automática ativada');
+          }
+        }
+      }
+    };
+
+    // Função para forçar qualidade máxima em vídeos Vimeo
+    const setVimeoQuality = (player) => {
+      try {
+        player.setQuality('1080p');
+      } catch (e) {
+        console.log('Qualidade Vimeo automática');
+      }
+    };
+
     // Função para abrir o modal de vídeo
     const openVideoModal = (videoTemplateId) => {
       const template = document.getElementById(`template-${videoTemplateId}`);
@@ -202,11 +235,26 @@ document.addEventListener('DOMContentLoaded', () => {
               if (videoSource === 'vimeo') {
                 videoUrl = `https://player.vimeo.com/video/${safeVideoId}?autoplay=1&rel=0`;
               } else {
-                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0`;
+                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&rel=0&enablejsapi=1`;
               }
               
               // Atualizar o iframe com o novo vídeo
-              videoPlayerMain.innerHTML = `<iframe width="100%" height="100%" src="${videoUrl}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+              videoPlayerMain.innerHTML = `<iframe id="youtube-player-${safeVideoId}" width="100%" height="100%" src="${videoUrl}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+              
+              // Forçar qualidade máxima após carregar o iframe
+              if (videoSource !== 'vimeo') {
+                setTimeout(() => {
+                  try {
+                    const player = new YT.Player(`youtube-player-${safeVideoId}`, {
+                      events: {
+                        'onReady': (event) => setYouTubeQuality(event.target)
+                      }
+                    });
+                  } catch (e) {
+                    console.log('Player YouTube não disponível para qualidade');
+                  }
+                }, 1000);
+              }
               
               // Atualizar item ativo
               videoItems.forEach(i => i.classList.remove('active'));
@@ -280,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // IDs dos vídeos Vimeo
     const CAPA_VIDEO_ID = '835470455';  // Vídeo de animação (capa)
     const PLAY_VIDEO_ID = '835469062';  // Vídeo principal (ao clicar)
-    const PLAY_VIDEO_HASH = '29cd158274';
+    const PLAY_VIDEO_HASH = 'b0444bdea2'; // CORRIGIDO: hash correto do vídeo
     
     if (viverDeTradeCard && viverDeTradeIframe) {
       let vimeoPlayer = null;
@@ -318,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const iframe = document.createElement('iframe');
         // Vídeo com som e sem controles - otimizado para mobile
-        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0&controls=0&background=0&dnt=1&loop=0&playsinline=1`;
+        iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=1&controls=0&background=0&dnt=1&loop=0&playsinline=1`;
         iframe.style.cssText = `
           width: 100%;
           height: 100%;
@@ -421,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: parseInt(PLAY_VIDEO_ID),
                 h: PLAY_VIDEO_HASH,
                 autoplay: true,
-                muted: false,
+                muted: true,
                 controls: false,
                 background: false
               });
@@ -463,8 +511,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       };
       
-      // Evento de clique no card
-      viverDeTradeCard.addEventListener('click', function(e) {
+      // Evento de clique no card - usar pointer-events none no iframe e adicionar overlay
+      viverDeTradeCard.style.cursor = 'pointer';
+      
+      // Adicionar overlay transparente para capturar cliques
+      if (!document.getElementById('viver-de-trade-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'viver-de-trade-overlay';
+        overlay.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 10;
+          cursor: pointer;
+        `;
+        viverDeTradeCard.style.position = 'relative';
+        viverDeTradeCard.appendChild(overlay);
+      }
+      
+      const overlay = document.getElementById('viver-de-trade-overlay');
+      overlay.addEventListener('click', function(e) {
         e.preventDefault();
         console.log('Viver de Trade card clicado!');
         loadMainVideo();
