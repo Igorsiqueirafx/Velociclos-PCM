@@ -31,16 +31,17 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-optimized hero-with-bg metodo-fimathe-hero">
-    <!-- Video Background -->
-    <video class="hero-video-bg" autoplay muted loop playsinline poster="bg-capa-marcelo.png">
+  <!-- Intro Video Overlay (shown once per session) -->
+  <div id="intro-overlay" class="intro-overlay" role="dialog" aria-modal="true" aria-label="Vídeo de introdução">
+    <video id="intro-video" class="intro-video" muted playsinline poster="bg-capa-marcelo.png">
       <source src="bg-metodo-fimathe.mp4" type="video/mp4">
     </video>
-    <!-- Fallback para navegadores sem suporte a vídeo -->
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-optimized hero-with-bg metodo-fimathe-hero">
+    <!-- Fallback background image -->
     <div class="hero-video-fallback"></div>
-    <!-- Overlay para legibilidade -->
-    <div class="hero-video-overlay"></div>
     <div class="container">
       <div class="metodo-fimathe-header">
         <div class="metodo-badge">
@@ -366,5 +367,135 @@
       <div class="video-item" data-video-id="G4XSc2VH2Kk"><div class="video-thumb"><img src="https://img.youtube.com/vi/G4XSc2VH2Kk/mqdefault.jpg" alt=""></div><div class="video-info"><h4>MÉTODO FIMATHE MÓDULO 08 EDUCAÇÃO FINANCEIRA AULA 09 CONSIDERAÇÕES FINAIS</h4><span class="duration">Módulo 08</span></div></div>
     </div>
   </div>
+
+  <!-- Intro Video Controller -->
+  <script>
+    (function() {
+      const INTRO_KEY = 'fimathe_intro_seen';
+      let introKeydownHandler = null; // Track keydown handler to prevent duplicates
+      
+      const introOverlay = document.getElementById('intro-overlay');
+      const introVideo = document.getElementById('intro-video');
+      
+      // Check if should show intro
+      function shouldShowIntro() {
+        // Skip if already seen in this session
+        if (sessionStorage.getItem(INTRO_KEY)) {
+          return false;
+        }
+        
+        // Skip if user prefers reduced motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          sessionStorage.setItem(INTRO_KEY, 'true');
+          return false;
+        }
+        
+        // Skip on mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+          sessionStorage.setItem(INTRO_KEY, 'true');
+          return false;
+        }
+        
+        // Skip on slow connections
+        if (navigator.connection) {
+          const connection = navigator.connection;
+          const isSlow = connection.saveData || 
+                        connection.effectiveType === 'slow-2g' || 
+                        connection.effectiveType === '2g';
+          if (isSlow) {
+            sessionStorage.setItem(INTRO_KEY, 'true');
+            return false;
+          }
+        }
+        
+        return true;
+      }
+      
+      // Hide intro with fade out
+      function hideIntro() {
+        if (!introOverlay || introOverlay.classList.contains('hidden')) {
+          return;
+        }
+        
+        if (introVideo) {
+          introVideo.pause();
+          introVideo.currentTime = 0;
+        }
+        
+        introOverlay.classList.add('hidden');
+        sessionStorage.setItem(INTRO_KEY, 'true');
+        
+        setTimeout(() => {
+          if (introOverlay && introOverlay.parentNode) {
+            introOverlay.parentNode.removeChild(introOverlay);
+          }
+        }, 1000);
+      }
+      
+      // Initialize intro
+      function initIntro() {
+        if (!shouldShowIntro() || !introOverlay) {
+          if (introOverlay && introOverlay.parentNode) {
+            introOverlay.parentNode.removeChild(introOverlay);
+          }
+          return;
+        }
+        
+        if (introVideo) {
+          introVideo.volume = 0;
+          
+          const playPromise = introVideo.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              hideIntro();
+            });
+          }
+          
+          introVideo.addEventListener('ended', function onEnded() {
+            introVideo.removeEventListener('ended', onEnded);
+            hideIntro();
+          }, { once: true });
+          
+          introVideo.addEventListener('error', function onError() {
+            introVideo.removeEventListener('error', onError);
+            hideIntro();
+          }, { once: true });
+          
+          // Auto-hide after timeout if video doesn't end
+          setTimeout(() => {
+            if (!introOverlay.classList.contains('hidden')) {
+              hideIntro();
+            }
+          }, 6000);
+        }
+        
+        // Click anywhere to skip
+        introOverlay.addEventListener('click', function onClick() {
+          introOverlay.removeEventListener('click', onClick);
+          hideIntro();
+        });
+        
+        // ESC key to skip (prevent duplicates)
+        if (!introKeydownHandler) {
+          introKeydownHandler = function onKeyDown(e) {
+            if (e.key === 'Escape' && !introOverlay.classList.contains('hidden')) {
+              document.removeEventListener('keydown', introKeydownHandler);
+              introKeydownHandler = null;
+              hideIntro();
+            }
+          };
+          document.addEventListener('keydown', introKeydownHandler);
+        }
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initIntro);
+      } else {
+        initIntro();
+      }
+    })();
+  </script>
 </body>
 </html>
