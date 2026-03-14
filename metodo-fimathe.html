@@ -31,14 +31,15 @@
     </div>
   </header>
 
-  <!-- Intro Video Overlay (shown once per session) -->
+  <!-- Intro Video Overlay (shown every time) -->
   <div id="intro-overlay" class="intro-overlay" role="dialog" aria-modal="true" aria-label="Vídeo de introdução - O Método Fimathe">
     <video id="intro-video" class="intro-video" playsinline poster="bg-capa-marcelo.png">
       <source src="bg-metodo-fimathe.mp4" type="video/mp4">
     </video>
-    <!-- Botão para ativar áudio (necessário para alguns navegadores) -->
-    <button id="unmute-btn" class="unmute-btn" aria-label="Ativar som">
-      <i class="fas fa-volume-up"></i>
+    <!-- Botão Pular (substitui o botão de mute) -->
+    <button id="skip-btn" class="skip-btn" aria-label="Pular vídeo">
+      <span>Pular</span>
+      <i class="fas fa-forward"></i>
     </button>
   </div>
 
@@ -377,60 +378,16 @@
     (function() {
       const INTRO_KEY = 'fimathe_intro_seen';
       let introKeydownHandler = null; // Track keydown handler to prevent duplicates
-      let audioEnabled = false; // Track if audio is enabled
+      let videoEnded = false; // Track if video has ended naturally
       
       const introOverlay = document.getElementById('intro-overlay');
       const introVideo = document.getElementById('intro-video');
-      const unmuteBtn = document.getElementById('unmute-btn');
+      const skipBtn = document.getElementById('skip-btn');
       
-      // Check if should show intro
+      // Check if should show intro - Always show the video
       function shouldShowIntro() {
-        // Skip if already seen in this session
-        if (sessionStorage.getItem(INTRO_KEY)) {
-          return false;
-        }
-        
-        // Skip if user prefers reduced motion
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          sessionStorage.setItem(INTRO_KEY, 'true');
-          return false;
-        }
-        
-        // Skip on mobile (autoplay com áudio não funciona bem em mobile)
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (isMobile) {
-          sessionStorage.setItem(INTRO_KEY, 'true');
-          return false;
-        }
-        
-        // Skip on slow connections
-        if (navigator.connection) {
-          const connection = navigator.connection;
-          const isSlow = connection.saveData || 
-                        connection.effectiveType === 'slow-2g' || 
-                        connection.effectiveType === '2g';
-          if (isSlow) {
-            sessionStorage.setItem(INTRO_KEY, 'true');
-            return false;
-          }
-        }
-        
+        // Video will always be shown when page is opened
         return true;
-      }
-      
-      // Enable audio and show unmute button
-      function enableAudio() {
-        if (introVideo && !audioEnabled) {
-          introVideo.muted = false;
-          introVideo.volume = 1;
-          audioEnabled = true;
-          
-          if (unmuteBtn) {
-            unmuteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-            unmuteBtn.classList.add('audio-on');
-            unmuteBtn.setAttribute('aria-label', 'Som ativado');
-          }
-        }
       }
       
       // Hide intro with fade out
@@ -445,7 +402,7 @@
         }
         
         introOverlay.classList.add('hidden');
-        sessionStorage.setItem(INTRO_KEY, 'true');
+        // Don't set sessionStorage - video should always play when page is opened
         
         // Remove keydown handler
         if (introKeydownHandler) {
@@ -460,36 +417,23 @@
         }, 1000);
       }
       
-      // Try to play video with audio, fallback to muted if blocked
-      async function playVideoWithAudio() {
+      // Try to play video with audio (required by user)
+      async function playVideo() {
         if (!introVideo) return;
         
-        // First try with audio (will likely be blocked by browsers)
+        // Try with audio first
         introVideo.muted = false;
         introVideo.volume = 1;
         
         try {
           await introVideo.play();
-          // Audio playback succeeded!
-          audioEnabled = true;
-          if (unmuteBtn) {
-            unmuteBtn.style.display = 'flex';
-            unmuteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-            unmuteBtn.classList.add('audio-on');
-          }
         } catch (error) {
-          // Audio blocked, try muted playback
+          // Audio blocked, try muted
           console.log('Autoplay com áudio bloqueado, tentando reprodução silenciada');
           introVideo.muted = true;
           
           try {
             await introVideo.play();
-            // Muted playback succeeded - show button to enable audio
-            if (unmuteBtn) {
-              unmuteBtn.style.display = 'flex';
-              unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-              unmuteBtn.classList.remove('audio-on');
-            }
           } catch (mutedError) {
             // Even muted playback failed
             console.error('Falha ao reproduzir vídeo:', mutedError);
@@ -512,12 +456,13 @@
           introVideo.preload = 'auto';
           introVideo.playbackRate = 1;
           
-          // Try to play with audio
-          playVideoWithAudio();
+          // Try to play video
+          playVideo();
           
-          // Listen for video end
+          // Listen for video end - this is the primary way to close the intro
           introVideo.addEventListener('ended', function onEnded() {
             introVideo.removeEventListener('ended', onEnded);
+            videoEnded = true;
             hideIntro();
           }, { once: true });
           
@@ -531,69 +476,16 @@
           // Listen for canplay to ensure video is ready
           introVideo.addEventListener('canplay', function onCanPlay() {
             introVideo.removeEventListener('canplay', onCanPlay);
-            // Video is ready
+            // Video is ready - follows original duration
           }, { once: true });
-          
-          // Auto-hide after timeout if video doesn't end (for short videos)
-          // Get video duration if available, otherwise use default timeout
-          if (introVideo.readyState >= 1) {
-            const duration = introVideo.duration;
-            if (duration && duration > 0 && duration < Infinity) {
-              // Wait for video duration + 1 second buffer
-              setTimeout(() => {
-                if (!introOverlay.classList.contains('hidden')) {
-                  hideIntro();
-                }
-              }, (duration * 1000) + 1000);
-            }
-          }
-          
-          // Fallback timeout
-          setTimeout(() => {
-            if (!introOverlay.classList.contains('hidden')) {
-              hideIntro();
-            }
-          }, 15000); // 15 seconds max
         }
         
-        // Click anywhere to skip
-        introOverlay.addEventListener('click', function onClick(e) {
-          // Don't hide if clicking unmute button
-          if (e.target === unmuteBtn || unmuteBtn?.contains(e.target)) {
-            return;
-          }
-          introOverlay.removeEventListener('click', onClick);
-          hideIntro();
-        });
-        
-        // ESC key to skip (prevent duplicates)
-        if (!introKeydownHandler) {
-          introKeydownHandler = function onKeyDown(e) {
-            if (e.key === 'Escape' && !introOverlay.classList.contains('hidden')) {
-              document.removeEventListener('keydown', introKeydownHandler);
-              introKeydownHandler = null;
-              hideIntro();
-            }
-          };
-          document.addEventListener('keydown', introKeydownHandler);
-        }
-        
-        // Unmute button click handler
-        if (unmuteBtn) {
-          unmuteBtn.addEventListener('click', function(e) {
+        // Only skip button can close the intro - removed click on overlay to close
+        // Skip button click handler - only way to exit
+        if (skipBtn) {
+          skipBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (audioEnabled) {
-              // Mute
-              introVideo.muted = true;
-              introVideo.volume = 0;
-              audioEnabled = false;
-              unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-              unmuteBtn.classList.remove('audio-on');
-              unmuteBtn.setAttribute('aria-label', 'Ativar som');
-            } else {
-              // Unmute
-              enableAudio();
-            }
+            hideIntro();
           });
         }
       }
