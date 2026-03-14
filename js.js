@@ -1,5 +1,36 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ============================================
+    // Video Background - Fallback e Controle
+    // ============================================
+    const heroVideoBg = document.querySelector('.hero-video-bg');
+    
+    if (heroVideoBg) {
+      // Fallback: se o vídeo falhar ou não suportar, esconde o vídeo
+      heroVideoBg.addEventListener('error', () => {
+        console.warn('Video background failed to load, using fallback');
+        heroVideoBg.style.display = 'none';
+      });
+      
+      // Tentar reproduzir automaticamente
+      const playVideo = () => {
+        heroVideoBg.play().catch(() => {
+          // Autoplay bloqueado - vídeo não reproduz
+          heroVideoBg.style.display = 'none';
+        });
+      };
+      
+      // Tentar reproduzir quando a página carregar
+      playVideo();
+      
+      // Tentar novamente após interação do usuário (para browsers que bloqueiam autoplay)
+      document.addEventListener('click', () => {
+        if (heroVideoBg.paused && heroVideoBg.style.display !== 'none') {
+          heroVideoBg.play().catch(() => {});
+        }
+      }, { once: true });
+    }
+    
     // Carregar API do YouTube para controle de qualidade
     const ytScript = document.createElement('script');
     ytScript.src = 'https://www.youtube.com/iframe_api';
