@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carregar API do YouTube para controle de qualidade
     const ytScript = document.createElement('script');
     ytScript.src = 'https://www.youtube.com/iframe_api';
-    ytScript.onload = () => console.log('YouTube API carregada');
+    ytScript.onload = () => { /* YouTube API carregada com sucesso */ };
     document.head.appendChild(ytScript);
     // 1. ALTERNAR TEMA CLARO/ESCURO (COM LOCALSTORAGE + ACESSIBILIDADE)
     const themeToggleBtn = document.getElementById('theme-toggle');
@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Animação inicial dos cartões
     const animateCardsIn = () => {
+      // Verificar se existem elementos antes de iterar
+      if (!courseCards || courseCards.length === 0) return;
+      
       courseCards.forEach((card, index) => {
         // garante que estão visíveis antes da animação
         card.style.display = 'flex';
@@ -105,13 +108,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalClose = document.getElementById('modal-close');
     const articleContent = document.getElementById('article-content');
 
+    // Função para sanitizar HTML (prevenir XSS)
+    const sanitizeHTML = (str) => {
+      const temp = document.createElement('div');
+      temp.textContent = str;
+      return temp.innerHTML;
+    };
+
     // Função para abrir o modal com conteúdo do artigo
     const openArticleModal = (articleId) => {
       const template = document.getElementById(`template-${articleId}`);
       
       if (template && articleContent) {
         articleContent.innerHTML = '';
-        articleContent.appendChild(template.content.cloneNode(true));
+        // Usar cloneNode é seguro para templates internos, mas adicionar verificação
+        const clonedContent = template.content.cloneNode(true);
+        
+        // Sanitizar qualquer conteúdo dinâmica inserida
+        const dynamicElements = clonedContent.querySelectorAll('[data-dynamic]');
+        dynamicElements.forEach(el => {
+          el.textContent = el.textContent; // Prevenir XSS em elementos dinâmicos
+        });
+        
+        articleContent.appendChild(clonedContent);
         
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -120,7 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modalClose.focus();
       } else {
         console.warn(`Template '${articleId}' não encontrado.`);
-        alert('Artigo não disponível no momento.');
+        // Feedback visual ao usuário
+        if (articleContent) {
+          articleContent.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--cor-error);">Conteúdo não encontrado. Por favor, tente novamente.</p>';
+        }
       }
     };
 
@@ -179,13 +201,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoPlaylist = document.getElementById('video-playlist');
 
     // Função para forçar qualidade máxima em vídeos YouTube
+    let qualityInterval = null;
+    let isQualityCheckActive = false;
+    
     const setYouTubeQuality = (player) => {
+      // Limpar intervalo anterior se existir
+      if (qualityInterval) {
+        clearInterval(qualityInterval);
+      }
+      
       // Tentar forçar qualidade máxima (1080p ou maior)
       const qualities = ['hd2160', 'hd1440', 'hd1080', 'hd720'];
       
       const tryQuality = (index) => {
         if (index >= qualities.length) {
-          console.log('Qualidade automática será usada');
           return;
         }
         
@@ -199,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (typeof player.setPlaybackQuality === 'function') {
             player.setPlaybackQuality(quality);
           }
-          console.log(`Qualidade definida para: ${quality}`);
         } catch (e) {
           // Tentar próxima qualidade
           tryQuality(index + 1);
@@ -208,19 +236,40 @@ document.addEventListener('DOMContentLoaded', () => {
       
       tryQuality(0);
       
-      // Verificar qualidade a cada 2 segundos e ajustar se necessário
-      const qualityInterval = setInterval(() => {
+      // Verificar qualidade apenas quando o vídeo está tocando
+      if (isQualityCheckActive) return;
+      isQualityCheckActive = true;
+      
+      qualityInterval = setInterval(() => {
         try {
-          if (player && player.getPlaybackQuality) {
+          // Verificar se o player existe e está tocando
+          if (player && player.getPlayerState && player.getPlayerState() === 1) {
+            // 1 = YT.PlayerState.PLAYING
             const currentQuality = player.getPlaybackQuality();
             if (currentQuality !== 'hd1080' && currentQuality !== 'hd2160' && currentQuality !== 'hd1440') {
               tryQuality(0);
             }
           }
         } catch (e) {
-          clearInterval(qualityInterval);
+          // Silenciar erros de qualidade em background
         }
       }, 2000);
+    };
+    
+    // Função para iniciar verificação de qualidade
+    const startQualityCheck = (player) => {
+      if (qualityInterval) clearInterval(qualityInterval);
+      isQualityCheckActive = false;
+      setYouTubeQuality(player);
+    };
+    
+    // Função para parar verificação de qualidade
+    const stopQualityCheck = () => {
+      if (qualityInterval) {
+        clearInterval(qualityInterval);
+        qualityInterval = null;
+      }
+      isQualityCheckActive = false;
     };
 
     // Função para forçar qualidade máxima em vídeos Vimeo
@@ -228,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         player.setQuality('1080p');
       } catch (e) {
-        console.log('Qualidade Vimeo automática');
+        // Qualidade Vimeo automática
       }
     };
 
@@ -236,7 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const openVideoModal = (videoTemplateId) => {
       const template = document.getElementById(`template-${videoTemplateId}`);
       
-      if (template && videoPlayerContainer) {
+      if (!template) {
+        console.warn('Template não encontrado: ' + videoTemplateId);
+        return;
+      }
+      
+      if (videoPlayerContainer) {
         // Clonar o conteúdo do template
         const templateContent = template.content.cloneNode(true);
         
@@ -253,16 +307,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const videoId = item.getAttribute('data-video-id');
             const videoSource = item.getAttribute('data-video-source') || 'youtube';
             if (videoId && videoPlayerMain) {
-              // Sanitizar o ID do vídeo para prevenir XSS
-              const sanitizeString = (str) => str.replace(/[<>"'&]/g, '');
-              const safeVideoId = sanitizeString(videoId);
+              // Sanitizar e validar o ID do vídeo
+              const sanitizeVideoId = (str) => {
+                if (!str) return null;
+                // Remove caracteres especiais
+                const sanitized = str.replace(/[<>"'&]/g, '');
+                // Validar formato: YouTube ID (11 chars) ou Vimeo ID (número)
+                if (/^[a-zA-Z0-9_-]{11}$/.test(sanitized) || /^\d+$/.test(sanitized)) {
+                  return sanitized;
+                }
+                return null;
+              };
+              const safeVideoId = sanitizeVideoId(videoId);
+              
+              if (!safeVideoId) {
+                console.warn('ID de vídeo inválido');
+                return;
+              }
               
               let videoUrl = '';
               if (videoSource === 'vimeo') {
                 videoUrl = `https://player.vimeo.com/video/${safeVideoId}?autoplay=1&rel=0`;
               } else {
                 // mute=1 necessário para autoplay funcionar em todos os navegadores
-                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&mute=1&rel=0&enablejsapi=1`;
+                videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&mute=1&rel=0&enablejsapi=1&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`;
               }
               
               // Atualizar o iframe com o novo vídeo
@@ -282,19 +350,22 @@ document.addEventListener('DOMContentLoaded', () => {
                       const player = new YT.Player(playerId, {
                         events: {
                           'onReady': (event) => {
-                            console.log('Player YouTube pronto, definindo qualidade...');
-                            setYouTubeQuality(event.target);
+                            startQualityCheck(event.target);
                           },
                           'onStateChange': (event) => {
                             // Tentar definir qualidade quando o vídeo começar
                             if (event.data === YT.PlayerState.PLAYING) {
-                              setYouTubeQuality(event.target);
+                              startQualityCheck(event.target);
+                            }
+                            // Parar verificação quando vídeo terminar
+                            if (event.data === YT.PlayerState.ENDED) {
+                              stopQualityCheck();
                             }
                           }
                         }
                       });
                     } catch (e) {
-                      console.log('Erro ao criar player YouTube:', e);
+                      console.error('Erro ao criar player YouTube:', e);
                     }
                   } else {
                     setTimeout(waitForIframe, 500);
@@ -322,12 +393,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         console.warn(`Template de vídeo '${videoTemplateId}' não encontrado.`);
-        alert('Vídeos não disponíveis no momento.');
       }
     };
 
     // Função para fechar o modal de vídeo
     const closeVideoModal = () => {
+      // Limpar intervalo de qualidade ao fechar o modal
+      stopQualityCheck();
+      
+      // Limpar src do iframe para parar reprodução imediatamente
+      const activeIframe = videoPlayerContainer?.querySelector('iframe');
+      if (activeIframe) {
+        activeIframe.src = '';
+      }
+      
       videoModal.classList.remove('active');
       document.body.style.overflow = '';
       if (videoPlayerContainer) {
@@ -359,9 +438,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const playlistCards = document.querySelectorAll('.playlist-card[data-video]');
     
     playlistCards.forEach((card) => {
+      const videoTemplateId = card.getAttribute('data-video');
+      
+      // Usar apenas addEventListener para evitar duplicação
       card.addEventListener('click', (e) => {
         e.preventDefault();
-        const videoTemplateId = card.getAttribute('data-video');
         if (videoTemplateId) {
           openVideoModal(videoTemplateId);
         }
@@ -468,7 +549,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         pularBtn.onclick = () => {
-          console.log('Pular vídeo clicked');
           fecharModal(modal, iframe);
           openVideoModal('viver-de-trade');
         };
@@ -501,8 +581,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Função para carregar o vídeo principal no modal
       const loadMainVideo = () => {
-        console.log('Carregando vídeo principal no modal...');
-        
         if (modalAberto) return;
         modalAberto = true;
         
@@ -523,7 +601,6 @@ document.addEventListener('DOMContentLoaded', () => {
               });
               
               vimeoPlayer.on('ended', () => {
-                console.log('Vídeo terminou!');
                 fecharModal(modal, iframe);
                 // Abrir o modal com as aulas do projeto Viver de Trade
                 openVideoModal('viver-de-trade');
@@ -534,7 +611,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 vimeoPlayer.getEnded().then((ended) => {
                   if (ended) {
                     clearInterval(checkEnded);
-                    console.log('Vídeo terminou (polling)!');
                     fecharModal(modal, iframe);
                     openVideoModal('viver-de-trade');
                   }
@@ -582,7 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const overlay = document.getElementById('viver-de-trade-overlay');
       overlay.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('Viver de Trade card clicado!');
         loadMainVideo();
       });
       
@@ -593,7 +668,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Falha ao carregar API Vimeo');
       };
       vimeoScript.onload = function() {
-        console.log('API Vimeo carregada');
         playerReady = true;
       };
       document.head.appendChild(vimeoScript);
@@ -647,7 +721,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         console.warn(`Certificado '${certId}' não encontrado.`);
-        alert('Certificado não disponível no momento.');
       }
     };
 
@@ -767,5 +840,124 @@ document.addEventListener('DOMContentLoaded', () => {
           updateCarousel(currentSlide - 1); // swipe right - prev
         }
       };
+    }
+
+    // ============================================
+    // Método Fimathe - Página de Módulos
+    // ============================================
+    
+    // Verificar se estamos na página de método Fimathe
+    const modulosSection = document.querySelector('.modulos-section');
+    const videoPlayerSection = document.getElementById('video-player-section');
+    
+    if (modulosSection && videoPlayerSection) {
+      // Elementos do player
+      const mainIframe = document.getElementById('main-video-iframe');
+      const currentModuloTitle = document.getElementById('current-modulo-title');
+      const moduloVideoList = document.getElementById('modulo-video-list');
+      const backToModulos = document.getElementById('back-to-modulos');
+      const modulosGrid = document.querySelector('.modulos-grid');
+      const sectionHeader = document.querySelector('.modulos-section .section-header');
+      
+      // Evento: Voltar aos módulos
+      if (backToModulos) {
+        backToModulos.addEventListener('click', function() {
+          videoPlayerSection.style.display = 'none';
+          if (modulosGrid) modulosGrid.style.display = 'grid';
+          if (sectionHeader) sectionHeader.style.display = 'block';
+          
+          // Parar o vídeo
+          if (mainIframe) {
+            mainIframe.src = '';
+          }
+          
+          // Scroll para o topo
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      
+      // Evento: Clique em um módulo
+      const moduloCards = document.querySelectorAll('.modulo-card');
+      moduloCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+          const moduloId = card.dataset.modulo;
+          const videoId = card.dataset.videoId;
+          
+          // Verificar se videoId existe antes de continuar
+          if (!videoId) {
+            console.error('Video ID não encontrado para módulo:', moduloId);
+            return;
+          }
+          
+          const title = card.querySelector('.modulo-content h3').textContent;
+          
+          openModuloPlayer(moduloId, videoId, title);
+        });
+      });
+      
+      // Função para abrir o player do módulo
+      function openModuloPlayer(moduloId, videoId, title) {
+        // Atualizar título
+        if (currentModuloTitle) {
+          currentModuloTitle.textContent = title;
+        }
+        
+        // Carregar vídeo principal - com mute para garantir autoplay
+        if (mainIframe) {
+          mainIframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0';
+        }
+        
+        // Carregar playlist do módulo
+        loadModuloPlaylist(moduloId);
+        
+        // Esconder grid de módulos e mostrar player
+        if (modulosGrid) modulosGrid.style.display = 'none';
+        if (sectionHeader) sectionHeader.style.display = 'none';
+        videoPlayerSection.style.display = 'block';
+        
+        // Scroll para o topo
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      
+      // Função para carregar a playlist do módulo
+      function loadModuloPlaylist(moduloId) {
+        const videoDataContainer = document.querySelector('#video-data [data-modulo="' + moduloId + '"]');
+        
+        if (!videoDataContainer || !moduloVideoList) {
+          console.error('Playlist não encontrada para:', moduloId);
+          return;
+        }
+        
+        // Limpar lista atual
+        moduloVideoList.innerHTML = '';
+        
+        // Criar itens da playlist
+        const videoItems = videoDataContainer.querySelectorAll('.video-item');
+        videoItems.forEach(function(item) {
+          const clonedItem = item.cloneNode(true);
+          clonedItem.classList.remove('active');
+          
+          // Adicionar evento de clique
+          clonedItem.addEventListener('click', function() {
+            const newVideoId = this.dataset.videoId;
+            changeVideo(newVideoId);
+            
+            // Atualizar estado ativo
+            document.querySelectorAll('.video-list .video-item').forEach(function(el) {
+              el.classList.remove('active');
+            });
+            this.classList.add('active');
+          });
+          
+          moduloVideoList.appendChild(clonedItem);
+        });
+      }
+      
+      // Função para mudar o vídeo
+      function changeVideo(videoId) {
+        if (mainIframe) {
+          mainIframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0';
+        }
+      }
     }
   });
