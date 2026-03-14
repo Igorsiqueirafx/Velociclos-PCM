@@ -32,10 +32,14 @@
   </header>
 
   <!-- Intro Video Overlay (shown once per session) -->
-  <div id="intro-overlay" class="intro-overlay" role="dialog" aria-modal="true" aria-label="Vídeo de introdução">
-    <video id="intro-video" class="intro-video" muted playsinline poster="bg-capa-marcelo.png">
+  <div id="intro-overlay" class="intro-overlay" role="dialog" aria-modal="true" aria-label="Vídeo de introdução - O Método Fimathe">
+    <video id="intro-video" class="intro-video" playsinline poster="bg-capa-marcelo.png">
       <source src="bg-metodo-fimathe.mp4" type="video/mp4">
     </video>
+    <!-- Botão para ativar áudio (necessário para alguns navegadores) -->
+    <button id="unmute-btn" class="unmute-btn" aria-label="Ativar som">
+      <i class="fas fa-volume-up"></i>
+    </button>
   </div>
 
   <!-- Hero Section -->
@@ -373,9 +377,11 @@
     (function() {
       const INTRO_KEY = 'fimathe_intro_seen';
       let introKeydownHandler = null; // Track keydown handler to prevent duplicates
+      let audioEnabled = false; // Track if audio is enabled
       
       const introOverlay = document.getElementById('intro-overlay');
       const introVideo = document.getElementById('intro-video');
+      const unmuteBtn = document.getElementById('unmute-btn');
       
       // Check if should show intro
       function shouldShowIntro() {
@@ -390,7 +396,7 @@
           return false;
         }
         
-        // Skip on mobile
+        // Skip on mobile (autoplay com áudio não funciona bem em mobile)
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         if (isMobile) {
           sessionStorage.setItem(INTRO_KEY, 'true');
@@ -412,6 +418,21 @@
         return true;
       }
       
+      // Enable audio and show unmute button
+      function enableAudio() {
+        if (introVideo && !audioEnabled) {
+          introVideo.muted = false;
+          introVideo.volume = 1;
+          audioEnabled = true;
+          
+          if (unmuteBtn) {
+            unmuteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            unmuteBtn.classList.add('audio-on');
+            unmuteBtn.setAttribute('aria-label', 'Som ativado');
+          }
+        }
+      }
+      
       // Hide intro with fade out
       function hideIntro() {
         if (!introOverlay || introOverlay.classList.contains('hidden')) {
@@ -426,11 +447,55 @@
         introOverlay.classList.add('hidden');
         sessionStorage.setItem(INTRO_KEY, 'true');
         
+        // Remove keydown handler
+        if (introKeydownHandler) {
+          document.removeEventListener('keydown', introKeydownHandler);
+          introKeydownHandler = null;
+        }
+        
         setTimeout(() => {
           if (introOverlay && introOverlay.parentNode) {
             introOverlay.parentNode.removeChild(introOverlay);
           }
         }, 1000);
+      }
+      
+      // Try to play video with audio, fallback to muted if blocked
+      async function playVideoWithAudio() {
+        if (!introVideo) return;
+        
+        // First try with audio (will likely be blocked by browsers)
+        introVideo.muted = false;
+        introVideo.volume = 1;
+        
+        try {
+          await introVideo.play();
+          // Audio playback succeeded!
+          audioEnabled = true;
+          if (unmuteBtn) {
+            unmuteBtn.style.display = 'flex';
+            unmuteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            unmuteBtn.classList.add('audio-on');
+          }
+        } catch (error) {
+          // Audio blocked, try muted playback
+          console.log('Autoplay com áudio bloqueado, tentando reprodução silenciada');
+          introVideo.muted = true;
+          
+          try {
+            await introVideo.play();
+            // Muted playback succeeded - show button to enable audio
+            if (unmuteBtn) {
+              unmuteBtn.style.display = 'flex';
+              unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+              unmuteBtn.classList.remove('audio-on');
+            }
+          } catch (mutedError) {
+            // Even muted playback failed
+            console.error('Falha ao reproduzir vídeo:', mutedError);
+            hideIntro();
+          }
+        }
       }
       
       // Initialize intro
@@ -443,36 +508,60 @@
         }
         
         if (introVideo) {
-          introVideo.volume = 0;
+          // Set high quality playback
+          introVideo.preload = 'auto';
+          introVideo.playbackRate = 1;
           
-          const playPromise = introVideo.play();
+          // Try to play with audio
+          playVideoWithAudio();
           
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              hideIntro();
-            });
-          }
-          
+          // Listen for video end
           introVideo.addEventListener('ended', function onEnded() {
             introVideo.removeEventListener('ended', onEnded);
             hideIntro();
           }, { once: true });
           
+          // Listen for errors
           introVideo.addEventListener('error', function onError() {
             introVideo.removeEventListener('error', onError);
+            console.error('Erro ao carregar vídeo de introdução');
             hideIntro();
           }, { once: true });
           
-          // Auto-hide after timeout if video doesn't end
+          // Listen for canplay to ensure video is ready
+          introVideo.addEventListener('canplay', function onCanPlay() {
+            introVideo.removeEventListener('canplay', onCanPlay);
+            // Video is ready
+          }, { once: true });
+          
+          // Auto-hide after timeout if video doesn't end (for short videos)
+          // Get video duration if available, otherwise use default timeout
+          if (introVideo.readyState >= 1) {
+            const duration = introVideo.duration;
+            if (duration && duration > 0 && duration < Infinity) {
+              // Wait for video duration + 1 second buffer
+              setTimeout(() => {
+                if (!introOverlay.classList.contains('hidden')) {
+                  hideIntro();
+                }
+              }, (duration * 1000) + 1000);
+            }
+          }
+          
+          // Fallback timeout
           setTimeout(() => {
             if (!introOverlay.classList.contains('hidden')) {
               hideIntro();
             }
-          }, 6000);
+          }, 15000); // 15 seconds max
         }
         
         // Click anywhere to skip
-        introOverlay.addEventListener('click', function onClick() {
+        introOverlay.addEventListener('click', function onClick(e) {
+          // Don't hide if clicking unmute button
+          if (e.target === unmuteBtn || unmuteBtn?.contains(e.target)) {
+            return;
+          }
           introOverlay.removeEventListener('click', onClick);
           hideIntro();
         });
@@ -487,6 +576,25 @@
             }
           };
           document.addEventListener('keydown', introKeydownHandler);
+        }
+        
+        // Unmute button click handler
+        if (unmuteBtn) {
+          unmuteBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (audioEnabled) {
+              // Mute
+              introVideo.muted = true;
+              introVideo.volume = 0;
+              audioEnabled = false;
+              unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+              unmuteBtn.classList.remove('audio-on');
+              unmuteBtn.setAttribute('aria-label', 'Ativar som');
+            } else {
+              // Unmute
+              enableAudio();
+            }
+          });
         }
       }
       
