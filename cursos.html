@@ -1,14 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Cursos - Velociclos PCM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Ir para o conteúdo</a>
   <!-- Header -->
   <header>
     <div class="container header-container">
@@ -16,16 +23,23 @@
         <i class="fas fa-bolt"></i>
         <span>Velociclos</span>
       </a>
-      <nav class="nav-menu">
+      <nav id="primary-navigation" class="nav-menu" aria-label="Menu de navegação">
         <a href="index.html" class="nav-link">Início</a>
-        <a href="certificados.html" class="nav-link">Certificados</a>
-        <a href="cursos.html" class="nav-link active">Cursos</a>
-        <a href="artigos.html" class="nav-link">Artigos</a>
+        <a href="ea.html" class="nav-link">Expert Advisor</a>
+        <a href="cursos.html" class="nav-link active" aria-current="page">Cursos</a>
         <a href="metodo-fimathe.html" class="nav-link">Método Fimathe</a>
-        <a href="#" class="nav-link">Sobre</a>
+        <a href="certificados.html" class="nav-link">Certificados</a>
+        <a href="artigos.html" class="nav-link">Artigos</a>
       </nav>
-      <button class="theme-switch-wrapper" id="theme-toggle" aria-label="Alternar tema">
-        <i class="fas fa-moon"></i>
+      <button
+        class="mobile-menu-toggle"
+        id="mobile-menu-toggle"
+        aria-label="Abrir menu do site"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+        type="button"
+      >
+        <i class="fas fa-bars" aria-hidden="true"></i>
       </button>
     </div>
   </header>
@@ -64,56 +78,56 @@
   <!-- Section removida: grid de módulos -->
 
   <!-- Playlists Section - Marcelo Ferreira (Fimathe) -->
-  <section class="playlists-section">
+  <section id="main-content" class="playlists-section">
     <div class="container">
       <div class="section-header">
         <h2><i class="fas fa-play-circle"></i> Playlists - Marcelo Ferreira (Fimathe)</h2>
         <p>Todas as playlists do canal Fimathe para você aprofundar seus conhecimentos em trading.</p>
       </div>
       <div class="playlists-grid">
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I" target="_blank" class="playlist-card" data-video="fimathe-checkpoint">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="fimathe-checkpoint">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/C77_DevBR8w/maxresdefault.jpg" alt="Fimathe Checkpoint"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>Fimathe Checkpoint | FOREX</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 15 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9" target="_blank" class="playlist-card" data-video="primordios-fimathe">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="primordios-fimathe">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/rl_UgvfXdfw/maxresdefault.jpg" alt="Primórdios da Fimathe"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>Primórdios da Fimathe</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 5 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh" target="_blank" class="playlist-card" data-video="marcelao-london">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="marcelao-london">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/mhg53yJpq2k/maxresdefault.jpg" alt="Marcelão in London"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>Marcelão in London [2024]</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 3 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK" target="_blank" class="playlist-card" data-video="melhores-xauusd">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="melhores-xauusd">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/EoVfQJoWLPU/maxresdefault.jpg" alt="As melhores do XAUUSD"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>As melhores do XAUUSD</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 2 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV" target="_blank" class="playlist-card" data-video="fimathe-ouro">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="fimathe-ouro">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/y6O_1XuiGx8/maxresdefault.jpg" alt="FIMATHE NO OURO"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>FIMATHE NO OURO</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 2 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ" target="_blank" class="playlist-card" data-video="forex-scalper">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="forex-scalper">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/Zu57DaCN9Es/maxresdefault.jpg" alt="FOREX SCALPER FIMATHE"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>FOREX SCALPER FIMATHE</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 20 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLahmd1buhzix23XcAFJkqD" target="_blank" class="playlist-card" data-video="imersao-metodo">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLahmd1buhzix23XcAFJkqD" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="imersao-metodo">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg" alt="IMERSÃO MÉTODO FIMATHE"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>IMERSÃO MÉTODO FIMATHE</h3>
@@ -122,7 +136,7 @@
         </a>
         <div class="playlist-card featured-card" id="viver-de-trade-card">
           <div class="playlist-video-bg" id="viver-de-trade-video">
-            <iframe id="viver-de-trade-iframe" data-video-id="835470455" src="https://player.vimeo.com/video/835470455?h=b0444bdea2&autoplay=1&muted=1&loop=1&background=1" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen="true"></iframe>
+            <iframe id="viver-de-trade-iframe" data-video-id="835470455" src="https://player.vimeo.com/video/835470455?h=b0444bdea2&autoplay=1&muted=1&loop=1&background=1" width="100%" height="100%" frameborder="0" title="Viver de Trade" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
           </div>
         </div>
 
@@ -133,63 +147,63 @@
             <span class="playlist-video-count"><i class="fas fa-video"></i> 5 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5" target="_blank" class="playlist-card" data-video="estudos-eurusd">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="estudos-eurusd">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/HcSWF3rPaw0/maxresdefault.jpg" alt="EUR/USD"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>ESTUDOS EM EUR/USD</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 10 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO" target="_blank" class="playlist-card" data-video="estudos-usdjpy">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="estudos-usdjpy">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/mZwwnFTzX88/maxresdefault.jpg" alt="USD/JPY"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>ESTUDOS EM USD/JPY</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> Playlist</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V" target="_blank" class="playlist-card" data-video="criptomoeda">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="criptomoeda">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/UAeg143tzcI/maxresdefault.jpg" alt="Criptomoeda"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>FIMATHE EM CRIPTOMOEDA</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 5 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb" target="_blank" class="playlist-card" data-video="trade-iniciantes">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="trade-iniciantes">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/jbD41v0dz80/maxresdefault.jpg" alt="Trade para Iniciantes"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>TRADE PARA INICIANTES</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 16 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_" target="_blank" class="playlist-card" data-video="modulo-ouro">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="modulo-ouro">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/1MpCAh6Ost4/maxresdefault.jpg" alt="Jornada ao Ouro"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>JORNADA AO OURO</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 6 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL" target="_blank" class="playlist-card" data-video="collabs">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="collabs">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/WURX6_2NbOM/maxresdefault.jpg" alt="COLLABS"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>COLLABS</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 7 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw" target="_blank" class="playlist-card" data-video="meu-portfolio-boleta">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="meu-portfolio-boleta">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/8Uw50QKyguk/maxresdefault.jpg" alt="Meu Portfólio"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>MEU PORTFÓLIO NO DAYTRADE É A BOLETA</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 32 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC" target="_blank" class="playlist-card" data-video="vlog">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="vlog">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/b12uy7syvFg/maxresdefault.jpg" alt="VLOG"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>VLOG</h3>
             <span class="playlist-video-count"><i class="fas fa-video"></i> 2 vídeos</span>
           </div>
         </a>
-        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv" target="_blank" class="playlist-card" data-video="forex-iniciantes">
+        <a href="https://www.youtube.com/playlist?list=PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv" target="_blank" rel="noopener noreferrer" class="playlist-card" data-video="forex-iniciantes">
           <div class="playlist-thumb"><img src="https://img.youtube.com/vi/POAlUnMn9bI/maxresdefault.jpg" alt="Forex do Zero"><span class="playlist-play-icon"><i class="fas fa-play"></i></span></div>
           <div class="playlist-content">
             <h3>FOREX DO ZERO? COMECE AQUI</h3>
@@ -1295,10 +1309,9 @@
     </div>
   </footer>
 
-  <script src="js.js"></script>
+  <script src="js.js" defer></script>
+  <!-- Vercel Analytics and Speed Insights -->
+  <script type="module" src="vercel-analytics.js"></script>
 </body>
-
-<!-- Vercel Analytics and Speed Insights -->
-<script type="module" src="vercel-analytics.js"></script>
 </html>
 

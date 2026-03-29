@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Manual do Usuário - Velociclos PCM</title>
+  <meta name="description" content="Manual de usuário completo para o Expert Advisor Velociclos PCM. Instalação, configuração, modos de operação e gestão de risco no MetaTrader 5.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="js.js" defer></script>
+  <link rel="shortcut icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Ir para o conteúdo</a>
+  <header>
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>Velociclos</span>
+      </a>
+      <nav id="primary-navigation" class="nav-menu" aria-label="Menu de navegação">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="ea.html" class="nav-link active" aria-current="page">Expert Advisor</a>
+        <a href="cursos.html" class="nav-link">Cursos</a>
+        <a href="metodo-fimathe.html" class="nav-link">Método Fimathe</a>
+        <a href="certificados.html" class="nav-link">Certificados</a>
+        <a href="artigos.html" class="nav-link">Artigos</a>
+      </nav>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menu do site" aria-expanded="false" aria-controls="primary-navigation" type="button">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="main-container">
+
+    <!-- Hero -->
+    <section class="hero-optimized courses-bg">
+      <div class="container">
+        <div class="hero-content-grid">
+          <div class="hero-text-content">
+            <div class="manual-badge">
+              <i class="fas fa-book-open"></i>
+              <span>Documentação Oficial</span>
+            </div>
+            <h1 class="hero-title">Manual do Usuário</h1>
+            <p class="hero-subtitle">Guia completo para instalar, configurar e operar o Expert Advisor Velociclos PCM no MetaTrader 5.</p>
+            <div class="hero-stats-compact">
+              <div class="stat-item">
+                <span class="stat-number">v7.33</span>
+                <span class="stat-label">Versão Atual</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">MT5</span>
+                <span class="stat-label">Plataforma</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Configurações</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Instalação Passo a Passo -->
+    <section class="manual-section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-download"></i> Instalação</h2>
+          <p>Siga os passos abaixo para instalar o E.A. no seu MetaTrader 5.</p>
+        </div>
+
+        <div class="manual-steps">
+          <div class="manual-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Baixe o arquivo</h3>
+              <p>Clique no botão de download na página do <a href="ea.html">Expert Advisor</a> para baixar o arquivo <code>Velociclos PCM.ex5</code>.</p>
+            </div>
+          </div>
+
+          <div class="manual-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Abra a pasta do MetaTrader</h3>
+              <p>No MetaTrader 5, vá em <strong>Arquivo &rarr; Abrir Pasta de Dados &rarr; MQL5 &rarr; Experts</strong>.</p>
+              <div class="step-hint">
+                <i class="fas fa-info-circle"></i>
+                <span>Atalho: pressione <code>Ctrl+Shift+D</code> no MT5 para abrir a pasta rapidamente.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="manual-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Cole o arquivo</h3>
+              <p>Copie o arquivo <code>Velociclos PCM.ex5</b> para a pasta <strong>Experts</strong> que abriu.</p>
+            </div>
+          </div>
+
+          <div class="manual-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Reinicie o MetaTrader</h3>
+              <p>Feche e abra novamente o MetaTrader 5. O E.A. aparecerá na janela <strong>Navegador &rarr; Expert Advisors</strong>.</p>
+            </div>
+          </div>
+
+          <div class="manual-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h3>Arraste para o gráfico</h3>
+              <p>Arraste o E.A. para o gráfico desejado (recomendado: <strong>XAUUSD M5</strong>). Ative o <strong>Trading Automático</strong> na barra de ferramentas.</p>
+              <div class="step-hint step-hint-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Antes de operar em conta real, teste sempre em conta demo.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modos de Operação -->
+    <section class="manual-section manual-section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-cogs"></i> Modos de Operação</h2>
+          <p>Escolha o modo que melhor se adapta ao seu estilo de trading.</p>
+        </div>
+
+        <div class="manual-modes-grid">
+          <div class="manual-mode-card">
+            <div class="mode-header">
+              <div class="mode-icon"><i class="fas fa-robot"></i></div>
+              <h3>Automático</h3>
+            </div>
+            <p>O E.A. identifica ciclos automaticamente e abre ordens com base nos últimos candles do dia. Ideal para quem quer operar com menos intervenção manual.</p>
+            <ul class="mode-features">
+              <li><i class="fas fa-check"></i> Detecção automática de ciclos</li>
+              <li><i class="fas fa-check"></i> Entradas baseadas em padrões</li>
+              <li><i class="fas fa-check"></i> Menor necessidade de monitoramento</li>
+            </ul>
+          </div>
+
+          <div class="manual-mode-card">
+            <div class="mode-header">
+              <div class="mode-icon"><i class="fas fa-hand-pointer"></i></div>
+              <h3>Arrastar Contínuo</h3>
+            </div>
+            <p>Você escolhe o início do canal arrastando uma linha vertical no gráfico. O sistema forma o canal e aguarda as entradas com base na sua marcação.</p>
+            <ul class="mode-features">
+              <li><i class="fas fa-check"></i> Controle total sobre o canal</li>
+              <li><i class="fas fa-check"></i> Marcação manual flexível</li>
+              <li><i class="fas fa-check"></i> Ideal para traders experientes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Configurações -->
+    <section class="manual-section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-sliders-h"></i> Configurações</h2>
+          <p>Parâmetros recomendados para operar com segurança.</p>
+        </div>
+
+        <div class="manual-accordion">
+          <details class="manual-accordion-item" open>
+            <summary class="manual-accordion-header">
+              <i class="fas fa-shield-alt"></i>
+              <span>Gestão de Risco</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </summary>
+            <div class="manual-accordion-body">
+              <p>O E.A. oferece dois métodos de gestão de risco:</p>
+              <div class="config-table">
+                <div class="config-row">
+                  <span class="config-label">Risco Percentual</span>
+                  <span class="config-value">Define o lote automaticamente com base no % de risco por operação.</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Lote Fixo</span>
+                  <span class="config-value">Utiliza sempre o mesmo volume, independente do stop.</span>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="manual-accordion-item">
+            <summary class="manual-accordion-header">
+              <i class="fas fa-stop-circle"></i>
+              <span>Gestão de Stop</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </summary>
+            <div class="manual-accordion-body">
+              <div class="config-table">
+                <div class="config-row">
+                  <span class="config-label">Máximo de Stops / Dia</span>
+                  <span class="config-value highlight">3 stops</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Limite Semanal</span>
+                  <span class="config-value">Bloqueio automático ao atingir o limite</span>
+                </div>
+              </div>
+              <p class="config-note">Quando o limite é atingido, o E.A. bloqueia novas operações até o próximo período.</p>
+            </div>
+          </details>
+
+          <details class="manual-accordion-item">
+            <summary class="manual-accordion-header">
+              <i class="fas fa-balance-scale"></i>
+              <span>Break Even</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </summary>
+            <div class="manual-accordion-body">
+              <p>O recurso Break Even move o stop loss para o ponto de entrada (zero risco) após a operação avançar o suficiente.</p>
+              <div class="config-table">
+                <div class="config-row">
+                  <span class="config-label">Ativação</span>
+                  <span class="config-value">Automática após atingir o lucro mínimo configurado</span>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="manual-accordion-item">
+            <summary class="manual-accordion-header">
+              <i class="fas fa-eye-slash"></i>
+              <span>Modo Minimalista</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </summary>
+            <div class="manual-accordion-body">
+              <p>Quando ativado, o painel de informações do E.A. mostra apenas os dados essenciais no gráfico, facilitando a visualização.</p>
+              <div class="config-table">
+                <div class="config-row">
+                  <span class="config-label">Painel</span>
+                  <span class="config-value">Apenas lucro, perda e status da operação</span>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dicas -->
+    <section class="manual-section manual-section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-lightbulb"></i> Dicas Importantes</h2>
+        </div>
+
+        <div class="manual-tips-grid">
+          <div class="manual-tip-card">
+            <div class="tip-icon tip-icon-success"><i class="fas fa-check-circle"></i></div>
+            <h4>Teste em Demo</h4>
+            <p>Sempre teste em conta demo antes de operar em conta real.</p>
+          </div>
+          <div class="manual-tip-card">
+            <div class="tip-icon tip-icon-warning"><i class="fas fa-exclamation-triangle"></i></div>
+            <h4>Volatilidade</h4>
+            <p>Recomendado operar XAUUSD (Ouro) para melhores resultados com o E.A.</p>
+          </div>
+          <div class="manual-tip-card">
+            <div class="tip-icon tip-icon-info"><i class="fas fa-chart-line"></i></div>
+            <h4>Monitoramento</h4>
+            <p>Acompanhe o gráfico durante as primeiras operações.</p>
+          </div>
+          <div class="manual-tip-card">
+            <div class="tip-icon tip-icon-accent"><i class="fas fa-sync-alt"></i></div>
+            <h4>Atualizações</h4>
+            <p>Mantenha o E.A. sempre na versão mais recente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-content-modern">
+        <div class="cta-text">
+          <h2>Pronto para operar?</h2>
+          <p>Baixe o Expert Advisor e comece a configurar no seu MetaTrader 5.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="Velociclos%20PCM.ex5" class="btn btn-primary btn-large btn-download" download>
+            <i class="fas fa-download"></i> Baixar E.A.
+          </a>
+          <a href="ea.html" class="btn btn-secondary btn-large">Voltar ao E.A.</a>
+          <p class="download-warning">Disponível apenas para Windows. No mobile, utilize um desktop para baixar o arquivo .ex5.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+  <!-- Vercel Analytics and Speed Insights -->
+  <script type="module" src="vercel-analytics.js"></script>
+</body>
+</html>
