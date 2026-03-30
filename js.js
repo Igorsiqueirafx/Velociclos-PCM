@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const eaClose = document.getElementById('ea-video-modal-close');
     const eaPlayer = document.getElementById('ea-video-modal-player');
     const eaPlayBtn = document.querySelector('.hero-play-btn');
-    const VIDEO_URL = 'https://www.youtube.com/embed/_BaLT-9zzwU?rel=0&modestbranding=1&autoplay=1';
+    const VIDEO_URL = 'https://www.youtube.com/embed/_BaLT-9zzwU?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1';
 
     const openEaModal = () => {
       const iframe = eaPlayer.querySelector('iframe');
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (videoSource === 'vimeo') {
               videoUrl = `https://player.vimeo.com/video/${safeVideoId}?autoplay=1&rel=0`;
             } else {
-              videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&mute=1&rel=0&enablejsapi=1&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`;
+              videoUrl = `https://www.youtube.com/embed/${safeVideoId}?autoplay=1&mute=0&rel=0&enablejsapi=1&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`;
             }
 
             videoPlayerMain.innerHTML = `<iframe id="youtube-player-${safeVideoId}" width="100%" height="100%" src="${videoUrl}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
       containerVideo.style.cssText = 'width:100%;height:100%;max-width:100vw;max-height:100vh;background:#000;overflow:hidden;';
 
       const iframe = document.createElement('iframe');
-      iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=1&controls=0&background=0&dnt=1&loop=0&playsinline=1`;
+      iframe.src = `https://player.vimeo.com/video/${PLAY_VIDEO_ID}?h=${PLAY_VIDEO_HASH}&autoplay=1&muted=0&controls=0&background=0&dnt=1&loop=0&playsinline=1`;
       iframe.style.cssText = 'width:100%;height:100%;border:none;';
       iframe.allow = 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share';
       iframe.setAttribute('playsinline', '');
@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModuloPlayer(moduloId, videoId, title) {
       if (currentModuloTitle) currentModuloTitle.textContent = title;
       if (mainIframe) {
-        mainIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0`;
+        mainIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0`;
       }
       loadModuloPlaylist(moduloId);
       if (modulosGrid) modulosGrid.style.display = 'none';
@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clonedItem.addEventListener('click', function() {
           const newVideoId = this.dataset.videoId;
           if (mainIframe) {
-            mainIframe.src = `https://www.youtube.com/embed/${newVideoId}?autoplay=1&mute=1&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0`;
+             mainIframe.src = `https://www.youtube.com/embed/${newVideoId}?autoplay=1&mute=0&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0`;
           }
           document.querySelectorAll('.video-list .video-item').forEach((el) => el.classList.remove('active'));
           this.classList.add('active');
