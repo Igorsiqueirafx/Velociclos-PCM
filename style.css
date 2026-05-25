@@ -1460,18 +1460,133 @@ header {
   }
 }
 
-/* ===== SCROLLBAR GLOBAL ESTILO TRADING ===== */
-::-webkit-scrollbar {
-  width: 8px;
+/* ===== CLOCK PAGE STYLES ===== */
+.clock-hero {
+  padding: clamp(60px, 10vh, 100px) 0 40px;
+  background: linear-gradient(180deg, var(--cor-fundo) 0%, var(--cor-card) 100%);
+  border-bottom: 1px solid var(--cor-borda-leve);
 }
-::-webkit-scrollbar-track {
+
+.clock-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.clock-section {
+  padding: 60px 0;
+}
+
+.widget-wrapper {
+  background: var(--cor-card);
+  border: 1px solid var(--cor-borda-leve);
+  border-radius: var(--borda-raio);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.15),
+    0 0 60px rgba(255, 215, 0, 0.08),
+    inset 0 0 20px rgba(255, 215, 0, 0.03);
+  animation: widget-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes widget-glow {
+  0% {
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.1),
+      0 0 40px rgba(255, 215, 0, 0.05),
+      inset 0 0 15px rgba(255, 215, 0, 0.02);
+  }
+  100% {
+    box-shadow: 
+      0 0 40px rgba(255, 215, 0, 0.25),
+      0 0 80px rgba(255, 215, 0, 0.15),
+      inset 0 0 30px rgba(255, 215, 0, 0.05);
+  }
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: var(--cor-card-elevado);
+  border-bottom: 1px solid var(--cor-borda-leve);
+}
+
+.widget-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.widget-title h2 {
+  font-size: var(--text-xl);
+  color: var(--cor-texto-principal);
+}
+
+.widget-title i {
+  color: var(--cor-accent);
+}
+
+.widget-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.widget-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--cor-borda-leve);
+  background: transparent;
+  border-radius: 8px;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.widget-btn:hover {
+  background: var(--cor-accent);
+  color: var(--cor-fundo);
+  border-color: var(--cor-accent);
+}
+
+.clock-container {
+  position: relative;
+  height: calc(100vh - 180px);
+  min-height: 400px;
   background: var(--cor-fundo);
 }
-::-webkit-scrollbar-thumb {
+
+.clock-container iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .clock-container {
+    height: calc(100vh - 160px);
+    min-height: 350px;
+  }
+}
+
+/* ===== SCROLLBAR GLOBAL ESTILO TRADING ===== */
+ ::-webkit-scrollbar {
+  width: 8px;
+}
+ ::-webkit-scrollbar-track {
+  background: var(--cor-fundo);
+}
+ ::-webkit-scrollbar-thumb {
   background: var(--cor-borda-leve);
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
+ ::-webkit-scrollbar-thumb:hover {
   background: var(--cor-accent-dark);
 }
 

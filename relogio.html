@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Relógio Forex - Velociclos | Sessões de Mercado</title>
+  <meta name="description" content="Mapa interativo com horários das sessões Forex: Nova York, Londres, Tóquio e Sydney.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="js.js" defer></script>
+
+  <link rel="shortcut icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="Design%20sem%20nome.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Ir para o conteúdo</a>
+
+  <header>
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>Velociclos</span>
+      </a>
+      <nav id="primary-navigation" class="nav-menu" aria-label="Menu de navegação">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="ea.html" class="nav-link">Expert Advisor</a>
+        <a href="cursos.html" class="nav-link">Cursos</a>
+        <a href="metodo-fimathe.html" class="nav-link">Método Fimathe</a>
+        <a href="relogio.html" class="nav-link active" aria-current="page">Relógio</a>
+        <a href="artigos.html" class="nav-link">Artigos</a>
+        <a href="certificados.html" class="nav-link">Certificados</a>
+      </nav>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menu do site" aria-expanded="false" aria-controls="primary-navigation" type="button">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" class="main-container clock-page">
+    <section class="clock-section">
+      <div class="container">
+        <div class="widget-wrapper">
+          <div class="widget-header">
+            <div class="widget-title">
+              <i class="fas fa-globe-americas"></i>
+              <h2>Mapa de Sessões Forex</h2>
+            </div>
+          </div>
+          <div class="clock-container">
+            <script type="text/javascript">DukascopyApplet = {"type":"fxmarkethours","params":{"showHeader":false,"displayMainMenu":true,"displayTimezoneChange":true,"displayInstrumentChange":true,"displaySpreadIndicator":true,"displayVolumeIndicator":true,"displayVolatilityIndicator":true,"displayFollowButton":true,"allowTimezoneChange":true,"allowInstrumentChange":true,"defaultTimezone":0,"showIndicator":"0","defaultFollowMode":false,"worldMapColor":"red","hoursBackground":"#444f5f","hoursActiveBackground":"#7d92b0","hoursTextColor":"#ffffff","currentHourBGColor":"#f9fdff","dstHourColor":"#0cf6ff","indicatorBarColor":"#5090c6","graphPointsColor":"#ffffff","spreadTopGraphColor":"#208c1c","spreadBottomGraphColor":"#dc0e0e","volatilityGraphColor":"#146fba","availableInstruments":"AUD/USD,EUR/USD,GBP/USD,NZD/USD,USD/CAD,USD/CHF,USD/JPY,USD/NOK,USD/SEK,USD/SGD,XAG/USD,XAU/USD,AUD/CAD,AUD/CHF,AUD/JPY,AUD/NZD,CAD/CHF,CAD/JPY,CHF/JPY,EUR/AUD,EUR/CAD,EUR/CHF,EUR/DKK,EUR/GBP,EUR/HKD,EUR/JPY,EUR/NOK,EUR/NZD,EUR/SEK,GBP/AUD,GBP/CAD,GBP/CHF,GBP/JPY,GBP/NZD,NZD/CAD,NZD/CHF,NZD/JPY,AUD/SGD,CAD/HKD,CHF/SGD,EUR/PLN,EUR/SGD,EUR/TRY,HKD/JPY,SGD/JPY,USD/DKK,USD/HKD,USD/MXN,USD/PLN,USD/RUB,USD/TRY,USD/ZAR","instrument":"EUR/USD","width":"100%","height":"100%","adv":"popup"}};</script>
+            <script type="text/javascript" src="https://freeserv-static.dukascopy.com/2.0/core.js"></script>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="vercel-analytics.js"></script>
+</body>
+</html>
