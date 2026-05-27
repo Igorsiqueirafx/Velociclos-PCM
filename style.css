@@ -1557,23 +1557,56 @@ header {
 
 .clock-container {
   position: relative;
-  height: 650px;
   background: var(--cor-fundo);
+  padding: 30px;
 }
 
-.clock-container iframe {
-  width: 100% !important;
-  height: 650px !important;
-  border: none;
+.forex-hours-table {
+  background: var(--cor-card);
+  border-radius: var(--borda-raio);
+  padding: 20px;
+  border: 1px solid var(--cor-borda-leve);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
 }
+
+.forex-hours-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.forex-hours-table th,
+.forex-hours-table td {
+  padding: 12px;
+  border: 1px solid var(--cor-borda-leve);
+  text-align: center;
+}
+
+.forex-hours-table th {
+  background: var(--cor-accent);
+  color: var(--cor-fundo);
+  font-weight: 600;
+}
+
+.forex-hours-table tbody tr:nth-child(1) { background: rgba(255, 107, 107, 0.1); }
+.forex-hours-table tbody tr:nth-child(2) { background: rgba(255, 215, 0, 0.1); }
+.forex-hours-table tbody tr:nth-child(3) { background: rgba(67, 233, 116, 0.1); }
+.forex-hours-table tbody tr:nth-child(4) { background: rgba(79, 172, 254, 0.1); }
 
 @media (max-width: 768px) {
   .clock-container {
-    height: 500px;
+    padding: 15px;
   }
   
-  .clock-container iframe {
-    height: 500px !important;
+  .forex-hours-table {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .forex-hours-table th,
+  .forex-hours-table td {
+    padding: 8px 5px;
+    font-size: 0.8rem;
   }
 }
 
