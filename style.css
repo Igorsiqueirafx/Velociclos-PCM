@@ -1557,21 +1557,23 @@ header {
 
 .clock-container {
   position: relative;
-  height: calc(100vh - 180px);
-  min-height: 400px;
+  height: 650px;
   background: var(--cor-fundo);
 }
 
 .clock-container iframe {
   width: 100% !important;
-  height: 100% !important;
+  height: 650px !important;
   border: none;
 }
 
 @media (max-width: 768px) {
   .clock-container {
-    height: calc(100vh - 160px);
-    min-height: 350px;
+    height: 500px;
+  }
+  
+  .clock-container iframe {
+    height: 500px !important;
   }
 }
 
