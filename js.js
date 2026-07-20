@@ -1,4 +1,4 @@
-// @ts-check
+﻿// @ts-check
 
 /**
  * Velociclos PCM - Main JavaScript
@@ -12,7 +12,7 @@
   // CONFIGURATION
   // ============================================
   const CONFIG = {
-    YOUTUBE_API: 'https://www.youtube.com/iframe_api',
+    YOUTUBE_API: 'https://www.youtube.com/iframe_api?key=AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0',
     VIMEO_API: 'https://player.vimeo.com/api/player.js',
     TRANSITION_MS: 400,
     DESKTOP_BREAKPOINT: 768,
@@ -438,7 +438,7 @@
       modal.id = 'viver-de-trade-modal';
       modal.setAttribute('role', 'dialog');
       modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-label', 'Vídeo Viver de Trade');
+      modal.setAttribute('aria-label', 'VÃ­deo Viver de Trade');
       modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;';
 
       const containerVideo = document.createElement('div');
@@ -456,7 +456,7 @@
 
       const pularBtn = document.createElement('button');
       pularBtn.innerHTML = 'Pular <i class="fas fa-forward"></i>';
-      pularBtn.setAttribute('aria-label', 'Pular vídeo');
+      pularBtn.setAttribute('aria-label', 'Pular vÃ­deo');
       pularBtn.style.cssText = 'position:absolute;bottom:40px;right:20px;background:rgba(0,0,0,0.7);color:#fff;border:1px solid rgba(255,255,255,0.3);padding:14px 24px;border-radius:30px;cursor:pointer;font-size:15px;font-weight:600;opacity:0.6;transition:opacity 0.3s ease;z-index:10000;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:48px;min-width:100px;';
       pularBtn.onmouseover = () => pularBtn.style.opacity = '1';
       pularBtn.onmouseout = () => pularBtn.style.opacity = '0.6';
@@ -514,7 +514,7 @@
       const overlay = document.createElement('div');
       overlay.id = 'viver-de-trade-overlay';
       overlay.setAttribute('role', 'button');
-      overlay.setAttribute('aria-label', 'Reproduzir vídeo Viver de Trade');
+      overlay.setAttribute('aria-label', 'Reproduzir vÃ­deo Viver de Trade');
       overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;cursor:pointer;';
       card.style.position = 'relative';
       card.appendChild(overlay);
@@ -633,7 +633,7 @@
   };
 
   // ============================================
-  // MÉTODO FIMATHE - Módulos
+  // MÃ‰TODO FIMATHE - MÃ³dulos
   // ============================================
   const initMetodoFimathe = () => {
     const modulosSection = document.querySelector('.modulos-section');
@@ -777,3 +777,4 @@
     init();
   }
 })();
+
