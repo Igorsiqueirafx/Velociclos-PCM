@@ -1593,6 +1593,33 @@ header {
 .forex-hours-table tbody tr:nth-child(3) { background: rgba(67, 233, 116, 0.1); }
 .forex-hours-table tbody tr:nth-child(4) { background: rgba(79, 172, 254, 0.1); }
 
+.forex-table-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--cor-texto-principal);
+}
+
+.forex-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.forex-row--newyork { background: rgba(255, 107, 107, 0.1); }
+.forex-row--london { background: rgba(255, 215, 0, 0.1); }
+.forex-row--tokyo { background: rgba(67, 233, 116, 0.1); }
+.forex-row--sydney { background: rgba(79, 172, 254, 0.1); }
+
+.forex-session-name {
+  color: #ff6b6b;
+}
+
+.forex-table-footer {
+  text-align: center;
+  margin-top: 15px;
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 768px) {
   .clock-container {
     padding: 15px;
