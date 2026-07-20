@@ -1,1 +1,1 @@
-python --version
+gunicorn==21.2.0
