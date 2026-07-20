@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="O Método Fimathe - A Nova Análise Gráfica. Assista às aulas completas.">
+  <meta name="description" content="O Método Fimathe - A Nova Análise Gráfica. Assista às 6 aulas completas.">
   <title>O Método Fimathe | Velociclos PCM</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,16 +48,6 @@
     </div>
   </header>
 
-  <div id="intro-overlay" class="intro-overlay" role="dialog" aria-modal="true" aria-label="Vídeo de introdução - O Método Fimathe">
-    <video id="intro-video" class="intro-video" poster="bg-capa-marcelo.png">
-      <source src="bg-metodo-fimathe.mp4" type="video/mp4">
-    </video>
-    <button id="skip-btn" class="skip-btn" aria-label="Pular vídeo">
-      <span>Pular</span>
-      <i class="fas fa-forward" aria-hidden="true"></i>
-    </button>
-  </div>
-
   <section id="main-content" class="hero-optimized hero-with-bg metodo-fimathe-hero">
     <div class="hero-video-fallback"></div>
     <div class="container">
@@ -71,7 +61,7 @@
           <span class="text-break">A Nova Análise Gráfica</span>
         </h1>
         <p class="hero-subtitle">
-          Assista às aulas completas do método que está transformando traders.
+          Assista às 6 aulas completas do método que está transformando traders.
         </p>
         <div class="metodo-stats">
           <div class="stat-item">
@@ -215,66 +205,12 @@
         'https://drive.google.com/file/d/1kVr4K_9eyBm5Jf_AIeRw14XxHZZ_1_3M/preview'
       ];
 
-      const introOverlay = document.getElementById('intro-overlay');
-      const introVideo = document.getElementById('intro-video');
-      const skipBtn = document.getElementById('skip-btn');
       const videoPlayerSection = document.getElementById('video-player-section');
       const mainIframe = document.getElementById('main-video-iframe');
       const currentAulaTitle = document.getElementById('current-aula-title');
       const backToModulos = document.getElementById('back-to-modulos');
       const modulosGrid = document.querySelector('.modulos-grid');
       const sectionHeader = document.querySelector('.modulos-section .section-header');
-
-      function hideIntro() {
-        if (!introOverlay || introOverlay.classList.contains('hidden')) return;
-        if (introVideo) {
-          introVideo.pause();
-          introVideo.currentTime = 0;
-        }
-        introOverlay.classList.add('hidden');
-        if (introOverlay && introOverlay.parentNode) {
-          introOverlay.parentNode.removeChild(introOverlay);
-        }
-      }
-
-      async function playVideo() {
-        if (!introVideo) return;
-        introVideo.muted = false;
-        introVideo.volume = 1;
-        try {
-          await introVideo.play();
-        } catch (error) {
-          introVideo.muted = true;
-          try {
-            await introVideo.play();
-          } catch (mutedError) {
-            hideIntro();
-          }
-        }
-      }
-
-      function initIntro() {
-        if (!introOverlay) return;
-        if (introVideo) {
-          introVideo.preload = 'auto';
-          introVideo.playbackRate = 1;
-          playVideo();
-          introVideo.addEventListener('ended', function onEnded() {
-            introVideo.removeEventListener('ended', onEnded);
-            hideIntro();
-          }, { once: true });
-          introVideo.addEventListener('error', function onError() {
-            introVideo.removeEventListener('error', onError);
-            hideIntro();
-          }, { once: true });
-        }
-        if (skipBtn) {
-          skipBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            hideIntro();
-          });
-        }
-      }
 
       document.querySelectorAll('.modulo-card').forEach((card) => {
         card.addEventListener('click', () => {
@@ -302,12 +238,6 @@
           if (mainIframe) mainIframe.src = '';
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initIntro);
-      } else {
-        initIntro();
       }
     })();
   </script>
