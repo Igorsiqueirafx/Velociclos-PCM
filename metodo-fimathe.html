@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="O Método Fimathe - A Nova Análise Gráfica. Assista às 6 aulas completas.">
+  <meta name="description" content="O Método Fimathe - A Nova Análise Gráfica. Assista às aulas completas.">
   <title>O Método Fimathe | Velociclos PCM</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,11 +61,11 @@
           <span class="text-break">A Nova Análise Gráfica</span>
         </h1>
         <p class="hero-subtitle">
-          Assista às 6 aulas completas do método que está transformando traders.
+          Assista às aulas completas do método que está transformando traders.
         </p>
         <div class="metodo-stats">
           <div class="stat-item">
-            <span class="stat-number">6</span>
+            <span class="stat-number" id="video-count">-</span>
             <span class="stat-label">Vídeos</span>
           </div>
           <div class="stat-item">
@@ -84,90 +84,8 @@
         <p>Clique em cada card para assistir a aula correspondente.</p>
       </div>
 
-      <div class="modulos-grid">
-        <article class="modulo-card" data-aula="1">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">01</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 01</h3>
-            <p>Primeira aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="modulo-card" data-aula="2">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">02</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 02</h3>
-            <p>Segunda aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="modulo-card" data-aula="3">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">03</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 03</h3>
-            <p>Terceira aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="modulo-card" data-aula="4">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">04</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 04</h3>
-            <p>Quarta aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="modulo-card" data-aula="5">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">05</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 05</h3>
-            <p>Quinta aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="modulo-card" data-aula="6">
-          <div class="modulo-thumb">
-            <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
-            <span class="modulo-number">06</span>
-          </div>
-          <div class="modulo-content">
-            <h3>Aula 06</h3>
-            <p>Sexta aula do Método Fimathe.</p>
-            <div class="modulo-meta">
-              <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
-            </div>
-          </div>
-        </article>
+      <div class="modulos-grid" id="videos-grid">
+        <p style="color: var(--cor-texto-secundario);">Carregando aulas...</p>
       </div>
     </div>
   </section>
@@ -179,7 +97,7 @@
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
           Voltar às Aulas
         </button>
-        <h2 id="current-aula-title">Aula 01</h2>
+        <h2 id="current-aula-title">Aula</h2>
       </div>
 
       <div class="video-main-player">
@@ -196,6 +114,7 @@
 
   <script>
     (function() {
+      const API_BASE = 'http://localhost:3001/api';
       const DRIVE_LINKS = [
         'https://drive.google.com/file/d/1jZbpAv2mPx9BadTqUverW0GsJWj860mB/preview',
         'https://drive.google.com/file/d/1mpoXheY5NtD3IHNthcbPspYvZC6apV-o/preview',
@@ -205,33 +124,127 @@
         'https://drive.google.com/file/d/1kVr4K_9eyBm5Jf_AIeRw14XxHZZ_1_3M/preview'
       ];
 
-      const videoPlayerSection = document.getElementById('video-player-section');
-      const mainIframe = document.getElementById('main-video-iframe');
-      const currentAulaTitle = document.getElementById('current-aula-title');
-      const backToModulos = document.getElementById('back-to-modulos');
-      const modulosGrid = document.querySelector('.modulos-grid');
-      const sectionHeader = document.querySelector('.modulos-section .section-header');
+      async function loadVideos() {
+        try {
+          const response = await fetch(`${API_BASE}/videos`);
+          if (!response.ok) throw new Error('Failed to load videos');
+          const videos = await response.json();
+          renderVideos(videos);
+        } catch (error) {
+          console.error('Error loading videos from API:', error);
+          renderFallbackVideos();
+        }
+      }
 
-      document.querySelectorAll('.modulo-card').forEach((card) => {
-        card.addEventListener('click', () => {
-          const aulaIndex = parseInt(card.getAttribute('data-aula'), 10) - 1;
-          if (aulaIndex < 0 || aulaIndex >= DRIVE_LINKS.length) return;
-          const title = card.querySelector('.modulo-content h3').textContent;
-          openAulaPlayer(aulaIndex, title);
+      function renderVideos(videos) {
+        const grid = document.getElementById('videos-grid');
+        const countEl = document.getElementById('video-count');
+        
+        if (!videos || videos.length === 0) {
+          grid.innerHTML = '<p style="color: var(--cor-texto-secundario);">Nenhuma aula disponível no momento.</p>';
+          if (countEl) countEl.textContent = '0';
+          return;
+        }
+
+        if (countEl) countEl.textContent = String(videos.length);
+
+        grid.innerHTML = videos.map((video, index) => `
+          <article class="modulo-card" data-aula="${index + 1}" data-video-id="${escapeHtml(video.videoId || '')}">
+            <div class="modulo-thumb">
+              <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
+              <span class="modulo-number">${String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="modulo-content">
+              <h3>${escapeHtml(video.title || 'Aula ' + (index + 1))}</h3>
+              <p>${escapeHtml(video.description || 'Aula do Método Fimathe.')}</p>
+              <div class="modulo-meta">
+                <span><i class="fas fa-video" aria-hidden="true"></i> ${escapeHtml(video.module || 'YouTube')}</span>
+              </div>
+            </div>
+          </article>
+        `).join('');
+
+        attachCardListeners();
+      }
+
+      function renderFallbackVideos() {
+        const grid = document.getElementById('videos-grid');
+        const countEl = document.getElementById('video-count');
+        
+        if (countEl) countEl.textContent = String(DRIVE_LINKS.length);
+
+        grid.innerHTML = DRIVE_LINKS.map((_, index) => `
+          <article class="modulo-card" data-aula="${index + 1}" data-drive-index="${index}">
+            <div class="modulo-thumb">
+              <i class="fas fa-play-circle modulo-play-overlay" aria-hidden="true"></i>
+              <span class="modulo-number">${String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="modulo-content">
+              <h3>Aula ${String(index + 1).padStart(2, '0')}</h3>
+              <p>Aula do Método Fimathe.</p>
+              <div class="modulo-meta">
+                <span><i class="fas fa-video" aria-hidden="true"></i> Google Drive</span>
+              </div>
+            </div>
+          </article>
+        `).join('');
+
+        attachFallbackListeners();
+      }
+
+      function attachCardListeners() {
+        document.querySelectorAll('.modulo-card').forEach((card) => {
+          card.addEventListener('click', () => {
+            const videoId = card.getAttribute('data-video-id');
+            const title = card.querySelector('.modulo-content h3').textContent;
+            openYouTubePlayer(videoId, title);
+          });
         });
-      });
+      }
 
-      function openAulaPlayer(index, title) {
+      function attachFallbackListeners() {
+        document.querySelectorAll('.modulo-card').forEach((card) => {
+          card.addEventListener('click', () => {
+            const index = parseInt(card.getAttribute('data-drive-index'), 10);
+            const title = card.querySelector('.modulo-content h3').textContent;
+            openDrivePlayer(index, title);
+          });
+        });
+      }
+
+      function openYouTubePlayer(videoId, title) {
+        const url = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&modestbranding=1&showinfo=0&rel=0&controls=1&iv_load_policy=3&disablekb=1&fs=0`;
+        openPlayer(title, url);
+      }
+
+      function openDrivePlayer(index, title) {
+        const url = DRIVE_LINKS[index];
+        openPlayer(title, url);
+      }
+
+      function openPlayer(title, url) {
+        const videoPlayerSection = document.getElementById('video-player-section');
+        const mainIframe = document.getElementById('main-video-iframe');
+        const currentAulaTitle = document.getElementById('current-aula-title');
+        const modulosGrid = document.querySelector('.modulos-grid');
+        const sectionHeader = document.querySelector('.modulos-section .section-header');
+
         if (currentAulaTitle) currentAulaTitle.textContent = title;
-        if (mainIframe) mainIframe.src = DRIVE_LINKS[index];
+        if (mainIframe) mainIframe.src = url;
         if (modulosGrid) modulosGrid.style.display = 'none';
         if (sectionHeader) sectionHeader.style.display = 'none';
         videoPlayerSection.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
+      const backToModulos = document.getElementById('back-to-modulos');
       if (backToModulos) {
         backToModulos.addEventListener('click', () => {
+          const videoPlayerSection = document.getElementById('video-player-section');
+          const mainIframe = document.getElementById('main-video-iframe');
+          const modulosGrid = document.querySelector('.modulos-grid');
+          const sectionHeader = document.querySelector('.modulos-section .section-header');
+
           videoPlayerSection.classList.add('hidden');
           if (modulosGrid) modulosGrid.style.display = 'grid';
           if (sectionHeader) sectionHeader.style.display = 'block';
@@ -239,6 +252,14 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      loadVideos();
     })();
   </script>
 
