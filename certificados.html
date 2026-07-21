@@ -3,106 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Certificados - Velociclos PCM</title>
   <meta name="description" content="Veja os certificados e conquistas da Velociclos PCM. Certificações em Forex, Trading e Investimentos.">
+  <title>Certificados - Velociclos PCM</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  
-  <!-- Ícones e Fontes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Estilos locais -->
+
   <link rel="stylesheet" href="style.css">
-  <script src="js.js" defer></script>
-  
-  <!-- Favicon -->
   <link rel="shortcut icon" href="Design%20sem%20nome.ico" type="image/x-icon">
   <link rel="icon" href="Design%20sem%20nome.ico" type="image/x-icon">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  
-  <style>
-    /* Estilos específicos para grid de certificados */
-    .certificates-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-    
-    .cert-card {
-      background: var(--cor-card);
-      border: 1px solid var(--cor-borda-leve);
-      border-radius: var(--borda-raio);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .cert-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--cor-accent);
-      box-shadow: 0 12px 30px var(--cor-sombra);
-    }
-    
-    .cert-card-image {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .cert-card-info {
-      padding: 20px;
-      text-align: center;
-    }
-    
-    .cert-card-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--cor-texto-principal);
-      margin-bottom: 8px;
-    }
-    .certificates-title-icon {
-      color: var(--cor-accent);
-      margin-right: 15px;
-    }
-    
-    .cert-card-desc {
-      font-size: 0.9rem;
-      color: var(--cor-texto-secundario);
-      line-height: 1.5;
-    }
-    
-    @media (max-width: 768px) {
-      .certificates-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
 
+  <script src="js.js" defer></script>
+</head>
 <body>
   <a class="skip-link" href="#main-content">Ir para o conteúdo</a>
-  <!-- CABEÇALHO -->
   <header>
     <div class="container header-container">
-      <a href="index.html" class="logo">
-        <i class="fas fa-bolt"></i>
+      <a href="index.html" class="logo" aria-label="Velociclos - Página inicial">
+        <i class="fas fa-bolt" aria-hidden="true"></i>
         <span>Velociclos</span>
       </a>
-      <nav id="primary-navigation" class="nav-menu" aria-label="Menu de navegação">
+      <nav id="primary-navigation" class="nav-menu" aria-label="Menu de navegação principal">
         <a href="index.html" class="nav-link">Início</a>
         <a href="ea.html" class="nav-link">Expert Advisor</a>
         <a href="cursos.html" class="nav-link">Cursos</a>
-        <a href="metodo-fimathe.html" class="nav-link">Método Fimathe</a>
+        <a href="https://drive.google.com/drive/folders/1xUivez9Oxb8Itb9f4WOG6ylA4fCIOq6_?usp=drive_link" class="nav-link">Método Fimathe</a>
         <a href="artigos.html" class="nav-link">Artigos</a>
         <a href="certificados.html" class="nav-link active" aria-current="page">Certificados</a>
       </nav>
       <button
         class="mobile-menu-toggle"
         id="mobile-menu-toggle"
-        aria-label="Abrir menu do site"
+        aria-label="Abrir menu de navegação"
         aria-expanded="false"
         aria-controls="primary-navigation"
         type="button"
@@ -112,84 +49,75 @@
     </div>
   </header>
 
-  <!-- SEÇÃO CERTIFICADOS -->
   <main id="main-content" class="certificates-section">
     <div class="container">
       <div class="certificates-header">
-        <h2><i class="fas fa-award certificates-title-icon"></i>Certificados</h2>
+        <h2><i class="fas fa-award certificates-title-icon" aria-hidden="true"></i>Certificados</h2>
         <p>Conquistas do Igor Siqueira durante sua trajetória no Grupo Fimathe.</p>
       </div>
-      
-      <!-- Grid de Certificados - Visão direta -->
+
       <div class="certificates-grid">
-        <!-- Certificado 1: Fórmula do Ouro -->
-        <div class="cert-card">
-          <img src="certificados/Formula do Ouro.png" alt="Certificado Fórmula do Ouro" class="cert-card-image">
+        <article class="cert-card">
+          <img src="certificados/Formula do Ouro.png" alt="Certificado Fórmula do Ouro" class="cert-card-image" loading="lazy">
           <div class="cert-card-info">
             <h3 class="cert-card-title">Fórmula do Ouro</h3>
             <p class="cert-card-desc">Certificado de conclusão do curso Fórmula do Ouro</p>
           </div>
-        </div>
-        
-        <!-- Certificado 2: Laboratório Fimathe -->
-        <div class="cert-card">
-          <img src="certificados/Laboratorio Fimathe.png" alt="Certificado Laboratório Fimathe" class="cert-card-image">
+        </article>
+
+        <article class="cert-card">
+          <img src="certificados/Laboratorio Fimathe.png" alt="Certificado Laboratório Fimathe" class="cert-card-image" loading="lazy">
           <div class="cert-card-info">
             <h3 class="cert-card-title">Laboratório Fimathe</h3>
             <p class="cert-card-desc">Certificado do Laboratório Fimathe</p>
           </div>
-        </div>
-        
-        <!-- Certificado 3: MasterClass Fimathe -->
-        <div class="cert-card">
-          <img src="certificados/MasterClass Fimathe.png" alt="Certificado MasterClass Fimathe" class="cert-card-image">
+        </article>
+
+        <article class="cert-card">
+          <img src="certificados/MasterClass Fimathe.png" alt="Certificado MasterClass Fimathe" class="cert-card-image" loading="lazy">
           <div class="cert-card-info">
             <h3 class="cert-card-title">MasterClass Fimathe</h3>
             <p class="cert-card-desc">Certificado de participação na MasterClass</p>
           </div>
-        </div>
-        
-        <!-- Certificado 4: Método Fimathe -->
-        <div class="cert-card">
-          <img src="certificados/Metodo Fimathe.png" alt="Certificado Método Fimathe" class="cert-card-image">
+        </article>
+
+        <article class="cert-card">
+          <img src="certificados/Metodo Fimathe.png" alt="Certificado Método Fimathe" class="cert-card-image" loading="lazy">
           <div class="cert-card-info">
             <h3 class="cert-card-title">Método Fimathe</h3>
             <p class="cert-card-desc">Certificado de conclusão do Método Fimathe</p>
           </div>
-        </div>
-        
-        <!-- Certificado 5: Scalper -->
-        <div class="cert-card">
-          <img src="certificados/Scalper.png" alt="Certificado Scalper" class="cert-card-image">
+        </article>
+
+        <article class="cert-card">
+          <img src="certificados/Scalper.png" alt="Certificado Scalper" class="cert-card-image" loading="lazy">
           <div class="cert-card-info">
             <h3 class="cert-card-title">Scalper</h3>
             <p class="cert-card-desc">Certificado de conclusão do curso de Scalper</p>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </main>
 
-  <!-- RODAPÉ -->
   <footer class="footer">
     <div class="container">
       <p>&copy; 2026 Velociclos. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- MODAL DE CERTIFICADOS -->
   <div class="certificate-modal" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-modal-title">
     <div class="certificate-modal-overlay" id="certificate-modal-overlay"></div>
     <div class="certificate-modal-content">
       <button class="certificate-modal-close" id="certificate-modal-close" aria-label="Fechar certificado">
-        <i class="fas fa-times"></i>
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
       <div class="certificate-viewer" id="certificate-viewer">
         <!-- Certificado será exibido aqui -->
       </div>
     </div>
   </div>
-<!-- Vercel Analytics and Speed Insights -->
-<script type="module" src="vercel-analytics.js"></script>
+
+  <script type="module" src="vercel-analytics.js"></script>
 </body>
 </html>
