@@ -1,6 +1,8 @@
 (() => {
   'use strict';
 
+  console.log('[cursos.js] loaded');
+
   const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
   const API_BASE = 'https://www.googleapis.com/youtube/v3';
   const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
