@@ -4128,3 +4128,54 @@ header {
     grid-template-columns: 1fr;
   }
 }
+
+/* Skeleton loading para playlists */
+.playlists-loading {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.playlists-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.skeleton-card {
+  background: linear-gradient(90deg, var(--cor-card) 25%, var(--cor-card-elevado) 50%, var(--cor-card) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 16px;
+  height: 220px;
+  width: 100%;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+  .playlists-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .skeleton-card {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .playlists-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .skeleton-card {
+    height: 160px;
+  }
+}
