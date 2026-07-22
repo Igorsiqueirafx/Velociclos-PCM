@@ -3,6 +3,7 @@
 
   const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
   const API_BASE = 'https://www.googleapis.com/youtube/v3';
+  const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
   const GRID_SELECTOR = '.playlists-grid';
   const CARD_TEMPLATE = (playlist) => `
     <button class="playlist-card" data-playlist-id="${playlist.id}" type="button">
@@ -17,33 +18,7 @@
     </button>
   `;
 
-  const PLAYLIST_MAP = {
-    'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I': 'Fimathe Checkpoint | FOREX',
-    'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9': 'Primórdios da Fimathe',
-    'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh': 'Marcelão in London [2024]',
-    'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK': 'As melhores do XAUUSD',
-    'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ': 'FOREX SCALPER FIMATHE',
-    'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD': 'IMERSÃO MÉTODO FIMATHE',
-    'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5': 'ESTUDOS EM EUR/USD',
-    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
-    'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V': 'FIMATHE EM CRIPTOMOEDA',
-    'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb': 'TRADE PARA INICIANTES',
-    'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC': 'VLOG',
-    'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL': 'COLLABS',
-    'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw': 'MEU PORTFÓLIO NO DAYTRADE É A BOLETA',
-    'PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv': 'FOREX DO ZERO? COMECE AQUI',
-    'PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_': 'JORNADA AO OURO',
-    'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO': 'ESTUDOS EM USD/JPY',
-    'PLWhqc48nlRWJpFxTUEauhNUHtn5IusjLX': 'SETUP FOREX',
-    'PLWhqc48nlRWLI2vWKSAYFrQZojYgspGWk': 'PROGRAMANDO FOREX',
-    'PLWhqc48nlRWKTthiyPz1AFGdgGbkX4cKw': 'Robô Fimathe 2.0',
-    'PLWhqc48nlRWIXfB8VI95LOP5Mzvcyigbc': 'Mesa Proprietária Hantec',
-    'PLWhqc48nlRWIe1dcRPpZ49jGq6ntXSF83': 'React do Marcelão!',
-    'PLWhqc48nlRWLR2OlwR3y2BgyUvuaD2oLy': 'Negociações Automatizadas',
-    'PLWhqc48nlRWKyNufKr64xPOpKmzeXvGbh': 'ESTUDOS EM EUR/JPY'
-  };
-
-  const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
+  console.log('[cursos.js] iniciando...');
 
   const fetchJSON = async (url) => {
     const resp = await fetch(url);
@@ -151,7 +126,9 @@
 
   const fetchPlaylists = async () => {
     try {
+      console.log('[cursos.js] buscando playlists do canal...');
       const items = await fetchAllPlaylistsFromChannel();
+      console.log('[cursos.js] playlists encontradas:', items.length);
       return items.map(item => ({
         id: item.id,
         title: item.snippet.title,
@@ -160,30 +137,26 @@
         videoCount: item.contentDetails?.itemCount || 0
       }));
     } catch (e) {
-      console.warn('Falling back to PLAYLIST_MAP:', e);
-      const ids = Object.keys(PLAYLIST_MAP).join(',');
-      const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&id=${ids}&maxResults=${Object.keys(PLAYLIST_MAP).length}&part=snippet,contentDetails`;
-      const data = await fetchJSON(url);
-      return (data.items || []).map(item => ({
-        id: item.id,
-        title: item.snippet.title,
-        description: item.snippet.description || '',
-        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-        videoCount: item.contentDetails?.itemCount || 0
-      }));
+      console.warn('[cursos.js] fallback PLAYLIST_MAP:', e);
+      return [];
     }
   };
 
   const initDynamicPlaylists = async () => {
+    console.log('[cursos.js] initDynamicPlaylists iniciou');
     const grid = document.querySelector(GRID_SELECTOR);
-    if (!grid) return;
+    if (!grid) {
+      console.warn('[cursos.js] grid não encontrado');
+      return;
+    }
 
     let playlists = [];
     try {
       playlists = await fetchPlaylists();
     } catch (e) {
-      console.warn('Falling back to static playlists:', e);
+      console.warn('[cursos.js] erro ao buscar playlists:', e);
     }
+    console.log('[cursos.js] playlists para renderizar:', playlists.length);
 
     if (playlists.length > 0) {
       const staticCards = grid.querySelectorAll('.playlist-card');
@@ -199,10 +172,12 @@
         });
         grid.appendChild(card);
       });
+      console.log('[cursos.js] renderização concluída');
     }
   };
 
   const init = () => {
+    console.log('[cursos.js] init chamado, readyState:', document.readyState);
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initDynamicPlaylists);
     } else {
@@ -210,5 +185,9 @@
     }
   };
 
-  init();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
