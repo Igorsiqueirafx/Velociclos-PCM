@@ -1,10 +1,11 @@
 (() => {
   'use strict';
 
-  const API_BASE = typeof window !== 'undefined' && window.__API_BASE__ ? window.__API_BASE__ : 'http://localhost:3001';
+  const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
+  const API_BASE = 'https://www.googleapis.com/youtube/v3';
   const GRID_SELECTOR = '.playlists-grid';
   const CARD_TEMPLATE = (playlist) => `
-    <a href="https://www.youtube.com/playlist?list=${playlist.id}" target="_blank" rel="noopener noreferrer" class="playlist-card" data-playlist-id="${playlist.id}">
+    <button class="playlist-card" data-playlist-id="${playlist.id}" type="button">
       <div class="playlist-thumb">
         <img src="${playlist.thumbnail}" alt="${playlist.title}" loading="lazy">
         <span class="playlist-play-icon"><i class="fas fa-play" aria-hidden="true"></i></span>
@@ -13,13 +14,47 @@
         <h3>${playlist.title}</h3>
         <span class="playlist-video-count"><i class="fas fa-video" aria-hidden="true"></i> ${playlist.videoCount || 0} vídeos</span>
       </div>
-    </a>
+    </button>
   `;
+
+  const PLAYLIST_MAP = {
+    'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I': 'Fimathe Checkpoint | FOREX',
+    'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9': 'Primórdios da Fimathe',
+    'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh': 'Marcelão in London [2024]',
+    'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK': 'As melhores do XAUUSD',
+    'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ': 'FOREX SCALPER FIMATHE',
+    'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD': 'IMERSÃO MÉTODO FIMATHE',
+    'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5': 'ESTUDOS EM EUR/USD',
+    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
+    'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V': 'FIMATHE EM CRIPTOMOEDA',
+    'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb': 'TRADE PARA INICIANTES',
+    'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC': 'VLOG',
+    'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL': 'COLLABS',
+    'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw': 'MEU PORTFÓLIO NO DAYTRADE É A BOLETA',
+    'PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv': 'FOREX DO ZERO? COMECE AQUI',
+    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
+    'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO': 'ESTUDOS EM USD/JPY',
+    'PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_': 'JORNADA AO OURO'
+  };
 
   const fetchJSON = async (url) => {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     return resp.json();
+  };
+
+  const fetchPlaylistItems = async (playlistId) => {
+    const url = `${API_BASE}/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=${encodeURIComponent(playlistId)}&maxResults=50&part=snippet,contentDetails`;
+    const data = await fetchJSON(url);
+    return (data.items || [])
+      .filter(item => item.contentDetails?.videoId)
+      .map(item => ({
+        videoId: item.contentDetails.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description || '',
+        thumbnail: item.snippet.thumbnails?.medium?.url || `https://img.youtube.com/vi/${item.contentDetails.videoId}/mqdefault.jpg`,
+        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
+      }));
   };
 
   const buildVideoItem = (video) => {
@@ -54,9 +89,7 @@
 
     let videos = [];
     try {
-      const data = await fetchJSON(`${API_BASE}/api/youtube/playlist/${encodeURIComponent(playlistId)}`);
-      if (data.error) throw new Error(data.error);
-      videos = data;
+      videos = await fetchPlaylistItems(playlistId);
     } catch (e) {
       playerContainer.innerHTML = `<p style="color:#fff;padding:20px;">Erro ao carregar vídeos: ${e.message}</p>`;
     }
@@ -95,14 +128,26 @@
     closeBtn?.focus();
   };
 
+  const fetchPlaylists = async () => {
+    const ids = Object.keys(PLAYLIST_MAP).join(',');
+    const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&id=${ids}&maxResults=${Object.keys(PLAYLIST_MAP).length}&part=snippet,contentDetails`;
+    const data = await fetchJSON(url);
+    return (data.items || []).map(item => ({
+      id: item.id,
+      title: item.snippet.title,
+      description: item.snippet.description || '',
+      thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+      videoCount: item.contentDetails?.itemCount || 0
+    }));
+  };
+
   const initDynamicPlaylists = async () => {
     const grid = document.querySelector(GRID_SELECTOR);
     if (!grid) return;
 
     let playlists = [];
     try {
-      const data = await fetchJSON(`${API_BASE}/api/courses`);
-      if (Array.isArray(data)) playlists = data;
+      playlists = await fetchPlaylists();
     } catch (e) {
       console.warn('Falling back to static playlists:', e);
     }
@@ -111,7 +156,7 @@
       const staticCards = grid.querySelectorAll('.playlist-card');
       staticCards.forEach((card) => {
         const href = card.getAttribute('href') || '';
-        if (href.includes('youtube.com/playlist')) {
+        if (href.includes('youtube.com/playlist') || href === '#') {
           card.remove();
         }
       });
