@@ -1,8 +1,6 @@
 (() => {
   'use strict';
 
-  console.log('[cursos.js] loaded');
-
   const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
   const API_BASE = 'https://www.googleapis.com/youtube/v3';
   const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
@@ -19,6 +17,15 @@
       </div>
     </button>
   `;
+
+  const once = (fn) => {
+    let called = false;
+    return async (...args) => {
+      if (called) return;
+      called = true;
+      await fn(...args);
+    };
+  };
 
   const fetchJSON = async (url) => {
     const resp = await fetch(url);
@@ -125,35 +132,26 @@
   };
 
   const fetchPlaylists = async () => {
-    try {
-      const items = await fetchAllPlaylistsFromChannel();
-      return items.map(item => ({
-        id: item.id,
-        title: item.snippet.title,
-        description: item.snippet.description || '',
-        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-        videoCount: item.contentDetails?.itemCount || 0
-      }));
-    } catch (e) {
-      console.warn('Falling back to PLAYLIST_MAP:', e);
-      return [];
-    }
+    const items = await fetchAllPlaylistsFromChannel();
+    return items.map(item => ({
+      id: item.id,
+      title: item.snippet.title,
+      description: item.snippet.description || '',
+      thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+      videoCount: item.contentDetails?.itemCount || 0
+    }));
   };
 
-  const initDynamicPlaylists = async () => {
+  const render = once(async () => {
     const grid = document.querySelector(GRID_SELECTOR);
-    if (!grid) {
-      console.warn('[cursos.js] grid não encontrado');
-      return;
-    }
+    if (!grid) return;
 
     let playlists = [];
     try {
       playlists = await fetchPlaylists();
     } catch (e) {
-      console.warn('[cursos.js] erro ao buscar playlists:', e);
+      console.warn('Falling back to static playlists:', e);
     }
-    console.log('[cursos.js] playlists para renderizar:', playlists.length);
 
     if (playlists.length > 0) {
       const staticCards = grid.querySelectorAll('.playlist-card');
@@ -170,19 +168,15 @@
         grid.appendChild(card);
       });
     }
-  };
+  });
 
   const init = () => {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initDynamicPlaylists);
+      document.addEventListener('DOMContentLoaded', render);
     } else {
-      initDynamicPlaylists();
+      render();
     }
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  init();
 })();
