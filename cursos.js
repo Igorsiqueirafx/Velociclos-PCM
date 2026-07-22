@@ -18,8 +18,6 @@
     </button>
   `;
 
-  console.log('[cursos.js] iniciando...');
-
   const fetchJSON = async (url) => {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -126,9 +124,7 @@
 
   const fetchPlaylists = async () => {
     try {
-      console.log('[cursos.js] buscando playlists do canal...');
       const items = await fetchAllPlaylistsFromChannel();
-      console.log('[cursos.js] playlists encontradas:', items.length);
       return items.map(item => ({
         id: item.id,
         title: item.snippet.title,
@@ -137,13 +133,12 @@
         videoCount: item.contentDetails?.itemCount || 0
       }));
     } catch (e) {
-      console.warn('[cursos.js] fallback PLAYLIST_MAP:', e);
+      console.warn('Falling back to PLAYLIST_MAP:', e);
       return [];
     }
   };
 
   const initDynamicPlaylists = async () => {
-    console.log('[cursos.js] initDynamicPlaylists iniciou');
     const grid = document.querySelector(GRID_SELECTOR);
     if (!grid) {
       console.warn('[cursos.js] grid não encontrado');
@@ -172,12 +167,10 @@
         });
         grid.appendChild(card);
       });
-      console.log('[cursos.js] renderização concluída');
     }
   };
 
   const init = () => {
-    console.log('[cursos.js] init chamado, readyState:', document.readyState);
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initDynamicPlaylists);
     } else {
