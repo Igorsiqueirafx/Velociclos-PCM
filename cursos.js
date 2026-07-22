@@ -32,15 +32,36 @@
     'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL': 'COLLABS',
     'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw': 'MEU PORTFÓLIO NO DAYTRADE É A BOLETA',
     'PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv': 'FOREX DO ZERO? COMECE AQUI',
-    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
+    'PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_': 'JORNADA AO OURO',
     'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO': 'ESTUDOS EM USD/JPY',
-    'PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_': 'JORNADA AO OURO'
+    'PLWhqc48nlRWJpFxTUEauhNUHtn5IusjLX': 'SETUP FOREX',
+    'PLWhqc48nlRWLI2vWKSAYFrQZojYgspGWk': 'PROGRAMANDO FOREX',
+    'PLWhqc48nlRWKTthiyPz1AFGdgGbkX4cKw': 'Robô Fimathe 2.0',
+    'PLWhqc48nlRWIXfB8VI95LOP5Mzvcyigbc': 'Mesa Proprietária Hantec',
+    'PLWhqc48nlRWIe1dcRPpZ49jGq6ntXSF83': 'React do Marcelão!',
+    'PLWhqc48nlRWLR2OlwR3y2BgyUvuaD2oLy': 'Negociações Automatizadas',
+    'PLWhqc48nlRWKyNufKr64xPOpKmzeXvGbh': 'ESTUDOS EM EUR/JPY'
   };
+
+  const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
 
   const fetchJSON = async (url) => {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     return resp.json();
+  };
+
+  const fetchAllPlaylistsFromChannel = async () => {
+    const playlists = [];
+    let nextPageToken = '';
+    while (true) {
+      const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&maxResults=50&part=snippet,contentDetails&pageToken=${nextPageToken}`;
+      const data = await fetchJSON(url);
+      playlists.push(...(data.items || []));
+      nextPageToken = data.nextPageToken || '';
+      if (!nextPageToken) break;
+    }
+    return playlists;
   };
 
   const fetchPlaylistItems = async (playlistId) => {
@@ -129,16 +150,28 @@
   };
 
   const fetchPlaylists = async () => {
-    const ids = Object.keys(PLAYLIST_MAP).join(',');
-    const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&id=${ids}&maxResults=${Object.keys(PLAYLIST_MAP).length}&part=snippet,contentDetails`;
-    const data = await fetchJSON(url);
-    return (data.items || []).map(item => ({
-      id: item.id,
-      title: item.snippet.title,
-      description: item.snippet.description || '',
-      thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-      videoCount: item.contentDetails?.itemCount || 0
-    }));
+    try {
+      const items = await fetchAllPlaylistsFromChannel();
+      return items.map(item => ({
+        id: item.id,
+        title: item.snippet.title,
+        description: item.snippet.description || '',
+        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+        videoCount: item.contentDetails?.itemCount || 0
+      }));
+    } catch (e) {
+      console.warn('Falling back to PLAYLIST_MAP:', e);
+      const ids = Object.keys(PLAYLIST_MAP).join(',');
+      const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&id=${ids}&maxResults=${Object.keys(PLAYLIST_MAP).length}&part=snippet,contentDetails`;
+      const data = await fetchJSON(url);
+      return (data.items || []).map(item => ({
+        id: item.id,
+        title: item.snippet.title,
+        description: item.snippet.description || '',
+        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+        videoCount: item.contentDetails?.itemCount || 0
+      }));
+    }
   };
 
   const initDynamicPlaylists = async () => {
@@ -154,12 +187,7 @@
 
     if (playlists.length > 0) {
       const staticCards = grid.querySelectorAll('.playlist-card');
-      staticCards.forEach((card) => {
-        const href = card.getAttribute('href') || '';
-        if (href.includes('youtube.com/playlist') || href === '#') {
-          card.remove();
-        }
-      });
+      staticCards.forEach((card) => card.remove());
 
       playlists.forEach((pl) => {
         const wrapper = document.createElement('div');
