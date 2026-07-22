@@ -146,6 +146,8 @@
     const grid = document.querySelector(GRID_SELECTOR);
     if (!grid) return;
 
+    grid.innerHTML = '';
+
     let playlists = [];
     try {
       playlists = await fetchPlaylists();
@@ -154,9 +156,6 @@
     }
 
     if (playlists.length > 0) {
-      const staticCards = grid.querySelectorAll('.playlist-card');
-      staticCards.forEach((card) => card.remove());
-
       playlists.forEach((pl) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = CARD_TEMPLATE(pl);
