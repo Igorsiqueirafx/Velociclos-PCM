@@ -31,7 +31,8 @@ export default function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Velociclos PCM - Admin</h1>
+        <h1>Velociclos PCM</h1>
+        <p style={{ color: '#6b7280', marginBottom: '1.5rem', textAlign: 'center' }}>Painel Administrativo</p>
         <form onSubmit={handleLogin}>
           <input
             type="email"
@@ -50,6 +51,9 @@ export default function LoginPage() {
           {error && <p className="error">{error}</p>}
           <button type="submit">Entrar</button>
         </form>
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <a href="https://velociclos.com.br" style={{ color: '#3b82f6', fontSize: '0.875rem' }}>← Voltar ao site principal</a>
+        </p>
       </div>
     </div>
   )

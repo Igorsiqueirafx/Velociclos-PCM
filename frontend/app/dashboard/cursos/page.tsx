@@ -46,6 +46,7 @@ export default function CursosPage() {
           <li><a href="/dashboard/cursos">Cursos</a></li>
           <li><a href="/dashboard/artigos">Artigos</a></li>
           <li><a href="/dashboard/monitoramento">Monitoramento</a></li>
+          <li><a href="/logout">Logout</a></li>
         </ul>
       </nav>
       <main className="main-content">
