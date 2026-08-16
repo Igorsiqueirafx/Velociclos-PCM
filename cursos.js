@@ -1,8 +1,7 @@
 (() => {
   'use strict';
 
-  const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
-  const API_BASE = 'https://www.googleapis.com/youtube/v3';
+  const API_BASE = '';
   const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
   const GRID_SELECTOR = '.playlists-grid';
   const CARD_TEMPLATE = (playlist) => `
@@ -33,31 +32,34 @@
     return resp.json();
   };
 
+  const resolveBackendBase = () => {
+    const meta = document.querySelector('meta[name="api-base"]');
+    if (meta && meta.content) return meta.content.replace(/\/$/, '');
+    const origin = window.location.origin;
+    return origin;
+  };
+
+  const backendPlaylistsUrl = () => `${resolveBackendBase()}/api/youtube/playlists`;
+  const backendPlaylistItemsUrl = (playlistId) => `${resolveBackendBase()}/api/youtube/playlist/${playlistId}`;
+
   const fetchAllPlaylistsFromChannel = async () => {
-    const playlists = [];
-    let nextPageToken = '';
-    while (true) {
-      const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&maxResults=50&part=snippet,contentDetails&pageToken=${nextPageToken}`;
-      const data = await fetchJSON(url);
-      playlists.push(...(data.items || []));
-      nextPageToken = data.nextPageToken || '';
-      if (!nextPageToken) break;
-    }
-    return playlists;
+    const data = await fetchJSON(backendPlaylistsUrl());
+    return data.items || data || [];
   };
 
   const fetchPlaylistItems = async (playlistId) => {
-    const url = `${API_BASE}/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=${encodeURIComponent(playlistId)}&maxResults=50&part=snippet,contentDetails`;
-    const data = await fetchJSON(url);
-    return (data.items || [])
-      .filter(item => item.contentDetails?.videoId)
-      .map(item => ({
-        videoId: item.contentDetails.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description || '',
-        thumbnail: item.snippet.thumbnails?.medium?.url || `https://img.youtube.com/vi/${item.contentDetails.videoId}/mqdefault.jpg`,
-        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
-      }));
+    const data = await fetchJSON(backendPlaylistItemsUrl(playlistId));
+    return (data.items || []).map(item => {
+      const contentDetails = item.contentDetails || {};
+      const snippet = item.snippet || {};
+      return {
+        videoId: contentDetails.videoId || item.id || '',
+        title: snippet.title || 'Sem título',
+        description: snippet.description || '',
+        thumbnail: snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url || `https://img.youtube.com/vi/${contentDetails.videoId || item.id}/mqdefault.jpg`,
+        publishedAt: contentDetails.videoPublishedAt || snippet.publishedAt || ''
+      };
+    });
   };
 
   const buildVideoItem = (video) => {
@@ -135,10 +137,10 @@
     const items = await fetchAllPlaylistsFromChannel();
     return items.map(item => ({
       id: item.id,
-      title: item.snippet.title,
-      description: item.snippet.description || '',
-      thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-      videoCount: item.contentDetails?.itemCount || 0
+      title: item.title,
+      description: item.description || '',
+      thumbnail: item.thumbnail || '',
+      videoCount: item.videoCount || 0
     }));
   };
 
