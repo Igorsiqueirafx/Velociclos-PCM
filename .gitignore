@@ -1,6 +1,5 @@
-
 .env
 .vercel
-backend/
 node_modules/
-.env*
+dist/
+frontend/
