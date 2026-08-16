@@ -26,12 +26,6 @@
     };
   };
 
-  const fetchJSON = async (url) => {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    return resp.json();
-  };
-
   const resolveBackendBase = () => {
     const meta = document.querySelector('meta[name="api-base"]');
     if (meta && meta.content) return meta.content.replace(/\/$/, '');
@@ -39,27 +33,48 @@
     return origin;
   };
 
-  const backendPlaylistsUrl = () => `${resolveBackendBase()}/api/youtube/playlists`;
-  const backendPlaylistItemsUrl = (playlistId) => `${resolveBackendBase()}/api/youtube/playlist/${playlistId}`;
+  const api = (path) => `${resolveBackendBase()}${path}`;
+  const backendPlaylistsUrl = () => api('/api/youtube/playlists');
+  const backendPlaylistItemsUrl = (playlistId) => api(`/api/youtube/playlist/${playlistId}`);
+
+  const fetchJSON = async (url, timeoutMs = 10000) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const resp = await fetch(url, { signal: controller.signal });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return await resp.json();
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        throw new Error('Tempo esgotado ao conectar ao backend');
+      }
+      throw e;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  };
+
+  const extractData = (resp) => {
+    if (resp && typeof resp === 'object' && 'success' in resp) {
+      if (!resp.success) {
+        const err = resp.error || {};
+        throw new Error(err.message || 'Erro na API');
+      }
+      return resp.data;
+    }
+    return resp;
+  };
 
   const fetchAllPlaylistsFromChannel = async () => {
-    const data = await fetchJSON(backendPlaylistsUrl());
-    return data.items || data || [];
+    const raw = await fetchJSON(backendPlaylistsUrl());
+    const data = extractData(raw);
+    return Array.isArray(data) ? data : [];
   };
 
   const fetchPlaylistItems = async (playlistId) => {
-    const data = await fetchJSON(backendPlaylistItemsUrl(playlistId));
-    return (data.items || []).map(item => {
-      const contentDetails = item.contentDetails || {};
-      const snippet = item.snippet || {};
-      return {
-        videoId: contentDetails.videoId || item.id || '',
-        title: snippet.title || 'Sem título',
-        description: snippet.description || '',
-        thumbnail: snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url || `https://img.youtube.com/vi/${contentDetails.videoId || item.id}/mqdefault.jpg`,
-        publishedAt: contentDetails.videoPublishedAt || snippet.publishedAt || ''
-      };
-    });
+    const raw = await fetchJSON(backendPlaylistItemsUrl(playlistId));
+    const data = extractData(raw);
+    return Array.isArray(data) ? data : [];
   };
 
   const buildVideoItem = (video) => {
@@ -151,9 +166,11 @@
     grid.innerHTML = '';
 
     let playlists = [];
+    let backendError = null;
     try {
       playlists = await fetchPlaylists();
     } catch (e) {
+      backendError = e;
       console.warn('Falling back to static playlists:', e);
     }
 
@@ -168,6 +185,8 @@
         });
         grid.appendChild(card);
       });
+    } else if (backendError) {
+      grid.innerHTML = `<p class="error-message">Não foi possível carregar os cursos. Tente novamente mais tarde.</p>`;
     }
   });
 
