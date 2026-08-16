@@ -4,17 +4,16 @@
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
+      "root": "frontend",
       "config": {
-        "distDir": "frontend/dist",
-        "installCommand": "cd frontend && npm install",
-        "buildCommand": "cd frontend && npm run build"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/frontend/dist/index.html"
+      "dest": "/index.html"
     }
   ]
 }
