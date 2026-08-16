@@ -1,0 +1,7 @@
+﻿import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { LoadingSpinner, ErrorMessage } from '@/components/ui/LoadingStates';
+import { useHealth, useVersion, useMetrics } from '@/hooks/useApi';
+import { Activity, Database } from 'lucide-react';
+
+export function MonitoringPage() {
