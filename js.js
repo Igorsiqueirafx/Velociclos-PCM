@@ -11,16 +11,8 @@
   // ============================================
   // CONFIGURATION
   // ============================================
-  const resolveApiBase = () => {
-    const meta = document.querySelector('meta[name="api-base"]');
-    if (meta && meta.content) return meta.content.replace(/\/$/, '');
-    return window.location.origin;
-  };
-
-  const api = (path) => `${resolveApiBase()}${path}`;
-
   const CONFIG = {
-    YOUTUBE_API: 'https://www.youtube.com/iframe_api',
+    YOUTUBE_API: 'https://www.youtube.com/iframe_api?key=AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0',
     VIMEO_API: 'https://player.vimeo.com/api/player.js',
     TRANSITION_MS: 400,
     DESKTOP_BREAKPOINT: 768,

@@ -540,11 +540,10 @@ header {
   font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
-  color: #fff;
+  color: var(--cor-texto-principal);
   margin: 0;
   letter-spacing: -0.02em;
   overflow-wrap: break-word;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 .text-break {
@@ -557,8 +556,7 @@ header {
 
 .hero-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  color: var(--cor-texto-secundario);
 }
 
 .hero-cta {
@@ -593,9 +591,8 @@ header {
 
 .stat-label {
   font-size: var(--font-size-fluid-sm);
-  color: #fff;
+  color: var(--cor-texto-terciario);
   max-width: 120px;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
 }
 
 .hero-visual {
@@ -1182,9 +1179,8 @@ header {
 .btn-primary {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #fff 0%, var(--cor-accent-light) 100%);
-  color: #000;
-  font-weight: 700;
+  background: linear-gradient(135deg, var(--cor-accent) 0%, var(--cor-accent-dark) 100%);
+  color: var(--cor-fundo);
   box-shadow: 0 4px 14px var(--cor-sombra);
   border-bottom: 2px solid rgba(0,0,0,0.2);
 }
@@ -4130,56 +4126,5 @@ header {
 @media (max-width: 480px) {
   .aulas-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Skeleton loading para playlists */
-.playlists-loading {
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
-}
-
-.playlists-skeleton {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px;
-}
-
-.skeleton-card {
-  background: linear-gradient(90deg, var(--cor-card) 25%, var(--cor-card-elevado) 50%, var(--cor-card) 75%);
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-  border-radius: 16px;
-  height: 220px;
-  width: 100%;
-}
-
-@keyframes skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-@media (max-width: 768px) {
-  .playlists-skeleton {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  
-  .skeleton-card {
-    height: 180px;
-  }
-}
-
-@media (max-width: 480px) {
-  .playlists-skeleton {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  .skeleton-card {
-    height: 160px;
   }
 }

@@ -1,8 +1,8 @@
 (() => {
   'use strict';
 
-  const API_BASE = '';
-  const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
+  const YOUTUBE_API_KEY = 'AIzaSyCciJjxi6ULJH2X0L4G4g3wdbYkI_H-kv0';
+  const API_BASE = 'https://www.googleapis.com/youtube/v3';
   const GRID_SELECTOR = '.playlists-grid';
   const CARD_TEMPLATE = (playlist) => `
     <button class="playlist-card" data-playlist-id="${playlist.id}" type="button">
@@ -17,64 +17,44 @@
     </button>
   `;
 
-  const once = (fn) => {
-    let called = false;
-    return async (...args) => {
-      if (called) return;
-      called = true;
-      await fn(...args);
-    };
+  const PLAYLIST_MAP = {
+    'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I': 'Fimathe Checkpoint | FOREX',
+    'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9': 'Primórdios da Fimathe',
+    'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh': 'Marcelão in London [2024]',
+    'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK': 'As melhores do XAUUSD',
+    'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ': 'FOREX SCALPER FIMATHE',
+    'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD': 'IMERSÃO MÉTODO FIMATHE',
+    'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5': 'ESTUDOS EM EUR/USD',
+    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
+    'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V': 'FIMATHE EM CRIPTOMOEDA',
+    'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb': 'TRADE PARA INICIANTES',
+    'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC': 'VLOG',
+    'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL': 'COLLABS',
+    'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw': 'MEU PORTFÓLIO NO DAYTRADE É A BOLETA',
+    'PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv': 'FOREX DO ZERO? COMECE AQUI',
+    'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
+    'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO': 'ESTUDOS EM USD/JPY',
+    'PLWhqc48nlRWLfbiLKYI63BqG3uZ5lmIA_': 'JORNADA AO OURO'
   };
 
-  const resolveBackendBase = () => {
-    const meta = document.querySelector('meta[name="api-base"]');
-    if (meta && meta.content) return meta.content.replace(/\/$/, '');
-    const origin = window.location.origin;
-    return origin;
-  };
-
-  const api = (path) => `${resolveBackendBase()}${path}`;
-  const backendPlaylistsUrl = () => api('/api/youtube/playlists');
-  const backendPlaylistItemsUrl = (playlistId) => api(`/api/youtube/playlist/${playlistId}`);
-
-  const fetchJSON = async (url, timeoutMs = 10000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      const resp = await fetch(url, { signal: controller.signal });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      return await resp.json();
-    } catch (e) {
-      if (e.name === 'AbortError') {
-        throw new Error('Tempo esgotado ao conectar ao backend');
-      }
-      throw e;
-    } finally {
-      clearTimeout(timeoutId);
-    }
-  };
-
-  const extractData = (resp) => {
-    if (resp && typeof resp === 'object' && 'success' in resp) {
-      if (!resp.success) {
-        const err = resp.error || {};
-        throw new Error(err.message || 'Erro na API');
-      }
-      return resp.data;
-    }
-    return resp;
-  };
-
-  const fetchAllPlaylistsFromChannel = async () => {
-    const raw = await fetchJSON(backendPlaylistsUrl());
-    const data = extractData(raw);
-    return Array.isArray(data) ? data : [];
+  const fetchJSON = async (url) => {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    return resp.json();
   };
 
   const fetchPlaylistItems = async (playlistId) => {
-    const raw = await fetchJSON(backendPlaylistItemsUrl(playlistId));
-    const data = extractData(raw);
-    return Array.isArray(data) ? data : [];
+    const url = `${API_BASE}/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=${encodeURIComponent(playlistId)}&maxResults=50&part=snippet,contentDetails`;
+    const data = await fetchJSON(url);
+    return (data.items || [])
+      .filter(item => item.contentDetails?.videoId)
+      .map(item => ({
+        videoId: item.contentDetails.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description || '',
+        thumbnail: item.snippet.thumbnails?.medium?.url || `https://img.youtube.com/vi/${item.contentDetails.videoId}/mqdefault.jpg`,
+        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
+      }));
   };
 
   const buildVideoItem = (video) => {
@@ -149,32 +129,38 @@
   };
 
   const fetchPlaylists = async () => {
-    const items = await fetchAllPlaylistsFromChannel();
-    return items.map(item => ({
+    const ids = Object.keys(PLAYLIST_MAP).join(',');
+    const url = `${API_BASE}/playlists?key=${YOUTUBE_API_KEY}&id=${ids}&maxResults=${Object.keys(PLAYLIST_MAP).length}&part=snippet,contentDetails`;
+    const data = await fetchJSON(url);
+    return (data.items || []).map(item => ({
       id: item.id,
-      title: item.title,
-      description: item.description || '',
-      thumbnail: item.thumbnail || '',
-      videoCount: item.videoCount || 0
+      title: item.snippet.title,
+      description: item.snippet.description || '',
+      thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+      videoCount: item.contentDetails?.itemCount || 0
     }));
   };
 
-  const render = once(async () => {
+  const initDynamicPlaylists = async () => {
     const grid = document.querySelector(GRID_SELECTOR);
     if (!grid) return;
 
-    grid.innerHTML = '';
-
     let playlists = [];
-    let backendError = null;
     try {
       playlists = await fetchPlaylists();
     } catch (e) {
-      backendError = e;
       console.warn('Falling back to static playlists:', e);
     }
 
     if (playlists.length > 0) {
+      const staticCards = grid.querySelectorAll('.playlist-card');
+      staticCards.forEach((card) => {
+        const href = card.getAttribute('href') || '';
+        if (href.includes('youtube.com/playlist') || href === '#') {
+          card.remove();
+        }
+      });
+
       playlists.forEach((pl) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = CARD_TEMPLATE(pl);
@@ -185,16 +171,14 @@
         });
         grid.appendChild(card);
       });
-    } else if (backendError) {
-      grid.innerHTML = `<p class="error-message">Não foi possível carregar os cursos. Tente novamente mais tarde.</p>`;
     }
-  });
+  };
 
   const init = () => {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', render);
+      document.addEventListener('DOMContentLoaded', initDynamicPlaylists);
     } else {
-      render();
+      initDynamicPlaylists();
     }
   };
 
