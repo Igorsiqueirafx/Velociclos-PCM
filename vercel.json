@@ -1,10 +1,10 @@
 {
   "version": 2,
+  "outputDirectory": "frontend/dist",
   "builds": [
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
-      "root": "frontend",
       "config": {
         "distDir": "dist"
       }
