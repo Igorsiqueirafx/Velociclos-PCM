@@ -1,5 +1,3 @@
-const API_BASE = 'https://www.googleapis.com/youtube/v3'
-
 export interface YouTubePlaylist {
   id: string
   title: string
@@ -16,88 +14,94 @@ export interface YouTubeVideo {
   publishedAt: string
 }
 
-const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || ''
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
 
-export async function fetchPlaylists(playlistIds: string[]): Promise<YouTubePlaylist[]> {
-  if (!API_KEY) {
-    console.warn('YouTube API key not configured')
-    return []
-  }
+async function api<T>(path: string): Promise<T> {
+  const res = await fetch(`${BACKEND_URL}${path}`, {
+    next: { revalidate: 3600 },
+  })
+  if (!res.ok) throw new Error(`API error: ${res.status}`)
+  return res.json()
+}
 
-  const ids = playlistIds.join(',')
-  const url = `${API_BASE}/playlists?key=${API_KEY}&id=${ids}&maxResults=${playlistIds.length}&part=snippet,contentDetails`
-
+export async function fetchPlaylists(): Promise<YouTubePlaylist[]> {
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    if (!res.ok) throw new Error(`YouTube API error: ${res.status}`)
-    const data = await res.json()
-
-    return (data.items || []).map((item: any) => ({
-      id: item.id,
-      title: item.snippet?.title || 'Sem título',
-      description: item.snippet?.description || '',
-      thumbnail:
-        item.snippet?.thumbnails?.medium?.url ||
-        item.snippet?.thumbnails?.default?.url ||
-        '',
-      videoCount: item.contentDetails?.itemCount || 0,
-    }))
+    return await api<YouTubePlaylist[]>('/api/playlists')
   } catch (error) {
     console.error('Failed to fetch playlists:', error)
-    return []
+    return STATIC_PLAYLISTS
   }
 }
 
 export async function fetchPlaylistItems(playlistId: string): Promise<YouTubeVideo[]> {
-  if (!API_KEY) {
-    console.warn('YouTube API key not configured')
-    return []
-  }
-
-  const url = `${API_BASE}/playlistItems?key=${API_KEY}&playlistId=${encodeURIComponent(playlistId)}&maxResults=50&part=snippet,contentDetails`
-
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    if (!res.ok) throw new Error(`YouTube API error: ${res.status}`)
-    const data = await res.json()
-
-    return (data.items || [])
-      .filter((item: any) => item.contentDetails?.videoId)
-      .map((item: any) => ({
-        videoId: item.contentDetails.videoId,
-        title: item.snippet?.title || 'Sem título',
-        description: item.snippet?.description || '',
-        thumbnail:
-          item.snippet?.thumbnails?.medium?.url ||
-          `https://img.youtube.com/vi/${item.contentDetails.videoId}/mqdefault.jpg`,
-        publishedAt: item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt,
-      }))
+    return await api<YouTubeVideo[]>(`/api/playlist/${playlistId}/items`)
   } catch (error) {
     console.error(`Failed to fetch playlist items for ${playlistId}:`, error)
     return []
   }
 }
 
-const PLAYLIST_IDS = [
-  'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I', // Fimathe Checkpoint
-  'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9', // Primórdios da Fimathe
-  'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh', // Marcelão in London
-  'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK', // As melhores do XAUUSD
-  'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ', // FOREX SCALPER FIMATHE
-  'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD', // IMERSÃO MÉTODO FIMATHE
-  'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5', // ESTUDOS EM EUR/USD
-  'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV', // FIMATHE NO OURO
-  'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V', // FIMATHE EM CRIPTOMOEDA
-  'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb', // TRADE PARA INICIANTES
-  'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC', // VLOG
-  'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL', // COLLABS
-  'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw', // MEU PORTFÓLIO NO DAYTRADE
-  'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO', // FOREX DO ZERO
+const STATIC_PLAYLISTS: YouTubePlaylist[] = [
+  {
+    id: 'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I',
+    title: 'Fimathe Checkpoint | FOREX',
+    description: 'Fimathe Checkpoint é o momento em que o Marcelão revisa tudo o que foi estudado e confere as movimentações do mercado.',
+    thumbnail: 'https://img.youtube.com/vi/C77_DevBR8w/maxresdefault.jpg',
+    videoCount: 15,
+  },
+  {
+    id: 'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9',
+    title: 'Primórdios da Fimathe',
+    description: 'Série que revela a jornada de criação da Fimathe, método revolucionário no Forex.',
+    thumbnail: 'https://img.youtube.com/vi/rl_UgvfXdfw/maxresdefault.jpg',
+    videoCount: 5,
+  },
+  {
+    id: 'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh',
+    title: 'Marcelão in London [2024]',
+    description: 'Acompanhe as análises gráficas do Marcelão direto de Londres.',
+    thumbnail: 'https://img.youtube.com/vi/mhg53yJpq2k/maxresdefault.jpg',
+    videoCount: 3,
+  },
+  {
+    id: 'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK',
+    title: 'As melhores do XAUUSD',
+    description: 'Os melhores momentos operando XAUUSD (Ouro) com a metodologia Fimathe.',
+    thumbnail: 'https://img.youtube.com/vi/EoVfQJoWLPU/maxresdefault.jpg',
+    videoCount: 2,
+  },
+  {
+    id: 'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ',
+    title: 'FOREX SCALPER FIMATHE',
+    description: 'Operando Forex com a técnica Fimathe.',
+    thumbnail: 'https://img.youtube.com/vi/Zu57DaCN9Es/maxresdefault.jpg',
+    videoCount: 20,
+  },
+  {
+    id: 'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD',
+    title: 'IMERSÃO MÉTODO FIMATHE',
+    description: 'Aprofunde-se no Método Fimathe com esta imersão completa.',
+    thumbnail: 'https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg',
+    videoCount: 2,
+  },
+  {
+    id: 'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5',
+    title: 'ESTUDOS EM EUR/USD',
+    description: 'Estudos e análises do par EUR/USD com a Técnica Fimathe.',
+    thumbnail: 'https://img.youtube.com/vi/HcSWF3rPaw0/maxresdefault.jpg',
+    videoCount: 10,
+  },
+  {
+    id: 'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV',
+    title: 'FIMATHE NO OURO',
+    description: 'Operando ouro (XAU/USD) com a metodologia Fimathe.',
+    thumbnail: 'https://img.youtube.com/vi/1MpCAh6Ost4/maxresdefault.jpg',
+    videoCount: 6,
+  },
 ]
 
-export async function fetchAllPlaylists(): Promise<YouTubePlaylist[]> {
-  return fetchPlaylists(PLAYLIST_IDS)
-}
+export { STATIC_PLAYLISTS }
 
 export const PLAYLIST_MAP: Record<string, string> = {
   'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I': 'Fimathe Checkpoint | FOREX',
@@ -108,10 +112,4 @@ export const PLAYLIST_MAP: Record<string, string> = {
   'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD': 'IMERSÃO MÉTODO FIMATHE',
   'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5': 'ESTUDOS EM EUR/USD',
   'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
-  'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V': 'FIMATHE EM CRIPTOMOEDA',
-  'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb': 'TRADE PARA INICIANTES',
-  'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC': 'VLOG',
-  'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL': 'COLLABS',
-  'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw': 'MEU PORTFÓLIO NO DAYTRADE É A BOLETA',
-  'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO': 'FOREX DO ZERO? COMECE AQUI',
 }

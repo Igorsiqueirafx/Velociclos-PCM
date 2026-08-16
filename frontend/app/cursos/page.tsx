@@ -1,66 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { fetchAllPlaylists, fetchPlaylistItems, YouTubePlaylist, YouTubeVideo } from '@/lib/youtube'
-
-const STATIC_PLAYLISTS: YouTubePlaylist[] = [
-  {
-    id: 'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I',
-    title: 'Fimathe Checkpoint | FOREX',
-    description: 'Fimathe Checkpoint é o momento em que o Marcelão revisa tudo o que foi estudado e confere as movimentações do mercado.',
-    thumbnail: 'https://img.youtube.com/vi/C77_DevBR8w/maxresdefault.jpg',
-    videoCount: 15,
-  },
-  {
-    id: 'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9',
-    title: 'Primórdios da Fimathe',
-    description: 'Série que revela a jornada de criação da Fimathe, método revolucionário no Forex.',
-    thumbnail: 'https://img.youtube.com/vi/rl_UgvfXdfw/maxresdefault.jpg',
-    videoCount: 5,
-  },
-  {
-    id: 'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh',
-    title: 'Marcelão in London [2024]',
-    description: 'Acompanhe as análises gráficas do Marcelão direto de Londres.',
-    thumbnail: 'https://img.youtube.com/vi/mhg53yJpq2k/maxresdefault.jpg',
-    videoCount: 3,
-  },
-  {
-    id: 'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK',
-    title: 'As melhores do XAUUSD',
-    description: 'Os melhores momentos operando XAUUSD (Ouro) com a metodologia Fimathe.',
-    thumbnail: 'https://img.youtube.com/vi/EoVfQJoWLPU/maxresdefault.jpg',
-    videoCount: 2,
-  },
-  {
-    id: 'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ',
-    title: 'FOREX SCALPER FIMATHE',
-    description: 'Operando Forex com a técnica Fimathe.',
-    thumbnail: 'https://img.youtube.com/vi/Zu57DaCN9Es/maxresdefault.jpg',
-    videoCount: 20,
-  },
-  {
-    id: 'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD',
-    title: 'IMERSÃO MÉTODO FIMATHE',
-    description: 'Aprofunde-se no Método Fimathe com esta imersão completa.',
-    thumbnail: 'https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg',
-    videoCount: 2,
-  },
-  {
-    id: 'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5',
-    title: 'ESTUDOS EM EUR/USD',
-    description: 'Estudos e análises do par EUR/USD com a Técnica Fimathe.',
-    thumbnail: 'https://img.youtube.com/vi/HcSWF3rPaw0/maxresdefault.jpg',
-    videoCount: 10,
-  },
-  {
-    id: 'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV',
-    title: 'FIMATHE NO OURO',
-    description: 'Operando ouro (XAU/USD) com a metodologia Fimathe.',
-    thumbnail: 'https://img.youtube.com/vi/1MpCAh6Ost4/maxresdefault.jpg',
-    videoCount: 6,
-  },
-]
+import { fetchPlaylists, fetchPlaylistItems, STATIC_PLAYLISTS, YouTubePlaylist, YouTubeVideo } from '@/lib/youtube'
 
 const CATEGORIES = ['Todas', 'Fimathe', 'Forex', 'Ouro', 'Scalper']
 
@@ -78,9 +19,9 @@ export default function CursosPage() {
     const loadPlaylists = async () => {
       setLoading(true)
       try {
-        const ytPlaylists = await fetchAllPlaylists()
+        const ytPlaylists = await fetchPlaylists()
         if (ytPlaylists.length > 0) {
-          setPlaylists([...STATIC_PLAYLISTS, ...ytPlaylists.filter(p => !STATIC_PLAYLISTS.some(s => s.id === p.id))])
+          setPlaylists(ytPlaylists)
         } else {
           setPlaylists(STATIC_PLAYLISTS)
         }
@@ -120,16 +61,16 @@ export default function CursosPage() {
     setCurrentVideo(video)
   }
 
-  const filteredPlaylists = playlists.filter(pl => {
+  const filteredPlaylists = playlists.filter((pl) => {
     if (activeCategory === 'Todas') return true
     const title = pl.title.toLowerCase()
     const map: Record<string, string[]> = {
-      'Fimathe': ['fimathe', 'metodo'],
-      'Forex': ['forex'],
-      'Ouro': ['ouro', 'xau'],
-      'Scalper': ['scalper'],
+      Fimathe: ['fimathe', 'método'],
+      Forex: ['forex'],
+      Ouro: ['ouro', 'xau'],
+      Scalper: ['scalper'],
     }
-    return map[activeCategory]?.some(keyword => title.includes(keyword)) ?? false
+    return map[activeCategory]?.some((keyword) => title.includes(keyword)) ?? false
   })
 
   return (
@@ -280,7 +221,7 @@ function PlaylistModal({
             <iframe
               width="100%"
               height="100%"
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`}
+              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`}
               title={currentVideo.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
