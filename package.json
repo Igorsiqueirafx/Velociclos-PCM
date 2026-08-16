@@ -1,6 +1,9 @@
 {
-  "dependencies": {
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0"
+  "name": "velociclos",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm run build && node ../copy-dist.js",
+    "dev": "cd frontend && npm run dev"
   }
 }
