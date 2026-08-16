@@ -1,0 +1,24 @@
+# Next.js build output
+.next/
+out/
+
+# Environment files (contains secrets — never commit)
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Vercel
+.vercel
+
+# Dependencies
+node_modules/
+
+# Lock files (optional — uncomment to ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# OS files
+.DS_Store
+Thumbs.db

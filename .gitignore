@@ -1,5 +1,16 @@
+# Environment files
 .env
+.env*
+
+# Vercel
 .vercel
+
+# Node dependencies
 node_modules/
+
+# Build output
 dist/
-frontend/
+.out/
+
+# Legacy site static assets (handled separately)
+# frontend/ removed — now version-controlled as monorepo package
