@@ -2,33 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f5f5f5;
+/* ===== VARIÁVEIS GLOBAIS (CORES ESTILO METATRADER) ===== */
+:root {
+  --cor-fundo: #1e2329;
+  --cor-card: #2a2e39;
+  --cor-card-elevado: #343a47;
+  --cor-texto-principal: #dcdcdc;
+  --cor-texto-secundario: #a0a0a0;
+  --cor-texto-terciario: #707070;
+  --cor-borda-leve: #404857;
+  --cor-texto: #dcdcdc;
+  --cor-accent: #ffd700;
+  --cor-accent-light: #ffeb3b;
+  --cor-accent-mid: #ffc107;
+  --cor-accent-dark: #ffb300;
+  --cor-accent-hover: #ffdd33;
+  --cor-sombra: rgba(255, 215, 0, 0.2);
+  --cor-sombra-colorida: rgba(255, 215, 0, 0.35);
+  --green: #00ff7f;
+  --green-dark: #00cc66;
+  --yellow: #ffd700;
+  --cor-error: #ff4444;
 }
 
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Focus styles - acessibilidade */
+:focus-visible {
+  outline: 2px solid var(--cor-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+  transition: outline-offset 0.2s ease;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  line-height: 1.6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboza, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ===== LAZY LOADING IMGS ===== */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* ===== ADMIN LOGIN ===== */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--cor-fundo);
 }
 
 .login-card {
-  background: white;
+  background: var(--cor-card);
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--cor-borda-leve);
 }
 
 .login-card h1 {
   margin-bottom: 1.5rem;
-  color: #1a1a1a;
+  color: var(--cor-texto-principal);
   text-align: center;
+  font-size: 1.5rem;
+}
+
+.login-card p {
+  color: var(--cor-texto-secundario);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 
 .login-card form {
@@ -39,32 +129,37 @@ body {
 
 .login-card input {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--cor-borda-leve);
   border-radius: 0.25rem;
   font-size: 1rem;
+  background: var(--cor-fundo);
+  color: var(--cor-texto-principal);
 }
 
 .login-card button {
   padding: 0.75rem;
-  background-color: #3b82f6;
-  color: white;
+  background: var(--cor-accent);
+  color: var(--cor-fundo);
   border: none;
   border-radius: 0.25rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .login-card button:hover {
-  background-color: #2563eb;
+  background: var(--cor-accent-hover);
+  transform: translateY(-1px);
 }
 
 .login-card .error {
-  color: #ef4444;
+  color: var(--cor-error);
   font-size: 0.875rem;
   text-align: center;
 }
 
+/* ===== ADMIN DASHBOARD ===== */
 .app {
   display: flex;
   min-height: 100vh;
@@ -72,14 +167,16 @@ body {
 
 .sidebar {
   width: 240px;
-  background-color: #1f2937;
-  color: white;
+  background-color: var(--cor-card);
+  color: var(--cor-texto-principal);
   padding: 1.5rem;
+  border-right: 1px solid var(--cor-borda-leve);
 }
 
 .sidebar h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1.25rem;
+  color: var(--cor-accent);
 }
 
 .sidebar ul {
@@ -93,30 +190,81 @@ body {
 }
 
 .sidebar a {
-  color: #e5e7eb;
+  color: var(--cor-texto-secundario);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  display: block;
 }
 
 .sidebar a:hover {
-  color: white;
+  color: var(--cor-accent);
+  background-color: rgba(255, 215, 0, 0.08);
 }
 
 .main-content {
   flex: 1;
   padding: 2rem;
-  background-color: #f9fafb;
+  background-color: var(--cor-fundo);
 }
 
 .card {
-  background: white;
+  background: var(--cor-card);
   border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
+  border: 1px solid var(--cor-borda-leve);
 }
 
 .card h2 {
   margin-top: 0;
-  color: #1f2937;
+  color: var(--cor-texto-principal);
+  font-size: 1.125rem;
+}
+
+/* ===== SMOOTH SCROLL ===== */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ===== REDUÇÃO DE MOVIMENTO ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (max-width: 768px) {
+  .btn {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cor-fundo);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cor-borda-leve);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cor-accent-dark);
 }
