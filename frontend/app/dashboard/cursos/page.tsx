@@ -1,67 +1,145 @@
 ﻿'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClient } from '@/app/lib/supabase/client'
-import { fetchPlaylists } from '@/lib/youtube'
+import { YouTubePlaylist } from '@/lib/youtube'
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
 
 export default function CursosPage() {
-  const [playlists, setPlaylists] = useState<any[]>([])
+  const [playlists, setPlaylists] = useState<YouTubePlaylist[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
-  const supabase = createClient()
+  const [syncing, setSyncing] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) router.push('/auth/login')
-    })
-
     const loadPlaylists = async () => {
       try {
-        const data = await fetchPlaylists()
-        setPlaylists(data)
+        const res = await fetch(`${BACKEND_URL}/api/playlists`)
+        if (!res.ok) throw new Error(`API error: ${res.status}`)
+        const data = await res.json()
+        setPlaylists(Array.isArray(data) ? data : [])
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error')
+        setError(err instanceof Error ? err.message : 'Erro desconhecido')
       } finally {
         setLoading(false)
       }
     }
 
     loadPlaylists()
-  }, [router, supabase])
+  }, [])
 
-  if (loading) return <div>Carregando cursos...</div>
-  if (error) return <div>Erro: {error}</div>
+  const handleSync = async () => {
+    setSyncing(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/admin/playlists/sync', {
+        method: 'POST',
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || `Sync failed: ${res.status}`)
+      }
+      const data = await res.json()
+      if (data.playlists) {
+        setPlaylists(data.playlists)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao sincronizar')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-[#ffd700] text-xl">Carregando cursos...</div>
+      </div>
+    )
+  }
 
   return (
-    <div className="app">
-      <nav className="sidebar">
-        <h2>Velociclos Admin</h2>
-        <ul>
-          <li><a href="/dashboard">Dashboard</a></li>
-          <li><a href="/dashboard/cursos">Cursos</a></li>
-          <li><a href="/dashboard/artigos">Artigos</a></li>
-          <li><a href="/dashboard/subscribers">Subscribers</a></li>
-          <li><a href="/dashboard/monitoramento">Monitoramento</a></li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
-      </nav>
-      <main className="main-content">
-        <h1>Cursos</h1>
-        <div className="card">
-          <h2>Playlists do YouTube</h2>
-          {playlists.length > 0 ? (
-            <ul>
-              {playlists.map((pl: any) => (
-                <li key={pl.id}>{pl.title || pl.id}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>Carregando playlists ou erro de API.</p>
-          )}
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Cursos</h1>
+          <p className="text-[#a0a0a0]">Playlists do YouTube canal Velociclos</p>
         </div>
-      </main>
+        <button
+          onClick={handleSync}
+          disabled={syncing}
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+        >
+          {syncing ? (
+            <>
+              <i className="fas fa-circle-notch fa-spin"></i>
+              Sincronizando...
+            </>
+          ) : (
+            <>
+              <i className="fas fa-sync-alt"></i>
+              Sincronizar YouTube
+            </>
+          )}
+        </button>
+      </div>
+
+      {error && (
+        <div className="flex items-center gap-2 px-4 py-3 bg-[#ff4444]/10 border border-[#ff4444]/30 rounded-lg text-[#ff6b6b] text-sm">
+          <i className="fas fa-exclamation-circle"></i>
+          {error}
+        </div>
+      )}
+
+      {playlists.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {playlists.map((playlist) => (
+            <div key={playlist.id} className="card group hover:border-[#ffd700]/30 transition-all duration-200">
+              <div className="relative mb-4 rounded-lg overflow-hidden bg-[#1e2329]">
+                {playlist.thumbnail ? (
+                  <img
+                    src={playlist.thumbnail}
+                    alt={playlist.title}
+                    className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-40 flex items-center justify-center bg-[#2a2e39]">
+                    <i className="fas fa-play-circle text-4xl text-[#404857]"></i>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1e2329]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                  <span className="text-xs text-[#ffd700] font-medium">
+                    {playlist.videoCount} vídeos
+                  </span>
+                </div>
+              </div>
+              <h3 className="font-semibold text-[#dcdcdc] mb-2 line-clamp-2 group-hover:text-[#ffd700] transition-colors">
+                {playlist.title}
+              </h3>
+              <p className="text-sm text-[#a0a0a0] line-clamp-2 mb-3">
+                {playlist.description || 'Sem descrição'}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#707070] font-mono">{playlist.id}</span>
+                <a
+                  href={`https://www.youtube.com/playlist?list=${playlist.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#ffd700] hover:text-[#ffdd33] transition-colors"
+                >
+                  Ver no YouTube <i className="fas fa-external-link-alt ml-1"></i>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="card text-center py-12">
+          <i className="fas fa-play-circle text-4xl text-[#404857] mb-4"></i>
+          <p className="text-[#a0a0a0]">Nenhuma playlist encontrada.</p>
+          <p className="text-sm text-[#707070] mt-1">Clique em "Sincronizar YouTube" para buscar playlists.</p>
+        </div>
+      )}
     </div>
   )
 }
