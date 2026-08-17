@@ -60,8 +60,31 @@ export async function registerEmail(formData: FormData) {
     if (error.code === '23505') {
       return { error: 'Este email já está cadastrado' }
     }
+    if (error.code === '42P01' || error.message?.includes('does not exist')) {
+      return await fallbackToBackend(email)
+    }
     return { error: 'Erro ao cadastrar. Tente novamente.' }
   }
 
-  return { success: true }
+  return { success: true as const }
+}
+
+async function fallbackToBackend(email: string): Promise<{ success?: boolean; error?: string }> {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/subscribers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    if (res.ok) {
+      return { success: true }
+    }
+    if (res.status === 409) {
+      return { error: 'Este email já está cadastrado' }
+    }
+    return { error: 'Erro ao cadastrar. Tente novamente.' }
+  } catch {
+    return { error: 'A tabela de subscribers não está configurada. Tente novamente mais tarde.' }
+  }
 }

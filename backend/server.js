@@ -137,6 +137,39 @@ app.get('/api/playlists', (req, res) => {
   res.json(data.playlists || []);
 });
 
+const SUBSCRIBERS_FILE = path.join(config.DATA_DIR, 'data', 'subscribers.json');
+
+app.get('/api/subscribers', (req, res) => {
+  const data = loadJSON(SUBSCRIBERS_FILE, { subscribers: [] });
+  res.json(data.subscribers || []);
+});
+
+app.post('/api/subscribers', authenticate, (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Email inválido' });
+    }
+    const data = loadJSON(SUBSCRIBERS_FILE, { subscribers: [] });
+    const existing = data.subscribers.find((s) => s.email === email);
+    if (existing) {
+      return res.status(409).json({ error: 'Email já cadastrado' });
+    }
+    const newSubscriber = {
+      id: Date.now().toString(),
+      email,
+      source: 'website',
+      createdAt: new Date().toISOString(),
+    };
+    data.subscribers.push(newSubscriber);
+    saveJSON(SUBSCRIBERS_FILE, data);
+    res.status(201).json(newSubscriber);
+  } catch (error) {
+    console.error('Error saving subscriber:', error);
+    res.status(500).json({ error: 'Failed to save subscriber' });
+  }
+});
+
 app.post('/api/playlists/sync', authenticate, async (req, res) => {
   if (!config.YOUTUBE_API_KEY) {
     return res.status(500).json({ error: 'YouTube API key not configured' });
