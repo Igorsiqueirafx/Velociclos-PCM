@@ -1,0 +1,24 @@
+﻿name: Supabase Health Ping
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST endpoint
+        run: |
+          curl -sf "https://${{ secrets.SUPABASE_URL }}/rest/v1/health" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            > /dev/null && echo "Supabase online: $(date -u)" \
+            || { echo "Supabase offline: $(date -u)"; exit 1; }
+
+      - name: Ping Backend Health
+        run: |
+          curl -sf "${{ secrets.BACKEND_URL }}/api/health" \
+            > /dev/null && echo "Backend online: $(date -u)" \
+            || { echo "Backend unreachable: $(date -u)"; }
