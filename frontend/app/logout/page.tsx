@@ -1,23 +1,27 @@
 ﻿'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/app/lib/supabase/client'
 
 export default function LogoutPage() {
-  const [done, setDone] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
-    supabase.auth.signOut().finally(() => setDone(true))
-  }, [])
+    supabase.auth.signOut().then(() => {
+      router.replace('/auth/login')
+    })
+  }, [router, supabase])
 
-  if (done) {
-    // Use window.location for hard refresh after signout
-    if (typeof window !== 'undefined') {
-      window.location.href = '/auth/login'
-    }
-    return <div>Redirecionando...</div>
-  }
-
-  return <div>Fazendo logout...</div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0f0f19] via-[#1e2329] to-[#1a1f25] flex items-center justify-center">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
+          <i className="fas fa-circle-notch fa-spin text-2xl text-[#ffd700]" aria-hidden="true"></i>
+        </div>
+        <p className="text-[#a0a0a0]">Saindo...</p>
+      </div>
+    </div>
+  )
 }

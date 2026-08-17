@@ -88,75 +88,13 @@ a {
   }
 }
 
-/* ===== ADMIN LOGIN ===== */
+/* ===== ADMIN LOGIN (legacy - mantido para compatibilidade) ===== */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   background-color: var(--cor-fundo);
-}
-
-.login-card {
-  background: var(--cor-card);
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid var(--cor-borda-leve);
-}
-
-.login-card h1 {
-  margin-bottom: 1.5rem;
-  color: var(--cor-texto-principal);
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-.login-card p {
-  color: var(--cor-texto-secundario);
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-}
-
-.login-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.login-card input {
-  padding: 0.75rem;
-  border: 1px solid var(--cor-borda-leve);
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  background: var(--cor-fundo);
-  color: var(--cor-texto-principal);
-}
-
-.login-card button {
-  padding: 0.75rem;
-  background: var(--cor-accent);
-  color: var(--cor-fundo);
-  border: none;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.login-card button:hover {
-  background: var(--cor-accent-hover);
-  transform: translateY(-1px);
-}
-
-.login-card .error {
-  color: var(--cor-error);
-  font-size: 0.875rem;
-  text-align: center;
 }
 
 /* ===== ADMIN DASHBOARD ===== */

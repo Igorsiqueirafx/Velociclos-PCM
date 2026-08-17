@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/app/lib/supabase/client'
+import { fetchPlaylists } from '@/lib/youtube'
 
 export default function CursosPage() {
   const [playlists, setPlaylists] = useState<any[]>([])
@@ -15,24 +16,20 @@ export default function CursosPage() {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) router.push('/auth/login')
     })
-    
-    const fetchPlaylists = async () => {
+
+    const loadPlaylists = async () => {
       try {
-        const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || ''
-        const url = `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&maxResults=50&key=${apiKey}`
-        const res = await fetch(url)
-        if (!res.ok) throw new Error('fetch failed')
-        const data = await res.json()
-        setPlaylists(data.items || [])
+        const data = await fetchPlaylists()
+        setPlaylists(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error')
       } finally {
         setLoading(false)
       }
     }
-    
-    fetchPlaylists()
-  }, [router])
+
+    loadPlaylists()
+  }, [router, supabase])
 
   if (loading) return <div>Carregando cursos...</div>
   if (error) return <div>Erro: {error}</div>
@@ -45,6 +42,7 @@ export default function CursosPage() {
           <li><a href="/dashboard">Dashboard</a></li>
           <li><a href="/dashboard/cursos">Cursos</a></li>
           <li><a href="/dashboard/artigos">Artigos</a></li>
+          <li><a href="/dashboard/subscribers">Subscribers</a></li>
           <li><a href="/dashboard/monitoramento">Monitoramento</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
@@ -56,7 +54,7 @@ export default function CursosPage() {
           {playlists.length > 0 ? (
             <ul>
               {playlists.map((pl: any) => (
-                <li key={pl.id}>{pl.snippet?.title || pl.id}</li>
+                <li key={pl.id}>{pl.title || pl.id}</li>
               ))}
             </ul>
           ) : (

@@ -1,13 +1,13 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/app/lib/supabase/client'
-import Link from 'next/link'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -19,17 +19,28 @@ export default function LoginPage() {
     })
   }, [router, supabase])
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('A senha deve ter pelo menos 6 caracteres')
+      return
+    }
+
     setIsLoading(true)
 
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const { error: authError } = await supabase.auth.signUp({ email, password })
 
     if (authError) {
       setError(authError.message)
     } else {
-      router.push('/dashboard')
+      router.push('/auth/login?registered=1')
     }
     setIsLoading(false)
   }
@@ -55,11 +66,11 @@ export default function LoginPage() {
           <h1 className="text-3xl font-extrabold text-[#dcdcdc] mb-1">
             Velociclos <span className="text-[#ffd700]">PCM</span>
           </h1>
-          <p className="text-[#a0a0a0] text-sm">Painel Administrativo</p>
+          <p className="text-[#a0a0a0] text-sm">Criar Conta</p>
         </div>
 
         <div className="bg-[#2a2e39] border border-[#404857] rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.3)]">
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleRegister} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-[#a0a0a0] mb-2">
                 Email
@@ -84,12 +95,28 @@ export default function LoginPage() {
               <input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Mínimo 6 caracteres"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="current-password"
+                autoComplete="new-password"
                 minLength={6}
+                className="w-full px-4 py-3 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all duration-200"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#a0a0a0] mb-2">
+                Confirmar Senha
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Digite a senha novamente"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                autoComplete="new-password"
                 className="w-full px-4 py-3 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all duration-200"
               />
             </div>
@@ -109,37 +136,25 @@ export default function LoginPage() {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <i className="fas fa-circle-notch fa-spin"></i>
-                  Entrando...
+                  Criando conta...
                 </span>
               ) : (
-                'Entrar'
+                'Criar Conta'
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-[#a0a0a0] text-sm">
-              Não tem uma conta?{' '}
+              Já tem uma conta?{' '}
               <button
                 type="button"
-                onClick={() => router.push('/auth/register')}
+                onClick={() => router.push('/auth/login')}
                 className="text-[#ffd700] hover:text-[#ffdd33] transition-colors font-medium"
               >
-                Criar conta
+                Faça login
               </button>
             </p>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-[#404857]">
-            <div className="text-center">
-              <Link
-                href="/"
-                className="text-[#a0a0a0] hover:text-[#ffd700] text-sm transition-colors flex items-center justify-center gap-2"
-              >
-                <i className="fas fa-arrow-left"></i>
-                Voltar ao site principal
-              </Link>
-            </div>
           </div>
         </div>
       </div>

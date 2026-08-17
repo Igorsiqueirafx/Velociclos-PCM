@@ -28,13 +28,22 @@ export default function Home() {
                     <span className="text-sm text-[#707070] max-w-[120px]">Operações com XAU/USD</span>
                   </div>
                 </div>
-                <Link
-                  href="/ea"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-[#ffd700] text-[#1e2329] font-bold rounded-lg shadow-lg hover:bg-[#ffdd33] transition-all duration-200 focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
-                  aria-label="Conhecer o Expert Advisor Velociclos PCM"
-                >
-                  Saiba sobre o E.A.
-                </Link>
+                <div className="flex gap-4">
+                  <Link
+                    href="/entrar"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-[#ffd700] text-[#ffd700] font-bold rounded-lg hover:bg-[#ffd700]/10 transition-all duration-200 focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
+                    aria-label="Entrar ou cadastrar email"
+                  >
+                    Entrar
+                  </Link>
+                  <Link
+                    href="/ea"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-[#ffd700] text-[#1e2329] font-bold rounded-lg shadow-lg hover:bg-[#ffdd33] transition-all duration-200 focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
+                    aria-label="Conhecer o Expert Advisor Velociclos PCM"
+                  >
+                    Saiba sobre o E.A.
+                  </Link>
+                </div>
               </div>
             </div>
 
