@@ -1,0 +1,27 @@
+[     878ms] [LOG] %c
+▲
+
+    ________   _ __ _          ____           __
+   /  _/ __/  (_) /( )_____   / __/___ ______/ /_
+   / // /_   / / __/// ___/  / /_/ __ `/ ___/ __/
+ _/ // __/  / / /_  (__  )  / __/ /_/ (__  ) /_
+/___/_/    /_/\__/ /____/  /_/  \__,_/____/\__/
+    _ __ _                         _    __                    __
+   (_) /( )_____   ____  ____     | |  / /__  _____________  / /
+  / / __/// ___/  / __ \/ __ \    | | / / _ \/ ___/ ___/ _ \/ /
+ / / /_  (__  )  / /_/ / / / /    | |/ /  __/ /  / /__/  __/ /
+/_/\__/ /____/   \____/_/ /_/     |___/\___/_/   \___/\___/_/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/43xkrvw7v4969.js:78
+[    2927ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/jwt:0
+[    3062ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/35_-zanwufoho.js:18
+[    6429ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/446f6ivfadm2_.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=VNMJ-KTNX:0
+[    6429ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=VNMJ-KTNX:0
+[   34032ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S973600770%3A1786931976677271&client_id=258013614557-nema0dumfbottebi6to7aqi85qot9pvs.apps.googleusercontent.com&o2v=2&redirect_uri=https%3A%2F%2Fvercel.com%2Fapi%2Fregistration%2Fgoogle%2Fcallback&response_type=code&scope=openid+profile+email&service=lso&state=2be70b9fc3313ae7c43ce7da1d9d1af93db31c671647ce7588f3c68d26f8d27641512387f22ad56f8aae64074f9897e45af38de9847d1ef2f926a28dc3f71bf6a4f1effd71d3f66e1c1971704f8c286e1ea18f5536cec350db111ed1984e3e96eae436926c7af75b521025734da23f07583eb2fa6dbfba6447d46abb4783a7a79719fab1fdaacc647297044bad1080b68e26b8ab6e1791d1f3d906c17889f83c4cac6a8cd0b58043e43dcaa985e7b94f872d2ac4cb9ba82d957a0f9bbba139d14e3687ac4ae99e4ff16de18821b9a58a6e08c3c084535666650bdde3d3354beb19398cd41e331b9313588d63e343fd77b1d495261cbb28586e97c834db04505e517025e160d38d8f31cdea64eb42f8ea47f26ec007c77515d12240ae2ab42c4bcfe73b814e0ed60434e7a8acf1c0ba49c10b11b8f9&flowName=GeneralOAuthLite&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Flegacy%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOyFQhnu6caUrN0f2NG8fGcqyipZ4ljwBoCrL1_MVszmFi9FJfn8JKtGlp_UGpLXtgx-MJWbQMCuopowqrC_Aq-ZL-Y2cKpimS3y4sb8xVQcndefe1nugScSwBk8DI-zyICK_FhF-tLj4BIXMUevaN98iVRaiiPdAxPL737UGj5Ift6t_lQxbrs3n2akjKDFVMeW3bVNDjK0p-c1uBgltcvdTtFUOKK5Ay6Q25YJJStJvxRGhZd9_QN5QbA6AhpRQ4F8zS8_PBz-VNXUbSFijegbNDK54b2kaURu8D2BM8F3TDog8vrVHb_E0hy8ZuluzunJwgu6QNfzwIA-yT_NSfbQNrgvTDQJdk_iY3aqrCBAzurpVs5uN2RWqKuv0DEYznhZNXqecYS0J3AtZq5tkAf9cQjsqeFSRxCTMBCClAkB6n-wVnbZpYEAG39AVffeYPcUS7i91-_-LS38_4jRg_QSJrfRFGP5PP4c90IIlngvKVjXlK8NyFxvVyluu8jZMkdDWCcMt4fmQxzbrCZ7He4zdj1RM4qp0lcBXPQTyGWP6oMdyUB465cntG0usRCAEkg0EF7akTLD-KfKcB4Qu-8VY-phw3Kw0Bz3VI7ktsESiThFvvaXzSR-e1txQzBB82xdlRM%26flowName%3DGeneralOAuthFlow%26as%3DS973600770%253A1786931976677271%26client_id%3D258013614557-nema0dumfbottebi6to7aqi85qot9pvs.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fvercel.com&rart=ANgoxcdXNL1Z0u3stK2JmWjaqksiNEXdEiF5ExtnxRsKIxz62F3CmeAR640T5oZtu2THSyLqxJSLBSMppk2lKZ2zfbbB9Cyf5jE1DSpVkaSaOjeNLAJAaaU:0

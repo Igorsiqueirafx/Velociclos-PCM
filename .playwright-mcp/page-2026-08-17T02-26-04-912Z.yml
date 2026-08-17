@@ -1,0 +1,58 @@
+- generic [active] [ref=f42e1]:
+  - generic [ref=f42e6]:
+    - navigation [ref=f42e8]:
+      - link [ref=f42e11] [cursor=pointer]:
+        - /url: https://supabase.com
+        - img "Supabase Logo" [ref=f42e12]
+      - link "Documentation" [ref=f42e14] [cursor=pointer]:
+        - /url: https://supabase.com/docs
+    - generic [ref=f42e20]:
+      - main [ref=f42e21]:
+        - generic [ref=f42e22]:
+          - generic [ref=f42e23]:
+            - heading "Welcome back" [level=1] [ref=f42e24]
+            - heading "Sign in to your account" [level=2] [ref=f42e25]
+          - generic [ref=f42e26]:
+            - generic [ref=f42e27]:
+              - generic: Last used
+              - button "Continue with GitHub" [ref=f42e29] [cursor=pointer]
+            - button "Continue with ChatGPT" [ref=f42e35] [cursor=pointer]
+            - link "Continue with SSO" [ref=f42e41] [cursor=pointer]:
+              - /url: /dashboard/sign-in-sso?returnTo=%2Faccount%2Ftokens
+            - generic [ref=f42e47]: or
+            - generic [ref=f42e52]:
+              - generic [ref=f42e54]:
+                - generic [ref=f42e55]: Email
+                - textbox "Email" [ref=f42e60]:
+                  - /placeholder: you@example.com
+              - generic [ref=f42e61]:
+                - generic [ref=f42e63]:
+                  - generic [ref=f42e64]: Password
+                  - generic [ref=f42e69]:
+                    - textbox "Password" [ref=f42e70]:
+                      - /placeholder: ••••••••
+                    - button "Show password" [ref=f42e71] [cursor=pointer]
+                - link "Forgot password?" [ref=f42e76] [cursor=pointer]:
+                  - /url: /dashboard/forgot-password?returnTo=%2Faccount%2Ftokens
+              - button "Sign in" [ref=f42e79] [cursor=pointer]
+          - generic [ref=f42e81]:
+            - text: Don’t have an account?
+            - link "Sign up" [ref=f42e82] [cursor=pointer]:
+              - /url: /dashboard/sign-up?returnTo=%2Faccount%2Ftokens
+        - paragraph [ref=f42e84]:
+          - text: By continuing, you agree to Supabase’s
+          - link "Terms of Service" [ref=f42e85] [cursor=pointer]:
+            - /url: https://supabase.com/terms
+          - text: and
+          - link "Privacy Policy" [ref=f42e86] [cursor=pointer]:
+            - /url: https://supabase.com/privacy
+          - text: ", and to receive periodic emails with updates."
+      - complementary [ref=f42e87]:
+        - generic [ref=f42e88]:
+          - generic [ref=f42e89]: “
+          - blockquote [ref=f42e90]: Holy crap. @supabase is absolutely incredible. Most elegant backend as a service I've ever used. This is a dream.
+          - link "KenTheRogers @KenTheRogers" [ref=f42e91] [cursor=pointer]:
+            - /url: https://twitter.com/kentherogers/status/1512609587110719488
+            - img "KenTheRogers" [ref=f42e92]
+            - generic [ref=f42e93]: "@KenTheRogers"
+  - alert [ref=f42e95]

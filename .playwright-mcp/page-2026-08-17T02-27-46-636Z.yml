@@ -1,0 +1,46 @@
+- generic [ref=f64e2]:
+  - generic [ref=f64e3]:
+    - link "Skip to content" [ref=f64e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=f64e6]
+  - main [ref=f64e9]:
+    - generic [ref=f64e10]:
+      - generic [ref=f64e12]:
+        - img "Supabase logo" [ref=f64e14]
+        - paragraph [ref=f64e15]:
+          - text: Sign in to
+          - strong [ref=f64e16]: GitHub
+          - text: to continue to
+          - strong [ref=f64e17]: Supabase
+      - generic [ref=f64e19]:
+        - generic [ref=f64e20]:
+          - generic [ref=f64e21]: Username or email address
+          - textbox "Username or email address" [active] [ref=f64e22]
+        - generic [ref=f64e23]:
+          - generic [ref=f64e24]: Password
+          - textbox "Password" [ref=f64e25]
+          - link "Forgot password?" [ref=f64e26] [cursor=pointer]:
+            - /url: /password_reset
+        - button "Sign in" [ref=f64e28] [cursor=pointer]
+      - paragraph [ref=f64e31]:
+        - text: New to GitHub?
+        - link "Create an account" [ref=f64e32] [cursor=pointer]:
+          - /url: /join?return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D60b7a7e2418b90251417%26redirect_to%3Dhttps%253A%252F%252Fsupabase.com%252Fdashboard%252Fsign-in-mfa%253FreturnTo%252Fproject%252Fsetpkdjcgmlfwubacjlg%2526method%253Dgithub%2526redirect_uri%3Dhttps%253A%252F%252Fauth.supabase.io%252Fauth%252Fv1%252Fcallback%2526response_type%253Dcode%2526scope%253Duser%253Aemail%2526state%253D4d00c687-5c13-4f8b-b712-fbc35a6598ed&source=oauth
+  - contentinfo [ref=f64e33]:
+    - list [ref=f64e34]:
+      - listitem [ref=f64e35]:
+        - link "Terms" [ref=f64e36] [cursor=pointer]:
+          - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+      - listitem [ref=f64e37]:
+        - link "Privacy" [ref=f64e38] [cursor=pointer]:
+          - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+      - listitem [ref=f64e39]:
+        - link "Docs" [ref=f64e40] [cursor=pointer]:
+          - /url: https://docs.github.com
+      - listitem [ref=f64e41]:
+        - link "Contact GitHub Support" [ref=f64e42] [cursor=pointer]:
+          - /url: https://support.github.com
+      - listitem [ref=f64e43]:
+        - button "Manage cookies" [ref=f64e45] [cursor=pointer]
+      - listitem [ref=f64e46]:
+        - button "Do not share my personal information" [ref=f64e48] [cursor=pointer]

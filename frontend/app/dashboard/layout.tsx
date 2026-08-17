@@ -6,11 +6,12 @@ import { createClient } from '@/app/lib/supabase/client'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: 'fas fa-th-large' },
-  { href: '/dashboard/subscribers', label: 'Subscribers', icon: 'fas fa-users' },
   { href: '/dashboard/cursos', label: 'Cursos', icon: 'fas fa-play-circle' },
   { href: '/dashboard/artigos', label: 'Artigos', icon: 'fas fa-newspaper' },
-  { href: '/dashboard/videos', label: 'Vídeos', icon: 'fas fa-video' },
+  { href: '/dashboard/certificados', label: 'Certificados', icon: 'fas fa-award' },
+  { href: '/dashboard/subscribers', label: 'Subscribers', icon: 'fas fa-users' },
   { href: '/dashboard/monitoramento', label: 'Monitoramento', icon: 'fas fa-heartbeat' },
+  { href: '/dashboard/videos', label: 'Vídeos', icon: 'fas fa-video' },
 ]
 
 export default function DashboardLayout({

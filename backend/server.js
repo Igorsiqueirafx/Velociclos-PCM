@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const config = require('./config');
+const { admin: supabase } = require('./lib/supabase');
 
 const app = express();
 const PORT = config.PORT;
@@ -27,52 +28,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const DATA_FILE = path.join(config.DATA_DIR, 'data', 'videos.json');
-const PLAYLISTS_FILE = path.join(config.DATA_DIR, 'data', 'playlists.json');
-
-function ensureDataDir() {
-  const dir = path.join(config.DATA_DIR, 'data');
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
-
-function loadJSON(filePath, fallback) {
-  ensureDataDir();
-  if (!fs.existsSync(filePath)) {
-    saveJSON(filePath, fallback);
-    return fallback;
-  }
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-    return fallback;
-  }
-}
-
-function saveJSON(filePath, data) {
-  ensureDataDir();
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-}
-
-function loadVideos() {
-  return loadJSON(DATA_FILE, { videos: [] });
-}
-
-function loadPlaylists() {
-  return loadJSON(PLAYLISTS_FILE, { playlists: [] });
-}
-
-function saveVideos(data) {
-  saveJSON(DATA_FILE, data);
-}
-
-function savePlaylists(data) {
-  saveJSON(PLAYLISTS_FILE, data);
-}
-
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || authHeader !== `Bearer ${config.ADMIN_PASSWORD}`) {
@@ -81,105 +36,550 @@ function authenticate(req, res, next) {
   next();
 }
 
-app.get('/api/videos', (req, res) => {
-  const data = loadVideos();
-  res.json(data.videos || []);
+// ============================================
+// HEALTH
+// ============================================
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.post('/api/videos', authenticate, (req, res) => {
+// ============================================
+// COURSES
+// ============================================
+app.get('/api/courses', async (req, res) => {
   try {
-    const data = loadVideos();
-    const newVideo = {
-      id: Date.now().toString(),
-      videoId: req.body.videoId,
+    const { data, error } = await supabase
+      .from('courses')
+      .select('*')
+      .order('order_index', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).json({ error: 'Failed to fetch courses' });
+  }
+});
+
+app.get('/api/courses/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('courses')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    res.status(500).json({ error: 'Failed to fetch course' });
+  }
+});
+
+app.post('/api/courses', authenticate, async (req, res) => {
+  try {
+    const payload = {
       title: req.body.title || '',
       description: req.body.description || '',
-      module: req.body.module || '',
-      createdAt: new Date().toISOString()
+      thumbnail: req.body.thumbnail || '',
+      is_published: req.body.is_published || false,
+      order_index: req.body.order_index || 0,
     };
-    
-    data.videos.push(newVideo);
-    saveVideos(data);
-    
-    res.status(201).json(newVideo);
+
+    const { data, error } = await supabase
+      .from('courses')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
   } catch (error) {
-    console.error('Error saving video:', error);
-    res.status(500).json({ error: 'Failed to save video' });
+    console.error('Error creating course:', error);
+    res.status(500).json({ error: 'Failed to create course' });
   }
 });
 
-app.put('/api/videos/:id', authenticate, (req, res) => {
+app.put('/api/courses/:id', authenticate, async (req, res) => {
   try {
-    const data = loadVideos();
-    const index = data.videos.findIndex(v => v.id === req.params.id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Video not found' });
-    }
-    
-    data.videos[index] = {
-      ...data.videos[index],
-      ...req.body,
-      id: data.videos[index].id,
-      createdAt: data.videos[index].createdAt
+    const payload = {
+      title: req.body.title,
+      description: req.body.description,
+      thumbnail: req.body.thumbnail,
+      is_published: req.body.is_published,
+      order_index: req.body.order_index,
+      updated_at: new Date().toISOString(),
     };
-    
-    saveVideos(data);
-    res.json(data.videos[index]);
+
+    const { data, error } = await supabase
+      .from('courses')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
   } catch (error) {
-    console.error('Error updating video:', error);
-    res.status(500).json({ error: 'Failed to update video' });
+    console.error('Error updating course:', error);
+    res.status(500).json({ error: 'Failed to update course' });
   }
 });
 
-app.delete('/api/videos/:id', authenticate, (req, res) => {
+app.delete('/api/courses/:id', authenticate, async (req, res) => {
   try {
-    const data = loadVideos();
-    data.videos = data.videos.filter(v => v.id !== req.params.id);
-    saveVideos(data);
+    const { error } = await supabase
+      .from('courses')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
     res.status(204).send();
   } catch (error) {
-    console.error('Error deleting video:', error);
-    res.status(500).json({ error: 'Failed to delete video' });
+    console.error('Error deleting course:', error);
+    res.status(500).json({ error: 'Failed to delete course' });
   }
 });
 
-app.get('/api/playlists', (req, res) => {
-  const data = loadPlaylists();
-  res.json(data.playlists || []);
+// ============================================
+// MODULES
+// ============================================
+app.get('/api/courses/:courseId/modules', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('modules')
+      .select('*')
+      .eq('course_id', req.params.courseId)
+      .order('order_index', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching modules:', error);
+    res.status(500).json({ error: 'Failed to fetch modules' });
+  }
 });
 
-const SUBSCRIBERS_FILE = path.join(config.DATA_DIR, 'data', 'subscribers.json');
+app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      course_id: req.params.courseId,
+      title: req.body.title || '',
+      description: req.body.description || '',
+      order_index: req.body.order_index || 0,
+    };
 
-app.get('/api/subscribers', (req, res) => {
-  const data = loadJSON(SUBSCRIBERS_FILE, { subscribers: [] });
-  res.json(data.subscribers || []);
+    const { data, error } = await supabase
+      .from('modules')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating module:', error);
+    res.status(500).json({ error: 'Failed to create module' });
+  }
 });
 
-app.post('/api/subscribers', authenticate, (req, res) => {
+app.put('/api/modules/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      description: req.body.description,
+      order_index: req.body.order_index,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('modules')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating module:', error);
+    res.status(500).json({ error: 'Failed to update module' });
+  }
+});
+
+app.delete('/api/modules/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('modules')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting module:', error);
+    res.status(500).json({ error: 'Failed to delete module' });
+  }
+});
+
+// ============================================
+// LESSONS
+// ============================================
+app.get('/api/modules/:moduleId/lessons', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .eq('module_id', req.params.moduleId)
+      .order('order_index', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching lessons:', error);
+    res.status(500).json({ error: 'Failed to fetch lessons' });
+  }
+});
+
+app.get('/api/courses/:courseId/lessons', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .eq('course_id', req.params.courseId)
+      .order('order_index', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching lessons:', error);
+    res.status(500).json({ error: 'Failed to fetch lessons' });
+  }
+});
+
+app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
+  try {
+    const moduleId = req.params.moduleId;
+    const { data: module, error: moduleError } = await supabase
+      .from('modules')
+      .select('course_id')
+      .eq('id', moduleId)
+      .single();
+
+    if (moduleError) throw moduleError;
+
+    const payload = {
+      module_id: moduleId,
+      course_id: module.course_id,
+      title: req.body.title || '',
+      description: req.body.description || '',
+      video_id: req.body.video_id || req.body.videoId || '',
+      thumbnail: req.body.thumbnail || '',
+      duration: req.body.duration || null,
+      order_index: req.body.order_index || 0,
+      is_published: req.body.is_published || false,
+    };
+
+    const { data, error } = await supabase
+      .from('lessons')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating lesson:', error);
+    res.status(500).json({ error: 'Failed to create lesson' });
+  }
+});
+
+app.put('/api/lessons/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      description: req.body.description,
+      video_id: req.body.video_id || req.body.videoId,
+      thumbnail: req.body.thumbnail,
+      duration: req.body.duration,
+      order_index: req.body.order_index,
+      is_published: req.body.is_published,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('lessons')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating lesson:', error);
+    res.status(500).json({ error: 'Failed to update lesson' });
+  }
+});
+
+app.delete('/api/lessons/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('lessons')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting lesson:', error);
+    res.status(500).json({ error: 'Failed to delete lesson' });
+  }
+});
+
+// ============================================
+// ARTICLES
+// ============================================
+app.get('/api/articles', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    res.status(500).json({ error: 'Failed to fetch articles' });
+  }
+});
+
+app.get('/api/articles/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    res.status(500).json({ error: 'Failed to fetch article' });
+  }
+});
+
+app.post('/api/articles', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title || '',
+      slug: req.body.slug || req.body.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+      content: req.body.content || '',
+      excerpt: req.body.excerpt || '',
+      cover_image: req.body.cover_image || req.body.coverImage || '',
+      is_published: req.body.is_published || false,
+      published_at: req.body.is_published ? (req.body.published_at || new Date().toISOString()) : null,
+    };
+
+    const { data, error } = await supabase
+      .from('articles')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating article:', error);
+    res.status(500).json({ error: 'Failed to create article' });
+  }
+});
+
+app.put('/api/articles/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      slug: req.body.slug,
+      content: req.body.content,
+      excerpt: req.body.excerpt,
+      cover_image: req.body.cover_image || req.body.coverImage,
+      is_published: req.body.is_published,
+      published_at: req.body.is_published ? (req.body.published_at || new Date().toISOString()) : null,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('articles')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating article:', error);
+    res.status(500).json({ error: 'Failed to update article' });
+  }
+});
+
+app.delete('/api/articles/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('articles')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting article:', error);
+    res.status(500).json({ error: 'Failed to delete article' });
+  }
+});
+
+// ============================================
+// CERTIFICATES
+// ============================================
+app.get('/api/certificates', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('certificates')
+      .select('*')
+      .order('order_index', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching certificates:', error);
+    res.status(500).json({ error: 'Failed to fetch certificates' });
+  }
+});
+
+app.post('/api/certificates', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title || '',
+      description: req.body.description || '',
+      image_url: req.body.image_url || req.body.imageUrl || '',
+      issue_date: req.body.issue_date || req.body.issueDate || null,
+      order_index: req.body.order_index || 0,
+    };
+
+    const { data, error } = await supabase
+      .from('certificates')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating certificate:', error);
+    res.status(500).json({ error: 'Failed to create certificate' });
+  }
+});
+
+app.put('/api/certificates/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      description: req.body.description,
+      image_url: req.body.image_url || req.body.imageUrl,
+      issue_date: req.body.issue_date || req.body.issueDate,
+      order_index: req.body.order_index,
+    };
+
+    const { data, error } = await supabase
+      .from('certificates')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating certificate:', error);
+    res.status(500).json({ error: 'Failed to update certificate' });
+  }
+});
+
+app.delete('/api/certificates/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('certificates')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting certificate:', error);
+    res.status(500).json({ error: 'Failed to delete certificate' });
+  }
+});
+
+// ============================================
+// SUBSCRIBERS
+// ============================================
+app.get('/api/subscribers', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('subscribers')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching subscribers:', error);
+    res.status(500).json({ error: 'Failed to fetch subscribers' });
+  }
+});
+
+app.post('/api/subscribers', authenticate, async (req, res) => {
   try {
     const { email } = req.body;
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Email inválido' });
     }
-    const data = loadJSON(SUBSCRIBERS_FILE, { subscribers: [] });
-    const existing = data.subscribers.find((s) => s.email === email);
-    if (existing) {
-      return res.status(409).json({ error: 'Email já cadastrado' });
+
+    const { data, error } = await supabase
+      .from('subscribers')
+      .insert([{ email, source: 'website' }])
+      .select()
+      .single();
+
+    if (error) {
+      if (error.code === '23505') {
+        return res.status(409).json({ error: 'Email já cadastrado' });
+      }
+      throw error;
     }
-    const newSubscriber = {
-      id: Date.now().toString(),
-      email,
-      source: 'website',
-      createdAt: new Date().toISOString(),
-    };
-    data.subscribers.push(newSubscriber);
-    saveJSON(SUBSCRIBERS_FILE, data);
-    res.status(201).json(newSubscriber);
+
+    res.status(201).json(data);
   } catch (error) {
     console.error('Error saving subscriber:', error);
     res.status(500).json({ error: 'Failed to save subscriber' });
   }
+});
+
+// ============================================
+// YOUTUBE (mantido para backward compatibility)
+// ============================================
+app.get('/api/playlists', (req, res) => {
+  const PLAYLISTS_FILE = path.join(config.DATA_DIR, 'data', 'playlists.json');
+  const data = loadJSON(PLAYLISTS_FILE, { playlists: [] });
+  res.json(data.playlists || []);
 });
 
 app.post('/api/playlists/sync', authenticate, async (req, res) => {
@@ -210,9 +610,11 @@ app.post('/api/playlists/sync', authenticate, async (req, res) => {
         continue;
       }
     }
-    const data = loadPlaylists();
-    data.playlists = playlists;
-    savePlaylists(data);
+
+    const PLAYLISTS_FILE = path.join(config.DATA_DIR, 'data', 'playlists.json');
+    const fileData = loadJSON(PLAYLISTS_FILE, { playlists: [] });
+    fileData.playlists = playlists;
+    saveJSON(PLAYLISTS_FILE, fileData);
     res.json({ synced: playlists.length, playlists });
   } catch (error) {
     console.error('Error syncing playlists:', error);
@@ -246,13 +648,83 @@ app.get('/api/playlist/:id/items', async (req, res) => {
   }
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+// Legacy /api/videos kept for backward compatibility during migration
+app.get('/api/videos', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    res.status(500).json({ error: 'Failed to fetch videos' });
+  }
+});
+
+app.post('/api/videos', authenticate, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .insert([{
+        title: req.body.title || '',
+        description: req.body.description || '',
+        video_id: req.body.videoId || '',
+        module: req.body.module || '',
+        is_published: true,
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating video:', error);
+    res.status(500).json({ error: 'Failed to save video' });
+  }
+});
+
+app.put('/api/videos/:id', authenticate, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .update({
+        title: req.body.title,
+        description: req.body.description,
+        video_id: req.body.videoId,
+        module: req.body.module,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating video:', error);
+    res.status(500).json({ error: 'Failed to update video' });
+  }
+});
+
+app.delete('/api/videos/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('lessons')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting video:', error);
+    res.status(500).json({ error: 'Failed to delete video' });
+  }
 });
 
 app.listen(PORT, () => {
   console.log(`Velociclos API running on http://localhost:${PORT}`);
-  console.log(`Admin panel: http://localhost:${PORT}/admin/index.html`);
   console.log(`Health check: http://localhost:${PORT}/api/health`);
-  console.log(`API docs: http://localhost:${PORT}/api/videos`);
 });

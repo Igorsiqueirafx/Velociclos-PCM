@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - link "Ir para o conteúdo" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Velociclos - Página inicial" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: 
+        - generic [ref=e9]: Velociclos
+      - navigation "Menu de navegação principal" [ref=e10]:
+        - link "Início" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Expert Advisor" [ref=e12] [cursor=pointer]:
+          - /url: /ea
+        - link "Cursos" [ref=e13] [cursor=pointer]:
+          - /url: /cursos
+        - link "Método Fimathe" [ref=e14] [cursor=pointer]:
+          - /url: /metodo-fimathe
+        - link "Artigos" [ref=e15] [cursor=pointer]:
+          - /url: /artigos
+        - link "Certificados" [ref=e16] [cursor=pointer]:
+          - /url: /certificados
+      - text: 
+  - main [ref=e17]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - heading "Opere o Mercado 24/7 com Velociclos PCM" [level=1] [ref=e23]:
+          - text: Opere o Mercado
+          - generic [ref=e24]: 24/7 com Velociclos PCM
+        - paragraph [ref=e25]: Descubra o poder do trading automatizado.
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e29]: Forex
+              - generic [ref=e30]: Mercado cambial global
+            - generic [ref=e31]:
+              - generic [ref=e32]: Ouro
+              - generic [ref=e33]: Operações com XAU/USD
+          - link "Conhecer o Expert Advisor Velociclos PCM" [ref=e34] [cursor=pointer]:
+            - /url: /ea
+            - text: Saiba sobre o E.A.
+      - generic [ref=e38]:
+        - generic [ref=e39]: 
+        - heading "Expert Advisor" [level=2] [ref=e40]
+        - paragraph [ref=e41]: Este é um sistema profissional,recomendado para traders conscientese preparados.
+    - region [ref=e43]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 
+          - heading "Conta Real" [level=3] [ref=e49]
+          - paragraph [ref=e50]: Desenvolvido e refinado com experiências de operações reais do mercado financeiro.
+        - generic [ref=e51]:
+          - generic [ref=e52]: 
+          - heading "Método Comprovado" [level=3] [ref=e54]
+          - paragraph [ref=e55]: Os números mostram claramente que é possível construir uma renda consistente.
+        - generic [ref=e56]:
+          - generic [ref=e57]: 
+          - heading "Receba em Dólares" [level=3] [ref=e59]
+          - paragraph [ref=e60]: Aprenda a escalar o seu capital em mesas proprietárias e alcance as suas metas profissionais.
+  - contentinfo [ref=e61]:
+    - paragraph [ref=e63]: © 2026 Velociclos. Todos os direitos reservados.

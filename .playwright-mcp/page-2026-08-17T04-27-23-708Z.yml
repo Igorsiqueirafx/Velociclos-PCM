@@ -1,0 +1,8 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e3]:
+    - heading "Velociclos PCM - Admin" [level=1] [ref=f4e4]
+    - generic [ref=f4e5]:
+      - textbox "Email" [ref=f4e6]
+      - textbox "Senha" [ref=f4e7]
+      - button "Entrar" [ref=f4e8] [cursor=pointer]
+  - alert [ref=f4e9]

@@ -1,0 +1,1 @@
+[     384ms] [ERROR] Failed to load module script: Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of "text/html". Strict MIME type checking is enforced for module scripts per HTML spec. @ https://velociclosadm.vercel.app/assets/index-BqdBc1fA.js:0

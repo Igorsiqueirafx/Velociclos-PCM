@@ -1,0 +1,20 @@
+- generic [active] [ref=f47e1]:
+  - main [ref=f47e2]:
+    - generic [ref=f47e3]:
+      - heading "auth.openai.com" [level=1] [ref=f47e5]
+      - heading "Executando verificação de segurança" [level=2] [ref=f47e6]
+      - paragraph [ref=f47e7]: Este site utiliza um serviço de segurança para proteção contra bots maliciosos. Esta página é exibida enquanto o site verifica se você não é um bot.
+  - contentinfo [ref=f47e8]:
+    - generic [ref=f47e10]:
+      - generic [ref=f47e12]:
+        - text: "Ray ID:"
+        - code [ref=f47e13]: a2c53ad0ef5d82f1
+      - generic [ref=f47e14]:
+        - generic [ref=f47e15]:
+          - text: Desempenho e segurança da
+          - link "Cloudflare, abre em uma nova aba" [ref=f47e16] [cursor=pointer]:
+            - /url: https://www.cloudflare.com?utm_source=challenge&utm_campaign=m
+            - text: Cloudflare
+        - link "Privacidade, abre em uma nova aba" [ref=f47e18] [cursor=pointer]:
+          - /url: https://www.cloudflare.com/pt-br/privacypolicy/
+          - text: Privacidade

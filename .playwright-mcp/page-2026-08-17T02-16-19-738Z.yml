@@ -1,0 +1,101 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e4]:
+    - generic [ref=f15e5]:
+      - link "Skip to content" [ref=f15e7] [cursor=pointer]:
+        - /url: "#main"
+      - banner [ref=f15e10]:
+        - generic [ref=f15e11]:
+          - generic [ref=f15e12]:
+            - link "Supabase Back to organization home" [ref=f15e13] [cursor=pointer]:
+              - /url: /dashboard/organizations
+              - img "Supabase" [ref=f15e14]
+              - generic [ref=f15e15]: Back to organization home
+            - generic [ref=f15e16]: Account
+          - generic [ref=f15e21]:
+            - button "Feedback" [ref=f15e22] [cursor=pointer]
+            - generic [ref=f15e24]:
+              - button [ref=f15e25] [cursor=pointer]:
+                - paragraph [ref=f15e30]: Search...
+                - generic [ref=f15e31]: Ctrl K
+              - button "Help" [ref=f15e33] [cursor=pointer]
+              - button "Advisor Center" [ref=f15e40] [cursor=pointer]
+            - button [ref=f15e45] [cursor=pointer]
+      - main [ref=f15e54]:
+        - generic [ref=f15e56]:
+          - generic [ref=f15e58]:
+            - link "Back to dashboard" [ref=f15e61] [cursor=pointer]:
+              - /url: /dashboard/organizations
+            - menu "Sidebar" [ref=f15e67]:
+              - list [ref=f15e68]:
+                - generic [ref=f15e71]:
+                  - generic [ref=f15e72]: Account Settings
+                  - generic [ref=f15e76]:
+                    - link [ref=f15e77] [cursor=pointer]:
+                      - /url: /dashboard/account/me
+                      - menuitem "Preferences" [ref=f15e78]:
+                        - generic "Preferences" [ref=f15e81]
+                    - link [ref=f15e83] [cursor=pointer]:
+                      - /url: /dashboard/account/tokens
+                      - menuitem "Access Tokens" [ref=f15e84]:
+                        - generic "Access Tokens" [ref=f15e87]
+                    - link [ref=f15e89] [cursor=pointer]:
+                      - /url: /dashboard/account/security
+                      - menuitem "Security" [ref=f15e90]:
+                        - generic "Security" [ref=f15e93]
+                - generic [ref=f15e98]:
+                  - generic [ref=f15e99]: Logs
+                  - link [ref=f15e104] [cursor=pointer]:
+                    - /url: /dashboard/account/audit
+                    - menuitem "Audit Logs" [ref=f15e105]:
+                      - generic "Audit Logs" [ref=f15e108]
+          - generic [ref=f15e111]:
+            - generic [ref=f15e115]:
+              - heading "Access Tokens" [level=1] [ref=f15e116]
+              - generic [ref=f15e117]: Create and manage access tokens for API authentication.
+            - generic [ref=f15e119]:
+              - generic [ref=f15e120]:
+                - group [ref=f15e121]:
+                  - textbox "Filter tokens" [ref=f15e122]
+                  - group [ref=f15e123]
+                - generic [ref=f15e127]:
+                  - link "API Docs" [ref=f15e128] [cursor=pointer]:
+                    - /url: https://supabase.com/docs/reference/api/introduction
+                  - link "CLI docs" [ref=f15e135] [cursor=pointer]:
+                    - /url: https://supabase.com/docs/reference/cli/start
+                  - generic [ref=f15e142]:
+                    - button "Generate new token" [ref=f15e143] [cursor=pointer]
+                    - button "Choose token scope" [ref=f15e145] [cursor=pointer]
+              - table [ref=f15e153]:
+                - rowgroup [ref=f15e154]:
+                  - row [ref=f15e155]:
+                    - columnheader "Token" [ref=f15e156]
+                    - columnheader [ref=f15e157]:
+                      - button [ref=f15e158] [cursor=pointer]
+                    - columnheader [ref=f15e167]:
+                      - button [ref=f15e168] [cursor=pointer]
+                    - columnheader [ref=f15e177]
+                - rowgroup [ref=f15e178]:
+                  - row [ref=f15e179]:
+                    - cell [ref=f15e180]
+                    - cell [ref=f15e182]
+                    - cell [ref=f15e184]
+                    - cell [ref=f15e186]
+                    - cell [ref=f15e188]
+                  - row [ref=f15e190]:
+                    - cell [ref=f15e191]
+                    - cell [ref=f15e193]
+                    - cell [ref=f15e195]
+                    - cell [ref=f15e197]
+                    - cell [ref=f15e199]
+    - generic [ref=f15e204]:
+      - generic:
+        - img "Background pattern"
+      - generic [ref=f15e205]:
+        - button "Close banner" [ref=f15e207] [cursor=pointer]
+        - generic [ref=f15e212]:
+          - generic [ref=f15e213]: Notice
+          - generic [ref=f15e214]:
+            - paragraph [ref=f15e215]: We're updating our Terms of Service
+            - paragraph [ref=f15e216]: Our Data Processing Addendum is now built into the Terms, effective August 1, 2026.
+          - button "Learn more" [ref=f15e217] [cursor=pointer]
+  - alert [ref=f15e219]

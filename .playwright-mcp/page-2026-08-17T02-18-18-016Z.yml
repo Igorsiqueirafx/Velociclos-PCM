@@ -1,0 +1,55 @@
+- generic [active] [ref=f36e1]:
+  - generic [ref=f36e6]:
+    - navigation [ref=f36e8]:
+      - link [ref=f36e11] [cursor=pointer]:
+        - /url: https://supabase.com
+        - img "Supabase Logo" [ref=f36e12]
+      - link "Documentation" [ref=f36e14] [cursor=pointer]:
+        - /url: https://supabase.com/docs
+    - generic [ref=f36e20]:
+      - main [ref=f36e21]:
+        - generic [ref=f36e22]:
+          - generic [ref=f36e23]:
+            - heading "Welcome back" [level=1] [ref=f36e24]
+            - heading "Sign in to your account" [level=2] [ref=f36e25]
+          - generic [ref=f36e26]:
+            - button "Continue with GitHub" [ref=f36e29] [cursor=pointer]
+            - link "Continue with SSO" [ref=f36e35] [cursor=pointer]:
+              - /url: /dashboard/sign-in-sso?returnTo=%2Faccount%2Ftokens
+            - generic [ref=f36e41]: or
+            - generic [ref=f36e46]:
+              - generic [ref=f36e48]:
+                - generic [ref=f36e49]: Email
+                - textbox "Email" [ref=f36e54]:
+                  - /placeholder: you@example.com
+              - generic [ref=f36e55]:
+                - generic [ref=f36e57]:
+                  - generic [ref=f36e58]: Password
+                  - generic [ref=f36e63]:
+                    - textbox "Password" [ref=f36e64]:
+                      - /placeholder: ••••••••
+                    - button "Show password" [ref=f36e65] [cursor=pointer]
+                - link "Forgot password?" [ref=f36e70] [cursor=pointer]:
+                  - /url: /dashboard/forgot-password?returnTo=%2Faccount%2Ftokens
+              - button "Sign in" [ref=f36e73] [cursor=pointer]
+          - generic [ref=f36e75]:
+            - text: Don’t have an account?
+            - link "Sign up" [ref=f36e76] [cursor=pointer]:
+              - /url: /dashboard/sign-up?returnTo=%2Faccount%2Ftokens
+        - paragraph [ref=f36e78]:
+          - text: By continuing, you agree to Supabase’s
+          - link "Terms of Service" [ref=f36e79] [cursor=pointer]:
+            - /url: https://supabase.com/terms
+          - text: and
+          - link "Privacy Policy" [ref=f36e80] [cursor=pointer]:
+            - /url: https://supabase.com/privacy
+          - text: ", and to receive periodic emails with updates."
+      - complementary [ref=f36e81]:
+        - generic [ref=f36e82]:
+          - generic [ref=f36e83]: “
+          - blockquote [ref=f36e84]: Supabase is the best product experience I've had in years. Not just tech - taste. From docs to latency to the URL structure that makes you think "oh, that's obvious" Feels like every other platform should study how they built it @supabase I love you
+          - link "yatsiv_yuriy @yatsiv_yuriy" [ref=f36e85] [cursor=pointer]:
+            - /url: https://x.com/yatsiv_yuriy/status/1979182362480071162
+            - img "yatsiv_yuriy" [ref=f36e86]
+            - generic [ref=f36e87]: "@yatsiv_yuriy"
+  - alert [ref=f36e89]

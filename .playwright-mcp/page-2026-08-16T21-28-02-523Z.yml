@@ -1,0 +1,119 @@
+- generic [active] [ref=f2e1]:
+  - link "Ir para o conteúdo" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f2e3]:
+    - generic [ref=f2e5]:
+      - link "Velociclos - Página inicial" [ref=f2e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e8]: 
+        - generic [ref=f2e9]: Velociclos
+      - button "Abrir menu de navegação" [ref=f2e11] [cursor=pointer]:
+        - generic [ref=f2e12]: 
+  - main [ref=f2e13]:
+    - generic [ref=f2e17]:
+      - heading "Nossos Artigos" [level=1] [ref=f2e18]:
+        - generic [ref=f2e19]: Nossos
+        - text: Artigos
+      - paragraph [ref=f2e20]: Conteúdo exclusivo sobre trading, mesas proprietárias e estratégias.
+    - generic [ref=f2e22]:
+      - generic [ref=f2e23]:
+        - heading "Nossos Artigos" [level=2] [ref=f2e24]
+        - paragraph [ref=f2e25]: Desenvolvido com dedicação para traders
+      - generic [ref=f2e26]:
+        - button "Todos" [ref=f2e27] [cursor=pointer]
+        - button "Iniciantes" [ref=f2e28] [cursor=pointer]
+        - button "Intermediário" [ref=f2e29] [cursor=pointer]
+        - button "Avançado" [ref=f2e30] [cursor=pointer]
+      - generic [ref=f2e31]:
+        - article [ref=f2e32]:
+          - generic [ref=f2e33]:
+            - generic [ref=f2e34]:
+              - generic [ref=f2e35]: 
+              - generic [ref=f2e37]: Fundamentos
+            - heading "5 Mitos sobre Mesas Proprietárias no Forex" [level=3] [ref=f2e38]
+            - paragraph [ref=f2e39]: Existem muitos mitos sobre mesas proprietárias circulando no mercado. Entenda o que é verdade, o que é mentira e como identificar uma empresa séria.
+            - generic [ref=f2e40]:
+              - generic [ref=f2e41]:
+                - generic [ref=f2e42]: 
+                - text: 9 min de leitura
+              - generic [ref=f2e43]:
+                - generic [ref=f2e44]: 
+                - text: Básico
+            - button "Ler Artigo" [ref=f2e45] [cursor=pointer]
+        - article [ref=f2e46]:
+          - generic [ref=f2e47]:
+            - generic [ref=f2e48]:
+              - generic [ref=f2e49]: 
+              - generic [ref=f2e51]: Estratégias
+            - 'heading "M15 ou M5: Qual Timeframe Oferece Mais Assertividade?" [level=3] [ref=f2e52]'
+            - paragraph [ref=f2e53]: Entenda as diferenças entre operar no M5 e no M15, qual oferece mais precisão e qual tem maior poder de recuperação.
+            - generic [ref=f2e54]:
+              - generic [ref=f2e55]:
+                - generic [ref=f2e56]: 
+                - text: 8 min de leitura
+              - generic [ref=f2e57]:
+                - generic [ref=f2e58]: 
+                - text: Intermediário
+            - button "Ler Artigo" [ref=f2e59] [cursor=pointer]
+        - article [ref=f2e60]:
+          - generic [ref=f2e61]:
+            - generic [ref=f2e62]:
+              - generic [ref=f2e63]: 
+              - generic [ref=f2e65]: Estratégias
+            - heading "O Que Precisa de Saber Antes de Operar em Mesa Proprietária" [level=3] [ref=f2e66]
+            - paragraph [ref=f2e67]: A maioria falha por não entender as regras do jogo. Aprenda a proteger seu capital, usar sub-ciclos e evitar erros.
+            - generic [ref=f2e68]:
+              - generic [ref=f2e69]:
+                - generic [ref=f2e70]: 
+                - text: 10 min de leitura
+              - generic [ref=f2e71]:
+                - generic [ref=f2e72]: 
+                - text: Intermediário
+            - button "Ler Artigo" [ref=f2e73] [cursor=pointer]
+        - article [ref=f2e74]:
+          - generic [ref=f2e75]:
+            - generic [ref=f2e76]:
+              - generic [ref=f2e77]: 
+              - generic [ref=f2e79]: Psicologia
+            - 'heading "Overtrading: O Vício que Destrói Contas de Trading" [level=3] [ref=f2e80]'
+            - paragraph [ref=f2e81]: O overtrading é um dos maiores vilões. Entenda por que acontece e como aplicar gerenciamento rigoroso.
+            - generic [ref=f2e82]:
+              - generic [ref=f2e83]:
+                - generic [ref=f2e84]: 
+                - text: 9 min de leitura
+              - generic [ref=f2e85]:
+                - generic [ref=f2e86]: 
+                - text: Intermediário
+            - button "Ler Artigo" [ref=f2e87] [cursor=pointer]
+        - article [ref=f2e88]:
+          - generic [ref=f2e89]:
+            - generic [ref=f2e90]:
+              - generic [ref=f2e91]: 
+              - generic [ref=f2e93]: Estratégias Avançadas
+            - heading "Quanto Pode Ganhar um Trader numa Mesa Proprietária?" [level=3] [ref=f2e94]
+            - paragraph [ref=f2e95]: Descubra o potencial real de ganhos, com cálculos práticos de lotes, gestão de drawdown e exemplos.
+            - generic [ref=f2e96]:
+              - generic [ref=f2e97]:
+                - generic [ref=f2e98]: 
+                - text: 10 min de leitura
+              - generic [ref=f2e99]:
+                - generic [ref=f2e100]: 
+                - text: Avançado
+            - button "Ler Artigo" [ref=f2e101] [cursor=pointer]
+        - article [ref=f2e102]:
+          - generic [ref=f2e103]:
+            - generic [ref=f2e104]:
+              - generic [ref=f2e105]: 
+              - generic [ref=f2e107]: Fundamentos
+            - heading "Devo Evitar Operar em Notícias? A Visão da Volatilidade" [level=3] [ref=f2e108]
+            - paragraph [ref=f2e109]: Muitos evitam notícias por medo. Descubra por que a volatilidade é sua aliada e como usar o calendário.
+            - generic [ref=f2e110]:
+              - generic [ref=f2e111]:
+                - generic [ref=f2e112]: 
+                - text: 8 min de leitura
+              - generic [ref=f2e113]:
+                - generic [ref=f2e114]: 
+                - text: Intermediário
+            - button "Ler Artigo" [ref=f2e115] [cursor=pointer]
+  - contentinfo [ref=f2e116]:
+    - paragraph [ref=f2e118]: © 2026 Velociclos. Todos os direitos reservados.

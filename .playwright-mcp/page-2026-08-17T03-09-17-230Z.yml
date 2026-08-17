@@ -1,0 +1,46 @@
+- generic [active] [ref=f73e1]:
+  - link "Ir para o conteúdo" [ref=f73e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f73e3]:
+    - generic [ref=f73e5]:
+      - link "Velociclos - Página inicial" [ref=f73e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f73e8]: 
+        - generic [ref=f73e9]: Velociclos
+      - navigation "Menu de navegação principal" [ref=f73e10]:
+        - link "Início" [ref=f73e11] [cursor=pointer]:
+          - /url: /
+        - link "Expert Advisor" [ref=f73e12] [cursor=pointer]:
+          - /url: /ea
+        - link "Cursos" [ref=f73e13] [cursor=pointer]:
+          - /url: /cursos
+        - link "Método Fimathe" [ref=f73e14] [cursor=pointer]:
+          - /url: /metodo-fimathe
+        - link "Artigos" [ref=f73e15] [cursor=pointer]:
+          - /url: /artigos
+        - link "Certificados" [ref=f73e16] [cursor=pointer]:
+          - /url: /certificados
+      - text: 
+  - main [ref=f73e17]:
+    - generic [ref=f73e22]:
+      - generic [ref=f73e23]:
+        - generic [ref=f73e24]: 
+        - heading "Velociclos PCM" [level=1] [ref=f73e26]
+        - paragraph [ref=f73e27]: Entre para o time
+      - generic [ref=f73e28]:
+        - generic [ref=f73e29]:
+          - generic [ref=f73e30]:
+            - generic [ref=f73e31]: Email
+            - textbox "Email" [ref=f73e32]:
+              - /placeholder: seu@email.com
+              - text: teste4@velociclos.com
+          - generic [ref=f73e47]:
+            - generic [ref=f73e48]: 
+            - text: Você enviou muitas solicitações. Tente novamente em 10 minutos.
+          - button "Cadastrar email" [ref=f73e33] [cursor=pointer]
+        - paragraph [ref=f73e35]:
+          - link "Voltar ao site principal" [ref=f73e36] [cursor=pointer]:
+            - /url: /
+  - contentinfo [ref=f73e37]:
+    - paragraph [ref=f73e39]: © 2026 Velociclos. Todos os direitos reservados.
+  - alert [ref=f73e40]

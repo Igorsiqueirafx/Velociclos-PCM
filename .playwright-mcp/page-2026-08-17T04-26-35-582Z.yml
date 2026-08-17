@@ -1,0 +1,21 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - navigation [ref=f2e3]:
+      - heading "Velociclos Admin" [level=2] [ref=f2e4]
+      - list [ref=f2e5]:
+        - listitem [ref=f2e6]:
+          - link "Dashboard" [ref=f2e7] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=f2e8]:
+          - link "Cursos" [ref=f2e9] [cursor=pointer]:
+            - /url: /dashboard/cursos
+        - listitem [ref=f2e10]:
+          - link "Artigos" [ref=f2e11] [cursor=pointer]:
+            - /url: /dashboard/artigos
+        - listitem [ref=f2e12]:
+          - link "Monitoramento" [ref=f2e13] [cursor=pointer]:
+            - /url: /dashboard/monitoramento
+    - main [ref=f2e14]:
+      - heading "Dashboard" [level=1] [ref=f2e15]
+      - heading "Bem-vindo," [level=2] [ref=f2e17]
+  - alert [ref=f2e18]
