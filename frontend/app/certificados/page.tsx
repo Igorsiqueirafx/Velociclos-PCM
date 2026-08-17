@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
 import CertificadosClient from './CertificadosClient'
 
 export const metadata: Metadata = {
@@ -7,18 +7,17 @@ export const metadata: Metadata = {
 }
 
 export default async function CertificadosPage() {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+  const supabase = createClient()
   let certificates = []
   try {
-    const res = await fetch(`${BACKEND_URL}/api/certificates`, {
-      next: { revalidate: 60 },
-    })
-    if (res.ok) {
-      certificates = await res.json()
-    }
+    const { data, error } = await supabase
+      .from('certificates')
+      .select('*')
+      .order('order_index', { ascending: true })
+
+    if (!error) certificates = data || []
   } catch (e) {
     console.error('Failed to load certificates:', e)
   }
 
-  return <CertificadosClient initialCertificates={certificates} />
-}
+  return <CertificadosClient initialCertificates={certificates} />}

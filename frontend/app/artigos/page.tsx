@@ -1,3 +1,4 @@
+﻿import { createClient } from '@/app/lib/supabase/server'
 import { Metadata } from 'next'
 import ArtigosClient from './ArtigosClient'
 
@@ -7,15 +8,16 @@ export const metadata: Metadata = {
 }
 
 export default async function ArtigosPage() {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+  const supabase = createClient()
   let articles = []
   try {
-    const res = await fetch(`${BACKEND_URL}/api/articles`, {
-      next: { revalidate: 60 },
-    })
-    if (res.ok) {
-      articles = await res.json()
-    }
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+
+    if (!error) articles = data || []
   } catch (e) {
     console.error('Failed to load articles:', e)
   }
