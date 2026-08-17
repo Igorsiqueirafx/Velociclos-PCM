@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "rootDirectory": "frontend",
   "cleanUrls": true,
+  "rootDirectory": "frontend",
   "headers": [
     {
       "source": "/assets/(.*)",
