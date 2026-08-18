@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-    "build": "cd frontend && npm run build",
+    "build": "node scripts/sync-public.js && cd frontend && npm run build",
     "lint": "cd frontend && npm run lint",
     "typecheck": "cd frontend && npx tsc --noEmit"
   },
