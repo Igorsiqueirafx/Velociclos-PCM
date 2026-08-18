@@ -151,8 +151,13 @@ create policy "authenticated_select_subscribers" on public.subscribers
 -- ============================================
 -- DATA MIGRATION
 -- ============================================
+-- NOTE: Real YouTube data should be synced using:
+--   node .kilo/scripts/sync-youtube-to-supabase.js
+--   (requires SUPABASE_URL, SUPABASE_SECRET_KEY, YOUTUBE_API_KEY env vars)
+-- The below is placeholder data only. The sync script will clear and repopulate
+-- all courses, modules, and lessons with real YouTube video IDs, thumbnails, and durations.
 
--- Cursos
+-- Cursos (placeholder — will be replaced by sync script)
 INSERT INTO public.courses (title, description, thumbnail, playlist_id, is_published, order_index) VALUES
   ('Método Fimathe', 'Curso completo do Método Fimathe', 'https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg', 'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD', true, 0)
 ON CONFLICT DO NOTHING;
@@ -164,23 +169,13 @@ FROM public.courses
 WHERE title = 'Método Fimathe'
 ON CONFLICT DO NOTHING;
 
--- Lessons
-INSERT INTO public.lessons (module_id, course_id, title, description, video_id, is_published, order_index)
-SELECT m.id, c.id, v.title, v.description, v.videoId, true, v.ordem
-FROM (
-  SELECT title, description, videoId, ROW_NUMBER() OVER (ORDER BY title) - 1 AS ordem
-  FROM (VALUES
-    ('Aula 01', 'Primeira aula do Método Fimathe', '1jZbpAv2mPx9BadTqUverW0GsJWj860mB'),
-    ('Aula 02', 'Segunda aula do Método Fimathe', '1mpoXheY5NtD3IHNthcbPspYvZC6apV-o'),
-    ('Aula 03', 'Terceira aula do Método Fimathe', '1OHhr1d89MDph3uNGPZhtcBz2SKW4dYia'),
-    ('Aula 04', 'Quarta aula do Método Fimathe', '10TkgRVRnKbBA68AhJ9xN9mFU7H512_Lb'),
-    ('Aula 05', 'Quinta aula do Método Fimathe', '1qnvDAEM8YCJ7w7nuBbcdemADf999JGss'),
-    ('Aula 06', 'Sexta aula do Método Fimathe', '1kVr4K_9eyBm5Jf_AIeRw14XxHZZ_1_3M')
-  ) AS v(title, description, videoId)
-) v
-JOIN public.courses c ON c.title = 'Método Fimathe'
-JOIN public.modules m ON m.course_id = c.id AND m.title = 'Aulas'
-ON CONFLICT DO NOTHING;
+-- Lessons: placeholder only. Real data comes from YouTube sync script.
+-- Example of correct format (video_id must be 11 chars, not 33):
+-- INSERT INTO public.lessons (module_id, course_id, title, video_id, is_published, order_index)
+-- SELECT m.id, c.id, 'Aula de exemplo', 'L3XbYm_WOQA', true, 0
+-- FROM public.courses c JOIN public.modules m ON m.course_id = c.id
+-- WHERE c.title = 'Método Fimathe' AND m.title = 'Aulas'
+-- ON CONFLICT DO NOTHING;
 
 -- Certificados
 INSERT INTO public.certificates (title, description, image_url, order_index) VALUES
