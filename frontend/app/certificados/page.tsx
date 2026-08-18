@@ -1,4 +1,5 @@
-﻿import { Metadata } from 'next'
+﻿import { createClient } from '@/app/lib/supabase/server'
+import { Metadata } from 'next'
 import CertificadosClient from './CertificadosClient'
 
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function CertificadosPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   let certificates = []
   try {
     const { data, error } = await supabase

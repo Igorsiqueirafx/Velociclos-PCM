@@ -10,6 +10,7 @@ create table if not exists public.courses (
   title text not null,
   description text,
   thumbnail text,
+  playlist_id text,
   is_published boolean default false,
   order_index integer default 0,
   created_at timestamptz default now(),
@@ -113,11 +114,13 @@ alter table public.subscribers enable row level security;
 -- ============================================
 
 -- Cursos publicados
+drop policy if exists "anon_select_published_courses" on public.courses;
 create policy "anon_select_published_courses"
   on public.courses for select to anon
   using (is_published = true);
 
 -- Módulos de cursos publicados
+drop policy if exists "anon_select_published_modules" on public.modules;
 create policy "anon_select_published_modules"
   on public.modules for select to anon
   using (
@@ -128,6 +131,7 @@ create policy "anon_select_published_modules"
   );
 
 -- Aulas de módulos publicados
+drop policy if exists "anon_select_published_lessons" on public.lessons;
 create policy "anon_select_published_lessons"
   on public.lessons for select to anon
   using (
@@ -140,16 +144,19 @@ create policy "anon_select_published_lessons"
   );
 
 -- Artigos publicados
+drop policy if exists "anon_select_published_articles" on public.articles;
 create policy "anon_select_published_articles"
   on public.articles for select to anon
   using (is_published = true);
 
 -- Certificados públicos
+drop policy if exists "anon_select_certificates" on public.certificates;
 create policy "anon_select_certificates"
   on public.certificates for select to anon
   using (true);
 
 -- Subscribers: insert anônimo
+drop policy if exists "anon_insert_subscribers" on public.subscribers;
 create policy "anon_insert_subscribers"
   on public.subscribers for insert to anon
   with check (true);
@@ -159,31 +166,37 @@ create policy "anon_insert_subscribers"
 -- ============================================
 
 -- Cursos: CRUD
+drop policy if exists "authenticated_crud_courses" on public.courses;
 create policy "authenticated_crud_courses"
   on public.courses for all to authenticated
   using (true) with check (true);
 
 -- Módulos: CRUD
+drop policy if exists "authenticated_crud_modules" on public.modules;
 create policy "authenticated_crud_modules"
   on public.modules for all to authenticated
   using (true) with check (true);
 
 -- Aulas: CRUD
+drop policy if exists "authenticated_crud_lessons" on public.lessons;
 create policy "authenticated_crud_lessons"
   on public.lessons for all to authenticated
   using (true) with check (true);
 
 -- Artigos: CRUD
+drop policy if exists "authenticated_crud_articles" on public.articles;
 create policy "authenticated_crud_articles"
   on public.articles for all to authenticated
   using (true) with check (true);
 
 -- Certificados: CRUD
+drop policy if exists "authenticated_crud_certificates" on public.certificates;
 create policy "authenticated_crud_certificates"
   on public.certificates for all to authenticated
   using (true) with check (true);
 
 -- Subscribers: SELECT
+drop policy if exists "authenticated_select_subscribers" on public.subscribers;
 create policy "authenticated_select_subscribers"
   on public.subscribers for select to authenticated
   using (true);

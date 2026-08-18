@@ -21,7 +21,7 @@ export default function MetodoFimathePage() {
         <IntroVideoOverlay onComplete={() => setShowIntro(false)} />
       )}
 
-      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.png')]">
+      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="max-w-3xl">

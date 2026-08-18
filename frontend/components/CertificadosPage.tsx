@@ -7,31 +7,31 @@ const certificates = [
     id: 'formula-ouro',
     title: 'Fórmula do Ouro',
     description: 'Certificado de conclusão do curso Fórmula do Ouro',
-    image: '/certificados/Formula do Ouro.png',
+    image: '/certificados/Formula do Ouro.webp',
   },
   {
     id: 'laboratorio-fimathe',
     title: 'Laboratório Fimathe',
     description: 'Certificado do Laboratório Fimathe',
-    image: '/certificados/Laboratorio Fimathe.png',
+    image: '/certificados/Laboratorio Fimathe.webp',
   },
   {
     id: 'masterclass-fimathe',
     title: 'MasterClass Fimathe',
     description: 'Certificado de participação na MasterClass',
-    image: '/certificados/MasterClass Fimathe.png',
+    image: '/certificados/MasterClass Fimathe.webp',
   },
   {
     id: 'metodo-fimathe',
     title: 'Método Fimathe',
     description: 'Certificado de conclusão do Método Fimathe',
-    image: '/certificados/Metodo Fimathe.png',
+    image: '/certificados/Metodo Fimathe.webp',
   },
   {
     id: 'scalper',
     title: 'Scalper',
     description: 'Certificado de conclusão do curso de Scalper',
-    image: '/certificados/Scalper.png',
+    image: '/certificados/Scalper.webp',
   },
 ]
 

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ArtigosPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   let articles = []
   try {
     const { data, error } = await supabase

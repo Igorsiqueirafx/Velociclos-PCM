@@ -1,7 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.SUPABASE_URL || 'https://setpkdjcgmlfwubacjlg.supabase.co'
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_j32eOhUnDPZQqEg7r0Lt0A_DXSzztXc'
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://iskzakpvxuowkbzovjxw.supabase.co'
+const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseKey) {
+  console.error('❌ Missing SUPABASE_SECRET_KEY or SUPABASE_SERVICE_ROLE_KEY environment variable')
+  console.error('   Set it in backend/.env or as an environment variable')
+  process.exit(1)
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -24,7 +30,14 @@ async function migrate() {
 
       const { data: course, error: courseError } = await supabase
         .from('courses')
-        .insert([{ title: 'Método Fimathe', description: 'Curso completo do Método Fimathe', thumbnail: '', is_published: true, order_index: 0 }])
+        .insert([{
+          title: 'Método Fimathe',
+          description: 'Curso completo do Método Fimathe',
+          thumbnail: 'https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg',
+          playlist_id: 'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD',
+          is_published: true,
+          order_index: 0,
+        }])
         .select()
         .single()
 
@@ -70,7 +83,7 @@ async function migrate() {
 
   const certsPath = path.join(process.cwd(), 'public', 'certificados')
   if (fs.existsSync(certsPath)) {
-    const files = fs.readdirSync(certsPath).filter(f => f.endsWith('.png') || f.endsWith('.jpg'))
+    const files = fs.readdirSync(certsPath).filter(f => f.endsWith('.webp') || f.endsWith('.png') || f.endsWith('.jpg'))
     console.log(`\nMigrating ${files.length} certificates...`)
 
     for (const file of files) {

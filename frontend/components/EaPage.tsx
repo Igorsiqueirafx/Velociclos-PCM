@@ -9,7 +9,7 @@ export default function EaPage() {
 
   return (
     <>
-      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.png')]">
+      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[50vh]">
@@ -24,7 +24,7 @@ export default function EaPage() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="/Velociclos PCM.ex5"
+                  href="/velociclos-pcm.ex5"
                   download
                   className="inline-flex items-center justify-center px-8 py-4 bg-[#ffd700] text-[#1e2329] font-bold rounded-lg shadow-lg hover:bg-[#ffdd33] transition-all focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1a1a2e]"
                   aria-label="Baixar o arquivo Velociclos PCM.ex5"
@@ -50,7 +50,7 @@ export default function EaPage() {
             <div className="relative flex justify-center">
               <div className="relative group">
                 <img
-                  src="/ea-screenshot.png"
+                  src="/ea-screenshot.webp"
                   alt="Expert Advisor Velociclos PCM"
                   className="w-full max-w-md rounded-lg shadow-2xl transition-transform group-hover:scale-105"
                   loading="lazy"
