@@ -8,6 +8,11 @@
 # Node dependencies (handled in frontend/ and backend/)
 node_modules/
 
+# Root workspace lockfiles (lockfiles belong in frontend/ and backend/)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # Build output
 dist/
 .out/

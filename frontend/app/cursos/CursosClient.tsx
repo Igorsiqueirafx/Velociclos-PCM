@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/app/lib/supabase/client'
+import { fetchPlaylists, fetchPlaylistItems, YouTubePlaylist, YouTubeVideo } from '@/lib/youtube'
 
 interface Lesson {
   id: string
@@ -26,6 +27,8 @@ interface Course {
   description: string | null
   thumbnail: string | null
   order_index: number
+  playlist_id: string | null
+  lessons?: Lesson[]
 }
 
 interface CursosClientProps {
@@ -33,11 +36,15 @@ interface CursosClientProps {
 }
 
 export default function CursosClient({ initialCourses }: CursosClientProps) {
-  const [courses] = useState<Course[]>(initialCourses)
+  const [courses, setCourses] = useState<Course[]>(initialCourses)
+  const [playlists, setPlaylists] = useState<YouTubePlaylist[]>([])
+  const [playlistVideos, setPlaylistVideos] = useState<Record<string, YouTubeVideo[]>>({})
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
   const [modules, setModules] = useState<Module[]>([])
   const [loading, setLoading] = useState(false)
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null)
+  const [loadingPlaylists, setLoadingPlaylists] = useState(false)
+  const [loadingPlaylistVideos, setLoadingPlaylistVideos] = useState<Record<string, boolean>>({})
 
   const loadModules = async (courseId: string) => {
     setLoading(true)
@@ -49,10 +56,10 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
       const supabase = createClient()
       const { data, error } = await supabase
         .from('modules')
-          .select(`
-            *,
-            lessons(id, title, video_id, thumbnail, duration, order_index, is_published)
-          `)
+        .select(`
+          *,
+          lessons(id, title, video_id, thumbnail, duration, order_index, is_published)
+        `)
         .eq('course_id', courseId)
         .order('order_index', { ascending: true })
 
@@ -77,11 +84,36 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
     }
   }
 
+  const loadPlaylistVideos = async (playlistId: string) => {
+    setLoadingPlaylistVideos((prev) => ({ ...prev, [playlistId]: true }))
+    try {
+      const videos = await fetchPlaylistItems(playlistId)
+      setPlaylistVideos((prev) => ({ ...prev, [playlistId]: videos }))
+    } catch (e) {
+      console.error('Failed to load playlist videos:', e)
+    } finally {
+      setLoadingPlaylistVideos((prev) => ({ ...prev, [playlistId]: false }))
+    }
+  }
+
   const closeModal = () => {
     setSelectedCourse(null)
     setModules([])
     setCurrentLesson(null)
   }
+
+  // When no courses in Supabase, discover playlists directly from YouTube
+  useEffect(() => {
+    if (courses.length === 0 && playlists.length === 0 && !loadingPlaylists) {
+      setLoadingPlaylists(true)
+      fetchPlaylists()
+        .then((playlists) => {
+          setPlaylists(playlists)
+        })
+        .catch((e) => console.error('Failed to discover playlists:', e))
+        .finally(() => setLoadingPlaylists(false))
+    }
+  }, [courses.length, playlists.length, loadingPlaylists])
 
   return (
     <>
@@ -93,12 +125,31 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
             </h1>
             <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
               Aprofunde-se no Método Fimathe com nossos cursos completos de trading.
+              Conteúdo organizado em playlists do canal oficial.
             </p>
           </div>
 
-          {courses.length === 0 ? (
+          {courses.length === 0 && loadingPlaylists ? (
             <div className="text-center py-16">
-              <p className="text-[#a0a0a0] text-lg">Nenhum curso disponível no momento.</p>
+              <p className="text-[#a0a0a0] text-lg">Descobrindo playlists do canal...</p>
+            </div>
+          ) : courses.length === 0 && playlists.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {playlists.map((playlist) => (
+                <PlaylistCard
+                  key={playlist.id}
+                  playlist={playlist}
+                  videos={playlistVideos[playlist.id] || []}
+                  isLoading={loadingPlaylistVideos[playlist.id] || false}
+                  onLoadVideos={loadPlaylistVideos}
+                />
+              ))}
+            </div>
+          ) : courses.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-[#a0a0a0] text-lg">
+                Nenhum curso disponível no momento.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -149,6 +200,124 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
         />
       )}
     </>
+  )
+}
+
+function PlaylistCard({
+  playlist,
+  videos,
+  isLoading,
+  onLoadVideos,
+}: {
+  playlist: YouTubePlaylist
+  videos: YouTubeVideo[]
+  isLoading: boolean
+  onLoadVideos: (playlistId: string) => void
+}) {
+  const [expanded, setExpanded] = useState(false)
+
+  const handleExpand = () => {
+    if (!expanded) {
+      onLoadVideos(playlist.id)
+    }
+    setExpanded(!expanded)
+  }
+
+  return (
+    <div className="group bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden text-left transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)]">
+      <div className="relative aspect-video">
+        {playlist.thumbnail ? (
+          <img
+            src={playlist.thumbnail}
+            alt={playlist.title}
+            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement
+              target.src = 'https://via.placeholder.com/320x180/343a47/ffffff?text=Sem+thumbnail'
+            }}
+          />
+        ) : (
+          <div className="w-full h-full bg-[#343a47] flex items-center justify-center">
+            <i className="fas fa-play text-3xl text-[#a0a0a0]" aria-hidden="true"></i>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <i className="fas fa-play text-3xl text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-[#dcdcdc] mb-1 group-hover:text-[#ffd700] transition-colors line-clamp-1">
+          {playlist.title}
+        </h3>
+        <p className="text-sm text-[#a0a0a0] line-clamp-2 mb-2">
+          {playlist.description || 'Playlist de vídeos do canal marceloferreirafx.'}
+        </p>
+        <p className="text-xs text-[#707070] mb-3">
+          <i className="fas fa-video mr-1"></i>
+          {playlist.videoCount} vídeos
+        </p>
+        <button
+          onClick={handleExpand}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#1e2329] border border-[#404857] rounded-lg text-sm text-[#dcdcdc] hover:bg-[#343a47] transition-colors focus:outline-none focus:ring-1 focus:ring-[#ffd700]"
+        >
+          <i className={`fas ${expanded ? 'fa-chevron-up' : 'fa-chevron-down'}`} aria-hidden="true"></i>
+          {expanded ? 'Ocultar vídeos' : 'Ver vídeos'}
+        </button>
+      </div>
+
+      {expanded && (
+        <div className="px-4 pb-4">
+          {isLoading ? (
+            <div className="space-y-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="animate-pulse flex gap-3">
+                  <div className="w-20 h-12 bg-[#343a47] rounded flex-shrink-0"></div>
+                  <div className="flex-1 space-y-1">
+                    <div className="h-4 bg-[#343a47] rounded w-3/4"></div>
+                    <div className="h-3 bg-[#343a47] rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : videos.length > 0 ? (
+            <div className="space-y-2 max-h-80 overflow-y-auto">
+              {videos.map((video) => (
+                <a
+                  key={video.videoId}
+                  href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-3 p-2 rounded-lg text-left transition-all hover:bg-[#343a47] focus:outline-none focus:ring-1 focus:ring-[#ffd700]"
+                >
+                  <div className="relative flex-shrink-0 w-20 h-12">
+                    <img
+                      src={video.thumbnail || `https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg`}
+                      alt={video.title}
+                      className="w-20 h-12 object-cover rounded flex-shrink-0"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[#dcdcdc] line-clamp-2">
+                      {video.title}
+                    </p>
+                    <p className="text-xs text-[#a0a0a0] mt-0.5">
+                      <i className="fas fa-external-link-alt mr-1"></i>
+                      Assistir no YouTube
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[#a0a0a0] text-sm text-center py-4">
+              Nenhum vídeo encontrado nesta playlist.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -226,38 +395,38 @@ function CourseModal({
               {modules.map((mod) => (
                 <div key={mod.id} className="space-y-2">
                   <h4 className="text-sm font-semibold text-[#ffd700]">{mod.title}</h4>
-                   {mod.lessons.map((lesson) => (
-                     <button
-                       key={lesson.id}
-                       onClick={() => onSelectLesson(lesson)}
-                       className={`w-full flex gap-3 p-2 rounded-lg text-left transition-all ${
-                         currentLesson?.id === lesson.id
-                           ? 'bg-[#ffd700]/10 border border-[#ffd700]/30 text-[#ffd700]'
-                           : 'bg-[#1e2329] hover:bg-[#343a47] text-[#dcdcdc]'
-                       } focus:outline-none focus:ring-1 focus:ring-[#ffd700]`}
-                     >
-                       {lesson.thumbnail ? (
-                         <img
-                           src={lesson.thumbnail}
-                           alt={lesson.title}
-                           className="w-20 h-12 object-cover rounded flex-shrink-0"
-                           loading="lazy"
-                         />
-                       ) : (
-                         <div className="w-20 h-12 bg-[#343a47] rounded flex-shrink-0 flex items-center justify-center">
-                           <i className="fas fa-play text-[#a0a0a0]" aria-hidden="true"></i>
-                         </div>
-                       )}
-                       <div className="flex-1">
-                         <p className="text-sm font-medium line-clamp-2">{lesson.title}</p>
-                         {lesson.duration && (
-                           <p className="text-xs text-[#a0a0a0] mt-1">
-                             {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, '0')}
-                           </p>
-                         )}
-                       </div>
-                     </button>
-                   ))}
+                  {mod.lessons.map((lesson) => (
+                    <button
+                      key={lesson.id}
+                      onClick={() => onSelectLesson(lesson)}
+                      className={`w-full flex gap-3 p-2 rounded-lg text-left transition-all ${
+                        currentLesson?.id === lesson.id
+                          ? 'bg-[#ffd700]/10 border border-[#ffd700]/30 text-[#ffd700]'
+                          : 'bg-[#1e2329] hover:bg-[#343a47] text-[#dcdcdc]'
+                      } focus:outline-none focus:ring-1 focus:ring-[#ffd700]`}
+                    >
+                      {lesson.thumbnail ? (
+                        <img
+                          src={lesson.thumbnail}
+                          alt={lesson.title}
+                          className="w-20 h-12 object-cover rounded flex-shrink-0"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-20 h-12 bg-[#343a47] rounded flex-shrink-0 flex items-center justify-center">
+                          <i className="fas fa-play text-[#a0a0a0]" aria-hidden="true"></i>
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <p className="text-sm font-medium line-clamp-2">{lesson.title}</p>
+                        {lesson.duration && (
+                          <p className="text-xs text-[#a0a0a0] mt-1">
+                            {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, '0')}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               ))}
             </div>

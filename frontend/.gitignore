@@ -2,6 +2,10 @@
 .next/
 out/
 
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
+.next/**/*.tsbuildinfo
+
 # Environment files (contains secrets — never commit)
 .env.local
 .env.development

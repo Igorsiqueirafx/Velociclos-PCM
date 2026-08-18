@@ -14,10 +14,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install @supabase/supabase-js
-      - name: Sync YouTube playlists to Supabase
+      - run: npm install @supabase/supabase-js dotenv
+      - name: Sync all channel playlists to Supabase
         run: node .kilo/scripts/sync-youtube-to-supabase.js
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_CHANNEL_ID: 'UCwk7RuafgXHRqSmS3qO8qQQ'
           SUPABASE_URL: https://iskzakpvxuowkbzovjxw.supabase.co
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}

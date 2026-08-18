@@ -20,6 +20,7 @@
 require('dotenv').config();
 
 const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
@@ -44,24 +45,87 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SECRET_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
-// All playlist IDs from the backend configuration
-const PLAYLIST_IDS = [
-  'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I', // Fimathe Checkpoint | FOREX
-  'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9', // Primórdios da Fimathe
-  'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh', // Marcelão in London [2024]
-  'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK', // As melhores do XAUUSD
-  'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5', // ESTUDOS EM EUR/USD
-  'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV', // FIMATHE NO OURO
-  'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ', // FOREX SCALPER FIMATHE
-  'PLWhqc48nlRWJpjKnjSaJpq4jMRE_ukg6V', // FIMATHE EM CRIPTOMOEDA
-  'PLWhqc48nlRWJZyYdEi3gcSIHx6cy0Hxlb', // TRADE PARA INICIANTES
-  'PLWhqc48nlRWITJy0wfqGdXprKLkEecXIv', // FOREX DO ZERO? COMECE AQUI
-  'PLWhqc48nlRWLqE-RBi_RTBjKit-xFWeOC', // VLOG
-  'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD', // IMERSÃO MÉTODO FIMATHE
-  'PLWhqc48nlRWKu17t5xqL6Sr3T6Pwn1DcL', // COLLABS
-  'PLWhqc48nlRWIKhZTuRMMy4vtOhN_HANlw', // MEU PORTFÓLIO NO DAYTRADE
-  'PLWhqc48nlRWIuwZkiaLAfDfFKWWndWUxO', // ESTUDOS EM USD/JPY
-];
+// Marcos Ferreira YouTube channel ID
+// Fetched dynamically via: YouTube Data API v3 channels.list?forHandle=marceloferreirafx
+const CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ';
+
+// Playlists to exclude from sync (shorts, auto-generated, etc.)
+const EXCLUDE_PLAYLIST_TITLES = ['SHORTS'];
+const EXCLUDE_PLAYLIST_IDS = [];
+
+/**
+ * Fetches ALL playlists from the marceloferreirafx YouTube channel.
+ * Uses the YouTube Data API v3 playlists.list with channelId parameter.
+ * Handles pagination automatically.
+ */
+async function fetchAllChannelPlaylists() {
+  const allPlaylists = [];
+  let nextPageToken = null;
+
+  do {
+    const params = new URLSearchParams({
+      part: 'snippet,contentDetails',
+      channelId: CHANNEL_ID,
+      maxResults: '50',
+      key: YOUTUBE_API_KEY,
+      ...(nextPageToken ? { pageToken: nextPageToken } : {}),
+    });
+
+    const url = `https://www.googleapis.com/youtube/v3/playlists?${params.toString()}`;
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`YouTube API error (playlists): ${res.status} - ${text}`);
+    }
+
+    const json = await res.json();
+
+    if (json.error) {
+      console.error('YouTube API error:', json.error.message);
+      break;
+    }
+
+    for (const item of json.items || []) {
+      const snippet = item.snippet || {};
+      const contentDetails = item.contentDetails || {};
+      const title = snippet.title || '';
+
+      // Skip excluded playlists
+      if (EXCLUDE_PLAYLIST_IDS.includes(item.id) ||
+          EXCLUDE_PLAYLIST_TITLES.some((excluded) =>
+            title.toUpperCase().includes(excluded))) {
+        console.log(`  ⏭️  Skipping playlist: "${title}" (${item.id})`);
+        continue;
+      }
+
+      const thumbnail =
+        snippet?.thumbnails?.maxres?.url ||
+        snippet?.thumbnails?.high?.url ||
+        snippet?.thumbnails?.medium?.url ||
+        snippet?.thumbnails?.standard?.url ||
+        snippet?.thumbnails?.default?.url ||
+        '';
+
+      allPlaylists.push({
+        id: item.id,
+        title: title,
+        description: snippet?.description || '',
+        thumbnail,
+        itemCount: contentDetails?.itemCount || 0,
+      });
+    }
+
+    nextPageToken = json.nextPageToken;
+  } while (nextPageToken);
+
+  return allPlaylists;
+}
+
+// Backward compatibility: keep the old PLAYLIST_IDS for reference/manual overrides
+const PLAYLIST_IDS = process.env.PLAYLIST_IDS
+  ? process.env.PLAYLIST_IDS.split(',').filter(Boolean)
+  : null;
 
 function parseISO8601Duration(isoDuration) {
   if (!isoDuration) return null;
@@ -200,41 +264,57 @@ async function fetchVideoDetails(videoIds) {
 }
 
 async function main() {
-  console.log('=== Sincronizando Playlists do YouTube para Supabase ===\n');
+  console.log('=== Sincronizando TODAS as playlists do canal marceloferreirafx para Supabase ===\n');
   console.log(`Supabase URL: ${SUPABASE_URL}`);
-  console.log(`Playlists to sync: ${PLAYLIST_IDS.length}\n`);
+  console.log(`Channel ID: ${CHANNEL_ID}\n`);
+
+  // Step 1: Discover ALL playlists from the channel
+  console.log('Step 1: Discovering all playlists from channel...');
+  let playlists;
+  try {
+    playlists = await fetchAllChannelPlaylists();
+  } catch (error) {
+    console.error('❌ Failed to discover playlists from channel:', error.message);
+    console.error('   Falling back to PLAYLIST_IDS environment variable if set...');
+    if (PLAYLIST_IDS && PLAYLIST_IDS.length > 0) {
+      console.log(`   Using ${PLAYLIST_IDS.length} playlists from PLAYLIST_IDS env var`);
+      playlists = await Promise.all(
+        PLAYLIST_IDS.map(async (playlistId) => {
+          const details = await fetchPlaylistDetails(playlistId);
+          return details ? { id: playlistId, ...details } : null;
+        })
+      );
+      playlists = playlists.filter(Boolean);
+    } else {
+      console.error('   No PLAYLIST_IDS available. Exiting.');
+      process.exit(1);
+    }
+  }
+  console.log(`Discovered ${playlists.length} playlists to sync\n`);
 
   let totalPlaylists = 0;
   let totalLessons = 0;
 
-  // Clear existing data (to avoid duplicates from re-runs)
-  console.log('Step 1: Clearing existing courses/modules/lessons...');
+  // Step 2: Clear existing data (to avoid duplicates from re-runs)
+  console.log('Step 2: Clearing existing courses/modules/lessons...');
   await supabase.from('lessons').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   await supabase.from('modules').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   await supabase.from('courses').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   console.log('Cleared.\n');
 
-  for (const [index, playlistId] of PLAYLIST_IDS.entries()) {
-    console.log(`\n[${index + 1}/${PLAYLIST_IDS.length}] Processing playlist: ${playlistId}`);
-
-    // Fetch playlist details
-    const playlistDetails = await fetchPlaylistDetails(playlistId);
-    if (!playlistDetails) {
-      console.log('  ⚠️ Playlist not found or error');
-      continue;
-    }
-
-    console.log(`  Title: ${playlistDetails.title}`);
-    console.log(`  Thumbnail: ${playlistDetails.thumbnail}`);
-    console.log(`  Item count: ${playlistDetails.itemCount}`);
+  // Step 3: Process each playlist
+  for (const [index, playlist] of playlists.entries()) {
+    const playlistId = playlist.id;
+    console.log(`\n[${index + 1}/${playlists.length}] Processing playlist: ${playlist.title} (${playlistId})`);
+    console.log(`  Item count: ${playlist.itemCount}`);
 
     // Create course
     const { data: course, error: courseError } = await supabase
       .from('courses')
       .insert([{
-        title: playlistDetails.title,
-        description: playlistDetails.description || null,
-        thumbnail: playlistDetails.thumbnail || null,
+        title: playlist.title,
+        description: playlist.description || null,
+        thumbnail: playlist.thumbnail || null,
         playlist_id: playlistId,
         is_published: true,
         order_index: index,
@@ -256,7 +336,7 @@ async function main() {
       .insert([{
         course_id: course.id,
         title: 'Aulas',
-        description: `Aulas de ${playlistDetails.title}`,
+        description: `Aulas de ${playlist.title}`,
         order_index: 0,
       }])
       .select()

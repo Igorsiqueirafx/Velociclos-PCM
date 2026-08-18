@@ -12,6 +12,7 @@ interface Course {
   title: string
   description: string | null
   thumbnail: string | null
+  playlist_id: string | null
   is_published: boolean
   order_index: number
 }
