@@ -1,9 +1,9 @@
-Ôªø'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/app/lib/supabase/client'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
 
 interface HealthStatus {
   status: string
@@ -27,21 +27,30 @@ export default function DashboardHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+  const safeCount = async (table: string) => {
+    try {
+      const { count } = await supabase.from(table).select('*', { count: 'exact', head: true });
+      return count || 0;
+    } catch {
+      return 0;
+    }
+  };
+
         const [
           subscribersRes,
           coursesRes,
           lessonsRes,
           articlesRes,
-          downloadsRes,
           certificatesRes,
+          downloadCount,
           healthRes,
         ] = await Promise.all([
           supabase.from('subscribers').select('*', { count: 'exact' }).order('created_at', { ascending: false }).limit(5),
           supabase.from('courses').select('*', { count: 'exact', head: true }),
-          supabase.from('course_lessons').select('*', { count: 'exact', head: true }),
+          supabase.from('lessons').select('*', { count: 'exact', head: true }),
           supabase.from('articles').select('*', { count: 'exact', head: true }),
-          supabase.from('downloads').select('*', { count: 'exact', head: true }),
           supabase.from('certificates').select('*', { count: 'exact', head: true }),
+          safeCount('downloads'),
           fetch(`${BACKEND_URL}/api/health`).catch(() => null),
         ])
 
@@ -51,7 +60,7 @@ export default function DashboardHome() {
           courseCount: coursesRes.count || 0,
           lessonCount: lessonsRes.count || 0,
           articleCount: articlesRes.count || 0,
-          downloadCount: downloadsRes.count || 0,
+          downloadCount: downloadCount,
           certificateCount: certificatesRes.count || 0,
         })
 
@@ -125,7 +134,7 @@ export default function DashboardHome() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Dashboard</h1>
-        <p className="text-[#a0a0a0]">Vis√£o geral do ecossistema Fimathe</p>
+        <p className="text-[#a0a0a0]">Vis„o geral do ecossistema Fimathe</p>
       </div>
 
       {/* Stats Grid */}
@@ -205,7 +214,7 @@ export default function DashboardHome() {
                 Sistema {health?.status === 'ok' ? 'Operacional' : 'Offline'}
               </h2>
               <p className="text-[#a0a0a0] text-sm">
-                Backend API ‚Ä¢ Supabase (PostgreSQL) ‚Ä¢ Auth: Supabase Auth
+                Backend API ï Supabase (PostgreSQL) ï Auth: Supabase Auth
               </p>
             </div>
           </div>
@@ -220,3 +229,4 @@ export default function DashboardHome() {
     </div>
   )
 }
+

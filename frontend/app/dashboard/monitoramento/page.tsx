@@ -1,9 +1,9 @@
-ï»¿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/app/lib/supabase/client'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
 
 interface HealthStatus {
   status: string
@@ -55,7 +55,7 @@ export default function MonitoramentoPage() {
         results.push({
           name: 'Backend API',
           status: 'offline',
-          detail: 'Sem resposta (timeout ou conexÃ£o recusada)',
+          detail: 'Sem resposta (timeout ou conexão recusada)',
           icon: 'fas fa-server',
         })
       }
@@ -84,7 +84,7 @@ export default function MonitoramentoPage() {
 
       try {
         const { count: lessonCount } = await supabase
-          .from('course_lessons')
+          .from('lessons')
           .select('*', { count: 'exact', head: true })
         results.push({
           name: 'Aulas',
@@ -170,7 +170,7 @@ export default function MonitoramentoPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Monitoramento</h1>
-        <p className="text-[#a0a0a0]">Status do sistema e saÃºde dos serviÃ§os</p>
+        <p className="text-[#a0a0a0]">Status do sistema e saúde dos serviços</p>
       </div>
 
       {/* Overall Status */}
@@ -193,14 +193,14 @@ export default function MonitoramentoPage() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-[#dcdcdc]">
-              Sistema {overallStatus === 'online' ? 'Operacional' : overallStatus === 'warning' ? 'Parcialmente Operacional' : 'IndisponÃ­vel'}
+              Sistema {overallStatus === 'online' ? 'Operacional' : overallStatus === 'warning' ? 'Parcialmente Operacional' : 'Indisponível'}
             </h2>
             <p className="text-[#a0a0a0]">
-              {onlineCount} online â€¢ {warningCount} avisos â€¢ {offlineCount} offline
+              {onlineCount} online • {warningCount} avisos • {offlineCount} offline
             </p>
             {health?.timestamp && (
               <p className="text-sm text-[#707070] mt-1">
-                Ãšltima verificaÃ§Ã£o: {new Date(health.timestamp).toLocaleString('pt-BR')}
+                Última verificação: {new Date(health.timestamp).toLocaleString('pt-BR')}
               </p>
             )}
           </div>
@@ -241,7 +241,7 @@ export default function MonitoramentoPage() {
 
       {/* Info */}
       <div className="card">
-        <h3 className="text-lg font-semibold text-[#dcdcdc] mb-4">InformaÃ§Ãµes do Sistema</h3>
+        <h3 className="text-lg font-semibold text-[#dcdcdc] mb-4">Informações do Sistema</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2 text-[#a0a0a0]">
             <i className="fas fa-code-branch text-[#ffd700]"></i>
@@ -264,3 +264,4 @@ export default function MonitoramentoPage() {
     </div>
   )
 }
+
