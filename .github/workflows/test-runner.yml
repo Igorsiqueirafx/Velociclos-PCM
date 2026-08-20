@@ -1,0 +1,21 @@
+name: Test Runner
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/test-runner.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "runner working"
+      - name: Check token
+        run: |
+          if [ -n "${{ secrets.RAILWAY_API_TOKEN }}" ]; then
+            echo "RAILWAY_API_TOKEN is SET"
+          else
+            echo "RAILWAY_API_TOKEN is NOT SET"
+          fi
