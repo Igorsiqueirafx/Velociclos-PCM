@@ -69,7 +69,17 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('/api/test-deploy', (req, res) => {
-  res.json({ deployed: true, hasPg: !!pg, pgVersion: pg?.version?.nodeVersion || 'unavailable' });
+  const pwdSource = process.env.SUPABASE_DB_PASSWORD ? 'SUPABASE_DB_PASSWORD' :
+                    process.env.SUPABASE_SECRET_KEY ? 'SUPABASE_SECRET_KEY' :
+                    process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SUPABASE_SERVICE_ROLE_KEY' : 'NOT SET';
+  res.json({ 
+    deployed: true, 
+    hasPg: !!pg, 
+    pgVersion: pg?.version?.nodeVersion || 'unavailable',
+    pwdSource,
+    dbHost: process.env.SUPABASE_DB_HOST || 'aws-1-us-west-2.pooler.supabase.com',
+    supabaseUrl: process.env.SUPABASE_URL || 'not set',
+  });
 });
 
 app.post('/api/migrate', authenticate, async (req, res) => {
@@ -83,9 +93,10 @@ app.post('/api/migrate', authenticate, async (req, res) => {
     const projectRef = projectUrl.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1] || 'iskzakpvxuowkbzovjxw';
 
     const dbPassword = process.env.SUPABASE_DB_PASSWORD || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const dbHost = process.env.SUPABASE_DB_HOST || 'aws-1-us-west-2.pooler.supabase.com';
 
     const client = new pg.Client({
-      host: process.env.SUPABASE_DB_HOST || 'aws-1-us-west-2.pooler.supabase.com',
+      host: dbHost,
       port: parseInt(process.env.SUPABASE_DB_PORT) || 5432,
       database: process.env.SUPABASE_DB_NAME || 'postgres',
       user: process.env.SUPABASE_DB_USER || `postgres.${projectRef}`,
@@ -99,13 +110,12 @@ app.post('/api/migrate', authenticate, async (req, res) => {
       const result = await client.query(sql);
       console.log('Migration: SQL executed successfully');
       await client.end();
-      res.json({ success: true, rowCount: result.rowCount, rows: result.rows?.slice(0, 10) || [] });
+      res.json({ success: true, rowCount: result.rowCount, rows: result.rows?.slice(0, 10) || [], debug: { projectRef, host: dbHost, port: 5432, user: `postgres.${projectRef}`, pwdSource: process.env.SUPABASE_DB_PASSWORD ? 'SUPABASE_DB_PASSWORD' : 'SUPABASE_SECRET_KEY' } });
     } catch (dbErr) {
       console.error('Migration DB error:', dbErr.message);
       try { await client.end(); } catch(e) {}
-      res.status(500).json({ error: 'Database connection failed', details: dbErr.message });
-    }
-  } catch (error) {
+      res.status(500).json({ error: 'Database connection failed', details: dbErr.message, debug: { projectRef, host: dbHost, port: 5432, user: `postgres.${projectRef}`, pwdSource: process.env.SUPABASE_DB_PASSWORD ? 'SUPABASE_DB_PASSWORD' : 'SUPABASE_SECRET_KEY', pwdLength: dbPassword?.length || 0 } });
+    } catch (error) {
     console.error('Migration error:', error);
     res.status(500).json({ error: 'Migration failed', details: error.message });
   }
