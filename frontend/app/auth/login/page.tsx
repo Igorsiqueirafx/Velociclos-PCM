@@ -34,6 +34,21 @@ export default function LoginPage() {
     setIsLoading(false)
   }
 
+  const handleGoogleLogin = async () => {
+    setError('')
+    setIsLoading(true)
+    const { error: authError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    if (authError) {
+      setError(authError.message)
+    }
+    setIsLoading(false)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0f19] via-[#1e2329] to-[#1a1f25] flex items-center justify-center relative overflow-hidden">
       <div
@@ -50,12 +65,12 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md mx-auto px-4">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full mb-4 shadow-[0_0_30px_rgba(255,215,0,0.4)]">
-            <i className="fas fa-bolt text-2xl text-[#1e2329]" aria-hidden="true"></i>
+            <i className="fas fa-lock text-2xl text-[#1e2329]" aria-hidden="true"></i>
           </div>
           <h1 className="text-3xl font-extrabold text-[#dcdcdc] mb-1">
             Velociclos <span className="text-[#ffd700]">PCM</span>
           </h1>
-          <p className="text-[#a0a0a0] text-sm">Painel Administrativo</p>
+          <p className="text-[#a0a0a0] text-sm">Acesso restrito</p>
         </div>
 
         <div className="bg-[#2a2e39] border border-[#404857] rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.3)]">
@@ -84,7 +99,7 @@ export default function LoginPage() {
               <input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Digite sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -117,29 +132,16 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-[#a0a0a0] text-sm">
-              Não tem uma conta?{' '}
-              <button
-                type="button"
-                onClick={() => router.push('/auth/register')}
-                className="text-[#ffd700] hover:text-[#ffdd33] transition-colors font-medium"
-              >
-                Criar conta
-              </button>
-            </p>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-[#404857]">
-            <div className="text-center">
-              <Link
-                href="/"
-                className="text-[#a0a0a0] hover:text-[#ffd700] text-sm transition-colors flex items-center justify-center gap-2"
-              >
-                <i className="fas fa-arrow-left"></i>
-                Voltar ao site principal
-              </Link>
-            </div>
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#ffffff]/10 border border-[#ffffff]/20 rounded-lg text-[#dcdcdc] hover:bg-[#ffffff]/20 transition-all duration-200 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <i className="fab fa-google text-[#ffd700]"></i>
+              Entrar com Google
+            </button>
           </div>
         </div>
       </div>

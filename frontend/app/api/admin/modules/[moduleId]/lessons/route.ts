@@ -10,7 +10,10 @@ async function getAuthHeaders() {
   }
 }
 
-export async function GET(_request: Request, { params }: { params: Promise<Record<string, string>> }) {
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ moduleId: string }> }
+) {
   try {
     const { moduleId } = await params
     const res = await fetch(`${BACKEND_URL}/api/modules/${moduleId}/lessons`, {
@@ -25,7 +28,10 @@ export async function GET(_request: Request, { params }: { params: Promise<Recor
   }
 }
 
-export async function POST(request: Request, { params }: { params: Promise<Record<string, string>> }) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ moduleId: string }> }
+) {
   try {
     const { moduleId } = await params
     const body = await request.json()

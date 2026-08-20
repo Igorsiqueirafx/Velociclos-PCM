@@ -9,9 +9,10 @@ const navItems = [
   { href: '/dashboard/cursos', label: 'Cursos', icon: 'fas fa-play-circle' },
   { href: '/dashboard/artigos', label: 'Artigos', icon: 'fas fa-newspaper' },
   { href: '/dashboard/certificados', label: 'Certificados', icon: 'fas fa-award' },
-  { href: '/dashboard/subscribers', label: 'Subscribers', icon: 'fas fa-users' },
+  { href: '/dashboard/downloads', label: 'Downloads', icon: 'fas fa-download' },
+  { href: '/dashboard/pages', label: 'Páginas', icon: 'fas fa-file-alt' },
+  { href: '/dashboard/leads', label: 'Leads', icon: 'fas fa-bullseye' },
   { href: '/dashboard/monitoramento', label: 'Monitoramento', icon: 'fas fa-heartbeat' },
-  { href: '/dashboard/videos', label: 'Vídeos', icon: 'fas fa-video' },
 ]
 
 export default function DashboardLayout({

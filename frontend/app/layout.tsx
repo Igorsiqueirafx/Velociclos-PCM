@@ -22,6 +22,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const isAdminSite = process.env.NEXT_PUBLIC_IS_ADMIN_SITE === 'true'
+
   return (
     <html lang="pt-BR" data-theme="dark" className="scroll-smooth">
       <head>
@@ -36,11 +38,14 @@ export default function RootLayout({
       </head>
       <body className="bg-[#1e2329] text-[#dcdcdc] font-sans antialiased">
         <SkipLink />
-        <Header />
-        <main id="main-content" className="min-h-[calc(100vh-120px)]">
+        {!isAdminSite && <Header />}
+        <main
+          id="main-content"
+          className={isAdminSite ? "min-h-screen" : "min-h-[calc(100vh-120px)]"}
+        >
           {children}
         </main>
-        <Footer />
+        {!isAdminSite && <Footer />}
       </body>
     </html>
   )
@@ -56,3 +61,4 @@ function SkipLink() {
     </a>
   )
 }
+

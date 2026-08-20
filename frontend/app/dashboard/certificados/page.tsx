@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
-
 interface Certificate {
   id: string
   title: string
@@ -31,7 +29,7 @@ export default function CertificadosPage() {
 
   const fetchCertificates = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/certificates`)
+      const res = await fetch('/api/admin/certificates', { cache: 'no-store' })
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
       setCertificates(Array.isArray(data) ? data : [])
@@ -69,7 +67,7 @@ export default function CertificadosPage() {
     setSaving(true)
     setError(null)
     try {
-      const url = editingId ? `${BACKEND_URL}/api/certificates/${editingId}` : `${BACKEND_URL}/api/certificates`
+      const url = editingId ? `/api/admin/certificates/${editingId}` : '/api/admin/certificates'
       const method = editingId ? 'PUT' : 'POST'
       const res = await fetch(url, {
         method,
@@ -89,7 +87,7 @@ export default function CertificadosPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Tem certeza que deseja excluir este certificado?')) return
     try {
-      const res = await fetch(`${BACKEND_URL}/api/certificates/${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/admin/certificates/${id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('Failed to delete certificate')
       setCertificates(certificates.filter((c) => c.id !== id))
     } catch (err) {

@@ -19,6 +19,22 @@ export default function RegisterPage() {
     })
   }, [router, supabase])
 
+  const handleGoogleSignUp = async () => {
+    setError('')
+    setIsLoading(true)
+    const { error: authError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: { sign_up: 'true' },
+      },
+    })
+    if (authError) {
+      setError(authError.message)
+    }
+    setIsLoading(false)
+  }
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -143,6 +159,16 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
+
+          <button
+            type="button"
+            onClick={handleGoogleSignUp}
+            disabled={isLoading}
+            className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 bg-[#ffffff]/10 border border-[#ffffff]/20 rounded-lg text-[#dcdcdc] hover:bg-[#ffffff]/20 transition-all duration-200 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <i className="fab fa-google text-[#ffd700]"></i>
+            Criar conta com Google
+          </button>
 
           <div className="mt-6 text-center">
             <p className="text-[#a0a0a0] text-sm">

@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState, useEffect } from 'react'
+import { createClient } from '@/app/lib/supabase/client'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
 
@@ -24,10 +25,10 @@ export default function MonitoramentoPage() {
   useEffect(() => {
     const checkSystem = async () => {
       const results: SystemCheck[] = []
-      const timestamp = new Date().toISOString()
 
+      // Backend health
+      const startTime = Date.now()
       try {
-        const startTime = Date.now()
         const res = await fetch(`${BACKEND_URL}/api/health`, {
           signal: AbortSignal.timeout(5000),
         })
@@ -59,83 +60,82 @@ export default function MonitoramentoPage() {
         })
       }
 
+      // Supabase data checks
+      const supabase = createClient()
+
       try {
-        const supabaseRes = await fetch(`${BACKEND_URL}/api/subscribers`)
-        if (supabaseRes.ok) {
-          results.push({
-            name: 'Endpoint Subscribers',
-            status: 'online',
-            detail: 'Acessível via backend',
-            icon: 'fas fa-users',
-          })
-        } else {
-          results.push({
-            name: 'Endpoint Subscribers',
-            status: 'warning',
-            detail: `HTTP ${supabaseRes.status}`,
-            icon: 'fas fa-users',
-          })
-        }
+        const { count: courseCount } = await supabase
+          .from('courses')
+          .select('*', { count: 'exact', head: true })
+        results.push({
+          name: 'Cursos',
+          status: 'online',
+          detail: `${courseCount || 0} cursos cadastrados`,
+          icon: 'fas fa-play-circle',
+        })
       } catch {
         results.push({
-          name: 'Endpoint Subscribers',
+          name: 'Cursos',
           status: 'offline',
-          detail: 'Sem resposta',
+          detail: 'Erro ao acessar Supabase',
+          icon: 'fas fa-play-circle',
+        })
+      }
+
+      try {
+        const { count: lessonCount } = await supabase
+          .from('course_lessons')
+          .select('*', { count: 'exact', head: true })
+        results.push({
+          name: 'Aulas',
+          status: 'online',
+          detail: `${lessonCount || 0} aulas cadastradas`,
+          icon: 'fas fa-book-open',
+        })
+      } catch {
+        results.push({
+          name: 'Aulas',
+          status: 'offline',
+          detail: 'Erro ao acessar Supabase',
+          icon: 'fas fa-book-open',
+        })
+      }
+
+      try {
+        const { count: articleCount } = await supabase
+          .from('articles')
+          .select('*', { count: 'exact', head: true })
+        results.push({
+          name: 'Artigos',
+          status: 'online',
+          detail: `${articleCount || 0} artigos cadastrados`,
+          icon: 'fas fa-newspaper',
+        })
+      } catch {
+        results.push({
+          name: 'Artigos',
+          status: 'offline',
+          detail: 'Erro ao acessar Supabase',
+          icon: 'fas fa-newspaper',
+        })
+      }
+
+      try {
+        const { count: subscriberCount } = await supabase
+          .from('subscribers')
+          .select('*', { count: 'exact', head: true })
+        results.push({
+          name: 'Subscribers',
+          status: 'online',
+          detail: `${subscriberCount || 0} leads/subscribers`,
           icon: 'fas fa-users',
         })
-      }
-
-      try {
-        const videosRes = await fetch(`${BACKEND_URL}/api/videos`)
-        if (videosRes.ok) {
-          const data = await videosRes.json()
-          results.push({
-            name: 'Endpoint Vídeos',
-            status: 'online',
-            detail: `${Array.isArray(data) ? data.length : 0} vídeos cadastrados`,
-            icon: 'fas fa-video',
-          })
-        } else {
-          results.push({
-            name: 'Endpoint Vídeos',
-            status: 'warning',
-            detail: `HTTP ${videosRes.status}`,
-            icon: 'fas fa-video',
-          })
-        }
       } catch {
         results.push({
-          name: 'Endpoint Vídeos',
+          name: 'Subscribers',
           status: 'offline',
-          detail: 'Sem resposta',
-          icon: 'fas fa-video',
-        })
-      }
-
-      try {
-        const playlistsRes = await fetch(`${BACKEND_URL}/api/playlists`)
-        if (playlistsRes.ok) {
-          const data = await playlistsRes.json()
-          results.push({
-            name: 'Endpoint Playlists',
-            status: 'online',
-            detail: `${Array.isArray(data) ? data.length : 0} playlists cadastradas`,
-            icon: 'fas fa-list',
-          })
-        } else {
-          results.push({
-            name: 'Endpoint Playlists',
-            status: 'warning',
-            detail: `HTTP ${playlistsRes.status}`,
-            icon: 'fas fa-list',
-          })
-        }
-      } catch {
-        results.push({
-          name: 'Endpoint Playlists',
-          status: 'offline',
-          detail: 'Sem resposta',
-          icon: 'fas fa-list',
+          detail: 'Erro ao acessar Supabase',
+          icon: 'fas fa-users',
         })
       }
 
@@ -253,7 +253,7 @@ export default function MonitoramentoPage() {
           </div>
           <div className="flex items-center gap-2 text-[#a0a0a0]">
             <i className="fas fa-shield-alt text-[#ffd700]"></i>
-            <span>Auth: Supabase Auth</span>
+            <span>Auth: Supabase Auth (Google OAuth + Magic Link)</span>
           </div>
           <div className="flex items-center gap-2 text-[#a0a0a0]">
             <i className="fas fa-clock text-[#ffd700]"></i>

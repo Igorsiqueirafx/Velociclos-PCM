@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
-
 interface Course {
   id: string
   title: string
+  slug: string
   description: string
   thumbnail: string
+  category: string
   is_published: boolean
   order_index: number
   created_at: string
@@ -32,7 +32,7 @@ interface Lesson {
   title: string
   description: string
   video_id: string
-  thumbnail: string
+  video_url: string
   duration: number | null
   order_index: number
   is_published: boolean
@@ -55,13 +55,16 @@ export default function CursosPage() {
   const [showModuleForm, setShowModuleForm] = useState(false)
   const [showLessonForm, setShowLessonForm] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [courseForm, setCourseForm] = useState({ title: '', description: '', thumbnail: '', is_published: false, order_index: 0 })
+  const [editingCourseId, setEditingCourseId] = useState<string | null>(null)
+  const [editingModuleId, setEditingModuleId] = useState<string | null>(null)
+  const [editingLessonId, setEditingLessonId] = useState<string | null>(null)
+  const [courseForm, setCourseForm] = useState({ title: '', slug: '', description: '', thumbnail: '', category: '', is_published: false, order_index: 0 })
   const [moduleForm, setModuleForm] = useState({ title: '', description: '', order_index: 0 })
-  const [lessonForm, setLessonForm] = useState({ title: '', description: '', video_id: '', thumbnail: '', duration: '', order_index: 0, is_published: false })
+  const [lessonForm, setLessonForm] = useState({ title: '', description: '', video_id: '', video_url: '', duration: '', order_index: 0, is_published: false })
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/courses`)
+      const res = await fetch('/api/admin/courses', { cache: 'no-store' })
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
       setCourses(Array.isArray(data) ? data : [])
@@ -72,7 +75,7 @@ export default function CursosPage() {
 
   const fetchModules = async (courseId: string) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/courses/${courseId}/modules`)
+      const res = await fetch(`/api/admin/courses/${courseId}/modules`, { cache: 'no-store' })
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
       setModules(Array.isArray(data) ? data : [])
@@ -83,7 +86,7 @@ export default function CursosPage() {
 
   const fetchLessons = async (moduleId: string) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/modules/${moduleId}/lessons`)
+      const res = await fetch(`/api/admin/modules/${moduleId}/lessons`, { cache: 'no-store' })
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
       setLessons(Array.isArray(data) ? data : [])
@@ -115,69 +118,118 @@ export default function CursosPage() {
     }
   }, [selectedModuleId])
 
-  const handleCreateCourse = async (e: React.FormEvent) => {
+  const handleSubmitCourse = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch('/api/admin/courses', {
-        method: 'POST',
+      const url = editingCourseId ? `/api/admin/courses/${editingCourseId}` : '/api/admin/courses'
+      const method = editingCourseId ? 'PUT' : 'POST'
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(courseForm),
       })
-      if (!res.ok) throw new Error('Failed to create course')
+      if (!res.ok) throw new Error('Failed to save course')
       setShowCourseForm(false)
-      setCourseForm({ title: '', description: '', thumbnail: '', is_published: false, order_index: 0 })
+      setEditingCourseId(null)
+      setCourseForm({ title: '', slug: '', description: '', thumbnail: '', category: '', is_published: false, order_index: 0 })
       await fetchCourses()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao criar curso')
+      setError(err instanceof Error ? err.message : 'Erro ao salvar curso')
     } finally {
       setSaving(false)
     }
   }
 
-  const handleCreateModule = async (e: React.FormEvent) => {
+  const startEditCourse = (course: Course) => {
+    setCourseForm({
+      title: course.title,
+      slug: course.slug || '',
+      description: course.description || '',
+      thumbnail: course.thumbnail || '',
+      category: course.category || '',
+      is_published: course.is_published,
+      order_index: course.order_index,
+    })
+    setEditingCourseId(course.id)
+    setShowCourseForm(true)
+    setTab('courses')
+  }
+
+  const handleSubmitModule = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedCourseId) return
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch(`/api/admin/courses/${selectedCourseId}/modules`, {
-        method: 'POST',
+      const url = editingModuleId ? `/api/admin/modules/${editingModuleId}` : `/api/admin/courses/${selectedCourseId}/modules`
+      const method = editingModuleId ? 'PUT' : 'POST'
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(moduleForm),
       })
-      if (!res.ok) throw new Error('Failed to create module')
+      if (!res.ok) throw new Error('Failed to save module')
       setShowModuleForm(false)
+      setEditingModuleId(null)
       setModuleForm({ title: '', description: '', order_index: 0 })
       await fetchModules(selectedCourseId)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao criar módulo')
+      setError(err instanceof Error ? err.message : 'Erro ao salvar módulo')
     } finally {
       setSaving(false)
     }
   }
 
-  const handleCreateLesson = async (e: React.FormEvent) => {
+  const startEditModule = (mod: Module) => {
+    setModuleForm({
+      title: mod.title,
+      description: mod.description || '',
+      order_index: mod.order_index,
+    })
+    setEditingModuleId(mod.id)
+    setShowModuleForm(true)
+    setTab('modules')
+  }
+
+  const handleSubmitLesson = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedModuleId) return
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch(`/api/admin/modules/${selectedModuleId}/lessons`, {
-        method: 'POST',
+      const url = editingLessonId ? `/api/admin/lessons/${editingLessonId}` : `/api/admin/modules/${selectedModuleId}/lessons`
+      const method = editingLessonId ? 'PUT' : 'POST'
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lessonForm),
       })
-      if (!res.ok) throw new Error('Failed to create lesson')
+      if (!res.ok) throw new Error('Failed to save lesson')
       setShowLessonForm(false)
-      setLessonForm({ title: '', description: '', video_id: '', thumbnail: '', duration: '', order_index: 0, is_published: false })
+      setEditingLessonId(null)
+      setLessonForm({ title: '', description: '', video_id: '', video_url: '', duration: '', order_index: 0, is_published: false })
       if (selectedModuleId) await fetchLessons(selectedModuleId)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao criar aula')
+      setError(err instanceof Error ? err.message : 'Erro ao salvar aula')
     } finally {
       setSaving(false)
     }
+  }
+
+  const startEditLesson = (lesson: Lesson) => {
+    setLessonForm({
+      title: lesson.title,
+      description: lesson.description || '',
+      video_id: lesson.video_id || '',
+      video_url: lesson.video_url || '',
+      duration: lesson.duration ? String(lesson.duration) : '',
+      order_index: lesson.order_index,
+      is_published: lesson.is_published,
+    })
+    setEditingLessonId(lesson.id)
+    setShowLessonForm(true)
   }
 
   const handleDeleteCourse = async (id: string) => {
@@ -260,36 +312,56 @@ export default function CursosPage() {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-semibold text-[#dcdcdc]">Cursos ({courses.length})</h2>
-            <button
-              onClick={() => setShowCourseForm(!showCourseForm)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
-            >
-              <i className={`fas ${showCourseForm ? 'fa-times' : 'fa-plus'}`}></i>
-              {showCourseForm ? 'Cancelar' : 'Novo Curso'}
-            </button>
+                <button
+                  onClick={() => { setShowCourseForm(!showCourseForm); setEditingCourseId(null); setCourseForm({ title: '', slug: '', description: '', thumbnail: '', category: '', is_published: false, order_index: 0 }) }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
+                >
+                  <i className={`fas ${showCourseForm ? 'fa-times' : 'fa-plus'}`}></i>
+                  {showCourseForm ? 'Cancelar' : 'Novo Curso'}
+                </button>
           </div>
 
-          {showCourseForm && (
-            <form onSubmit={handleCreateCourse} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
-                <input
-                  type="text"
-                  value={courseForm.title}
-                  onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })}
-                  required
-                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-[#a0a0a0] mb-2">Thumbnail URL</label>
-                <input
-                  type="text"
-                  value={courseForm.thumbnail}
-                  onChange={(e) => setCourseForm({ ...courseForm, thumbnail: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-                />
-              </div>
+            {showCourseForm && (
+              <form onSubmit={handleSubmitCourse} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
+                  <input
+                    type="text"
+                    value={courseForm.title}
+                    onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })}
+                    required
+                    className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-[#a0a0a0] mb-2">Slug</label>
+                  <input
+                    type="text"
+                    value={courseForm.slug}
+                    onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })}
+                    placeholder="Ex: metodo-fimathe"
+                    className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-[#a0a0a0] mb-2">Thumbnail URL</label>
+                  <input
+                    type="text"
+                    value={courseForm.thumbnail}
+                    onChange={(e) => setCourseForm({ ...courseForm, thumbnail: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-[#a0a0a0] mb-2">Categoria</label>
+                  <input
+                    type="text"
+                    value={courseForm.category}
+                    onChange={(e) => setCourseForm({ ...courseForm, category: e.target.value })}
+                    placeholder="Ex: Forex, Método Fimathe"
+                    className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                  />
+                </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm text-[#a0a0a0] mb-2">Descrição</label>
                 <textarea
@@ -310,13 +382,13 @@ export default function CursosPage() {
                 <label htmlFor="published" className="text-sm text-[#dcdcdc]">Publicado</label>
               </div>
               <div className="sm:col-span-2">
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
-                >
-                  {saving ? 'Salvando...' : 'Salvar Curso'}
-                </button>
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    {saving ? 'Salvando...' : editingCourseId ? 'Atualizar Curso' : 'Salvar Curso'}
+                  </button>
               </div>
             </form>
           )}
@@ -333,20 +405,26 @@ export default function CursosPage() {
                     {course.is_published ? 'Publicado' : 'Rascunho'}
                   </span>
                 </div>
-                <div className="flex gap-2 mt-3">
-                  <button
-                    onClick={() => { setSelectedCourseId(course.id); setTab('modules') }}
-                    className="flex-1 px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
-                  >
-                    <i className="fas fa-layer-group mr-1"></i> Módulos
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCourse(course.id)}
-                    className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
-                  >
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
-                </div>
+                   <div className="flex gap-2 mt-3">
+                     <button
+                       onClick={() => { setSelectedCourseId(course.id); setTab('modules'); setEditingCourseId(null); setShowCourseForm(false) }}
+                       className="flex-1 px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
+                     >
+                       <i className="fas fa-layer-group mr-1"></i> Módulos
+                     </button>
+                     <button
+                       onClick={() => startEditCourse(course)}
+                       className="px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
+                     >
+                       <i className="fas fa-edit"></i>
+                     </button>
+                     <button
+                       onClick={() => handleDeleteCourse(course.id)}
+                       className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
+                     >
+                       <i className="fas fa-trash-alt"></i>
+                     </button>
+                   </div>
               </div>
             ))}
           </div>
@@ -361,13 +439,13 @@ export default function CursosPage() {
               {selectedCourseId ? 'Módulos do Curso' : 'Selecione um curso primeiro'}
             </h2>
             {selectedCourseId && (
-              <button
-                onClick={() => setShowModuleForm(!showModuleForm)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
-              >
-                <i className={`fas ${showModuleForm ? 'fa-times' : 'fa-plus'}`}></i>
-                {showModuleForm ? 'Cancelar' : 'Novo Módulo'}
-              </button>
+                <button
+                  onClick={() => { setShowModuleForm(!showModuleForm); setEditingModuleId(null); setModuleForm({ title: '', description: '', order_index: 0 }) }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
+                >
+                  <i className={`fas ${showModuleForm ? 'fa-times' : 'fa-plus'}`}></i>
+                  {showModuleForm ? 'Cancelar' : 'Novo Módulo'}
+                </button>
             )}
           </div>
 
@@ -378,7 +456,7 @@ export default function CursosPage() {
           ) : (
             <>
               {showModuleForm && (
-                <form onSubmit={handleCreateModule} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmitModule} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
                     <input
@@ -408,13 +486,13 @@ export default function CursosPage() {
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <button
-                      type="submit"
-                      disabled={saving}
-                      className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
-                    >
-                      {saving ? 'Salvando...' : 'Salvar Módulo'}
-                    </button>
+                      <button
+                        type="submit"
+                        disabled={saving}
+                        className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        {saving ? 'Salvando...' : editingModuleId ? 'Atualizar Módulo' : 'Salvar Módulo'}
+                      </button>
                   </div>
                 </form>
               )}
@@ -429,20 +507,26 @@ export default function CursosPage() {
                       </div>
                       <span className="text-xs text-[#707070]">#{mod.order_index}</span>
                     </div>
-                    <div className="flex gap-2 mt-3">
-                      <button
-                        onClick={() => { setSelectedModuleId(mod.id); setTab('lessons') }}
-                        className="flex-1 px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
-                      >
-                        <i className="fas fa-play mr-1"></i> Aulas
-                      </button>
-                      <button
-                        onClick={() => handleDeleteModule(mod.id)}
-                        className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </div>
+                     <div className="flex gap-2 mt-3">
+                       <button
+                         onClick={() => { setSelectedModuleId(mod.id); setTab('lessons') }}
+                         className="flex-1 px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
+                       >
+                         <i className="fas fa-play mr-1"></i> Aulas
+                       </button>
+                       <button
+                         onClick={() => startEditModule(mod)}
+                         className="px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors"
+                       >
+                         <i className="fas fa-edit"></i>
+                       </button>
+                       <button
+                         onClick={() => handleDeleteModule(mod.id)}
+                         className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
+                       >
+                         <i className="fas fa-trash-alt"></i>
+                       </button>
+                     </div>
                   </div>
                 ))}
               </div>
@@ -459,13 +543,13 @@ export default function CursosPage() {
               {selectedModuleId ? 'Aulas do Módulo' : 'Selecione um módulo primeiro'}
             </h2>
             {selectedModuleId && (
-              <button
-                onClick={() => setShowLessonForm(!showLessonForm)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
-              >
-                <i className={`fas ${showLessonForm ? 'fa-times' : 'fa-plus'}`}></i>
-                {showLessonForm ? 'Cancelar' : 'Nova Aula'}
-              </button>
+                <button
+                  onClick={() => { setShowLessonForm(!showLessonForm); setEditingLessonId(null); setLessonForm({ title: '', description: '', video_id: '', video_url: '', duration: '', order_index: 0, is_published: false }) }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
+                >
+                  <i className={`fas ${showLessonForm ? 'fa-times' : 'fa-plus'}`}></i>
+                  {showLessonForm ? 'Cancelar' : 'Nova Aula'}
+                </button>
             )}
           </div>
 
@@ -476,7 +560,7 @@ export default function CursosPage() {
           ) : (
             <>
               {showLessonForm && (
-                <form onSubmit={handleCreateLesson} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmitLesson} className="card grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
                     <input
@@ -495,6 +579,16 @@ export default function CursosPage() {
                       onChange={(e) => setLessonForm({ ...lessonForm, video_id: e.target.value })}
                       placeholder="Ex: dQw4w9WgXcQ"
                       className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-[#a0a0a0] mb-2">URL do Vídeo (YouTube)</label>
+                    <input
+                      type="text"
+                      value={lessonForm.video_url}
+                      onChange={(e) => setLessonForm({ ...lessonForm, video_url: e.target.value })}
+                      placeholder="Ex: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                      className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
                     />
                   </div>
                   <div>
@@ -540,7 +634,7 @@ export default function CursosPage() {
                       disabled={saving}
                       className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
                     >
-                      {saving ? 'Salvando...' : 'Salvar Aula'}
+                      {saving ? 'Salvando...' : editingLessonId ? 'Atualizar Aula' : 'Salvar Aula'}
                     </button>
                   </div>
                 </form>
@@ -549,31 +643,39 @@ export default function CursosPage() {
               <div className="overflow-x-auto card">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left border-b border-[#404857]">
+                     <tr className="text-left border-b border-[#404857]">
                       <th className="pb-3 text-[#a0a0a0] font-medium">Título</th>
                       <th className="pb-3 text-[#a0a0a0] font-medium">YouTube ID</th>
+                      <th className="pb-3 text-[#a0a0a0] font-medium">URL do Vídeo</th>
                       <th className="pb-3 text-[#a0a0a0] font-medium">Status</th>
                       <th className="pb-3 text-[#a0a0a0] font-medium text-right">Ações</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {lessons.map((lesson) => (
-                      <tr key={lesson.id} className="border-b border-[#404857]/30 last:border-0 hover:bg-[#343a47]/30 transition-colors">
-                        <td className="py-3 text-[#dcdcdc]">{lesson.title}</td>
-                        <td className="py-3 text-[#a0a0a0] font-mono text-xs">{lesson.video_id || '-'}</td>
+                   </thead>
+                   <tbody>
+                     {lessons.map((lesson) => (
+                       <tr key={lesson.id} className="border-b border-[#404857]/30 last:border-0 hover:bg-[#343a47]/30 transition-colors">
+                         <td className="py-3 text-[#dcdcdc]">{lesson.title}</td>
+                         <td className="py-3 text-[#a0a0a0] font-mono text-xs">{lesson.video_id || '-'}</td>
+                         <td className="py-3 text-[#a0a0a0] font-mono text-xs truncate max-w-[200px]">{lesson.video_url || '-'}</td>
                         <td className="py-3">
                           <span className={`px-2 py-1 rounded-full text-xs ${lesson.is_published ? 'bg-[#00ff7f]/10 text-[#00ff7f]' : 'bg-[#ff4444]/10 text-[#ff4444]'}`}>
                             {lesson.is_published ? 'Publicado' : 'Rascunho'}
                           </span>
                         </td>
-                        <td className="py-3 text-right">
-                          <button
-                            onClick={() => handleDeleteLesson(lesson.id)}
-                            className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
-                          >
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                        </td>
+                         <td className="py-3 text-right">
+                           <button
+                             onClick={() => startEditLesson(lesson)}
+                             className="px-3 py-2 bg-[#343a47] text-[#dcdcdc] rounded-lg text-sm hover:bg-[#404857] transition-colors mr-2"
+                           >
+                             <i className="fas fa-edit"></i>
+                           </button>
+                           <button
+                             onClick={() => handleDeleteLesson(lesson.id)}
+                             className="px-3 py-2 bg-[#ff4444]/10 text-[#ff4444] rounded-lg text-sm hover:bg-[#ff4444]/20 transition-colors"
+                           >
+                             <i className="fas fa-trash-alt"></i>
+                           </button>
+                         </td>
                       </tr>
                     ))}
                   </tbody>

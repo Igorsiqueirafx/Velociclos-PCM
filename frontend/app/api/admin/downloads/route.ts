@@ -10,10 +10,9 @@ async function getAuthHeaders() {
   }
 }
 
-export async function GET(_request: Request, { params }: { params: Promise<Record<string, string>> }) {
+export async function GET() {
   try {
-    const { courseId } = await params
-    const res = await fetch(`${BACKEND_URL}/api/courses/${courseId}/modules`, {
+    const res = await fetch(`${BACKEND_URL}/api/downloads`, {
       headers: await getAuthHeaders(),
       cache: 'no-store',
     })
@@ -21,15 +20,14 @@ export async function GET(_request: Request, { params }: { params: Promise<Recor
     if (!res.ok) return NextResponse.json(data, { status: res.status })
     return NextResponse.json(data)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch modules' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to fetch downloads' }, { status: 500 })
   }
 }
 
-export async function POST(request: Request, { params }: { params: Promise<Record<string, string>> }) {
+export async function POST(request: Request) {
   try {
-    const { courseId } = await params
     const body = await request.json()
-    const res = await fetch(`${BACKEND_URL}/api/courses/${courseId}/modules`, {
+    const res = await fetch(`${BACKEND_URL}/api/downloads`, {
       method: 'POST',
       headers: await getAuthHeaders(),
       body: JSON.stringify(body),
@@ -38,6 +36,6 @@ export async function POST(request: Request, { params }: { params: Promise<Recor
     if (!res.ok) return NextResponse.json(data, { status: res.status })
     return NextResponse.json(data, { status: 201 })
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to create module' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to create download' }, { status: 500 })
   }
 }

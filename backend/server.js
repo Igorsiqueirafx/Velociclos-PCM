@@ -28,6 +28,30 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+function loadJSON(filePath, defaultValue) {
+  try {
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch (err) {
+    console.warn('loadJSON error:', err.message);
+  }
+  return defaultValue;
+}
+
+function saveJSON(filePath, data) {
+  try {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('saveJSON error:', err.message);
+  }
+}
+
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || authHeader !== `Bearer ${config.ADMIN_PASSWORD}`) {
@@ -80,10 +104,13 @@ app.get('/api/courses/:id', async (req, res) => {
 
 app.post('/api/courses', authenticate, async (req, res) => {
   try {
+    const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
     const payload = {
       title: req.body.title || '',
+      slug: slug || null,
       description: req.body.description || '',
       thumbnail: req.body.thumbnail || '',
+      category: req.body.category || '',
       is_published: req.body.is_published || false,
       order_index: req.body.order_index || 0,
     };
@@ -106,8 +133,10 @@ app.put('/api/courses/:id', authenticate, async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
+      slug: req.body.slug,
       description: req.body.description,
       thumbnail: req.body.thumbnail,
+      category: req.body.category,
       is_published: req.body.is_published,
       order_index: req.body.order_index,
       updated_at: new Date().toISOString(),
@@ -144,12 +173,12 @@ app.delete('/api/courses/:id', authenticate, async (req, res) => {
 });
 
 // ============================================
-// MODULES
+// MODULES (course_modules)
 // ============================================
 app.get('/api/courses/:courseId/modules', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('modules')
+      .from('course_modules')
       .select('*')
       .eq('course_id', req.params.courseId)
       .order('order_index', { ascending: true })
@@ -173,7 +202,7 @@ app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
     };
 
     const { data, error } = await supabase
-      .from('modules')
+      .from('course_modules')
       .insert([payload])
       .select()
       .single();
@@ -183,6 +212,22 @@ app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
   } catch (error) {
     console.error('Error creating module:', error);
     res.status(500).json({ error: 'Failed to create module' });
+  }
+});
+
+app.get('/api/modules/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('course_modules')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching module:', error);
+    res.status(500).json({ error: 'Failed to fetch module' });
   }
 });
 
@@ -196,7 +241,7 @@ app.put('/api/modules/:id', authenticate, async (req, res) => {
     };
 
     const { data, error } = await supabase
-      .from('modules')
+      .from('course_modules')
       .update(payload)
       .eq('id', req.params.id)
       .select()
@@ -213,7 +258,7 @@ app.put('/api/modules/:id', authenticate, async (req, res) => {
 app.delete('/api/modules/:id', authenticate, async (req, res) => {
   try {
     const { error } = await supabase
-      .from('modules')
+      .from('course_modules')
       .delete()
       .eq('id', req.params.id);
 
@@ -226,12 +271,12 @@ app.delete('/api/modules/:id', authenticate, async (req, res) => {
 });
 
 // ============================================
-// LESSONS
+// LESSONS (course_lessons)
 // ============================================
 app.get('/api/modules/:moduleId/lessons', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .select('*')
       .eq('module_id', req.params.moduleId)
       .order('order_index', { ascending: true })
@@ -248,7 +293,7 @@ app.get('/api/modules/:moduleId/lessons', async (req, res) => {
 app.get('/api/courses/:courseId/lessons', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .select('*')
       .eq('course_id', req.params.courseId)
       .order('order_index', { ascending: true })
@@ -266,7 +311,7 @@ app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
   try {
     const moduleId = req.params.moduleId;
     const { data: module, error: moduleError } = await supabase
-      .from('modules')
+      .from('course_modules')
       .select('course_id')
       .eq('id', moduleId)
       .single();
@@ -279,14 +324,14 @@ app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
       title: req.body.title || '',
       description: req.body.description || '',
       video_id: req.body.video_id || req.body.videoId || '',
-      thumbnail: req.body.thumbnail || '',
+      video_url: req.body.video_url || req.body.videoUrl || '',
       duration: req.body.duration || null,
       order_index: req.body.order_index || 0,
       is_published: req.body.is_published || false,
     };
 
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .insert([payload])
       .select()
       .single();
@@ -305,7 +350,7 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       video_id: req.body.video_id || req.body.videoId,
-      thumbnail: req.body.thumbnail,
+      video_url: req.body.video_url || req.body.videoUrl,
       duration: req.body.duration,
       order_index: req.body.order_index,
       is_published: req.body.is_published,
@@ -313,7 +358,7 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
     };
 
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .update(payload)
       .eq('id', req.params.id)
       .select()
@@ -330,7 +375,7 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
 app.delete('/api/lessons/:id', authenticate, async (req, res) => {
   try {
     const { error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .delete()
       .eq('id', req.params.id);
 
@@ -378,14 +423,20 @@ app.get('/api/articles/:id', async (req, res) => {
 
 app.post('/api/articles', authenticate, async (req, res) => {
   try {
+    const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
     const payload = {
       title: req.body.title || '',
-      slug: req.body.slug || req.body.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+      slug: slug || null,
       content: req.body.content || '',
       excerpt: req.body.excerpt || '',
       cover_image: req.body.cover_image || req.body.coverImage || '',
+      category: req.body.category || '',
+      tags: req.body.tags || [],
+      author: req.body.author || '',
       is_published: req.body.is_published || false,
       published_at: req.body.is_published ? (req.body.published_at || new Date().toISOString()) : null,
+      meta_title: req.body.meta_title || '',
+      meta_description: req.body.meta_description || '',
     };
 
     const { data, error } = await supabase
@@ -410,8 +461,13 @@ app.put('/api/articles/:id', authenticate, async (req, res) => {
       content: req.body.content,
       excerpt: req.body.excerpt,
       cover_image: req.body.cover_image || req.body.coverImage,
+      category: req.body.category,
+      tags: req.body.tags,
+      author: req.body.author,
       is_published: req.body.is_published,
       published_at: req.body.is_published ? (req.body.published_at || new Date().toISOString()) : null,
+      meta_title: req.body.meta_title,
+      meta_description: req.body.meta_description,
       updated_at: new Date().toISOString(),
     };
 
@@ -574,6 +630,236 @@ app.post('/api/subscribers', authenticate, async (req, res) => {
 });
 
 // ============================================
+// DOWNLOADS (EA - Expert Advisor)
+// ============================================
+app.get('/api/downloads', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('downloads')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching downloads:', error);
+    res.status(500).json({ error: 'Failed to fetch downloads' });
+  }
+});
+
+app.get('/api/downloads/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('downloads')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching download:', error);
+    res.status(500).json({ error: 'Failed to fetch download' });
+  }
+});
+
+app.post('/api/downloads', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title || '',
+      description: req.body.description || '',
+      version: req.body.version || '',
+      file_url: req.body.file_url || req.body.fileUrl || '',
+      file_size: req.body.file_size || req.body.fileSize || '',
+      changelog: req.body.changelog || '',
+      is_published: req.body.is_published || false,
+      download_count: req.body.download_count || 0,
+    };
+
+    const { data, error } = await supabase
+      .from('downloads')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating download:', error);
+    res.status(500).json({ error: 'Failed to create download' });
+  }
+});
+
+app.put('/api/downloads/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      description: req.body.description,
+      version: req.body.version,
+      file_url: req.body.file_url || req.body.fileUrl,
+      file_size: req.body.file_size || req.body.fileSize,
+      changelog: req.body.changelog,
+      is_published: req.body.is_published,
+      download_count: req.body.download_count,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('downloads')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating download:', error);
+    res.status(500).json({ error: 'Failed to update download' });
+  }
+});
+
+app.delete('/api/downloads/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('downloads')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting download:', error);
+    res.status(500).json({ error: 'Failed to delete download' });
+  }
+});
+
+// ============================================
+// PAGES (Manual, Sobre, Termos, Política, Método, etc.)
+// ============================================
+app.get('/api/pages', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('pages')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json(data || []);
+  } catch (error) {
+    console.error('Error fetching pages:', error);
+    res.status(500).json({ error: 'Failed to fetch pages' });
+  }
+});
+
+app.get('/api/pages/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching page:', error);
+    res.status(500).json({ error: 'Failed to fetch page' });
+  }
+});
+
+app.get('/api/pages/slug/:slug', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('slug', req.params.slug)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return res.status(404).json({ error: 'Page not found' });
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching page by slug:', error);
+    res.status(500).json({ error: 'Failed to fetch page' });
+  }
+});
+
+app.post('/api/pages', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title || '',
+      slug: req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : ''),
+      content: req.body.content || '',
+      excerpt: req.body.excerpt || '',
+      cover_image: req.body.cover_image || req.body.coverImage || '',
+      is_published: req.body.is_published || false,
+      sort_order: req.body.sort_order || 0,
+      meta_title: req.body.meta_title || '',
+      meta_description: req.body.meta_description || '',
+    };
+
+    const { data, error } = await supabase
+      .from('pages')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating page:', error);
+    res.status(500).json({ error: 'Failed to create page' });
+  }
+});
+
+app.put('/api/pages/:id', authenticate, async (req, res) => {
+  try {
+    const payload = {
+      title: req.body.title,
+      slug: req.body.slug,
+      content: req.body.content,
+      excerpt: req.body.excerpt,
+      cover_image: req.body.cover_image || req.body.coverImage,
+      is_published: req.body.is_published,
+      sort_order: req.body.sort_order,
+      meta_title: req.body.meta_title,
+      meta_description: req.body.meta_description,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('pages')
+      .update(payload)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating page:', error);
+    res.status(500).json({ error: 'Failed to update page' });
+  }
+});
+
+app.delete('/api/pages/:id', authenticate, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('pages')
+      .delete()
+      .eq('id', req.params.id);
+
+    if (error) throw error;
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting page:', error);
+    res.status(500).json({ error: 'Failed to delete page' });
+  }
+});
+
+// ============================================
 // YOUTUBE (mantido para backward compatibility)
 // ============================================
 app.get('/api/playlists', (req, res) => {
@@ -588,7 +874,7 @@ app.post('/api/playlists/sync', authenticate, async (req, res) => {
   }
   try {
     const playlists = [];
-    for (const playlistId of config.PLAYLIST_IDS) {
+    for (const playlistId of config.PLAYLIST_IDS || []) {
       const url = `${config.YOUTUBE_API_BASE}/playlists?key=${config.YOUTUBE_API_KEY}&id=${playlistId}&maxResults=1&part=snippet,contentDetails`;
       try {
         const response = await fetch(url);
@@ -652,7 +938,7 @@ app.get('/api/playlist/:id/items', async (req, res) => {
 app.get('/api/videos', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -667,13 +953,16 @@ app.get('/api/videos', async (req, res) => {
 app.post('/api/videos', authenticate, async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('lessons')
+      .from('course_lessons')
       .insert([{
         title: req.body.title || '',
         description: req.body.description || '',
         video_id: req.body.videoId || '',
-        module: req.body.module || '',
+        video_url: req.body.videoUrl || '',
         is_published: true,
+        module_id: req.body.module_id || null,
+        course_id: req.body.course_id || null,
+        order_index: req.body.order_index || 0,
       }])
       .select()
       .single();
@@ -683,44 +972,6 @@ app.post('/api/videos', authenticate, async (req, res) => {
   } catch (error) {
     console.error('Error creating video:', error);
     res.status(500).json({ error: 'Failed to save video' });
-  }
-});
-
-app.put('/api/videos/:id', authenticate, async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from('lessons')
-      .update({
-        title: req.body.title,
-        description: req.body.description,
-        video_id: req.body.videoId,
-        module: req.body.module,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', req.params.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    res.json(data);
-  } catch (error) {
-    console.error('Error updating video:', error);
-    res.status(500).json({ error: 'Failed to update video' });
-  }
-});
-
-app.delete('/api/videos/:id', authenticate, async (req, res) => {
-  try {
-    const { error } = await supabase
-      .from('lessons')
-      .delete()
-      .eq('id', req.params.id);
-
-    if (error) throw error;
-    res.status(204).send();
-  } catch (error) {
-    console.error('Error deleting video:', error);
-    res.status(500).json({ error: 'Failed to delete video' });
   }
 });
 
