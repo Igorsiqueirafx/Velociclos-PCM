@@ -70,7 +70,7 @@ export async function registerEmail(formData: FormData) {
 }
 
 async function fallbackToBackend(email: string): Promise<{ success?: boolean; error?: string }> {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
   try {
     const res = await fetch(`${BACKEND_URL}/api/subscribers`, {
       method: 'POST',
@@ -88,3 +88,4 @@ async function fallbackToBackend(email: string): Promise<{ success?: boolean; er
     return { error: 'A tabela de subscribers não está configurada. Tente novamente mais tarde.' }
   }
 }
+

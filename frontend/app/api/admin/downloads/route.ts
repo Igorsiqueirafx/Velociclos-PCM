@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'velociclos2024'
 
 async function getAuthHeaders() {
@@ -39,3 +39,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to create download' }, { status: 500 })
   }
 }
+
