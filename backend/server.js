@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const pg = require('pg');
 const config = require('./config');
 const { admin: supabase } = require('./lib/supabase');
 
@@ -16,7 +17,7 @@ const allowedOrigins = (process.env.CORS_ORIGIN || process.env.FRONTEND_URL || '
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error(`Origin ${origin} not allowed by CORS`));
@@ -65,6 +66,45 @@ function authenticate(req, res, next) {
 // ============================================
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.post('/api/migrate', authenticate, async (req, res) => {
+  try {
+    const sql = req.body.sql || req.body.query;
+    if (!sql) {
+      return res.status(400).json({ error: 'Missing SQL in request body' });
+    }
+
+    const projectUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://iskzakpvxuowkbzovjxw.supabase.co';
+    const projectRef = projectUrl.match(/https:\/\/([^.]+)\.supabase\.co/)?.[1] || 'iskzakpvxuowkbzovjxw';
+
+    const dbPassword = process.env.SUPABASE_DB_PASSWORD || process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    const client = new pg.Client({
+      host: process.env.SUPABASE_DB_HOST || 'aws-1-us-west-2.pooler.supabase.com',
+      port: parseInt(process.env.SUPABASE_DB_PORT) || 5432,
+      database: process.env.SUPABASE_DB_NAME || 'postgres',
+      user: process.env.SUPABASE_DB_USER || `postgres.${projectRef}`,
+      password: dbPassword,
+      ssl: process.env.SUPABASE_DB_SSL === 'false' ? false : { rejectUnauthorized: false },
+    });
+
+    try {
+      await client.connect();
+      console.log('Migration: connected to database');
+      const result = await client.query(sql);
+      console.log('Migration: SQL executed successfully');
+      await client.end();
+      res.json({ success: true, rowCount: result.rowCount, rows: result.rows?.slice(0, 10) || [] });
+    } catch (dbErr) {
+      console.error('Migration DB error:', dbErr.message);
+      try { await client.end(); } catch(e) {}
+      res.status(500).json({ error: 'Database connection failed', details: dbErr.message });
+    }
+  } catch (error) {
+    console.error('Migration error:', error);
+    res.status(500).json({ error: 'Migration failed', details: error.message });
+  }
 });
 
 // ============================================
@@ -975,7 +1015,11 @@ app.post('/api/videos', authenticate, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Velociclos API running on http://localhost:${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
-});
+if (require.main === module && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Velociclos API running on http://localhost:${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/api/health`);
+  });
+}
+
+module.exports = app;

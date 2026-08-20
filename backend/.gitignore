@@ -12,3 +12,5 @@ data/
 # Build output
 dist/
 build/
+
+.vercel
