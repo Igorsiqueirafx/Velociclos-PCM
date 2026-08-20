@@ -68,6 +68,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+app.get('/api/test-deploy', (req, res) => {
+  res.json({ deployed: true, hasPg: !!pg, pgVersion: pg?.version?.nodeVersion || 'unavailable' });
+});
+
 app.post('/api/migrate', authenticate, async (req, res) => {
   try {
     const sql = req.body.sql || req.body.query;
