@@ -233,7 +233,7 @@ app.delete('/api/courses/:id', authenticate, async (req, res) => {
 app.get('/api/courses/:courseId/modules', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_modules')
+      .from('modules')
       .select('*')
       .eq('course_id', req.params.courseId)
       .order('order_index', { ascending: true })
@@ -257,7 +257,7 @@ app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
     };
 
     const { data, error } = await supabase
-      .from('course_modules')
+      .from('modules')
       .insert([payload])
       .select()
       .single();
@@ -273,7 +273,7 @@ app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
 app.get('/api/modules/:id', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_modules')
+      .from('modules')
       .select('*')
       .eq('id', req.params.id)
       .single();
@@ -296,7 +296,7 @@ app.put('/api/modules/:id', authenticate, async (req, res) => {
     };
 
     const { data, error } = await supabase
-      .from('course_modules')
+      .from('modules')
       .update(payload)
       .eq('id', req.params.id)
       .select()
@@ -313,7 +313,7 @@ app.put('/api/modules/:id', authenticate, async (req, res) => {
 app.delete('/api/modules/:id', authenticate, async (req, res) => {
   try {
     const { error } = await supabase
-      .from('course_modules')
+      .from('modules')
       .delete()
       .eq('id', req.params.id);
 
@@ -331,7 +331,7 @@ app.delete('/api/modules/:id', authenticate, async (req, res) => {
 app.get('/api/modules/:moduleId/lessons', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .select('*')
       .eq('module_id', req.params.moduleId)
       .order('order_index', { ascending: true })
@@ -348,7 +348,7 @@ app.get('/api/modules/:moduleId/lessons', async (req, res) => {
 app.get('/api/courses/:courseId/lessons', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .select('*')
       .eq('course_id', req.params.courseId)
       .order('order_index', { ascending: true })
@@ -366,7 +366,7 @@ app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
   try {
     const moduleId = req.params.moduleId;
     const { data: module, error: moduleError } = await supabase
-      .from('course_modules')
+      .from('modules')
       .select('course_id')
       .eq('id', moduleId)
       .single();
@@ -378,15 +378,15 @@ app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
       course_id: module.course_id,
       title: req.body.title || '',
       description: req.body.description || '',
-      video_id: req.body.video_id || req.body.videoId || '',
-      video_url: req.body.video_url || req.body.videoUrl || '',
-      duration: req.body.duration || null,
+       video_id: req.body.video_id || req.body.videoId || '',
+       thumbnail: req.body.thumbnail || '',
+       duration: req.body.duration || null,
       order_index: req.body.order_index || 0,
       is_published: req.body.is_published || false,
     };
 
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .insert([payload])
       .select()
       .single();
@@ -404,16 +404,16 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
     const payload = {
       title: req.body.title,
       description: req.body.description,
-      video_id: req.body.video_id || req.body.videoId,
-      video_url: req.body.video_url || req.body.videoUrl,
-      duration: req.body.duration,
+       video_id: req.body.video_id || req.body.videoId,
+       thumbnail: req.body.thumbnail,
+       duration: req.body.duration,
       order_index: req.body.order_index,
       is_published: req.body.is_published,
       updated_at: new Date().toISOString(),
     };
 
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .update(payload)
       .eq('id', req.params.id)
       .select()
@@ -430,7 +430,7 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
 app.delete('/api/lessons/:id', authenticate, async (req, res) => {
   try {
     const { error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .delete()
       .eq('id', req.params.id);
 
@@ -993,7 +993,7 @@ app.get('/api/playlist/:id/items', async (req, res) => {
 app.get('/api/videos', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -1008,12 +1008,12 @@ app.get('/api/videos', async (req, res) => {
 app.post('/api/videos', authenticate, async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('course_lessons')
+      .from('lessons')
       .insert([{
         title: req.body.title || '',
         description: req.body.description || '',
         video_id: req.body.videoId || '',
-        video_url: req.body.videoUrl || '',
+        thumbnail: '',
         is_published: true,
         module_id: req.body.module_id || null,
         course_id: req.body.course_id || null,
