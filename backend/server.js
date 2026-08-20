@@ -115,7 +115,11 @@ app.post('/api/migrate', authenticate, async (req, res) => {
       console.error('Migration DB error:', dbErr.message);
       try { await client.end(); } catch(e) {}
       res.status(500).json({ error: 'Database connection failed', details: dbErr.message, debug: { projectRef, host: dbHost, port: 5432, user: `postgres.${projectRef}`, pwdSource: process.env.SUPABASE_DB_PASSWORD ? 'SUPABASE_DB_PASSWORD' : 'SUPABASE_SECRET_KEY', pwdLength: dbPassword?.length || 0 } });
-  });
+    }
+  } catch (error) {
+    console.error('Migration error:', error);
+    res.status(500).json({ error: 'Migration failed', details: error.message });
+  }
 });
 
 // ============================================
