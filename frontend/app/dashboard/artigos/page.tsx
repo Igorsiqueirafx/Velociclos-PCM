@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
-
 interface Article {
   id: string
   title: string
@@ -11,6 +9,9 @@ interface Article {
   excerpt: string
   content: string
   cover_image: string
+  category: string
+  tags: string[]
+  author: string
   is_published: boolean
   published_at: string
   created_at: string
@@ -30,13 +31,16 @@ export default function ArtigosPage() {
     excerpt: '',
     content: '',
     cover_image: '',
+    category: '',
+    tags: '',
+    author: '',
     is_published: false,
     published_at: '',
   })
 
   const fetchArticles = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/articles`)
+      const res = await fetch('/api/admin/articles', { cache: 'no-store' })
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
       setArticles(Array.isArray(data) ? data : [])
@@ -52,7 +56,7 @@ export default function ArtigosPage() {
   }, [])
 
   const resetForm = () => {
-    setForm({ title: '', slug: '', excerpt: '', content: '', cover_image: '', is_published: false, published_at: '' })
+    setForm({ title: '', slug: '', excerpt: '', content: '', cover_image: '', category: '', tags: '', author: '', is_published: false, published_at: '' })
     setEditingId(null)
     setShowForm(false)
   }
@@ -64,6 +68,9 @@ export default function ArtigosPage() {
       excerpt: article.excerpt || '',
       content: article.content || '',
       cover_image: article.cover_image || '',
+      category: article.category || '',
+      tags: (article.tags || []).join(', '),
+      author: article.author || '',
       is_published: article.is_published,
       published_at: article.published_at ? article.published_at.slice(0, 16) : '',
     })
@@ -76,12 +83,16 @@ export default function ArtigosPage() {
     setSaving(true)
     setError(null)
     try {
-      const url = editingId ? `${BACKEND_URL}/api/articles/${editingId}` : `${BACKEND_URL}/api/articles`
+      const url = editingId ? `/api/admin/articles/${editingId}` : '/api/admin/articles'
       const method = editingId ? 'PUT' : 'POST'
+      const payload = {
+        ...form,
+        tags: form.tags ? form.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
+      }
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error('Failed to save article')
       resetForm()
@@ -96,7 +107,7 @@ export default function ArtigosPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Tem certeza que deseja excluir este artigo?')) return
     try {
-      const res = await fetch(`${BACKEND_URL}/api/articles/${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/admin/articles/${id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('Failed to delete article')
       setArticles(articles.filter((a) => a.id !== id))
     } catch (err) {
@@ -137,7 +148,7 @@ export default function ArtigosPage() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="card space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
               <input
@@ -156,6 +167,16 @@ export default function ArtigosPage() {
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
                 required
                 className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-[#a0a0a0] mb-2">Categoria</label>
+              <input
+                type="text"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                placeholder="Ex: Forex, Método Fimathe"
+                className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -177,26 +198,46 @@ export default function ArtigosPage() {
               className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-[#a0a0a0] mb-2">Capa URL</label>
-              <input
-                type="text"
-                value={form.cover_image}
-                onChange={(e) => setForm({ ...form, cover_image: e.target.value })}
-                className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-[#a0a0a0] mb-2">Capa URL</label>
+                <input
+                  type="text"
+                  value={form.cover_image}
+                  onChange={(e) => setForm({ ...form, cover_image: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-[#a0a0a0] mb-2">Data de publicação</label>
+                <input
+                  type="datetime-local"
+                  value={form.published_at}
+                  onChange={(e) => setForm({ ...form, published_at: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-[#a0a0a0] mb-2">Tags</label>
+                <input
+                  type="text"
+                  value={form.tags}
+                  onChange={(e) => setForm({ ...form, tags: e.target.value })}
+                  placeholder="Ex: forex, fimathe, trading"
+                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-[#a0a0a0] mb-2">Autor</label>
+                <input
+                  type="text"
+                  value={form.author}
+                  onChange={(e) => setForm({ ...form, author: e.target.value })}
+                  placeholder="Ex: Marcelo Ferreira"
+                  className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm text-[#a0a0a0] mb-2">Data de publicação</label>
-              <input
-                type="datetime-local"
-                value={form.published_at}
-                onChange={(e) => setForm({ ...form, published_at: e.target.value })}
-                className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-              />
-            </div>
-          </div>
           <div className="flex items-center gap-2">
             <input
               id="published"
