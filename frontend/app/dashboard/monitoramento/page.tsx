@@ -55,7 +55,7 @@ export default function MonitoramentoPage() {
         results.push({
           name: 'Backend API',
           status: 'offline',
-          detail: 'Sem resposta (timeout ou conexão recusada)',
+          detail: 'Sem resposta (timeout ou conexÃ£o recusada)',
           icon: 'fas fa-server',
         })
       }
@@ -170,7 +170,7 @@ export default function MonitoramentoPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Monitoramento</h1>
-        <p className="text-[#a0a0a0]">Status do sistema e saúde dos serviços</p>
+        <p className="text-[#a0a0a0]">Status do sistema e saÃºde dos serviÃ§os</p>
       </div>
 
       {/* Overall Status */}
@@ -193,14 +193,14 @@ export default function MonitoramentoPage() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-[#dcdcdc]">
-              Sistema {overallStatus === 'online' ? 'Operacional' : overallStatus === 'warning' ? 'Parcialmente Operacional' : 'Indisponível'}
+              Sistema {overallStatus === 'online' ? 'Operacional' : overallStatus === 'warning' ? 'Parcialmente Operacional' : 'IndisponÃ­vel'}
             </h2>
             <p className="text-[#a0a0a0]">
-              {onlineCount} online • {warningCount} avisos • {offlineCount} offline
+              {onlineCount} online Â· {warningCount} avisos Â· {offlineCount} offline
             </p>
             {health?.timestamp && (
               <p className="text-sm text-[#707070] mt-1">
-                Última verificação: {new Date(health.timestamp).toLocaleString('pt-BR')}
+                Ãºltima verificaÃ§Ã£o: {new Date(health.timestamp).toLocaleString('pt-BR')}
               </p>
             )}
           </div>
@@ -241,7 +241,7 @@ export default function MonitoramentoPage() {
 
       {/* Info */}
       <div className="card">
-        <h3 className="text-lg font-semibold text-[#dcdcdc] mb-4">Informações do Sistema</h3>
+        <h3 className="text-lg font-semibold text-[#dcdcdc] mb-4">InformaÃ§Ãµes do Sistema</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2 text-[#a0a0a0]">
             <i className="fas fa-code-branch text-[#ffd700]"></i>

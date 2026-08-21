@@ -134,7 +134,7 @@ export default function DashboardHome() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Dashboard</h1>
-        <p className="text-[#a0a0a0]">Visão geral do ecossistema Fimathe</p>
+        <p className="text-[#a0a0a0]">VisÃ£o geral do ecossistema Fimathe</p>
       </div>
 
       {/* Stats Grid */}
@@ -214,7 +214,7 @@ export default function DashboardHome() {
                 Sistema {health?.status === 'ok' ? 'Operacional' : 'Offline'}
               </h2>
               <p className="text-[#a0a0a0] text-sm">
-                Backend API • Supabase (PostgreSQL) • Auth: Supabase Auth
+                Backend API â†’ Supabase (PostgreSQL) â†’ Auth: Supabase Auth
               </p>
             </div>
           </div>
