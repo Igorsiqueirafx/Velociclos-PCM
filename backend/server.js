@@ -60,6 +60,11 @@ function authenticate(req, res, next) {
   next();
 }
 
+if (!config.ADMIN_PASSWORD) {
+  console.error('FATAL: ADMIN_PASSWORD environment variable is not set. Server startup aborted.');
+  process.exit(1);
+}
+
 // ============================================
 // HEALTH
 // ============================================
@@ -985,3 +990,4 @@ if (require.main === module && !process.env.VERCEL) {
 }
 
 module.exports = app;
+

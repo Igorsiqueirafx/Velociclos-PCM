@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'velociclos2024'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
 export async function POST(request: Request) {
   try {
@@ -31,4 +31,5 @@ export async function POST(request: Request) {
     )
   }
 }
+
 

@@ -1,19 +1,27 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE_URL = 'https://iskzakpvxuowkbzovjxw.supabase.co';
-const SUPABASE_SECRET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlza3pha3B2eHVvd2tiem92anh3Iiwicm9sZSI6InNlcnZpY2VfY2xvZSIsImlhdCI6MTc4NjA1Mzg5NSwiZXhwIjoyMTAxNjI5ODk1fQ.k1--XG7OjAaFAaF3tNmzX6WWP5v3PDF6af2aUIxmyY4';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://iskzakpvxuowkbzovjxw.supabase.co';
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
+const SUPABASE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+if (!SUPABASE_SECRET_KEY) {
+  console.error('Missing SUPABASE_SECRET_KEY environment variable');
+  process.exit(1);
+}
+
+if (!SUPABASE_PUBLISHABLE_KEY) {
+  console.error('Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY environment variable');
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SECRET_KEY, {
   auth: { autoRefreshToken: false, persistSession: false }
 });
 
-// Test: verify anon user can read profiles (shouldn't be able to after fix)
 async function test() {
   console.log('=== Testing current RLS state ===\n');
 
-  // Test 1: Anon access to profiles
-  const anonKey = 'sb_publishable_Pl4MxK843e3BfMtCmwCNHQ_pFNRvA5M';
-  const supabaseAnon = createClient(SUPABASE_URL, anonKey);
+  const supabaseAnon = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
   const { data: anonProfiles, error: anonError } = await supabaseAnon
     .from('profiles')
@@ -27,7 +35,6 @@ async function test() {
 
   console.log('2. Anon can read leads:', anonLeadsError ? `NO (${anonLeadsError.message})` : `YES - LEAK (${anonLeads.length} rows)`);
 
-  // Test 3: Service role can still write
   const { data: leadData, error: leadError } = await supabase
     .from('leads')
     .select('*')
