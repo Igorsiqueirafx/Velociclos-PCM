@@ -20,7 +20,6 @@ function getSupabase() {
   })
 }
 
-// Simple logging
 function logEvent(event: string, level: 'info' | 'error' | 'warn', message: string, meta?: Record<string, unknown>) {
   const timestamp = new Date().toISOString()
   const logFn = level === 'error' ? console.error : level === 'warn' ? console.warn : console.log
@@ -106,9 +105,10 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     )
   } catch (err) {
-    logEvent('lead_fatal', 'error', 'Erro interno no API de leads', { error: err instanceof Error ? err.message : String(err) })
+    const message = err instanceof Error ? err.message : String(err)
+    logEvent('lead_fatal', 'error', 'Erro interno no API de leads', { error: message })
     return NextResponse.json(
-      { error: 'Erro interno do servidor' },
+      { error: 'Erro interno do servidor', details: message },
       { status: 500 }
     )
   }

@@ -81,7 +81,8 @@ export default function DashboardLayout({
         <nav className="p-4">
           <ul className="space-y-1">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+              const currentPath = pathname || '/dashboard'
+              const isActive = currentPath === item.href || (item.href !== '/dashboard' && currentPath.startsWith(item.href))
               return (
                 <li key={item.href}>
                   <a
@@ -123,9 +124,9 @@ export default function DashboardLayout({
               >
                 <i className="fas fa-bars text-xl"></i>
               </button>
-              <h1 className="text-lg font-semibold text-[#dcdcdc] capitalize">
-                {pathname === '/dashboard' ? 'Dashboard' : pathname.split('/').pop()}
-              </h1>
+            <h1 className="text-lg font-semibold text-[#dcdcdc] capitalize">
+              {(pathname || '/dashboard') === '/dashboard' ? 'Dashboard' : (pathname || '/dashboard').split('/').pop()}
+            </h1>
             </div>
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 text-sm text-[#a0a0a0]">

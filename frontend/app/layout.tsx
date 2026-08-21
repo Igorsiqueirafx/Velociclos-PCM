@@ -1,25 +1,6 @@
-﻿import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google'
-import './globals.css'
+﻿import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-display',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-body',
-})
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
-})
 
 export const metadata = {
   title: 'Velociclos PCM - Automação de Mercado | Opere com Liberdade!',
@@ -44,7 +25,7 @@ export default function RootLayout({
   const isAdminSite = process.env.NEXT_PUBLIC_IS_ADMIN_SITE === 'true'
 
   return (
-    <html lang="pt-BR" data-theme="dark" className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetBrainsMono.variable} scroll-smooth`}>
+    <html lang="pt-BR" data-theme="dark" className="scroll-smooth">
       <head>
         <link
           rel="stylesheet"
@@ -55,7 +36,7 @@ export default function RootLayout({
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-      <body className="bg-[#0f1115] text-[#e8e8e8] font-body antialiased">
+      <body className="bg-[#1e2329] text-[#dcdcdc] font-sans antialiased">
         <SkipLink />
         {!isAdminSite && <Header />}
         <main
@@ -74,7 +55,7 @@ function SkipLink() {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] px-4 py-2 bg-[#1e2329] text-[#e8e8e8] rounded-md focus:ring-2 focus:ring-[#ffd700] transition-transform"
+      className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] px-4 py-2 bg-[#2a2e39] text-[#dcdcdc] rounded-md focus:ring-2 focus:ring-[#ffd700] transition-transform"
     >
       Ir para o conteúdo
     </a>

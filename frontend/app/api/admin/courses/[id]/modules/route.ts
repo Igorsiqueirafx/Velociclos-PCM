@@ -12,11 +12,11 @@ async function getAuthHeaders() {
 
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ courseId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { courseId } = await params
-    const res = await fetch(`${BACKEND_URL}/api/courses/${courseId}/modules`, {
+    const { id } = await params
+    const res = await fetch(`${BACKEND_URL}/api/courses/${id}/modules`, {
       headers: await getAuthHeaders(),
       cache: 'no-store',
     })
@@ -30,12 +30,12 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ courseId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { courseId } = await params
+    const { id } = await params
     const body = await request.json()
-    const res = await fetch(`${BACKEND_URL}/api/courses/${courseId}/modules`, {
+    const res = await fetch(`${BACKEND_URL}/api/courses/${id}/modules`, {
       method: 'POST',
       headers: await getAuthHeaders(),
       body: JSON.stringify(body),
