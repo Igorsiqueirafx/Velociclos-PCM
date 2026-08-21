@@ -1,6 +1,8 @@
 ﻿import './globals.css'
+import { headers } from 'next/headers'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { resolveIsAdminSite } from '@/lib/admin-config'
 
 export const metadata = {
   title: 'Velociclos PCM - Automação de Mercado | Opere com Liberdade!',
@@ -17,12 +19,14 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const isAdminSite = process.env.NEXT_PUBLIC_IS_ADMIN_SITE === 'true'
+  const headersList = await headers()
+  const host = headersList.get('host')
+  const isAdminSite = resolveIsAdminSite(host)
 
   return (
     <html lang="pt-BR" data-theme="dark" className="scroll-smooth">
