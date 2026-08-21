@@ -1,8 +1,11 @@
-﻿/** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
-}
+  outputFileTracingRoot: path.join(__dirname, '..'),
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
