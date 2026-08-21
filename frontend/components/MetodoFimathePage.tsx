@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import IntroVideoOverlay from '@/components/IntroVideoOverlay'
 
-const aulas = [
+type Aula = {
+  id: string
+  title: string
+  videoId: string
+}
+
+const aulas: Aula[] = [
   { id: 'aula-01', title: 'AULA 01 - INTRODUÇÃO AO FOREX', videoId: 'L3XbYm_WOQA' },
   { id: 'aula-02', title: 'AULA 01 - ANÁLISE NO OURO', videoId: 'tgH0fjnGOlk' },
   { id: 'aula-03', title: 'AULA 02 - ANÁLISE NO OURO PART. 2', videoId: 'zlx26zrcDOg' },
@@ -15,10 +21,12 @@ const aulas = [
 export default function MetodoFimathePage() {
   const [showIntro, setShowIntro] = useState(true)
 
+  const handleIntroComplete = useCallback(() => setShowIntro(false), [])
+
   return (
     <>
       {showIntro && (
-        <IntroVideoOverlay onComplete={() => setShowIntro(false)} />
+        <IntroVideoOverlay onComplete={handleIntroComplete} />
       )}
 
       <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">

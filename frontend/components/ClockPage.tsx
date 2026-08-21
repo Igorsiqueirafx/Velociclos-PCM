@@ -1,8 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
-const forexSessions = [
+type ForexSession = {
+  name: string
+  time: string
+  countries: string
+  color: string
+  bg: string
+}
+
+const forexSessions: ForexSession[] = [
   { name: 'Nova York', time: '12:00 - 21:00', countries: 'EUA, Canadá', color: 'from-red-500 to-orange-500', bg: 'bg-red-900/20' },
   { name: 'Londres', time: '07:00 - 16:00', countries: 'UK, Europa', color: 'from-yellow-500 to-amber-500', bg: 'bg-yellow-900/20' },
   { name: 'Tóquio', time: '00:00 - 09:00', countries: 'Japão, Austrália', color: 'from-green-500 to-emerald-500', bg: 'bg-green-900/20' },
@@ -17,14 +25,14 @@ export default function ClockPage() {
     return () => clearInterval(timer)
   }, [])
 
-  const formatTime = (date: Date) => {
+  const formatTime = useCallback((date: Date) => {
     const hours = String(date.getUTCHours()).padStart(2, '0')
     const minutes = String(date.getUTCMinutes()).padStart(2, '0')
     const seconds = String(date.getUTCSeconds()).padStart(2, '0')
     return `${hours}:${minutes}:${seconds} GMT`
-  }
+  }, [])
 
-  const isSessionActive = (timeRange: string) => {
+  const isSessionActive = useCallback((timeRange: string) => {
     const [start, end] = timeRange.split(' - ').map((t) => {
       const [h, m] = t.split(':').map(Number)
       return h * 60 + m
@@ -34,7 +42,9 @@ export default function ClockPage() {
       return nowMinutes >= start && nowMinutes < end
     }
     return nowMinutes >= start || nowMinutes < end
-  }
+  }, [now])
+
+  const formattedTime = useMemo(() => formatTime(now), [now, formatTime])
 
   return (
     <section className="py-16 bg-[#1e2329]">
@@ -46,7 +56,7 @@ export default function ClockPage() {
               <h2 className="text-2xl font-bold text-[#dcdcdc]">Mapa de Sessões Forex</h2>
             </div>
             <div className="text-[#ffd700] font-mono text-lg mt-2">
-              {formatTime(now)}
+              {formattedTime}
             </div>
           </div>
 

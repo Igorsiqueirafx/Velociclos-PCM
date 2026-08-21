@@ -1,11 +1,38 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+
+type FeatureItem = {
+  title: string
+  description: string
+  icon: string
+}
 
 const VIDEO_URL = 'https://www.youtube.com/embed/_BaLT-9zzwU?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1'
 
+const features: FeatureItem[] = [
+  {
+    title: 'Instalação rápida',
+    description: 'Coloque o arquivo .ex5 na pasta correta do MetaTrader e ative o E.A. em poucos passos.',
+    icon: 'fa-download',
+  },
+  {
+    title: 'Configuração segura',
+    description: 'Use valores recomendados e personalize apenas o que precisa para o seu estilo de trade.',
+    icon: 'fa-cogs',
+  },
+  {
+    title: 'Suporte claro',
+    description: 'Leia o manual antes de operar e siga as orientações de gestão para proteger seu capital.',
+    icon: 'fa-shield-alt',
+  },
+]
+
 export default function EaPage() {
   const [showVideo, setShowVideo] = useState(false)
+
+  const openVideo = useCallback(() => setShowVideo(true), [])
+  const closeVideo = useCallback(() => setShowVideo(false), [])
 
   return (
     <>
@@ -57,7 +84,7 @@ export default function EaPage() {
                 />
                 <div
                   className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  onClick={() => setShowVideo(true)}
+                  onClick={openVideo}
                   aria-label="Assistir vídeo demonstrativo"
                   role="button"
                 >
@@ -77,35 +104,18 @@ export default function EaPage() {
       <section className="py-16 bg-[#2a2e39]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            <div className="bg-[#1e2329] border border-[#404857] rounded-xl p-8 text-center transition-all hover:border-[#ffd700]">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-download text-2xl text-[#1e2329]" aria-hidden="true"></i>
+            {features.map((item) => (
+              <div
+                key={item.title}
+                className="bg-[#1e2329] border border-[#404857] rounded-xl p-8 text-center transition-all hover:border-[#ffd700]"
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className={`fas ${item.icon} text-2xl text-[#1e2329]`} aria-hidden="true"></i>
+                </div>
+                <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">{item.title}</h3>
+                <p className="text-[#a0a0a0] text-sm">{item.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Instalação rápida</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Coloque o arquivo .ex5 na pasta correta do MetaTrader e ative o E.A. em poucos passos.
-              </p>
-            </div>
-
-            <div className="bg-[#1e2329] border border-[#404857] rounded-xl p-8 text-center transition-all hover:border-[#ffd700]">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-cogs text-2xl text-[#1e2329]" aria-hidden="true"></i>
-              </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Configuração segura</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Use valores recomendados e personalize apenas o que precisa para o seu estilo de trade.
-              </p>
-            </div>
-
-            <div className="bg-[#1e2329] border border-[#404857] rounded-xl p-8 text-center transition-all hover:border-[#ffd700]">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-shield-alt text-2xl text-[#1e2329]" aria-hidden="true"></i>
-              </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Suporte claro</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Leia o manual antes de operar e siga as orientações de gestão para proteger seu capital.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -113,7 +123,7 @@ export default function EaPage() {
       {showVideo && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/85"
-          onClick={() => setShowVideo(false)}
+          onClick={closeVideo}
           role="dialog"
           aria-modal="true"
           aria-label="Vídeo demonstrativo"
@@ -123,7 +133,7 @@ export default function EaPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setShowVideo(false)}
+              onClick={closeVideo}
               className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#2a2e39] text-[#a0a0a0] hover:text-[#ffd700] rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#ffd700]"
               aria-label="Fechar vídeo"
             >

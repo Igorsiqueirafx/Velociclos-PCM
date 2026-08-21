@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/app/lib/supabase/client'
 import { fetchPlaylists, fetchPlaylistItems, YouTubePlaylist, YouTubeVideo } from '@/lib/youtube'
 
@@ -46,7 +46,7 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
   const [loadingPlaylists, setLoadingPlaylists] = useState(false)
   const [loadingPlaylistVideos, setLoadingPlaylistVideos] = useState<Record<string, boolean>>({})
 
-  const loadModules = async (courseId: string) => {
+  const loadModules = useCallback(async (courseId: string) => {
     setLoading(true)
     setSelectedCourse(courses.find((c) => c.id === courseId) || null)
     setModules([])
@@ -82,9 +82,9 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [courses])
 
-  const loadPlaylistVideos = async (playlistId: string) => {
+  const loadPlaylistVideos = useCallback(async (playlistId: string) => {
     setLoadingPlaylistVideos((prev) => ({ ...prev, [playlistId]: true }))
     try {
       const videos = await fetchPlaylistItems(playlistId)
@@ -94,13 +94,13 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
     } finally {
       setLoadingPlaylistVideos((prev) => ({ ...prev, [playlistId]: false }))
     }
-  }
+  }, [])
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setSelectedCourse(null)
     setModules([])
     setCurrentLesson(null)
-  }
+  }, [])
 
   // When no courses in Supabase, discover playlists directly from YouTube
   useEffect(() => {
@@ -216,12 +216,12 @@ function PlaylistCard({
 }) {
   const [expanded, setExpanded] = useState(false)
 
-  const handleExpand = () => {
+  const handleExpand = useCallback(() => {
     if (!expanded) {
       onLoadVideos(playlist.id)
     }
-    setExpanded(!expanded)
-  }
+    setExpanded((prev) => !prev)
+  }, [expanded, onLoadVideos, playlist.id])
 
   return (
     <div className="group bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden text-left transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)]">

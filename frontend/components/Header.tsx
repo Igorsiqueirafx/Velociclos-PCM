@@ -1,8 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
-const navigation = [
+type NavigationItem = {
+  name: string
+  href: string
+}
+
+const navigation: NavigationItem[] = [
   { name: 'Início', href: '/' },
   { name: 'Expert Advisor', href: '/ea' },
   { name: 'Cursos', href: '/cursos' },
@@ -21,6 +26,10 @@ export default function Header() {
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
+
+  const closeMenu = useCallback(() => setMobileMenuOpen(false), [])
+
+  const toggleMenu = useCallback(() => setMobileMenuOpen(prev => !prev), [])
 
   return (
     <header className="bg-[#2a2e39] border-b border-[#404857] sticky top-0 z-50">
@@ -52,7 +61,7 @@ export default function Header() {
               className="text-[#dcdcdc] hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] rounded-md p-2"
               aria-label="Abrir menu de navegação"
               aria-expanded={mobileMenuOpen}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={toggleMenu}
             >
               <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`} aria-hidden="true"></i>
             </button>
@@ -69,7 +78,7 @@ export default function Header() {
                 href={item.href}
                 className="block px-3 py-2 text-[#a0a0a0] hover:text-[#ffd700] hover:bg-[#343a47] rounded-md transition-colors duration-200"
                 aria-current={item.href === '/' ? 'page' : undefined}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMenu}
               >
                 {item.name}
               </a>

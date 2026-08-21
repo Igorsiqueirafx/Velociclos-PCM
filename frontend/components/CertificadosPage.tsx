@@ -1,8 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
-const certificates = [
+type Certificate = {
+  id: string
+  title: string
+  description: string
+  image: string
+}
+
+const certificates: Certificate[] = [
   {
     id: 'formula-ouro',
     title: 'Fórmula do Ouro',
@@ -35,8 +42,14 @@ const certificates = [
   },
 ]
 
+const FALLBACK_IMAGE =
+  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyMzI5Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjYTBhMGEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM5OCI+SW1hZ2VtIG7vPhQ4PC90ZXh0Pjwvc3ZnPg=='
+
 export default function CertificadosPage() {
   const [selectedCert, setSelectedCert] = useState<string | null>(null)
+
+  const openCert = useCallback((image: string) => setSelectedCert(image), [])
+  const closeCert = useCallback(() => setSelectedCert(null), [])
 
   return (
     <>
@@ -65,7 +78,7 @@ export default function CertificadosPage() {
             {certificates.map((cert) => (
               <button
                 key={cert.id}
-                onClick={() => setSelectedCert(cert.image)}
+                onClick={() => openCert(cert.image)}
                 className="group bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)] text-left focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
               >
                 <div className="aspect-square overflow-hidden">
@@ -76,7 +89,7 @@ export default function CertificadosPage() {
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
-                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyMzI5Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0ibW9ub3NwYWVjZSIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2EwaGEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuMzk4Ij5JbWFnZW0gbm/PhQ4PC90ZXh0Pjwvc3ZnPg=='
+                      target.src = FALLBACK_IMAGE
                     }}
                   />
                 </div>
@@ -97,7 +110,7 @@ export default function CertificadosPage() {
       {selectedCert && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/85"
-          onClick={() => setSelectedCert(null)}
+          onClick={closeCert}
           role="dialog"
           aria-modal="true"
           aria-label="Visualizador de certificado"
@@ -107,7 +120,7 @@ export default function CertificadosPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setSelectedCert(null)}
+              onClick={closeCert}
               className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#2a2e39] text-[#a0a0a0] hover:text-[#ffd700] rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#ffd700]"
               aria-label="Fechar certificado"
             >

@@ -1,6 +1,28 @@
-﻿'use client'
+﻿import Link from 'next/link'
 
-import Link from 'next/link'
+type BenefitItem = {
+  title: string
+  description: string
+  icon: string
+}
+
+const benefits: BenefitItem[] = [
+  {
+    title: 'Conta Real',
+    description: 'Desenvolvido e refinado com experiências de operações reais do mercado financeiro.',
+    icon: 'fa-users',
+  },
+  {
+    title: 'Método Comprovado',
+    description: 'Os números mostram claramente que é possível construir uma renda consistente.',
+    icon: 'fa-chart-line',
+  },
+  {
+    title: 'Receba em Dólares',
+    description: 'Aprenda a escalar o seu capital em mesas proprietárias e alcance as suas metas profissionais.',
+    icon: 'fa-award',
+  },
+]
 
 export default function Home() {
   return (
@@ -47,14 +69,14 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative flex justify-center">
+            <div className="relative flex justify-center" aria-hidden="true">
               <div className="relative">
                 <div
                   className="w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-[radial-gradient(circle_at_30%_30%,_rgba(255,215,0,0.15)_0%,_rgba(255,215,0,0.05)_50%,_transparent_100%)] border border-[#ffd700] flex items-center justify-center text-center p-12 relative overflow-hidden
                   before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-radial before:from-[#ffd700]/15 before:via-[#ffd700]/5 before:to-transparent before:z-0"
                 >
                   <div className="relative z-10">
-                    <i className="fas fa-arrow-trend-up text-5xl sm:text-6xl text-[#ffd700] mb-4 block" aria-hidden="true"></i>
+                    <i className="fas fa-arrow-trend-up text-5xl sm:text-6xl text-[#ffd700] mb-4 block"></i>
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-[#dcdcdc] mb-3">
                       Expert Advisor
                     </h2>
@@ -75,35 +97,18 @@ export default function Home() {
       <section className="py-16 sm:py-20 bg-[#2a2e39]" aria-labelledby="benefits-title">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-[#2a2e39] border border-[#404857] rounded-xl p-8 text-center transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-6">
-                <i className="fas fa-users text-2xl text-[#1e2329]" aria-hidden="true"></i>
+            {benefits.map((item) => (
+              <div
+                key={item.title}
+                className="bg-[#2a2e39] border border-[#404857] rounded-xl p-8 text-center transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]"
+              >
+                <div className="w-20 h-20 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i className={`fas ${item.icon} text-2xl text-[#1e2329]`} aria-hidden="true"></i>
+                </div>
+                <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">{item.title}</h3>
+                <p className="text-[#a0a0a0] text-sm">{item.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Conta Real</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Desenvolvido e refinado com experiências de operações reais do mercado financeiro.
-              </p>
-            </div>
-
-            <div className="bg-[#2a2e39] border border-[#404857] rounded-xl p-8 text-center transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-6">
-                <i className="fas fa-chart-line text-2xl text-[#1e2329]" aria-hidden="true"></i>
-              </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Método Comprovado</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Os números mostram claramente que é possível construir uma renda consistente.
-              </p>
-            </div>
-
-            <div className="bg-[#2a2e39] border border-[#404857] rounded-xl p-8 text-center transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-6">
-                <i className="fas fa-award text-2xl text-[#1e2329]" aria-hidden="true"></i>
-              </div>
-              <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">Receba em Dólares</h3>
-              <p className="text-[#a0a0a0] text-sm">
-                Aprenda a escalar o seu capital em mesas proprietárias e alcance as suas metas profissionais.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>

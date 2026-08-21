@@ -1,6 +1,31 @@
-'use client'
+type ManualStep = {
+  number: number
+  title: string
+  content: string
+  link?: string
+  linkText?: string
+  hint?: string
+  hintType?: 'warning' | 'info'
+  hintIcon?: string
+}
 
-const manualSections = [
+type ManualMode = {
+  icon: string
+  title: string
+  description: string
+  features: string[]
+}
+
+type ManualSection = {
+  id: string
+  icon: string
+  title: string
+  description: string
+  steps?: ManualStep[]
+  modes?: ManualMode[]
+}
+
+const manualSections: ManualSection[] = [
   {
     id: 'instalacao',
     icon: 'fa-download',
