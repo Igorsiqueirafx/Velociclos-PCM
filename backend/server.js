@@ -9,7 +9,7 @@ const { admin: supabase } = require('./lib/supabase');
 const app = express();
 const PORT = config.PORT;
 
-const allowedOrigins = (process.env.CORS_ORIGIN || process.env.FRONTEND_URL || '*')
+const allowedOrigins = (process.env.CORS_ORIGIN || process.env.FRONTEND_URL || '')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -990,4 +990,5 @@ if (require.main === module && !process.env.VERCEL) {
 }
 
 module.exports = app;
+
 
