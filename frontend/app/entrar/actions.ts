@@ -66,7 +66,58 @@ export async function registerEmail(formData: FormData) {
     return { error: 'Erro ao cadastrar. Tente novamente.' }
   }
 
+  // Try to send welcome email via Brevo (non-blocking)
+  try {
+    await sendWelcomeEmail(email)
+  } catch (emailError) {
+    console.error('Error sending welcome email:', emailError)
+    // Don't fail the registration if email sending fails
+  }
+
   return { success: true as const }
+}
+
+async function sendWelcomeEmail(email: string): Promise<void> {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY
+  
+  if (!BREVO_API_KEY) {
+    console.warn('BREVO_API_KEY not configured. Welcome email not sent.')
+    return
+  }
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        to: [{ email }],
+        sender: { email: 'contato@velociclos.com.br', name: 'Velociclos PCM' },
+        subject: 'Bem-vindo ao Velociclos PCM! 🚀',
+        htmlContent: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #1e2329; padding: 20px; border-radius: 8px; color: #dcdcdc;">
+            <h1 style="color: #ffd700;">Bem-vindo ao Velociclos PCM!</h1>
+            <p>Obrigado por se cadastrar na nossa plataforma de trading automatizado.</p>
+            <p>Você agora tem acesso a conteúdo exclusivo sobre o método Fimathe, cursos gratuitos e muito mais.</p>
+            <a href="https://velociclos.vercel.app/cursos" style="display: inline-block; background-color: #ffd700; color: #1e2329; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 20px;">Explorar Cursos</a>
+            <p style="margin-top: 30px; font-size: 12px; color: #a0a0a0;">© 2026 Velociclos PCM. Todos os direitos reservados.</p>
+          </div>
+        `,
+        replyTo: { email: 'contato@velociclos.com.br' },
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('Brevo API error:', error)
+      throw new Error(`Brevo API error: ${response.status}`)
+    }
+  } catch (error) {
+    console.error('Failed to send welcome email via Brevo:', error)
+    throw error
+  }
 }
 
 async function fallbackToBackend(email: string): Promise<{ success?: boolean; error?: string }> {

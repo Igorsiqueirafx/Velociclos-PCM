@@ -14,6 +14,9 @@ const navigation: NavigationItem[] = [
   { name: 'Método Fimathe', href: '/metodo-fimathe' },
   { name: 'Artigos', href: '/artigos' },
   { name: 'Certificados', href: '/certificados' },
+  { name: 'Manual', href: '/manual' },
+  { name: 'Relógio', href: '/relogio' },
+  { name: 'Sitemap', href: '/site-map' },
 ]
 
 export default function Header() {
