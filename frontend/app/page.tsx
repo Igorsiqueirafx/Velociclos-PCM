@@ -122,10 +122,10 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-[#707070] text-sm mb-6 uppercase tracking-wider">Como visto em</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 hover:opacity-80 transition-opacity">
-            <img src="/logo forbes link matéria add.svg" alt="Forbes" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/logo investing matéria add link.svg" alt="Investing" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/istoe materia logo add link.svg" alt="IstoÉ" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/criptofacio add link materia.svg" alt="Criptofacio" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/forbes.svg" alt="Forbes" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/investing.svg" alt="Investing" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/istoe.svg" alt="IstoÉ" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/criptofacio.svg" alt="Criptofacio" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
           </div>
         </div>
       </section>
@@ -246,7 +246,7 @@ export default function Home() {
               <div className="bg-[#1e2329] border border-[#404858] rounded-2xl p-8 shadow-2xl">
                 <div className="flex items-center gap-4 mb-6">
                   <img
-                    src="/Marcelo olhando pra cima.svg"
+                    src="/marcelo-ferreira.svg"
                     alt="Marcelo Ferreira"
                     className="w-20 h-20 rounded-full object-cover"
                   />

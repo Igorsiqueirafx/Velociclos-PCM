@@ -68,7 +68,7 @@ export default function Header() {
             aria-label="Velociclos - Página inicial"
           >
             <img
-              src="/logo f fimathe.svg"
+              src="/logo-fimathe.svg"
               alt="Fimathe Logo"
               className="h-10 w-auto group-hover:scale-105 transition-transform"
             />
