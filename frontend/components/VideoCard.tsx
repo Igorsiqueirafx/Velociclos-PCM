@@ -25,6 +25,7 @@ export default function VideoCard({
   category,
   compact = false,
 }: VideoCardProps) {
+  const [isPlaying, setIsPlaying] = useState(false)
   const [imageError, setImageError] = useState(false)
 
   const formatViews = (views: string) => {
@@ -58,24 +59,38 @@ export default function VideoCard({
     'setup': 'bg-purple-500/10 text-purple-400',
   }
 
+  const handlePlay = () => {
+    setIsPlaying(true)
+  }
+
   if (compact) {
     return (
-      <a
-        href={`https://www.youtube.com/watch?v=${videoId}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex gap-3 p-2 rounded-lg hover:bg-[#2a2e39] transition-colors"
+      <div
+        className="group flex gap-3 p-2 rounded-lg hover:bg-[#2a2e39] transition-colors cursor-pointer"
+        onClick={handlePlay}
       >
         <div className="relative w-40 aspect-video rounded overflow-hidden flex-shrink-0">
-          <img
-            src={imageError ? 'https://img.youtube.com/vi/${videoId}/default.jpg' : thumbnail}
-            alt={title}
-            className="w-full h-full object-cover"
-            onError={() => setImageError(true)}
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <i className="fas fa-play text-xl text-white" />
-          </div>
+          {isPlaying ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+              title={title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <>
+              <img
+                src={imageError ? `https://img.youtube.com/vi/${videoId}/default.jpg` : thumbnail}
+                alt={title}
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i className="fas fa-play text-xl text-white" />
+              </div>
+            </>
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-medium text-[#dcdcdc] line-clamp-2 group-hover:text-[#ffd700] transition-colors">
@@ -90,42 +105,55 @@ export default function VideoCard({
             </p>
           )}
         </div>
-      </a>
+      </div>
     )
   }
 
   return (
-    <a
-      href={`https://www.youtube.com/watch?v=${videoId}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden hover:border-[#ffd700] transition-all hover:shadow-lg hover:shadow-[#ffd700]/5"
-    >
+    <div className="group block bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden hover:border-[#ffd700] transition-all hover:shadow-lg hover:shadow-[#ffd700]/5">
       <div className="relative aspect-video">
-        <img
-          src={imageError ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : thumbnail}
-          alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          onError={() => setImageError(true)}
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <div className="w-16 h-16 bg-[#ffd700] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform">
-            <i className="fas fa-play text-2xl text-[#1e2329] ml-1" />
-          </div>
-        </div>
-        {duration && (
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
-            {duration}
-          </div>
-        )}
-        {category && categoryLabels[category] && (
-          <div className={`absolute top-2 left-2 ${categoryColors[category] || 'bg-[#ffd700]/10 text-[#ffd700]'} text-xs px-2 py-1 rounded`}>
-            {categoryLabels[category]}
-          </div>
+        {isPlaying ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+            title={title}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <img
+              src={imageError ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : thumbnail}
+              alt={title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={() => setImageError(true)}
+            />
+            <div
+              className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+              onClick={handlePlay}
+            >
+              <div className="w-16 h-16 bg-[#ffd700] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform">
+                <i className="fas fa-play text-2xl text-[#1e2329] ml-1" />
+              </div>
+            </div>
+            {duration && (
+              <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                {duration}
+              </div>
+            )}
+            {category && categoryLabels[category] && (
+              <div className={`absolute top-2 left-2 ${categoryColors[category] || 'bg-[#ffd700]/10 text-[#ffd700]'} text-xs px-2 py-1 rounded`}>
+                {categoryLabels[category]}
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="p-4">
-        <h3 className="text-sm font-medium text-[#dcdcdc] line-clamp-2 group-hover:text-[#ffd700] transition-colors mb-2">
+        <h3
+          className="text-sm font-medium text-[#dcdcdc] line-clamp-2 group-hover:text-[#ffd700] transition-colors mb-2 cursor-pointer"
+          onClick={handlePlay}
+        >
           {title}
         </h3>
         {description && (
@@ -143,6 +171,6 @@ export default function VideoCard({
           )}
         </div>
       </div>
-    </a>
+    </div>
   )
 }

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { fetchPlaylists, fetchPlaylistItems, YouTubeVideo } from '@/lib/youtube'
+import VideoCard from '@/components/VideoCard'
 
 export const metadata: Metadata = {
   title: 'Momentos Chave - Velociclos PCM | Método Fimathe',
@@ -93,7 +94,8 @@ export default async function MomentosPage({
               Momentos <span className="text-[#ffd700]">Chave</span>
             </h1>
             <p className="text-lg text-[#a0a0a0]">
-              Trechos selecionados dos vídeos para aprendizado rápido e direto ao ponto
+              Trechos selecionados dos vídeos para aprendizado rápido e direto ao ponto. 
+              Assista diretamente na plataforma.
             </p>
           </div>
         </div>
@@ -150,40 +152,15 @@ export default async function MomentosPage({
           {videos.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {videos.map((video) => (
-                <a
+                <VideoCard
                   key={video.videoId}
-                  href={`https://www.youtube.com/watch?v=${video.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden hover:border-[#ffd700] transition-colors"
-                >
-                  <div className="relative aspect-video">
-                    <img
-                      src={video.thumbnail}
-                      alt={video.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <i className="fas fa-play text-4xl text-white" />
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
-                      <i className="fas fa-play mr-1" />
-                      Assistir
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-sm font-medium text-[#dcdcdc] line-clamp-2 group-hover:text-[#ffd700] transition-colors">
-                      {video.title}
-                    </h3>
-                    <p className="text-xs text-[#707070] mt-2">
-                      {new Date(video.publishedAt).toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                </a>
+                  videoId={video.videoId}
+                  title={video.title}
+                  description={video.description}
+                  thumbnail={video.thumbnail}
+                  publishedAt={video.publishedAt}
+                  category={video.category}
+                />
               ))}
             </div>
           ) : (
