@@ -18,8 +18,8 @@ dist/
 .out/
 .nyc_output/
 
-# Public assets (synced from frontend/public at build time via vercel.json)
-public/
+# Public assets at repo root only (frontend/public and backend/public are tracked)
+/public/
 
 # Coverage
 coverage/
