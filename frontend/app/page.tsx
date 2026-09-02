@@ -5,43 +5,37 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a12] via-[#141820] to-[#1a1f25]">
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#ffd700] rounded-full filter blur-[120px] animate-pulse" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#ffd700] rounded-full filter blur-[100px] animate-pulse delay-1000" />
-          </div>
-          {/* Grid Pattern */}
-          <div
-            className="absolute inset-0 opacity-5"
-            style={{
-              backgroundImage: `linear-gradient(rgba(255,215,0,0.1) 1px, transparent 1px),
-                               linear-gradient(90deg, rgba(255,215,0,0.1) 1px, transparent 1px)`,
-              backgroundSize: '50px 50px',
-            }}
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/background marcelos.png"
+            alt="Marcelo Ferreira"
+            className="w-full h-full object-cover object-top"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12] via-[#0a0a12]/90 to-[#0a0a12]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-transparent to-[#0a0a12]/50" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffd700]/10 border border-[#ffd700]/20 rounded-full">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffd700]/10 border border-[#ffd700]/20 rounded-full backdrop-blur-sm">
                 <span className="w-2 h-2 bg-[#ffd700] rounded-full animate-pulse" />
                 <span className="text-[#ffd700] text-sm font-medium">Trading Automatizado</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.1] text-white">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.1] text-white drop-shadow-lg">
                 Domine o
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#ffd700] to-[#ffed4e]">
                   Mercado
                 </span>
-                <span className="block text-3xl sm:text-4xl lg:text-5xl text-[#a0a0a0] font-light mt-2">
+                <span className="block text-3xl sm:text-4xl lg:text-5xl text-[#dcdcdc] font-light mt-2">
                   com Velociclos PCM
                 </span>
               </h1>
 
-              <p className="text-lg text-[#a0a0a0] max-w-xl leading-relaxed">
+              <p className="text-lg text-[#dcdcdc] max-w-xl leading-relaxed drop-shadow">
                 Aprenda o Método Fimathe e opere Forex e Ouro com confiança.
                 Cursos completos, análises de mercado e um Expert Advisor profissional.
               </p>
@@ -56,74 +50,58 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/metodo-fimathe"
-                  className="inline-flex items-center gap-3 px-8 py-4 border-2 border-[#404857] text-[#dcdcdc] font-semibold rounded-xl hover:border-[#ffd700] hover:text-[#ffd700] transition-all duration-300"
+                  className="inline-flex items-center gap-3 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:border-[#ffd700] hover:text-[#ffd700] transition-all duration-300 backdrop-blur-sm"
                 >
                   <span>Sobre o Método</span>
                 </Link>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 pt-8 border-t border-[#404857]/50">
+              <div className="flex gap-8 pt-8 border-t border-white/20">
                 <div className="text-center">
                   <div className="text-3xl font-black text-[#ffd700]">5+</div>
-                  <div className="text-sm text-[#707070]">Cursos</div>
+                  <div className="text-sm text-[#dcdcdc]">Cursos</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-black text-[#ffd700]">50+</div>
-                  <div className="text-sm text-[#707070]">Aulas</div>
+                  <div className="text-sm text-[#dcdcdc]">Aulas</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-black text-[#ffd700]">24/7</div>
-                  <div className="text-sm text-[#707070]">Automação</div>
+                  <div className="text-sm text-[#dcdcdc]">Automação</div>
                 </div>
               </div>
             </div>
 
-            {/* Right Visual */}
-            <div className="relative hidden lg:flex justify-center items-center">
-              <div className="relative w-[450px] h-[450px]">
-                {/* Outer Ring */}
-                <div className="absolute inset-0 rounded-full border border-[#ffd700]/20 animate-spin-slow" style={{ animationDuration: '20s' }}>
-                  <div className="absolute top-0 left-1/2 w-3 h-3 bg-[#ffd700] rounded-full -translate-x-1/2 -translate-y-1/2" />
-                </div>
-
-                {/* Middle Ring */}
-                <div className="absolute inset-8 rounded-full border border-[#ffd700]/30 animate-spin-slow" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
-                  <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-[#ffd700] rounded-full -translate-x-1/2 translate-y-1/2" />
-                </div>
-
-                {/* Center Circle */}
-                <div className="absolute inset-16 rounded-full bg-gradient-to-br from-[#ffd700]/20 to-transparent backdrop-blur-sm flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffed4e] flex items-center justify-center shadow-[0_0_60px_rgba(255,215,0,0.5)]">
-                      <i className="fas fa-chart-line text-4xl text-[#1a1f25]" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white">Método Fimathe</h3>
-                    <p className="text-[#a0a0a0] text-sm mt-1">Análise Técnica</p>
-                  </div>
-                </div>
-
+            {/* Right - Marcelo Image */}
+            <div className="relative hidden lg:flex justify-center">
+              <div className="relative">
+                <img
+                  src="/Marcelo olhando pra cima.svg"
+                  alt="Marcelo Ferreira"
+                  className="w-80 h-auto drop-shadow-2xl"
+                />
                 {/* Floating Cards */}
-                <div className="absolute top-10 right-0 bg-[#2a2e39] border border-[#404857] rounded-lg p-3 shadow-xl animate-float">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
-                      <i className="fas fa-arrow-up text-green-500 text-xs" />
+                <div className="absolute -top-4 -right-4 bg-[#2a2e39]/90 backdrop-blur border border-[#404858] rounded-xl p-4 shadow-2xl animate-float">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                      <i className="fas fa-arrow-up text-green-500" />
                     </div>
                     <div>
                       <div className="text-xs text-[#a0a0a0]">EUR/USD</div>
-                      <div className="text-sm font-bold text-green-500">+0.45%</div>
+                      <div className="text-lg font-bold text-green-500">+0.45%</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="absolute bottom-10 left-0 bg-[#2a2e39] border border-[#404857] rounded-lg p-3 shadow-xl animate-float-delayed">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-[#ffd700]/20 rounded-full flex items-center justify-center">
-                      <i className="fas fa-coins text-[#ffd700] text-xs" />
+                <div className="absolute -bottom-4 -left-4 bg-[#2a2e39]/90 backdrop-blur border border-[#404858] rounded-xl p-4 shadow-2xl animate-float-delayed">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#ffd700]/20 rounded-full flex items-center justify-center">
+                      <i className="fas fa-coins text-[#ffd700]" />
                     </div>
                     <div>
                       <div className="text-xs text-[#a0a0a0]">XAU/USD</div>
-                      <div className="text-sm font-bold text-[#dcdcdc]">$2,035</div>
+                      <div className="text-lg font-bold text-white">$2,035</div>
                     </div>
                   </div>
                 </div>
@@ -134,13 +112,26 @@ export default function Home() {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-[#707070]">Scroll</span>
+          <span className="text-xs text-white/60">Scroll</span>
           <i className="fas fa-chevron-down text-[#ffd700]" />
         </div>
       </section>
 
+      {/* Media Section */}
+      <section className="py-12 bg-[#0a0a12] border-y border-[#404858]/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-[#707070] text-sm mb-6 uppercase tracking-wider">Como visto em</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 hover:opacity-80 transition-opacity">
+            <img src="/logo forbes link matéria add.svg" alt="Forbes" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/logo investing matéria add link.svg" alt="Investing" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/istoe materia logo add link.svg" alt="IstoÉ" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
+            <img src="/criptofacio add link materia.svg" alt="Criptofacio" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
+          </div>
+        </div>
+      </section>
+
       {/* Courses Preview Section */}
-      <section className="py-20 bg-gradient-to-b from-[#1a1f25] to-[#0f0f19]">
+      <section className="py-20 bg-gradient-to-b from-[#0a0a12] to-[#1a1f25]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
@@ -178,10 +169,9 @@ export default function Home() {
               <Link
                 key={item.title}
                 href={item.href}
-                className="group relative bg-[#2a2e39] border border-[#404857] rounded-2xl p-8 overflow-hidden transition-all duration-500 hover:border-[#ffd700] hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(255,215,0,0.15)]"
+                className="group relative bg-[#1e2329] border border-[#404858] rounded-2xl p-8 overflow-hidden transition-all duration-500 hover:border-[#ffd700] hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(255,215,0,0.15)]"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Gradient Overlay on Hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
 
                 <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 shadow-lg`}>
@@ -238,7 +228,7 @@ export default function Home() {
                 ].map((feature) => (
                   <div
                     key={feature.title}
-                    className="flex gap-4 p-4 rounded-xl bg-[#2a2e39]/50 border border-[#404857]/50 hover:border-[#ffd700]/30 transition-all duration-300"
+                    className="flex gap-4 p-4 rounded-xl bg-[#1e2329]/50 border border-[#404858]/50 hover:border-[#ffd700]/30 transition-all duration-300"
                   >
                     <div className="w-12 h-12 rounded-lg bg-[#ffd700]/10 flex items-center justify-center flex-shrink-0">
                       <i className={`fas ${feature.icon} text-[#ffd700]`} />
@@ -253,11 +243,13 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="bg-[#2a2e39] border border-[#404857] rounded-2xl p-8 shadow-2xl">
+              <div className="bg-[#1e2329] border border-[#404858] rounded-2xl p-8 shadow-2xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffed4e] flex items-center justify-center">
-                    <i className="fas fa-user-tie text-2xl text-[#1a1f25]" />
-                  </div>
+                  <img
+                    src="/Marcelo olhando pra cima.svg"
+                    alt="Marcelo Ferreira"
+                    className="w-20 h-20 rounded-full object-cover"
+                  />
                   <div>
                     <h3 className="text-xl font-bold text-white">Marcelo Ferreira</h3>
                     <p className="text-[#a0a0a0] text-sm">Criador do Método Fimathe</p>
@@ -276,7 +268,7 @@ export default function Home() {
                   </Link>
                   <Link
                     href="/ea"
-                    className="flex-1 py-3 border border-[#404857] text-[#dcdcdc] font-medium rounded-lg text-center hover:border-[#ffd700] transition-colors"
+                    className="flex-1 py-3 border border-[#404858] text-[#dcdcdc] font-medium rounded-lg text-center hover:border-[#ffd700] transition-colors"
                   >
                     Expert Advisor
                   </Link>

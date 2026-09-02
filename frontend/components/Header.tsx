@@ -67,10 +67,12 @@ export default function Header() {
             className="flex items-center gap-3 group"
             aria-label="Velociclos - Página inicial"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffd700] to-[#ffed4e] flex items-center justify-center shadow-lg group-hover:shadow-[#ffd700]/30 transition-shadow">
-              <i className="fas fa-bolt text-[#1a1f25] text-lg" />
-            </div>
-            <span className="text-xl font-bold text-white group-hover:text-[#ffd700] transition-colors">
+            <img
+              src="/logo f fimathe.svg"
+              alt="Fimathe Logo"
+              className="h-10 w-auto group-hover:scale-105 transition-transform"
+            />
+            <span className="text-xl font-bold text-white group-hover:text-[#ffd700] transition-colors hidden sm:block">
               Velociclos
             </span>
           </Link>
