@@ -1,10 +1,10 @@
-# Integração YouTube - Velociclos PCM
+# Integração de Vídeos - Velociclos PCM
 
-Este documento explica como configurar e usar a integração com a API do YouTube para o canal do Marcelo Ferreira (Fimathe).
+Este documento explica como configurar a integração com a API de vídeos para alimentar a plataforma.
 
 ## Configuração
 
-### 1. Obter API Key do YouTube
+### 1. Obter API Key
 
 1. Acesse [Google Cloud Console](https://console.cloud.google.com/)
 2. Crie um projeto ou selecione um existente
@@ -31,7 +31,7 @@ No Vercel (produção):
 ```
 GET /api/youtube/playlists
 ```
-Retorna todas as playlists do canal (exceto Shorts).
+Retorna todas as playlists configuradas (exceto Shorts).
 
 ### Itens de uma Playlist
 ```
@@ -61,29 +61,17 @@ Busca vídeos por categoria:
 ### `/cursos`
 - Lista playlists com vídeos organizados
 - Filtro por categoria
-- Exibe thumbnail, título e data
+- Reprodução de vídeo incorporada na plataforma
 
 ### `/cursos/momentos`
 - Trechos selecionados por tema
 - 5 categorias de momentos-chave
-- Links diretos para os vídeos no YouTube
+- Reprodução direta na plataforma
 
 ## Cache
 
-Todas as APIs usam cache em memória com TTL de 1 hora para evitar exceder a quota da API do YouTube.
+Todas as APIs usem cache em memória com TTL de 1 hora para otimizar performance.
 
-## Quota da API
+## Reprodução de Vídeos
 
-A YouTube Data API v3 tem limite de **10.000 unidades/dia**:
-- `playlists.list`: 1 unidade
-- `playlistItems.list`: 1 unidade
-- `videos.list`: 1 unidade
-- `search.list`: 100 unidades
-
-Com o cache de 1 hora, o uso fica bem abaixo do limite.
-
-## Canal Configurado
-
-- **Channel ID**: `UCwk7RuafgXHRqSmS3qO8qQQ`
-- **Nome**: Marcelo Ferreira - Fimathe
-- **URL**: https://www.youtube.com/@MARCELOFERREIRAFIMATHE
+Os vídeos são reproduzidos diretamente na plataforma via player incorporado. O usuário não é redirecionado para plataformas externas.

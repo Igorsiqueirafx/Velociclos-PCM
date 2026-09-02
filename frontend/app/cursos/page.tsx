@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { fetchPlaylists, fetchPlaylistItems, CATEGORY_LABELS, YouTubePlaylist, YouTubeVideo } from '@/lib/youtube'
+import VideoCard from '@/components/VideoCard'
 
 export const metadata: Metadata = {
   title: 'Cursos e Aulas - Velociclos PCM | Método Fimathe',
@@ -47,18 +48,16 @@ export default async function CursosPage() {
               Cursos e <span className="text-[#ffd700]">Aulas</span>
             </h1>
             <p className="text-lg text-[#a0a0a0] mb-8">
-              Acesse todo o conteúdo educacional do Marcelo Ferreira sobre o Método Fimathe. 
-              Aprenda Forex, Análise Técnica e Gestão de Risco com quem mais entende do assunto.
+              Acesse todo o conteúdo educacional sobre o Método Fimathe. 
+              Aprenda Forex, Análise Técnica e Gestão de Risco diretamente na plataforma.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="https://www.youtube.com/@MARCELOFERREIRAFIMATHE"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/cursos/momentos"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg hover:from-[#ffdd33] hover:to-[#ffd700] transition-all"
               >
-                <i className="fab fa-youtube text-xl" />
-                Canal no YouTube
+                <i className="fas fa-play-circle text-xl" />
+                Momentos Chave
               </a>
             </div>
           </div>
@@ -121,30 +120,15 @@ export default async function CursosPage() {
                 <div className="p-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {playlist.videos.map((video) => (
-                      <a
+                      <VideoCard
                         key={video.videoId}
-                        href={`https://www.youtube.com/watch?v=${video.videoId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group block"
-                      >
-                        <div className="relative aspect-video rounded-lg overflow-hidden mb-2">
-                          <img
-                            src={video.thumbnail}
-                            alt={video.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <i className="fas fa-play text-3xl text-white" />
-                          </div>
-                        </div>
-                        <h3 className="text-sm font-medium text-[#dcdcdc] line-clamp-2 group-hover:text-[#ffd700] transition-colors">
-                          {video.title}
-                        </h3>
-                        <p className="text-xs text-[#707070] mt-1">
-                          {new Date(video.publishedAt).toLocaleDateString('pt-BR')}
-                        </p>
-                      </a>
+                        videoId={video.videoId}
+                        title={video.title}
+                        description={video.description}
+                        thumbnail={video.thumbnail}
+                        publishedAt={video.publishedAt}
+                        category={video.category}
+                      />
                     ))}
                   </div>
                 </div>
