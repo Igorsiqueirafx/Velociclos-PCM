@@ -11,6 +11,7 @@ const navigation: NavigationItem[] = [
   { name: 'Início', href: '/' },
   { name: 'Expert Advisor', href: '/ea' },
   { name: 'Cursos', href: '/cursos' },
+  { name: 'Momentos Chave', href: '/cursos/momentos' },
   { name: 'Método Fimathe', href: '/metodo-fimathe' },
   { name: 'Artigos', href: '/artigos' },
   { name: 'Certificados', href: '/certificados' },

@@ -4,6 +4,7 @@ export interface YouTubePlaylist {
   description: string
   thumbnail: string
   videoCount: number
+  category?: string
 }
 
 export interface YouTubeVideo {
@@ -12,16 +13,49 @@ export interface YouTubeVideo {
   description: string
   thumbnail: string
   publishedAt: string
+  duration?: string
+  viewCount?: string
+  likeCount?: string
+  category?: string
+  tags?: string[]
+}
+
+export interface VideoMoment {
+  id: string
+  videoId: string
+  title: string
+  description: string
+  startTime: number
+  endTime: number
+  category: 'exhaustion' | 'channel' | 'mistake' | 'routine' | 'setup'
+  thumbnail: string
 }
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
-const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || ''
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY || ''
 const YOUTUBE_CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ'
 const YOUTUBE_API_BASE = 'https://www.googleapis.com/youtube/v3'
 
-// Playlists to exclude from discovery (shorts, auto-generated, etc.)
-const EXCLUDE_PLAYLIST_TITLES = ['SHORTS']
-const EXCLUDE_PLAYLIST_IDS: string[] = []
+// Categorias de playlists por tema
+const PLAYLIST_CATEGORIES: Record<string, string> = {
+  'PLWhqc48nlRWLhDr-YqQhwVGhCFwUCcw7I': 'checkpoint',
+  'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9': 'fundamentos',
+  'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh': 'analise-mercado',
+  'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK': 'xauusd',
+  'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ': 'scalping',
+  'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD': 'imersao',
+  'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5': 'eurusd',
+  'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'ouro',
+}
+
+// Palavras-chave para categorizar vídeos automaticamente
+const VIDEO_CATEGORIES: Record<string, string[]> = {
+  'exaustao': ['exaustão', 'exhaustion', '80%', '100%', 'máxima', 'correção'],
+  'canal': ['canal', 'channel', 'ponto-a', 'ponto-b', 'referência', 'zona neutra'],
+  'erro': ['erro', 'mistake', 'cuidado', 'atenção', 'não faça', 'evite'],
+  'rotina': ['rotina', 'rotina do trader', 'hábito', 'disciplina', 'gestão emocional'],
+  'setup': ['setup', 'entrada', 'operação', 'compra', 'venda', 'take', 'stop'],
+}
 
 async function api<T>(path: string): Promise<T> {
   const res = await fetch(`${BACKEND_URL}${path}`, {
@@ -42,21 +76,29 @@ function getThumbnail(snippet: any): string {
   )
 }
 
+function categorizeVideo(title: string, description: string): string {
+  const text = `${title} ${description}`.toLowerCase()
+  
+  for (const [category, keywords] of Object.entries(VIDEO_CATEGORIES)) {
+    if (keywords.some(keyword => text.includes(keyword))) {
+      return category
+    }
+  }
+  return 'geral'
+}
+
 function shouldExcludePlaylist(title: string, id: string): boolean {
-  if (EXCLUDE_PLAYLIST_IDS.includes(id)) return true
   const upper = title.toUpperCase()
-  return EXCLUDE_PLAYLIST_TITLES.some((excluded) => upper.includes(excluded))
+  return upper.includes('SHORTS')
 }
 
 export async function fetchPlaylists(): Promise<YouTubePlaylist[]> {
-  // Try backend first
   try {
     return await api<YouTubePlaylist[]>('/api/playlists')
   } catch (error) {
     console.warn('Backend /api/playlists unavailable, falling back to direct YouTube API:', error)
   }
 
-  // Fallback: discover playlists directly from the YouTube Data API v3
   if (!YOUTUBE_API_KEY) {
     console.warn('No YouTube API key available for fallback. Returning static playlists.')
     return STATIC_PLAYLISTS
@@ -73,7 +115,6 @@ export async function fetchPlaylists(): Promise<YouTubePlaylist[]> {
 async function fetchPlaylistsFromYouTube(): Promise<YouTubePlaylist[]> {
   const playlists: YouTubePlaylist[] = []
   let nextPageToken: string | null = null
-  let page = 1
 
   do {
     const params = new URLSearchParams({
@@ -113,11 +154,11 @@ async function fetchPlaylistsFromYouTube(): Promise<YouTubePlaylist[]> {
         description: item.snippet?.description || '',
         thumbnail: getThumbnail(item.snippet),
         videoCount: item.contentDetails?.itemCount || 0,
+        category: PLAYLIST_CATEGORIES[item.id] || 'geral',
       })
     }
 
     nextPageToken = json.nextPageToken
-    page++
   } while (nextPageToken)
 
   return playlists
@@ -130,7 +171,6 @@ export async function fetchPlaylistItems(playlistId: string): Promise<YouTubeVid
     console.warn(`Backend unavailable for playlist ${playlistId}, falling back to direct YouTube API:`, error)
   }
 
-  // Fallback: fetch directly from YouTube Data API v3
   if (!YOUTUBE_API_KEY) {
     console.error('No YouTube API key available for fallback')
     return []
@@ -167,13 +207,130 @@ export async function fetchPlaylistItems(playlistId: string): Promise<YouTubeVid
 
     for (const item of json.items || []) {
       const snippet = item.snippet || {}
+      const title = snippet?.title || 'Sem título'
+      const description = snippet?.description || ''
+      
       videos.push({
         videoId: snippet?.resourceId?.videoId || item.contentDetails?.videoId || '',
-        title: snippet?.title || 'Sem título',
-        description: snippet?.description || '',
+        title,
+        description,
         thumbnail: getThumbnail(snippet),
-        publishedAt: snippet?.publishedAt || null,
+        publishedAt: snippet?.publishedAt || '',
+        category: categorizeVideo(title, description),
       })
+    }
+
+    nextPageToken = json.nextPageToken
+  } while (nextPageToken)
+
+  return videos
+}
+
+export async function fetchVideoDetails(videoIds: string[]): Promise<YouTubeVideo[]> {
+  if (!YOUTUBE_API_KEY || videoIds.length === 0) return []
+
+  const params = new URLSearchParams({
+    part: 'snippet,statistics,contentDetails',
+    id: videoIds.join(','),
+    key: YOUTUBE_API_KEY,
+  })
+
+  const url = `${YOUTUBE_API_BASE}/videos?${params.toString()}`
+  const res = await fetch(url, { next: { revalidate: 3600 } })
+
+  if (!res.ok) {
+    console.error('Failed to fetch video details')
+    return []
+  }
+
+  const json: any = await res.json()
+
+  return (json.items || []).map((item: any) => ({
+    videoId: item.id,
+    title: item.snippet?.title || '',
+    description: item.snippet?.description || '',
+    thumbnail: getThumbnail(item.snippet),
+    publishedAt: item.snippet?.publishedAt || '',
+    duration: item.contentDetails?.duration || '',
+    viewCount: item.statistics?.viewCount || '0',
+    likeCount: item.statistics?.likeCount || '0',
+    tags: item.snippet?.tags || [],
+    category: categorizeVideo(item.snippet?.title || '', item.snippet?.description || ''),
+  }))
+}
+
+export function extractMomentsFromVideo(video: YouTubeVideo): VideoMoment[] {
+  const moments: VideoMoment[] = []
+  const title = video.title.toLowerCase()
+  const desc = video.description.toLowerCase()
+
+  // Padrões para identificar momentos-chave
+  const patterns = [
+    { type: 'exhaustion' as const, keywords: ['exaustão', '80%', '100%', 'máxima', 'correção', 'reversão'] },
+    { type: 'channel' as const, keywords: ['canal', 'ponto-a', 'ponto-b', 'zona neutra', 'referência'] },
+    { type: 'mistake' as const, keywords: ['erro', 'cuidado', 'atenção', 'não faça', 'evite', 'armadilha'] },
+    { type: 'routine' as const, keywords: ['rotina', 'hábito', 'disciplina', 'gestão emocional', 'psicologia'] },
+    { type: 'setup' as const, keywords: ['setup', 'entrada', 'operação', 'compra', 'venda', 'take profit'] },
+  ]
+
+  for (const pattern of patterns) {
+    if (pattern.keywords.some(k => title.includes(k) || desc.includes(k))) {
+      moments.push({
+        id: `${video.videoId}-${pattern.type}`,
+        videoId: video.videoId,
+        title: `Momento: ${pattern.type}`,
+        description: video.title,
+        startTime: 0,
+        endTime: 0,
+        category: pattern.type,
+        thumbnail: video.thumbnail,
+      })
+    }
+  }
+
+  return moments
+}
+
+export async function fetchAllChannelVideos(): Promise<YouTubeVideo[]> {
+  if (!YOUTUBE_API_KEY) return []
+
+  const videos: YouTubeVideo[] = []
+  let nextPageToken: string | null = null
+
+  do {
+    const params = new URLSearchParams({
+      part: 'snippet',
+      channelId: YOUTUBE_CHANNEL_ID,
+      maxResults: '50',
+      order: 'date',
+      type: 'video',
+      key: YOUTUBE_API_KEY,
+    })
+    if (nextPageToken) {
+      params.set('pageToken', nextPageToken)
+    }
+
+    const url = `${YOUTUBE_API_BASE}/search?${params.toString()}`
+    const res = await fetch(url, { next: { revalidate: 3600 } })
+
+    if (!res.ok) break
+
+    const json: any = await res.json()
+
+    for (const item of json.items || []) {
+      if (item.id?.kind === 'youtube#video') {
+        const title = item.snippet?.title || ''
+        const description = item.snippet?.description || ''
+        
+        videos.push({
+          videoId: item.id.videoId,
+          title,
+          description,
+          thumbnail: getThumbnail(item.snippet),
+          publishedAt: item.snippet?.publishedAt || '',
+          category: categorizeVideo(title, description),
+        })
+      }
     }
 
     nextPageToken = json.nextPageToken
@@ -189,6 +346,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Fimathe Checkpoint é o momento em que o Marcelão revisita tudo o que foi estudado e confere as movimentações do mercado.',
     thumbnail: 'https://img.youtube.com/vi/C77_DevBR8w/maxresdefault.jpg',
     videoCount: 15,
+    category: 'checkpoint',
   },
   {
     id: 'PLWhqc48nlRWIBLg85_VDOcqRAq-BWi-J9',
@@ -196,6 +354,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Série que revela a jornada de criação da Fimathe, método revolucionário no Forex.',
     thumbnail: 'https://img.youtube.com/vi/rl_UgvfXdfw/maxresdefault.jpg',
     videoCount: 5,
+    category: 'fundamentos',
   },
   {
     id: 'PLWhqc48nlRWKnmtTenj21hAdK3Lasx-Yh',
@@ -203,6 +362,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Acompanhe as análises gráficas do Marcelão direto de Londres.',
     thumbnail: 'https://img.youtube.com/vi/mhg53yJpq2k/maxresdefault.jpg',
     videoCount: 3,
+    category: 'analise-mercado',
   },
   {
     id: 'PLWhqc48nlRWJKFtMeqiQjWAtGRitoYSFK',
@@ -210,6 +370,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Os melhores momentos operando XAUUSD (Ouro) com a metodologia Fimathe.',
     thumbnail: 'https://img.youtube.com/vi/EoVfQJoWLPU/maxresdefault.jpg',
     videoCount: 2,
+    category: 'xauusd',
   },
   {
     id: 'PLWhqc48nlRWKWGyAfGr0iLpwtsGexhnaZ',
@@ -217,6 +378,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Operando Forex com a técnica Fimathe.',
     thumbnail: 'https://img.youtube.com/vi/Zu57DaCN9Es/maxresdefault.jpg',
     videoCount: 20,
+    category: 'scalping',
   },
   {
     id: 'PLWhqc48nlRWLahmd1buhzix23XcAFJkqD',
@@ -224,6 +386,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Aprofunde-se no Método Fimathe com esta imersão completa.',
     thumbnail: 'https://img.youtube.com/vi/6xcNZAyftXY/maxresdefault.jpg',
     videoCount: 2,
+    category: 'imersao',
   },
   {
     id: 'PLWhqc48nlRWL8F5Tl7UtqY2S4SXlYG6B5',
@@ -231,6 +394,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Estudos e análises do par EUR/USD com a Técnica Fimathe.',
     thumbnail: 'https://img.youtube.com/vi/HcSWF3rPaw0/maxresdefault.jpg',
     videoCount: 10,
+    category: 'eurusd',
   },
   {
     id: 'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV',
@@ -238,6 +402,7 @@ const STATIC_PLAYLISTS: YouTubePlaylist[] = [
     description: 'Operando ouro (XAU/USD) com a metodologia Fimathe.',
     thumbnail: 'https://img.youtube.com/vi/1MpCAh6Ost4/maxresdefault.jpg',
     videoCount: 6,
+    category: 'ouro',
   },
 ]
 
@@ -254,3 +419,14 @@ export const PLAYLIST_MAP: Record<string, string> = {
   'PLWhqc48nlRWJ-8YQA16dpId_6L1w4ySKV': 'FIMATHE NO OURO',
 }
 
+export const CATEGORY_LABELS: Record<string, string> = {
+  'checkpoint': 'Checkpoint',
+  'fundamentos': 'Fundamentos',
+  'analise-mercado': 'Análise de Mercado',
+  'xauusd': 'XAU/USD (Ouro)',
+  'scalping': 'Scalping',
+  'imersao': 'Imersão',
+  'eurusd': 'EUR/USD',
+  'ouro': 'Fimathe no Ouro',
+  'geral': 'Geral',
+}
