@@ -17,7 +17,6 @@ const navigation: NavigationItem[] = [
   { name: 'Certificados', href: '/certificados' },
   { name: 'Manual', href: '/manual' },
   { name: 'Relógio', href: '/relogio' },
-  { name: 'Sitemap', href: '/site-map' },
 ]
 
 export default function Header() {
