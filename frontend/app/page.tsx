@@ -121,11 +121,23 @@ export default function Home() {
       <section className="py-12 bg-[#0a0a12] border-y border-[#404858]/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-[#707070] text-sm mb-6 uppercase tracking-wider">Como visto em</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 hover:opacity-80 transition-opacity">
-            <img src="/forbes.svg" alt="Forbes" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/investing.svg" alt="Investing" className="h-8 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/istoe.svg" alt="IstoÉ" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
-            <img src="/criptofacio.svg" alt="Criptofacio" className="h-6 w-auto grayscale hover:grayscale-0 transition-all" />
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            <div className="flex items-center gap-2 text-[#707070] hover:text-white transition-colors">
+              <i className="fas fa-newspaper text-xl" />
+              <span className="font-medium">Forbes</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#707070] hover:text-white transition-colors">
+              <i className="fas fa-chart-line text-xl" />
+              <span className="font-medium">Investing.com</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#707070] hover:text-white transition-colors">
+              <i className="fas fa-magnifying-glass text-xl" />
+              <span className="font-medium">IstoÉ</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#707070] hover:text-white transition-colors">
+              <i className="fab fa-bitcoin text-xl" />
+              <span className="font-medium">Criptofacio</span>
+            </div>
           </div>
         </div>
       </section>
@@ -245,11 +257,9 @@ export default function Home() {
             <div className="relative">
               <div className="bg-[#1e2329] border border-[#404858] rounded-2xl p-8 shadow-2xl">
                 <div className="flex items-center gap-4 mb-6">
-                  <img
-                    src="/marcelo-ferreira.svg"
-                    alt="Marcelo Ferreira"
-                    className="w-20 h-20 rounded-full object-cover"
-                  />
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffed4e] flex items-center justify-center">
+                    <i className="fas fa-user-tie text-2xl text-[#1a1f25]" />
+                  </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">Marcelo Ferreira</h3>
                     <p className="text-[#a0a0a0] text-sm">Criador do Método Fimathe</p>
