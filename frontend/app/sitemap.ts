@@ -6,18 +6,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const publicRoutes = [
     '',
     '/cursos',
+    '/cursos/momentos',
     '/artigos',
     '/certificados',
     '/metodo-fimathe',
     '/manual',
     '/ea',
     '/relogio',
-    '/entrar',
-    '/lead-capture',
-    '/cadastro-lead',
-    '/auth/login',
-    '/auth/register',
-    '/site-map',
   ]
 
   return publicRoutes.map((route) => ({

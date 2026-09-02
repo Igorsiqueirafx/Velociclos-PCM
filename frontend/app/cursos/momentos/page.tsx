@@ -54,13 +54,12 @@ function categorizeVideo(title: string, description: string, searchTerms: string
 async function getVideosByCategory(categoryId: string): Promise<YouTubeVideo[]> {
   try {
     const playlists = await fetchPlaylists()
-    const allVideos: YouTubeVideo[] = []
     
-    // Buscar vídeos de todas as playlists
-    for (const playlist of playlists.slice(0, 4)) {
-      const videos = await fetchPlaylistItems(playlist.id)
-      allVideos.push(...videos)
-    }
+    // Buscar vídeos de todas as playlists em paralelo
+    const videoArrays = await Promise.all(
+      playlists.slice(0, 4).map(playlist => fetchPlaylistItems(playlist.id))
+    )
+    const allVideos = videoArrays.flat()
     
     // Filtrar por categoria
     const category = MOMENT_CATEGORIES.find(c => c.id === categoryId)

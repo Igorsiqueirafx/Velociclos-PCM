@@ -19,12 +19,8 @@ const footerLinks = {
     { name: 'Método Fimathe', href: '/metodo-fimathe' },
   ],
   conta: [
-    { name: 'Login', href: '/auth/login' },
-    { name: 'Registrar', href: '/auth/register' },
-    { name: 'Newsletter', href: '/entrar' },
-  ],
-  sitemap: [
-    { name: 'Mapa do Site', href: '/site-map' },
+    { name: 'Cursos', href: '/cursos' },
+    { name: 'Momentos Chave', href: '/cursos/momentos' },
   ],
 }
 
@@ -32,7 +28,7 @@ export default function Footer({ siteName = 'Velociclos' }: FooterProps) {
   return (
     <footer className="bg-[#2a2e39] border-t border-[#404857] py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Branding */}
           <div>
             <h3 className="text-lg font-bold text-[#ffd700] mb-3">{siteName}</h3>
@@ -72,20 +68,6 @@ export default function Footer({ siteName = 'Velociclos' }: FooterProps) {
             <h4 className="text-sm font-semibold text-[#dcdcdc] mb-3">Minha Conta</h4>
             <ul className="space-y-2">
               {footerLinks.conta.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-[#a0a0a0] text-sm hover:text-[#ffd700] transition-colors">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-sm font-semibold text-[#dcdcdc] mb-3">Navegação</h4>
-            <ul className="space-y-2">
-              {footerLinks.sitemap.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-[#a0a0a0] text-sm hover:text-[#ffd700] transition-colors">
                     {link.name}

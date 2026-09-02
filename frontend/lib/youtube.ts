@@ -50,11 +50,11 @@ const PLAYLIST_CATEGORIES: Record<string, string> = {
 
 // Palavras-chave para categorizar vídeos automaticamente
 const VIDEO_CATEGORIES: Record<string, string[]> = {
-  'exaustao': ['exaustão', 'exhaustion', '80%', '100%', 'máxima', 'correção'],
-  'canal': ['canal', 'channel', 'ponto-a', 'ponto-b', 'referência', 'zona neutra'],
-  'erro': ['erro', 'mistake', 'cuidado', 'atenção', 'não faça', 'evite'],
-  'rotina': ['rotina', 'rotina do trader', 'hábito', 'disciplina', 'gestão emocional'],
-  'setup': ['setup', 'entrada', 'operação', 'compra', 'venda', 'take', 'stop'],
+  'exaustao': ['exaustão', 'exhaustion', '80%', '100%', 'máxima', 'correção', 'reversão'],
+  'canal': ['canal', 'channel', 'ponto-a', 'ponto-b', 'referência', 'zona neutra', 'abertura'],
+  'erro': ['erro', 'mistake', 'cuidado', 'atenção', 'não faça', 'evite', 'armadilha'],
+  'rotina': ['rotina', 'rotina do trader', 'hábito', 'disciplina', 'gestão emocional', 'psicologia'],
+  'setup': ['setup', 'entrada', 'operação', 'compra', 'venda', 'take profit', 'stop loss', 'execução'],
 }
 
 async function api<T>(path: string): Promise<T> {
@@ -296,8 +296,11 @@ export async function fetchAllChannelVideos(): Promise<YouTubeVideo[]> {
 
   const videos: YouTubeVideo[] = []
   let nextPageToken: string | null = null
+  let pageCount = 0
+  const MAX_PAGES = 5 // Limit to ~250 videos to avoid quota exhaustion
 
   do {
+    pageCount++
     const params = new URLSearchParams({
       part: 'snippet',
       channelId: YOUTUBE_CHANNEL_ID,
@@ -334,7 +337,7 @@ export async function fetchAllChannelVideos(): Promise<YouTubeVideo[]> {
     }
 
     nextPageToken = json.nextPageToken
-  } while (nextPageToken)
+  } while (nextPageToken && pageCount < MAX_PAGES)
 
   return videos
 }

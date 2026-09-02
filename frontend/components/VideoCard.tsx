@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface VideoCardProps {
   videoId: string
@@ -12,6 +12,10 @@ interface VideoCardProps {
   viewCount?: string
   category?: string
   compact?: boolean
+}
+
+function isValidVideoId(videoId: string): boolean {
+  return /^[A-Za-z0-9_-]{11}$/.test(videoId)
 }
 
 export default function VideoCard({
@@ -27,6 +31,7 @@ export default function VideoCard({
 }: VideoCardProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const formatViews = (views: string) => {
     const num = parseInt(views)
@@ -60,23 +65,41 @@ export default function VideoCard({
   }
 
   const handlePlay = () => {
+    if (!isValidVideoId(videoId)) return
     setIsPlaying(true)
   }
+
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIsPlaying(false)
+  }
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isPlaying) {
+        setIsPlaying(false)
+      }
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isPlaying])
 
   if (compact) {
     return (
       <div
+        ref={containerRef}
         className="group flex gap-3 p-2 rounded-lg hover:bg-[#2a2e39] transition-colors cursor-pointer"
         onClick={handlePlay}
       >
         <div className="relative w-40 aspect-video rounded overflow-hidden flex-shrink-0">
-          {isPlaying ? (
+          {isPlaying && isValidVideoId(videoId) ? (
             <iframe
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
               title={title}
               className="w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              sandbox="allow-scripts allow-same-origin allow-presentation"
             />
           ) : (
             <>
@@ -84,6 +107,8 @@ export default function VideoCard({
                 src={imageError ? `https://img.youtube.com/vi/${videoId}/default.jpg` : thumbnail}
                 alt={title}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
                 onError={() => setImageError(true)}
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -112,20 +137,32 @@ export default function VideoCard({
   return (
     <div className="group block bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden hover:border-[#ffd700] transition-all hover:shadow-lg hover:shadow-[#ffd700]/5">
       <div className="relative aspect-video">
-        {isPlaying ? (
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-            title={title}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        {isPlaying && isValidVideoId(videoId) ? (
+          <>
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+              title={title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              sandbox="allow-scripts allow-same-origin allow-presentation"
+            />
+            <button
+              onClick={handleClose}
+              className="absolute top-2 right-2 w-8 h-8 bg-black/70 hover:bg-black rounded-full flex items-center justify-center text-white transition-colors"
+              aria-label="Fechar vídeo"
+            >
+              <i className="fas fa-times" />
+            </button>
+          </>
         ) : (
           <>
             <img
               src={imageError ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : thumbnail}
               alt={title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              decoding="async"
               onError={() => setImageError(true)}
             />
             <div

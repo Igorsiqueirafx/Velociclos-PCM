@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import Page from '@/app/site-map/page'
+import Page from '@/_disabled/site-map/page'
 
 describe('SiteMapPage', () => {
   it('renders the page title', () => {

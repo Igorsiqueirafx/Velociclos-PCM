@@ -50,13 +50,13 @@ export default function Home() {
                     <span className="text-sm text-[#707070] max-w-[120px]">Operações com XAU/USD</span>
                   </div>
                 </div>
-                <div className="flex gap-4">
+                 <div className="flex gap-4">
                   <Link
-                    href="/entrar"
+                    href="/cursos"
                     className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-[#ffd700] text-[#ffd700] font-bold rounded-lg hover:bg-[#ffd700]/10 transition-all duration-200 focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
-                    aria-label="Entrar ou cadastrar email"
+                    aria-label="Acessar cursos"
                   >
-                    Entrar
+                    Cursos
                   </Link>
                   <Link
                     href="/ea"

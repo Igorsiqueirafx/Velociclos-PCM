@@ -19,7 +19,6 @@ describe('Footer', () => {
     expect(screen.getByText('Conteúdo')).toBeInTheDocument()
     expect(screen.getByText('Ferramentas')).toBeInTheDocument()
     expect(screen.getByText('Minha Conta')).toBeInTheDocument()
-    expect(screen.getByText('Navegação')).toBeInTheDocument()
   })
 
   it('renders links with correct hrefs', () => {
@@ -28,7 +27,6 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: 'Cursos' })).toHaveAttribute('href', '/cursos')
     expect(screen.getByRole('link', { name: 'Artigos' })).toHaveAttribute('href', '/artigos')
     expect(screen.getByRole('link', { name: 'Expert Advisor' })).toHaveAttribute('href', '/ea')
-    expect(screen.getByRole('link', { name: 'Login' })).toHaveAttribute('href', '/auth/login')
-    expect(screen.getByRole('link', { name: 'Mapa do Site' })).toHaveAttribute('href', '/site-map')
+    expect(screen.getByRole('link', { name: 'Momentos Chave' })).toHaveAttribute('href', '/cursos/momentos')
   })
 })
