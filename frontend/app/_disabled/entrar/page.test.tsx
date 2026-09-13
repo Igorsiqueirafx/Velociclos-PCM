@@ -1,4 +1,4 @@
-import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
@@ -32,7 +32,9 @@ describe('EntrarPage', () => {
     render(<Page />)
 
     await user.type(screen.getByLabelText('Email'), 'not-an-email')
-    fireEvent.submit(document.querySelector('form')!)
+    const form = document.querySelector('form')
+    if (!form) throw new Error('Form not found')
+    fireEvent.submit(form)
 
     expect(await screen.findByText(/invalid email format/i)).toBeInTheDocument()
   })
@@ -44,7 +46,9 @@ describe('EntrarPage', () => {
     render(<Page />)
 
     await user.type(screen.getByLabelText('Email'), 'test@example.com')
-    fireEvent.submit(document.querySelector('form')!)
+    const form = document.querySelector('form')
+    if (!form) throw new Error('Form not found')
+    fireEvent.submit(form)
 
     expect(await screen.findByText(/cadastro realizado/i)).toBeInTheDocument()
   })
@@ -56,7 +60,9 @@ describe('EntrarPage', () => {
     render(<Page />)
 
     await user.type(screen.getByLabelText('Email'), 'existing@example.com')
-    fireEvent.submit(document.querySelector('form')!)
+    const form = document.querySelector('form')
+    if (!form) throw new Error('Form not found')
+    fireEvent.submit(form)
 
     expect(await screen.findByText(/ja esta cadastrado/i)).toBeInTheDocument()
   })
@@ -68,7 +74,9 @@ describe('EntrarPage', () => {
     render(<Page />)
 
     await user.type(screen.getByLabelText('Email'), 'test@example.com')
-    fireEvent.submit(document.querySelector('form')!)
+    const form = document.querySelector('form')
+    if (!form) throw new Error('Form not found')
+    fireEvent.submit(form)
 
     expect(await screen.findByText(/cadastrando/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /cadastrando/i })).toBeDisabled()

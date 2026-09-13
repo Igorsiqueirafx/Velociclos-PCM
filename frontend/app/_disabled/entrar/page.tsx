@@ -10,7 +10,7 @@ export default function EntrarPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const _router = useRouter()
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)

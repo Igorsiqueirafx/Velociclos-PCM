@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { createClient } from '@/app/lib/supabase/client'
+import { getCurrentUser, signOut } from '@/lib/repositories/auth'
+import type { User } from '@supabase/supabase-js'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: 'fas fa-th-large' },
@@ -20,15 +21,14 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createClient()
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    getCurrentUser().then((user) => {
       if (!user) {
         router.push('/auth/login')
       } else {
@@ -36,10 +36,10 @@ export default function DashboardLayout({
       }
       setLoading(false)
     })
-  }, [router, supabase])
+  }, [router])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    await signOut()
     router.push('/auth/login')
   }
 

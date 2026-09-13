@@ -1,28 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/app/lib/supabase/client'
-
-interface Lead {
-  id: string
-  email: string | null
-  name: string | null
-  phone: string | null
-  utm_campaign: string | null
-  utm_source: string | null
-  utm_medium: string | null
-  status: string | null
-  created_at: string
-}
-
-interface LeadStats {
-  total: number
-  thisMonth: number
-  sources: Record<string, number>
-}
+import { getLeads, type Lead, type LeadStats } from '@/lib/repositories/leads'
+import AdminPageHeader from '@/components/AdminPageHeader'
 
 export default function DashboardLeadsPage() {
-  const supabase = createClient()
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -35,36 +17,9 @@ export default function DashboardLeadsPage() {
 
   const fetchLeads = async () => {
     try {
-      const { data, error: supabaseError } = await supabase
-        .from('leads')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (supabaseError) {
-        setError(supabaseError.message)
-      } else {
-        setLeads(data || [])
-
-        const sources: Record<string, number> = {}
-        let thisMonth = 0
-        const now = new Date()
-
-        data?.forEach((lead) => {
-          const source = lead.utm_source || lead.source || 'direct'
-          sources[source] = (sources[source] || 0) + 1
-
-          const date = new Date(lead.created_at)
-          if (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
-            thisMonth++
-          }
-        })
-
-        setStats({
-          total: data?.length || 0,
-          thisMonth,
-          sources,
-        })
-      }
+      const result = await getLeads()
+      setLeads(result.leads)
+      setStats(result.stats)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido')
     } finally {
@@ -89,10 +44,7 @@ export default function DashboardLeadsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Leads</h1>
-        <p className="text-[#a0a0a0]">Gerenciamento de leads capturados</p>
-      </div>
+      <AdminPageHeader title="Leads" subtitle="Gerenciamento de leads capturados" showForm={false} onToggle={() => {}} />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="card">

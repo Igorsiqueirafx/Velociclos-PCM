@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { fetchPlaylists, fetchPlaylistItems, YouTubeVideo } from '@/lib/youtube'
+import { logEvent } from '@/lib/logging'
 import VideoCard from '@/components/VideoCard'
 import Link from 'next/link'
 
@@ -72,7 +73,7 @@ async function getVideosByCategory(categoryId: string): Promise<YouTubeVideo[]> 
       categorizeVideo(video.title, video.description, category.searchTerms)
     ).slice(0, 12)
   } catch (error) {
-    console.error('Failed to load videos:', error)
+    logEvent('videos_load', 'error', 'Failed to load videos', { error: error instanceof Error ? error.message : String(error) })
     return []
   }
 }

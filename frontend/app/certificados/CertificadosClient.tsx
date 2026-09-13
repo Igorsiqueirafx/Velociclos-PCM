@@ -5,8 +5,8 @@ import { useState } from 'react'
 interface Certificate {
   id: string
   title: string
-  description: string
-  image_url: string
+  description: string | null
+  image_url: string | null
 }
 
 interface CertificadosClientProps {
@@ -55,7 +55,7 @@ export default function CertificadosClient({ initialCertificates }: Certificados
               >
                 <div className="aspect-square overflow-hidden">
                   <img
-                    src={cert.image}
+                    src={cert.image || '/placeholder-certificate.jpg'}
                     alt={`Certificado ${cert.title}`}
                     className="w-full h-full object-cover transition-transform group-hover:scale-105"
                     loading="lazy"

@@ -1,5 +1,6 @@
-﻿import { createClient } from '@/app/lib/supabase/server'
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
+import { logEvent } from '@/lib/logging'
+import { getCertificates } from '@/lib/repositories/certificates'
 import CertificadosClient from './CertificadosClient'
 
 export const metadata: Metadata = {
@@ -8,17 +9,11 @@ export const metadata: Metadata = {
 }
 
 export default async function CertificadosPage() {
-  const supabase = await createClient()
-  let certificates = []
+  let certificates: Awaited<ReturnType<typeof getCertificates>> = []
   try {
-    const { data, error } = await supabase
-      .from('certificates')
-      .select('*')
-      .order('order_index', { ascending: true })
-
-    if (!error) certificates = data || []
+    certificates = await getCertificates()
   } catch (e) {
-    console.error('Failed to load certificates:', e)
+    logEvent('certificates_load', 'error', 'Failed to load certificates', { error: e instanceof Error ? e.message : String(e) })
   }
 
   return <CertificadosClient initialCertificates={certificates} />}

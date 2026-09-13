@@ -1,65 +1,15 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { createClient } from '@/app/lib/supabase/client'
-
-interface Subscriber {
-  id: string
-  email: string
-  source: string
-  created_at: string
-}
+import { useSubscriberManagement } from './use-subscriber-management'
+import AdminPageHeader from '@/components/AdminPageHeader'
 
 export default function SubscribersPage() {
-  const [subscribers, setSubscribers] = useState<Subscriber[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [sourceFilter, setSourceFilter] = useState('all')
-
-  useEffect(() => {
-    const fetchSubscribers = async () => {
-      try {
-        const supabase = createClient()
-        const { data, error: supabaseError } = await supabase
-          .from('subscribers')
-          .select('*')
-          .order('created_at', { ascending: false })
-
-        if (supabaseError) {
-          setError(supabaseError.message)
-        } else {
-          setSubscribers(data || [])
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erro desconhecido')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchSubscribers()
-  }, [])
-
-  const filteredSubscribers = useMemo(() => {
-    return subscribers.filter((sub) => {
-      const matchesSearch = sub.email.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesSource = sourceFilter === 'all' || sub.source === sourceFilter
-      return matchesSearch && matchesSource
-    })
-  }, [subscribers, searchTerm, sourceFilter])
-
-  const sources = useMemo(() => {
-    const uniqueSources = Array.from(new Set(subscribers.map((s) => s.source || 'website')))
-    return uniqueSources.sort()
-  }, [subscribers])
-
-  const totalCount = subscribers.length
-  const thisMonth = subscribers.filter((s) => {
-    const date = new Date(s.created_at)
-    const now = new Date()
-    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
-  }).length
+  const {
+    loading, error,
+    searchTerm, setSearchTerm,
+    sourceFilter, setSourceFilter,
+    filteredSubscribers, sources, stats,
+  } = useSubscriberManagement()
 
   if (loading) {
     return (
@@ -81,62 +31,18 @@ export default function SubscribersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#dcdcdc] mb-1">Subscribers</h1>
-        <p className="text-[#a0a0a0]">Gerenciamento de leads e emails cadastrados</p>
-      </div>
+      <AdminPageHeader title="Subscribers" subtitle="Gerenciamento de leads e emails cadastrados" showForm={false} onToggle={() => {}} />
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="card">
-          <p className="text-sm text-[#a0a0a0] mb-1">Total de Leads</p>
-          <p className="text-3xl font-bold text-[#ffd700]">{totalCount}</p>
-        </div>
-        <div className="card">
-          <p className="text-sm text-[#a0a0a0] mb-1">Este Mês</p>
-          <p className="text-3xl font-bold text-[#00ff7f]">{thisMonth}</p>
-        </div>
-        <div className="card">
-          <p className="text-sm text-[#a0a0a0] mb-1">Origem</p>
-          <p className="text-3xl font-bold text-[#dcdcdc]">{sources.length}</p>
-        </div>
-      </div>
+      <StatsGrid stats={stats} />
 
-      {/* Filters */}
-      <div className="card">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label htmlFor="search" className="block text-sm text-[#a0a0a0] mb-2">Buscar email</label>
-            <div className="relative">
-              <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]"></i>
-              <input
-                id="search"
-                type="text"
-                placeholder="Digite o email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-              />
-            </div>
-          </div>
-          <div className="sm:w-48">
-            <label htmlFor="source" className="block text-sm text-[#a0a0a0] mb-2">Filtrar por origem</label>
-            <select
-              id="source"
-              value={sourceFilter}
-              onChange={(e) => setSourceFilter(e.target.value)}
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-            >
-              <option value="all">Todas</option>
-              {sources.map((source) => (
-                <option key={source} value={source}>{source}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+      <FiltersCard
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        sourceFilter={sourceFilter}
+        setSourceFilter={setSourceFilter}
+        sources={sources}
+      />
 
-      {/* Table */}
       <div className="card">
         <h2 className="text-lg font-semibold text-[#dcdcdc] mb-4">
           Lista de Subscribers ({filteredSubscribers.length})
@@ -173,6 +79,66 @@ export default function SubscribersPage() {
             {searchTerm || sourceFilter !== 'all' ? 'Nenhum subscriber encontrado com os filtros aplicados.' : 'Nenhum subscriber encontrado.'}
           </p>
         )}
+      </div>
+    </div>
+  )
+}
+
+function StatsGrid({ stats }: { stats: { totalCount: number; thisMonth: number; sourceCount: number } }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <StatCard label="Total de Leads" value={stats.totalCount} color="text-[#ffd700]" />
+      <StatCard label="Este Mês" value={stats.thisMonth} color="text-[#00ff7f]" />
+      <StatCard label="Origem" value={stats.sourceCount} color="text-[#dcdcdc]" />
+    </div>
+  )
+}
+
+function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
+  return (
+    <div className="card">
+      <p className="text-sm text-[#a0a0a0] mb-1">{label}</p>
+      <p className={`text-3xl font-bold ${color}`}>{value}</p>
+    </div>
+  )
+}
+
+function FiltersCard({ searchTerm, setSearchTerm, sourceFilter, setSourceFilter, sources }: {
+  searchTerm: string; setSearchTerm: (v: string) => void;
+  sourceFilter: string; setSourceFilter: (v: string) => void;
+  sources: string[];
+}) {
+  return (
+    <div className="card">
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <label htmlFor="search" className="block text-sm text-[#a0a0a0] mb-2">Buscar email</label>
+          <div className="relative">
+            <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#707070]"></i>
+            <input
+              id="search"
+              type="text"
+              placeholder="Digite o email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
+        <div className="sm:w-48">
+          <label htmlFor="source" className="block text-sm text-[#a0a0a0] mb-2">Filtrar por origem</label>
+          <select
+            id="source"
+            value={sourceFilter}
+            onChange={(e) => setSourceFilter(e.target.value)}
+            className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+          >
+            <option value="all">Todas</option>
+            {sources.map((source) => (
+              <option key={source} value={source}>{source}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   )

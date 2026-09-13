@@ -2,17 +2,16 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/app/lib/supabase/client'
+import { signOut } from '@/lib/repositories/auth'
 
 export default function LogoutPage() {
   const router = useRouter()
-  const supabase = createClient()
 
   useEffect(() => {
-    supabase.auth.signOut().then(() => {
+    signOut().then(() => {
       router.replace('/auth/login')
     })
-  }, [router, supabase])
+  }, [router])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0f19] via-[#1e2329] to-[#1a1f25] flex items-center justify-center">

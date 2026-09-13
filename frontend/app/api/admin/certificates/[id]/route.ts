@@ -20,7 +20,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const data = await res.json()
     if (!res.ok) return NextResponse.json(data, { status: res.status })
     return NextResponse.json(data)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch certificate' }, { status: 500 })
   }
 }
@@ -37,7 +37,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const data = await res.json()
     if (!res.ok) return NextResponse.json(data, { status: res.status })
     return NextResponse.json(data)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to update certificate' }, { status: 500 })
   }
 }
@@ -54,7 +54,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
       return NextResponse.json(data, { status: res.status })
     }
     return new NextResponse(null, { status: 204 })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to delete certificate' }, { status: 500 })
   }
 }

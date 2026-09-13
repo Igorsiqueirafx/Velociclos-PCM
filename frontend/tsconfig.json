@@ -11,6 +11,7 @@
       "dom.iterable",
       "es5"
     ],
+    "types": ["vitest/globals"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,

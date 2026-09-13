@@ -1,5 +1,6 @@
-﻿import { createClient } from '@/app/lib/supabase/server'
-import { Metadata } from 'next'
+﻿import { Metadata } from 'next'
+import { logEvent } from '@/lib/logging'
+import { getPublishedArticles, type ArticleRow } from '@/lib/repositories/articles'
 import ArtigosClient from './ArtigosClient'
 
 export const metadata: Metadata = {
@@ -7,31 +8,13 @@ export const metadata: Metadata = {
   description: 'Artigos completos sobre Forex, trading e mesas proprietárias. Conteúdo exclusivo sobre análise técnica, gestão de risco e estratégias Fimathe.',
 }
 
-type ArticleRow = {
-  id: string
-  title: string
-  slug: string
-  excerpt: string | null
-  cover_image: string | null
-  is_published: boolean
-  published_at: string
-  created_at: string
-}
-
 export default async function ArtigosPage() {
-  const supabase = await createClient()
   let articles: ArticleRow[] = []
 
   try {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
-
-    if (!error) articles = data || []
+    articles = await getPublishedArticles()
   } catch (e) {
-    console.error('Failed to load articles:', e)
+    logEvent('articles_load', 'error', 'Failed to load articles', { error: e instanceof Error ? e.message : String(e) })
   }
 
   const initialArticles = articles.map((a) => ({
