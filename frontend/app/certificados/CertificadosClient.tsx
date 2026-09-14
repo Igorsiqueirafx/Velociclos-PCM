@@ -228,7 +228,7 @@ export default function CertificadosClient({ initialCertificates }: Certificados
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(15,15,25,0.35)_100%)] pointer-events-none rounded-[1.5rem]" aria-hidden="true" />
                 
                 {/* Top catch light */}
-                <div className="absolute top-0 left-0 right-0 h-2/5 bg-gradient-to-b from-[#ffd700]/08 via-transparent to-transparent pointer-events-none rounded-t-[1.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true" />
+                <div className="absolute top-0 left-0 right-0 h-2/5 bg-gradient-to-b from-[#ffd700]/08 via-transparent to-transparent pointer-events-none rounded-t-[1.5rem] opacity-0 transition-opacity duration-700" aria-hidden="true" />
                 
                 {/* Bottom fade */}
                 <div className="absolute bottom-0 left-0 right-0 h-3/5 bg-gradient-to-t from-[#0f0f19]/70 via-transparent to-transparent pointer-events-none rounded-b-[1.5rem]" aria-hidden="true" />
@@ -256,9 +256,8 @@ export default function CertificadosClient({ initialCertificates }: Certificados
               transition: 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)'
             }}>
               <p className="text-[#a0a0a0] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed text-center">
-                Fundador do <span className="text-[#ffd700] font-medium">Velociclos PCM</span> e criador do
-                <span className="text-[#ffd700] font-medium">Método Fimathe</span>. Mais de uma década de experiência
-                em mercados financeiros, transformando traders em profissionais consistentes.
+                Fundador do <span className="text-[#ffd700] font-medium">Velohub</span> e criador do
+                <span className="text-[#ffd700] font-medium">Velociclos PCM</span>. A fimathe é arte!
               </p>
             </div>
           </div>
