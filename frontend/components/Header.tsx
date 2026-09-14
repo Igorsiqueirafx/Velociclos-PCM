@@ -1,35 +1,22 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-type NavigationItem = {
-  name: string
-  href: string
-}
-
-const navigation: NavigationItem[] = [
+const navigation = [
   { name: 'Início', href: '/' },
+  { name: 'EA', href: '/ea' },
   { name: 'Cursos', href: '/cursos' },
-  { name: 'Momentos', href: '/cursos/momentos' },
   { name: 'Método', href: '/metodo-fimathe' },
   { name: 'Artigos', href: '/artigos' },
-  { name: 'EA', href: '/ea' },
+  { name: 'Certificados', href: '/certificados' },
+  { name: 'Manual', href: '/manual' },
+  { name: 'Relógio', href: '/relogio' },
+  { name: 'Sitemap', href: '/site-map' },
 ]
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -39,119 +26,50 @@ export default function Header() {
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  useEffect(() => {
-    setMobileMenuOpen(false)
-  }, [pathname])
-
   const closeMenu = useCallback(() => setMobileMenuOpen(false), [])
-  const toggleMenu = useCallback(() => setMobileMenuOpen(prev => !prev), [])
-
-  const isActive = (href: string) => {
-    if (href === '/') return pathname === '/'
-    return pathname.startsWith(href)
-  }
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#1a1f25]/95 backdrop-blur-md shadow-lg shadow-black/20 border-b border-[#404857]/50'
-          : 'bg-[#1a1f25] border-b border-[#404857]'
-      }`}
-    >
+    <header className="bg-[#2a2e39] border-b border-[#404857] sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 group"
-            aria-label="Velociclos - Página inicial"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ffd700] to-[#ffed4e] flex items-center justify-center shadow-lg group-hover:shadow-[#ffd700]/30 transition-shadow">
-              <i className="fas fa-bolt text-[#1a1f25] text-lg" />
-            </div>
-            <span className="text-xl font-bold text-white group-hover:text-[#ffd700] transition-colors">
-              Velociclos
-            </span>
+          <Link href="/" className="flex items-center gap-3" aria-label="Velociclos - Página inicial">
+            <img src="/logo f.png" alt="" className="mr-2 h-9 w-9 object-contain" aria-hidden="true" />
+            <span className="text-xl font-bold text-white">Velociclos</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Menu principal">
+          <nav className="hidden md:flex space-x-6" aria-label="Menu de navegação principal">
             {navigation.map((item) => (
-              <Link
+              <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(item.href)
-                    ? 'text-[#ffd700] bg-[#ffd700]/10'
-                    : 'text-[#a0a0a0] hover:text-white hover:bg-white/5'
-                }`}
+                className="text-[#a0a0a0] hover:text-[#ffd700] transition-colors duration-200 font-medium text-sm"
               >
                 {item.name}
-                {isActive(item.href) && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-[#ffd700] rounded-full" />
-                )}
-              </Link>
+              </a>
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Link
-              href="/cursos"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffed4e] text-[#1a1f25] font-semibold rounded-lg text-sm hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.3)] transition-all duration-200"
+          <div className="md:hidden">
+            <button
+              type="button"
+              className="text-[#dcdcdc] hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] rounded-md p-2"
+              aria-label="Abrir menu de navegação"
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <i className="fas fa-play-circle" />
-              <span>Assistir</span>
-            </Link>
+              <i className="fas fa-bars" aria-hidden="true" />
+            </button>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="lg:hidden relative w-10 h-10 flex items-center justify-center text-[#dcdcdc] hover:text-[#ffd700] transition-colors"
-            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={mobileMenuOpen}
-            onClick={toggleMenu}
-          >
-            <div className="relative w-6 h-5">
-              <span
-                className={`absolute left-0 w-full h-0.5 bg-current transition-all duration-300 ${
-                  mobileMenuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-0'
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-current transition-all duration-300 ${
-                  mobileMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                }`}
-              />
-              <span
-                className={`absolute left-0 w-full h-0.5 bg-current transition-all duration-300 ${
-                  mobileMenuOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'bottom-0'
-                }`}
-              />
-            </div>
-          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden overflow-hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <nav className="px-4 py-4 space-y-1 bg-[#1a1f25] border-t border-[#404857]">
-          {navigation.map((item, index) => (
+      {mobileMenuOpen && (
+        <nav className="md:hidden px-4 py-4 space-y-1 bg-[#2a2e39] border-t border-[#404857]">
+          {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive(item.href)
-                  ? 'text-[#ffd700] bg-[#ffd700]/10'
-                  : 'text-[#a0a0a0] hover:text-white hover:bg-white/5'
-              }`}
-              style={{ animationDelay: `${index * 50}ms` }}
+              className="block px-4 py-3 text-[#a0a0a0] hover:text-[#ffd700] transition-colors rounded-xl text-sm font-medium"
               onClick={closeMenu}
             >
               {item.name}
@@ -160,7 +78,7 @@ export default function Header() {
           <div className="pt-4">
             <Link
               href="/cursos"
-              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-[#ffd700] to-[#ffed4e] text-[#1a1f25] font-semibold rounded-xl"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-[#ffd700] to-[#ffed4e] text-[#1e2329] font-semibold rounded-xl"
               onClick={closeMenu}
             >
               <i className="fas fa-play-circle" />
@@ -168,7 +86,7 @@ export default function Header() {
             </Link>
           </div>
         </nav>
-      </div>
+      )}
     </header>
   )
 }
