@@ -84,7 +84,7 @@ export default function CertificadosClient({ initialCertificates }: Certificados
           <div className="relative z-10">
             <div className="mx-auto max-w-2xl">
               <img
-                src="/Marcelo olhando pra cima.png"
+                src="/IMG_0975_Igor.jpg"
                 alt="Igor Siqueira - Fundador do Velociclos PCM"
                 className="w-full aspect-square rounded-2xl border-4 border-[#ffd700]/50 shadow-[0_0_60px_rgba(255,215,0,0.3)] object-cover"
                 loading="eager"
