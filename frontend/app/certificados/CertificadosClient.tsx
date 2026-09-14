@@ -25,8 +25,8 @@ export default function CertificadosClient({ initialCertificates }: Certificados
 
   return (
     <>
-      <section className="relative min-h-[50vh] flex items-center bg-[#1a1a2e]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
+      <section className="relative min-h-[70vh] flex items-center bg-cover bg-center bg-no-repeat bg-[url('/bg-capa-marcelo.png')]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/90 to-[#1e2329]/80 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-[#ffd700]/10 text-[#ffd700] px-4 py-2 rounded-full text-sm font-medium mb-6">
