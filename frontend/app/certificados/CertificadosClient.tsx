@@ -180,10 +180,10 @@ export default function CertificadosClient({ initialCertificates }: Certificados
           '--scroll-progress': scrollProgress,
           perspective: '1400px',
           perspectiveOrigin: 'center center'
-        }}
+        } as React.CSSProperties}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10">
+          <div className="relative z-10 hero-3d-reveal" role="region" aria-label="Destaque do fundador com efeito 3D">
             <div className="mx-auto max-w-2xl sm:max-w-3xl xl:max-w-4xl">
               {/* Depth layer 1: Distant atmospheric particles */}
               <div className="particle-layer image-layer" style={{

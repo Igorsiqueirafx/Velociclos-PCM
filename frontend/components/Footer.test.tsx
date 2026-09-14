@@ -3,7 +3,7 @@ import Footer from '@/components/Footer'
 
 describe('Footer', () => {
   it('renders the site name', () => {
-    render(<Footer siteName="Velociclos" />)
+    render(<Footer />)
     expect(screen.getByText('Velociclos')).toBeInTheDocument()
   })
 
