@@ -17,7 +17,6 @@ export default function CertificadosClient({ initialCertificates }: Certificados
   const [selectedCert, setSelectedCert] = useState<string | null>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
-  const imageWrapperRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const certificates = initialCertificates.map((cert) => ({
@@ -27,7 +26,6 @@ export default function CertificadosClient({ initialCertificates }: Certificados
     image: cert.image_url,
   }))
 
-  // Scroll-driven animation using native CSS where supported
   useEffect(() => {
     if (prefersReducedMotion) return
 
@@ -35,14 +33,12 @@ export default function CertificadosClient({ initialCertificates }: Certificados
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      
-      // Calculate progress: 0 when top at bottom of viewport, 1 when bottom at top
       const progress = Math.max(0, Math.min(1, (viewportHeight - rect.top) / (rect.height + viewportHeight)))
       setScrollProgress(progress)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Initial calculation
+    handleScroll()
     
     return () => window.removeEventListener('scroll', handleScroll)
   }, [prefersReducedMotion])
@@ -51,12 +47,12 @@ export default function CertificadosClient({ initialCertificates }: Certificados
     <>
       <style jsx>{`
         .hero-section {
-          perspective: 1200px;
+          perspective: 1400px;
           perspective-origin: center center;
         }
         
         .image-3d-wrapper {
-          perspective: 1200px;
+          perspective: 1400px;
           transform-style: preserve-3d;
           will-change: transform;
         }
@@ -64,20 +60,15 @@ export default function CertificadosClient({ initialCertificates }: Certificados
         .image-layer {
           transform-style: preserve-3d;
           backface-visibility: hidden;
-          will-change: transform, opacity, clip-path;
-        }
-        
-        .image-core {
-          transform-style: preserve-3d;
-          backface-visibility: hidden;
+          will-change: transform, opacity;
         }
         
         .glow-layer {
           position: absolute;
-          inset: -20%;
-          background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+          inset: -30%;
+          background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.12) 0%, transparent 60%);
           border-radius: 50%;
-          filter: blur(60px);
+          filter: blur(80px);
           opacity: 0;
           pointer-events: none;
           will-change: opacity, transform;
@@ -85,12 +76,12 @@ export default function CertificadosClient({ initialCertificates }: Certificados
         
         .particle-layer {
           position: absolute;
-          inset: -10%;
+          inset: -20%;
           background-image: 
-            radial-gradient(2px 2px at 20% 30%, rgba(255,215,0,0.4), transparent),
-            radial-gradient(1px 1px at 60% 70%, rgba(255,215,0,0.3), transparent),
-            radial-gradient(1.5px 1.5px at 80% 20%, rgba(255,215,0,0.2), transparent),
-            radial-gradient(1px 1px at 40% 80%, rgba(255,215,0,0.25), transparent);
+            radial-gradient(2px 2px at 15% 25%, rgba(255,215,0,0.35), transparent),
+            radial-gradient(1px 1px at 70% 65%, rgba(255,215,0,0.25), transparent),
+            radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,215,0,0.2), transparent),
+            radial-gradient(1px 1px at 35% 85%, rgba(255,215,0,0.2), transparent);
           background-repeat: no-repeat;
           opacity: 0;
           pointer-events: none;
@@ -100,16 +91,21 @@ export default function CertificadosClient({ initialCertificates }: Certificados
         .reveal-mask {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(15,15,25,1) 0%, transparent 50%, transparent 100%);
+          background: linear-gradient(180deg, rgba(15,15,25,1) 0%, transparent 40%, transparent 100%);
           pointer-events: none;
           will-change: opacity;
         }
         
         .bio-text {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(20px);
           will-change: opacity, transform;
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .image-core {
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -176,102 +172,90 @@ export default function CertificadosClient({ initialCertificates }: Certificados
         </div>
       </section>
 
-      {/* 3D Scroll Reveal Section */}
+      {/* 3D Scroll Reveal - Natural Image Emergence */}
       <section 
         ref={containerRef}
-        className="relative py-32 bg-transparent hero-section"
+        className="relative py-28 bg-transparent hero-section"
         style={{ 
           '--scroll-progress': scrollProgress,
-          perspective: '1200px',
+          perspective: '1400px',
           perspectiveOrigin: 'center center'
         }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative z-10">
-            <div className="mx-auto max-w-3xl sm:max-w-4xl" ref={imageWrapperRef}>
-              {/* Depth layer 1: Far background particles */}
+            <div className="mx-auto max-w-2xl sm:max-w-3xl xl:max-w-4xl">
+              {/* Depth layer 1: Distant atmospheric particles */}
               <div className="particle-layer image-layer" style={{
-                transform: `translateZ(-100px) scale(1.15) translateY(${scrollProgress * -80}px) rotateX(${scrollProgress * -5}deg)`,
-                opacity: Math.min(scrollProgress * 1.5, 0.4),
-                transition: 'transform 0.1s linear, opacity 0.3s ease-out'
-              }} aria-hidden="true" />
-              
-              {/* Depth layer 2: Ambient glow */}
-              <div className="glow-layer image-layer" style={{
-                transform: `translateZ(-50px) scale(1.08) translateY(${scrollProgress * -40}px)`,
-                opacity: Math.min(scrollProgress * 1.2, 0.3),
-                transition: 'transform 0.1s linear, opacity 0.3s ease-out'
-              }} aria-hidden="true" />
-              
-              {/* Main image layer with 3D transform */}
-              <div className="relative image-layer" style={{
-                transform: `translateZ(0) translateY(${scrollProgress * -20}px) rotateX(${scrollProgress * -2}deg)`,
-                opacity: scrollProgress,
-                transition: 'transform 0.1s linear, opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}>
-                <div className="relative group rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1e2329] via-[#2a2e39] to-[#1e2329] border border-[#ffd700]/20 group-hover:border-[#ffd700]/40 transition-all duration-700">
-                  {/* Vignette overlay */}
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_rgba(15,15,25,0.5)_100%)] pointer-events-none" aria-hidden="true" />
-                  
-                  {/* Subtle top highlight */}
-                  <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-[#ffd700]/10 via-transparent to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true" />
-                  
-                  {/* Main image with 3D perspective */}
-                  <div className="image-core" style={{ 
-                    transform: `perspective(1000px) rotateX(0deg)`,
-                    transformStyle: 'preserve-3d'
-                  }}>
-                    <img
-                      src="/IMG_0975_Igor.jpg"
-                      alt="Igor Siqueira - Fundador do Velociclos PCM"
-                      className="relative w-full aspect-[3/4] sm:aspect-square object-cover transition-all duration-1000 ease-out"
-                      loading="eager"
-                      style={{ 
-                        filter: 'grayscale(20%) contrast(1.08) saturate(0.95)',
-                        transform: `translateZ(20px)`,
-                        transformStyle: 'preserve-3d'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* Subtle bottom vignette */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#0f0f19]/80 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
-                  
-                  {/* Animated border */}
-                  <div className="absolute inset-0 border-2 border-transparent rounded-[2rem] transition-all duration-700 group-hover:border-[#ffd700]/30 pointer-events-none" aria-hidden="true" />
-                  
-                  {/* Corner accents */}
-                  <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-                    <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-[#ffd700]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#ffd700]/40 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100" />
-                    <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#ffd700]/40 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200" />
-                    <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-[#ffd700]/40 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-300" />
-                  </div>
-                </div>
-              </div>
-              
-              {/* Foreground depth layer: subtle overlay */}
-              <div className="reveal-mask image-layer" style={{
-                transform: `translateZ(50px) translateY(${scrollProgress * 30}px)`,
-                opacity: Math.max(0, 1 - scrollProgress * 1.5),
+                transform: `translateZ(-120px) scale(1.2) translateY(${scrollProgress * -100}px) rotateX(${scrollProgress * -6}deg)`,
+                opacity: Math.min(scrollProgress * 1.8, 0.35),
                 transition: 'transform 0.1s linear, opacity 0.4s ease-out'
               }} aria-hidden="true" />
               
-              {/* Depth layer 4: Foreground particles */}
+              {/* Depth layer 2: Soft ambient glow behind */}
+              <div className="glow-layer image-layer" style={{
+                transform: `translateZ(-60px) scale(1.1) translateY(${scrollProgress * -50}px)`,
+                opacity: Math.min(scrollProgress * 1.5, 0.25),
+                transition: 'transform 0.1s linear, opacity 0.3s ease-out'
+              }} aria-hidden="true" />
+              
+              {/* Main image - floating naturally in 3D space */}
+              <div className="relative image-layer" style={{
+                transform: `translateZ(0) translateY(${scrollProgress * -15}px) rotateX(${scrollProgress * -1.5}deg)`,
+                opacity: scrollProgress,
+                filter: `blur(${Math.max(0, (1 - scrollProgress) * 4)}px)`,
+                transition: 'transform 0.1s linear, opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease-out'
+              }}>
+                <div className="image-core" style={{ 
+                  transformStyle: 'preserve-3d',
+                  filter: 'drop-shadow(0 30px 80px rgba(0,0,0,0.5)) drop-shadow(0 0 60px rgba(255,215,0,0.08))'
+                }}>
+                  <img
+                    src="/IMG_0975_Igor.jpg"
+                    alt="Igor Siqueira - Fundador do Velociclos PCM"
+                    className="relative w-full aspect-[3/4] sm:aspect-[4/5] lg:aspect-square object-cover transition-all duration-1000 ease-out"
+                    loading="eager"
+                    style={{ 
+                      filter: 'grayscale(25%) contrast(1.1) saturate(0.92)',
+                      transform: `translateZ(30px)`,
+                      transformStyle: 'preserve-3d',
+                      borderRadius: '1.5rem'
+                    }}
+                  />
+                </div>
+                
+                {/* Subtle vignette overlay for depth */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(15,15,25,0.35)_100%)] pointer-events-none rounded-[1.5rem]" aria-hidden="true" />
+                
+                {/* Top catch light */}
+                <div className="absolute top-0 left-0 right-0 h-2/5 bg-gradient-to-b from-[#ffd700]/08 via-transparent to-transparent pointer-events-none rounded-t-[1.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true" />
+                
+                {/* Bottom fade */}
+                <div className="absolute bottom-0 left-0 right-0 h-3/5 bg-gradient-to-t from-[#0f0f19]/70 via-transparent to-transparent pointer-events-none rounded-b-[1.5rem]" aria-hidden="true" />
+              </div>
+              
+              {/* Foreground depth layer: soft reveal mask */}
+              <div className="reveal-mask image-layer" style={{
+                transform: `translateZ(40px) translateY(${scrollProgress * 25}px)`,
+                opacity: Math.max(0, 1 - scrollProgress * 1.2),
+                transition: 'transform 0.1s linear, opacity 0.5s ease-out'
+              }} aria-hidden="true" />
+              
+              {/* Foreground atmospheric particles */}
               <div className="particle-layer image-layer" style={{
-                transform: `translateZ(100px) scale(0.9) translateY(${scrollProgress * 60}px) rotateX(${scrollProgress * 3}deg)`,
-                opacity: Math.min(scrollProgress * 0.8, 0.3),
+                transform: `translateZ(80px) scale(0.95) translateY(${scrollProgress * 50}px) rotateX(${scrollProgress * 2.5}deg)`,
+                opacity: Math.min(scrollProgress * 1, 0.25),
                 transition: 'transform 0.1s linear, opacity 0.3s ease-out'
               }} aria-hidden="true" />
             </div>
 
-            {/* Bio text with staggered reveal */}
-            <div className="mt-12 bio-text" style={{
-              opacity: Math.max(0, (scrollProgress - 0.3) * 2),
-              transform: `translateY(${Math.max(0, 30 - scrollProgress * 60)}px)`,
-              transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+            {/* Bio text - fades in after image */}
+            <div className="mt-10 bio-text" style={{
+              opacity: Math.max(0, (scrollProgress - 0.25) * 2.5),
+              transform: `translateY(${Math.max(0, 20 - scrollProgress * 50)}px)`,
+              transition: 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)'
             }}>
-              <p className="text-[#a0a0a0] text-base max-w-2xl mx-auto leading-relaxed text-center">
+              <p className="text-[#a0a0a0] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed text-center">
                 Fundador do <span className="text-[#ffd700] font-medium">Velociclos PCM</span> e criador do
                 <span className="text-[#ffd700] font-medium">Método Fimathe</span>. Mais de uma década de experiência
                 em mercados financeiros, transformando traders em profissionais consistentes.
