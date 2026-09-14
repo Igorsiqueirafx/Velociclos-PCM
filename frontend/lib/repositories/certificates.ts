@@ -10,6 +10,50 @@ export type CertificateRow = {
   created_at: string
 }
 
+// Fallback static data when Supabase is unavailable or empty
+const FALLBACK_CERTIFICATES: CertificateRow[] = [
+  {
+    id: 'formula-ouro',
+    title: 'Fórmula do Ouro',
+    description: 'Certificado de conclusão do curso Fórmula do Ouro',
+    image_url: '/certificados/Formula do Ouro.webp',
+    order_index: 1,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'laboratorio-fimathe',
+    title: 'Laboratório Fimathe',
+    description: 'Certificado do Laboratório Fimathe',
+    image_url: '/certificados/Laboratorio Fimathe.webp',
+    order_index: 2,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'masterclass-fimathe',
+    title: 'MasterClass Fimathe',
+    description: 'Certificado de participação na MasterClass',
+    image_url: '/certificados/MasterClass Fimathe.webp',
+    order_index: 3,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'metodo-fimathe',
+    title: 'Método Fimathe',
+    description: 'Certificado de conclusão do Método Fimathe',
+    image_url: '/certificados/Metodo Fimathe.webp',
+    order_index: 4,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'scalper',
+    title: 'Scalper',
+    description: 'Certificado de conclusão do curso de Scalper',
+    image_url: '/certificados/Scalper.webp',
+    order_index: 5,
+    created_at: new Date().toISOString(),
+  },
+]
+
 export async function getCertificates(): Promise<CertificateRow[]> {
   const supabase = await createClient()
   let certificates: CertificateRow[] = []
@@ -19,14 +63,18 @@ export async function getCertificates(): Promise<CertificateRow[]> {
       .select('*')
       .order('order_index', { ascending: true })
 
-    if (!error) {
+    if (!error && data && data.length > 0) {
       certificates = (data || []).map((cert) => ({
         ...cert,
         image_url: cert.image || cert.image_url,
       })) as CertificateRow[]
+    } else {
+      // Use fallback data when Supabase returns empty or error
+      certificates = FALLBACK_CERTIFICATES
     }
   } catch (e) {
     logEvent('certificates_load', 'error', 'Failed to load certificates', { error: e instanceof Error ? e.message : String(e) })
+    certificates = FALLBACK_CERTIFICATES
   }
   return certificates
 }
