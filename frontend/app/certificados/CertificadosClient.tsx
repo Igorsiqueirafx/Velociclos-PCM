@@ -25,7 +25,7 @@ export default function CertificadosClient({ initialCertificates }: Certificados
 
   return (
     <>
-      <section className="relative min-h-[70vh] flex items-center bg-cover bg-center bg-no-repeat bg-[url('/IMG_0975.jpg')]">
+      <section className="relative min-h-[70vh] flex items-center bg-cover bg-center bg-no-repeat bg-[url('/FimatheProp_QuemSomos.webp')]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/90 to-[#1e2329]/80 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="max-w-3xl">
