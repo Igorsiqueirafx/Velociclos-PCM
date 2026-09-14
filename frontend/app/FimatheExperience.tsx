@@ -45,7 +45,6 @@ export default function FimatheExperience() {
     }
   }, [currentIndex, isTransitioning])
 
-  // Auto-play with progress bar
   useEffect(() => {
     if (!isPlaying) return
     
@@ -67,12 +66,10 @@ export default function FimatheExperience() {
     }
   }, [isPlaying, nextSlide])
 
-  // Reset progress on slide change
   useEffect(() => {
     setProgress(0)
   }, [currentIndex])
 
-  // Pause on hover/focus
   useEffect(() => {
     const handleMouseEnter = () => setIsPlaying(false)
     const handleMouseLeave = () => setIsPlaying(true)
@@ -87,7 +84,6 @@ export default function FimatheExperience() {
     }
   }, [])
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') prevSlide()
@@ -101,7 +97,6 @@ export default function FimatheExperience() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [nextSlide, prevSlide, isPlaying])
 
-  // Touch/swipe handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.touches[0].clientX)
   }
@@ -126,7 +121,6 @@ export default function FimatheExperience() {
   }
 
   const currentImage = IMAGES[currentIndex]
-  const nextImage = IMAGES[(currentIndex + 1) % IMAGES.length]
 
   return (
     <section className="bg-[#161b20] py-20" aria-labelledby="experience-title" data-carousel-container>
@@ -144,7 +138,7 @@ export default function FimatheExperience() {
           </div>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_220px]">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)]">
           <div className="relative">
             <div 
               className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#404857] bg-[#2a2e39] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#ffd700]" 
@@ -156,12 +150,10 @@ export default function FimatheExperience() {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Progress bar */}
               <div className="absolute top-0 left-0 h-1 bg-[#404857] z-10 transition-all duration-500" style={{ width: `${progress}%` }}>
                 <div className="h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transform origin-left transition-transform duration-500 ease-linear" style={{ transform: `scaleX(${progress / 100})` }} />
               </div>
 
-              {/* Main images with cross-fade */}
               <div className="relative h-full w-full">
                 {IMAGES.map((image, index) => (
                   <div
@@ -189,7 +181,6 @@ export default function FimatheExperience() {
                       draggable="false"
                       onLoad={() => handleImageLoad(index)}
                     />
-                    {/* Caption overlay */}
                     <div className="absolute inset-x-0 bottom-0 p-6 pb-8 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
                       <p className="text-sm text-[#ffd700]/80 font-medium uppercase tracking-wide mb-1">
                         {String(index + 1).padStart(2, '0')} / {IMAGES.length}
@@ -201,7 +192,6 @@ export default function FimatheExperience() {
                   </div>
                 ))}
 
-                {/* Navigation arrows - side */}
                 <button
                   type="button"
                   className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
@@ -223,9 +213,7 @@ export default function FimatheExperience() {
                   </svg>
                 </button>
 
-                {/* Bottom controls */}
                 <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-4 p-4 pb-6">
-                  {/* Dot indicators */}
                   <div className="flex items-center gap-2" role="tablist" aria-label="Selecionar foto do carrossel">
                     {IMAGES.map((_, index) => (
                       <button
@@ -240,7 +228,6 @@ export default function FimatheExperience() {
                     ))}
                   </div>
 
-                  {/* Play/Pause */}
                   <button
                     type="button"
                     aria-label={isPlaying ? 'Pausar carrossel' : 'Retomar carrossel'}
@@ -263,7 +250,6 @@ export default function FimatheExperience() {
               </div>
             </div>
 
-            {/* Thumbnails strip */}
             <div className="mt-5 overflow-hidden">
               <div className="flex gap-2 overflow-x-auto scroll-snap-x pb-2 -mx-4 px-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 {IMAGES.map((image, index) => (
@@ -282,32 +268,6 @@ export default function FimatheExperience() {
               </div>
             </div>
           </div>
-
-          {/* Side info panel on desktop */}
-          <aside className="hidden lg:block lg:sticky lg:top-24 lg:self-start">
-            <div className="bg-[#2a2e39] border border-[#404857] rounded-2xl p-6 h-full">
-              <h3 className="text-lg font-bold text-[#ffd700] mb-4 flex items-center gap-2">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 6v6l4 2" />
-                </svg>
-                Sobre esta foto
-              </h3>
-              <p className="text-[#a0a0a0] text-sm leading-relaxed mb-4">
-                {currentImage.alt}
-              </p>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-[#a0a0a0]">
-                  <span>Foto</span>
-                  <span className="text-[#f3f4f6] font-medium">{currentIndex + 1} de {IMAGES.length}</span>
-                </div>
-                <div className="flex justify-between text-[#a0a0a0]">
-                  <span>Legenda</span>
-                  <span className="text-[#f3f4f6] font-medium">{currentImage.caption}</span>
-                </div>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </section>
