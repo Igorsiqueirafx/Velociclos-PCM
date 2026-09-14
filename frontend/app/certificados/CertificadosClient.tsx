@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Certificate {
   id: string
@@ -15,6 +15,9 @@ interface CertificadosClientProps {
 
 export default function CertificadosClient({ initialCertificates }: CertificadosClientProps) {
   const [selectedCert, setSelectedCert] = useState<string | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [parallaxOffset, setParallaxOffset] = useState(0)
+  const imageRef = useRef<HTMLDivElement>(null)
 
   const certificates = initialCertificates.map((cert) => ({
     id: cert.id,
@@ -22,6 +25,33 @@ export default function CertificadosClient({ initialCertificates }: Certificados
     description: cert.description || '',
     image: cert.image_url,
   }))
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+    )
+    if (imageRef.current) observer.observe(imageRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!imageRef.current) return
+      const rect = imageRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        const scrolled = (windowHeight - rect.top) / (rect.height + windowHeight)
+        setParallaxOffset(scrolled * 30)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <>
@@ -79,16 +109,46 @@ export default function CertificadosClient({ initialCertificates }: Certificados
         </div>
       </section>
 
-      <section className="relative py-20 bg-transparent">
+      <section className="relative py-24 bg-transparent" ref={imageRef}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10">
-            <div className="mx-auto max-w-2xl">
-              <img
-                src="/IMG_0975_Igor.jpg"
-                alt="Igor Siqueira - Fundador do Velociclos PCM"
-                className="w-full aspect-square rounded-2xl border-4 border-[#ffd700]/50 shadow-[0_0_60px_rgba(255,215,0,0.3)] object-cover"
-                loading="eager"
-              />
+          <div className="relative z-10" style={{ transform: `translateY(${parallaxOffset}px)` }}>
+            <div className="mx-auto max-w-3xl sm:max-w-4xl">
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-br from-[#ffd700]/20 via-transparent to-[#ffd700]/20 rounded-[2rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true" />
+                <div className="absolute -inset-2 border-2 border-[#ffd700]/30 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
+                <div className="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1e2329] via-[#2a2e39] to-[#1e2329] border border-[#ffd700]/20 group-hover:border-[#ffd700]/50 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f19]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
+                  <img
+                    src="/IMG_0975_Igor.jpg"
+                    alt="Igor Siqueira - Fundador do Velociclos PCM"
+                    className={`relative w-full aspect-[3/4] sm:aspect-square object-cover transition-all duration-700 ease-out ${
+                      isVisible
+                        ? 'opacity-100 scale-100'
+                        : 'opacity-0 scale-95 translate-y-8'
+                    }`}
+                    loading="eager"
+                    style={{ filter: 'grayscale(15%) contrast(1.05)' }}
+                  />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(15,15,25,0.4)_100%)] pointer-events-none" aria-hidden="true" />
+                </div>
+                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 pointer-events-none" aria-hidden="true">
+                  <div className="flex items-center gap-3 bg-[#0f0f19]/80 backdrop-blur-sm border border-[#ffd700]/30 rounded-full px-5 py-3">
+                    <div className="w-2 h-2 rounded-full bg-[#ffd700] animate-pulse" aria-hidden="true" />
+                    <span className="text-sm font-medium text-[#ffd700] tracking-wide">Fundador & CEO</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-[#0f0f19]/80 backdrop-blur-sm border border-[#ffd700]/30 rounded-full px-5 py-3">
+                    <i className="fas fa-award text-[#ffd700]" aria-hidden="true" />
+                    <span className="text-sm font-medium text-[#dcdcdc]">Velociclos PCM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-8 text-center">
+              <p className="text-[#a0a0a0] text-base max-w-2xl mx-auto leading-relaxed">
+                Fundador do <span className="text-[#ffd700] font-medium">Velociclos PCM</span> e criador do
+                <span className="text-[#ffd700] font-medium">Método Fimathe</span>. Mais de uma década de experiência
+                em mercados financeiros, transformando traders em profissionais consistentes.
+              </p>
             </div>
           </div>
         </div>
