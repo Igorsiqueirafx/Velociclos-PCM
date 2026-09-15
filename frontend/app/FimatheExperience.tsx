@@ -19,6 +19,163 @@ const IMAGES = [
 const AUTO_PLAY_DELAY = 6000
 const TRANSITION_DURATION = 500
 
+interface CarouselNavigationProps {
+  currentIndex: number
+  totalSlides: number
+  isPlaying: boolean
+  _onPrev: () => void
+  _onNext: () => void
+  onGoToSlide: (index: number) => void
+  onTogglePlay: () => void
+}
+
+function CarouselNavigation({
+  currentIndex,
+  totalSlides,
+  isPlaying,
+  _onPrev,
+  _onNext,
+  onGoToSlide,
+  onTogglePlay,
+}: CarouselNavigationProps) {
+  return (
+    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-4 p-4 pb-6">
+      <div className="flex items-center gap-2" role="tablist" aria-label="Selecionar foto do carrossel">
+        {Array.from({ length: totalSlides }).map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            role="tab"
+            aria-selected={index === currentIndex}
+            aria-label={`Ir para foto ${index + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50 ${index === currentIndex ? 'w-10 bg-[#ffd700]' : 'w-2 bg-white/40 hover:bg-white/70'}`}
+            onClick={() => onGoToSlide(index)}
+          />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        aria-label={isPlaying ? 'Pausar carrossel' : 'Retomar carrossel'}
+        aria-pressed={isPlaying}
+        className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
+        onClick={onTogglePlay}
+      >
+        {isPlaying ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="14" y="3" width="5" height="18" rx="1" />
+            <rect x="5" y="3" width="5" height="18" rx="1" />
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+        )}
+      </button>
+    </div>
+  )
+}
+
+interface CarouselThumbnailsProps {
+  images: typeof IMAGES
+  currentIndex: number
+  onGoToSlide: (index: number) => void
+}
+
+function CarouselThumbnails({ images, currentIndex, onGoToSlide }: CarouselThumbnailsProps) {
+  return (
+    <div className="mt-5 overflow-hidden">
+      <div className="flex gap-2 overflow-x-auto scroll-snap-x pb-2 -mx-4 px-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        {images.map((image, index) => (
+          <button
+            key={image.src}
+            type="button"
+            aria-label={`Ver miniatura ${index + 1}`}
+            aria-current={index === currentIndex ? 'true' : 'false'}
+            className={`flex-shrink-0 aspect-[4/3] w-32 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] ${index === currentIndex ? 'border-[#ffd700] opacity-100 ring-2 ring-[#ffd700]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
+            onClick={() => onGoToSlide(index)}
+            scroll-snap-align="center"
+          >
+            <img src={image.src} alt="" aria-hidden="true" className="h-full w-full object-cover" loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+interface CarouselProgressBarProps {
+  progress: number
+}
+
+function CarouselProgressBar({ progress }: CarouselProgressBarProps) {
+  return (
+    <div className="absolute top-0 left-0 h-1 bg-[#404857] z-10 transition-all duration-500">
+      <div className="h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transform origin-left transition-transform duration-500 ease-linear" style={{ transform: `scaleX(${progress / 100})` }} />
+    </div>
+  )
+}
+
+interface CarouselSlideProps {
+  image: typeof IMAGES[0]
+  index: number
+  currentIndex: number
+  totalSlides: number
+}
+
+function CarouselSlide({ image, index, currentIndex, totalSlides }: CarouselSlideProps) {
+  const isActive = index === currentIndex
+  return (
+    <div
+      className={`absolute inset-0 h-full w-full overflow-hidden transition-opacity duration-[${TRANSITION_DURATION}ms] ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`${index + 1} de ${totalSlides}`}
+      aria-hidden={!isActive}
+    >
+      <img
+        src={image.src}
+        alt={isActive ? image.alt : ''}
+        className="h-full w-full object-cover"
+        loading={isActive || index === (currentIndex + 1) % totalSlides ? 'eager' : 'lazy'}
+        draggable="false"
+      />
+    </div>
+  )
+}
+
+interface CarouselControlsProps {
+  onPrev: () => void
+  onNext: () => void
+}
+
+function CarouselControls({ onPrev, onNext }: CarouselControlsProps) {
+  return (
+    <>
+      <button
+        type="button"
+        className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
+        aria-label="Foto anterior"
+        onClick={onPrev}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
+        aria-label="Próxima foto"
+        onClick={onNext}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </button>
+    </>
+  )
+}
+
 export default function FimatheExperience() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
@@ -138,107 +295,37 @@ export default function FimatheExperience() {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="absolute top-0 left-0 h-1 bg-[#404857] z-10 transition-all duration-500" style={{ width: `${progress}%` }}>
-                <div className="h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transform origin-left transition-transform duration-500 ease-linear" style={{ transform: `scaleX(${progress / 100})` }} />
-              </div>
-
+              <CarouselProgressBar progress={progress} />
+              
               <div className="relative h-full w-full">
                 {IMAGES.map((image, index) => (
-                  <div
+                  <CarouselSlide
                     key={image.src}
-                    className={`absolute inset-0 h-full w-full overflow-hidden transition-opacity duration-[${TRANSITION_DURATION}ms] ease-in-out ${
-                      index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                    }`}
-                    role="group"
-                    aria-roledescription="slide"
-                    aria-label={`${index + 1} de ${IMAGES.length}`}
-                    aria-hidden={index !== currentIndex}
-                  >
-                    <img
-                      src={image.src}
-                      alt={index === currentIndex ? image.alt : ''}
-                      className="h-full w-full object-cover"
-                      loading={index === currentIndex || index === (currentIndex + 1) % IMAGES.length ? 'eager' : 'lazy'}
-                      draggable="false"
-                    />
-                  </div>
+                    image={image}
+                    index={index}
+                    currentIndex={currentIndex}
+                    totalSlides={IMAGES.length}
+                  />
                 ))}
-
-                <button
-                  type="button"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
-                  aria-label="Foto anterior"
-                  onClick={prevSlide}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
-                  aria-label="Próxima foto"
-                  onClick={nextSlide}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-
-                <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-4 p-4 pb-6">
-                  <div className="flex items-center gap-2" role="tablist" aria-label="Selecionar foto do carrossel">
-                    {IMAGES.map((_, index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        role="tab"
-                        aria-selected={index === currentIndex}
-                        aria-label={`Ir para foto ${index + 1}`}
-                        className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50 ${index === currentIndex ? 'w-10 bg-[#ffd700]' : 'w-2 bg-white/40 hover:bg-white/70'}`}
-                        onClick={() => goToSlide(index)}
-                      />
-                    ))}
-                  </div>
-
-                  <button
-                    type="button"
-                    aria-label={isPlaying ? 'Pausar carrossel' : 'Retomar carrossel'}
-                    aria-pressed={isPlaying}
-                    className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
-                    onClick={() => setIsPlaying(!isPlaying)}
-                  >
-                    {isPlaying ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <rect x="14" y="3" width="5" height="18" rx="1" />
-                        <rect x="5" y="3" width="5" height="18" rx="1" />
-                      </svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
+                <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
               </div>
+
+              <CarouselNavigation
+                currentIndex={currentIndex}
+                totalSlides={IMAGES.length}
+                isPlaying={isPlaying}
+                _onPrev={prevSlide}
+                _onNext={nextSlide}
+                onGoToSlide={goToSlide}
+                onTogglePlay={() => setIsPlaying(!isPlaying)}
+              />
             </div>
 
-            <div className="mt-5 overflow-hidden">
-              <div className="flex gap-2 overflow-x-auto scroll-snap-x pb-2 -mx-4 px-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                {IMAGES.map((image, index) => (
-                  <button
-                    key={image.src}
-                    type="button"
-                    aria-label={`Ver miniatura ${index + 1}`}
-                    aria-current={index === currentIndex ? 'true' : 'false'}
-                    className={`flex-shrink-0 aspect-[4/3] w-32 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] ${index === currentIndex ? 'border-[#ffd700] opacity-100 ring-2 ring-[#ffd700]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                    onClick={() => goToSlide(index)}
-                    scroll-snap-align="center"
-                  >
-                    <img src={image.src} alt="" aria-hidden="true" className="h-full w-full object-cover" loading="lazy" />
-                  </button>
-                ))}
-              </div>
-            </div>
+            <CarouselThumbnails
+              images={IMAGES}
+              currentIndex={currentIndex}
+              onGoToSlide={goToSlide}
+            />
           </div>
         </div>
       </div>

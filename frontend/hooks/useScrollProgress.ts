@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-export function useScrollProgress(options: {
-  rootMargin?: string
-  threshold?: number | number[]
-} = {}) {
+export function useScrollProgress() {
   const [progress, setProgress] = useState(0)
   const elementRef = useRef<HTMLElement>(null)
   const prefersReducedMotion = typeof window !== 'undefined' 
