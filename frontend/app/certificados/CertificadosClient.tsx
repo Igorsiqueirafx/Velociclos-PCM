@@ -41,6 +41,20 @@ export default function CertificadosClient({ initialCertificates }: Certificados
               Conquistas do Igor Siqueira durante sua trajetória no Grupo Fimathe.
             </p>
           </div>
+          
+          {/* Igor image feature */}
+          <div className="mt-10 hidden lg:block">
+            <div className="relative max-w-md mx-auto">
+              <img
+                src="/IMG_0975_new.jpg"
+                alt="Igor Siqueira - Fundador do Velociclos PCM"
+                className="w-full aspect-[3/4] object-cover rounded-2xl border border-[#404857] shadow-[0_25px_50px_rgba(0,0,0,0.5)] hover:border-[#ffd700]/50 transition-colors duration-300"
+              />
+              <div className="absolute -bottom-4 -right-4 bg-[#ffd700] text-[#0f0f19] px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+                Fundador
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
