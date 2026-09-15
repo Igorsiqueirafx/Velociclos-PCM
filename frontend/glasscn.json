@@ -1,0 +1,5 @@
+{
+  "style": "app/glassify.css",
+  "components": "components/glassify",
+  "utils": "lib/utils.ts"
+}
