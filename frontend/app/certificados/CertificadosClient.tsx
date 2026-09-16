@@ -42,25 +42,6 @@ export default function CertificadosClient({ initialCertificates }: Certificados
               Conquistas do Igor Siqueira durante sua trajetória no Grupo Fimathe.
             </p>
           </div>
-          
-          {/* Igor image feature - responsive on all devices */}
-          <div className="mt-10">
-            <div className="relative max-w-md sm:max-w-lg lg:max-w-xl mx-auto">
-              <Image
-                src="/IMG_0975_new.jpg"
-                alt="Igor Siqueira - Fundador do Velociclos PCM"
-                fill
-                className="aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] object-cover rounded-2xl border border-[#404857] shadow-[0_25px_50px_rgba(0,0,0,0.5)] hover:border-[#ffd700]/50 transition-colors duration-300"
-                priority
-                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 50vw"
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/AB//2Q=="
-              />
-              <div className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-[#ffd700] text-[#0f0f19] px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
-                Fundador
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -101,6 +82,25 @@ export default function CertificadosClient({ initialCertificates }: Certificados
                 </div>
               </GlassCard>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Igor image - moved to end of page */}
+      <section className="py-16 bg-[#1e2329] flex justify-center">
+        <div className="relative max-w-md sm:max-w-lg lg:max-w-xl">
+          <Image
+            src="/IMG_0975_new.jpg"
+            alt="Igor Siqueira - Fundador do Velociclos PCM"
+            width={500}
+            height={600}
+            className="aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] object-cover rounded-2xl border border-[#404857] shadow-[0_25px_50px_rgba(0,0,0,0.5)] hover:border-[#ffd700]/50 transition-colors duration-300"
+            priority
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/AB//2Q=="
+          />
+          <div className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-[#ffd700] text-[#0f0f19] px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
+            Fundador
           </div>
         </div>
       </section>

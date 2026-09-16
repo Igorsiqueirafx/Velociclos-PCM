@@ -1,6 +1,11 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
 
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const timeout = setTimeout(() => {
+    throw new Error('API timeout');
+  }, 5000);
+
+  try {
   const res = await fetch(`${BACKEND_URL}${path}`, {
     headers: {
       'Content-Type': 'application/json',
@@ -17,6 +22,9 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     return {} as T
   }
   return res.json()
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export async function apiGet<T>(path: string): Promise<T> {
