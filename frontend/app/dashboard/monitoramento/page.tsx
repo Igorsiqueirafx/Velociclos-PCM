@@ -6,7 +6,7 @@ import CheckCard from '@/components/CheckCard'
 import SystemInfo from '@/components/SystemInfo'
 import AdminPageHeader from '@/components/AdminPageHeader'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 
 export default function MonitoramentoPage() {
   const { health, loading, checks, onlineCount, offlineCount, warningCount, overallStatus } = useSystemChecks()

@@ -2,7 +2,7 @@ import type { YouTubePlaylist, YouTubeVideo, VideoMoment } from './youtube-types
 import { PLAYLIST_CATEGORIES, VIDEO_CATEGORIES, STATIC_PLAYLISTS } from './youtube-constants'
 import { logEvent } from './logging'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY || ''
 const YOUTUBE_CHANNEL_ID = 'UCwk7RuafgXHRqSmS3qO8qQQ'
 const YOUTUBE_API_BASE = 'https://www.googleapis.com/youtube/v3'

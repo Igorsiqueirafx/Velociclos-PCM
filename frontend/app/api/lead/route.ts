@@ -4,7 +4,7 @@ import { logEvent } from '@/lib/logging'
 
 export const dynamic = 'force-dynamic'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 
 function buildLeadData(body: {
   email: string

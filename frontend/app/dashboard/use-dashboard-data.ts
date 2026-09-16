@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { getDashboardStats } from '@/lib/repositories/dashboard'
 import { logEvent } from '@/lib/logging'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 
 export interface HealthStatus {
   status: string

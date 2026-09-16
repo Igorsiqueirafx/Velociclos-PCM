@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getMonitoringCounts } from '@/lib/repositories/monitoring'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 
 export interface SystemCheck {
   name: string

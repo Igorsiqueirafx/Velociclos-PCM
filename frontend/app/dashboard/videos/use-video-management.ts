@@ -28,7 +28,7 @@ export function useVideoManagement() {
 
   const fetchVideos = async () => {
     try {
-      const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api-backend.vercel.app'
+      const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
       const res = await fetch(`${BACKEND_URL}/api/videos`)
       if (!res.ok) throw new Error(`API error: ${res.status}`)
       const data = await res.json()
