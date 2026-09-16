@@ -73,7 +73,7 @@ export default function VideoCard({
   const handleImageError = () => { setImageError(true); setImageLoaded(true) }
 
   return (
-    <div className="group bg-[#1e2329] border border-[#404857]/50 rounded-xl overflow-hidden hover:border-[#ffd700]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#ffd700]/5">
+    <div className="group bg-[#1e1e1e] border border-[#3a3a3c]/80 rounded-xl overflow-hidden hover:border-[#0071e3] transition-all duration-300 hover:shadow-md hover:shadow-black/20">
       <VideoThumbnail
         videoId={videoId}
         title={title}

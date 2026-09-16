@@ -58,13 +58,13 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
 
   return (
     <>
-      <section className="py-12 sm:py-16 lg:py-20 bg-[#1e2329]">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#121212]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-[#dcdcdc] mb-4">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4 tracking-tight">
               Cursos Fimathe
             </h1>
-            <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
+            <p className="text-[#8a8a8d] text-lg max-w-2xl mx-auto">
               Aprofunde-se no Método Fimathe com nossos cursos completos de trading.
               Conteúdo organizado em playlists do canal oficial.
             </p>
@@ -72,7 +72,7 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
 
           {courses.length === 0 && loadingPlaylists ? (
             <div className="text-center py-16">
-              <p className="text-[#a0a0a0] text-lg">Descobrindo playlists do canal...</p>
+              <p className="text-[#8a8a8d] text-lg">Descobrindo playlists do canal...</p>
             </div>
           ) : courses.length === 0 && playlists.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -87,7 +87,7 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
             </div>
           ) : courses.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-[#a0a0a0] text-lg">
+              <p className="text-[#8a8a8d] text-lg">
                 Nenhum curso disponível no momento.
               </p>
             </div>
@@ -97,7 +97,7 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
                 <button
                   key={course.id}
                   onClick={() => loadModules(course.id)}
-                  className="group bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden text-left transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
+                  className="group bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden text-left transition-all duration-300 hover:border-[#0071e3] hover:shadow-[0_0_25px_rgba(0,113,227,0.15)] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
                 >
                   <div className="relative aspect-video">
                     <img
@@ -107,7 +107,7 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
                       loading="lazy"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement
-                        target.src = 'https://via.placeholder.com/320x180/343a47/ffffff?text=Sem+thumbnail'
+                        target.src = 'https://via.placeholder.com/320x180/1e1e1e/8a8a8d?text=Sem+thumbnail'
                       }}
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -115,10 +115,10 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="text-lg font-bold text-[#dcdcdc] mb-1 group-hover:text-[#ffd700] transition-colors line-clamp-1">
+                    <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#0071e3] transition-colors line-clamp-1">
                       {course.title}
                     </h3>
-                    <p className="text-sm text-[#a0a0a0] line-clamp-2">
+                    <p className="text-sm text-[#8a8a8d] line-clamp-2">
                       {course.description || 'Curso completo do Método Fimathe.'}
                     </p>
                   </div>

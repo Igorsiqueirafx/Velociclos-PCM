@@ -14,7 +14,7 @@ export default function SubscribersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando subscribers...</div>
+        <div className="text-[#0071e3] text-xl">Carregando subscribers...</div>
       </div>
     )
   }
@@ -62,7 +62,7 @@ export default function SubscribersPage() {
                   <tr key={sub.id} className="border-b border-[#404857]/30 last:border-0 hover:bg-[#343a47]/30 transition-colors">
                     <td className="py-3 text-[#dcdcdc]">{sub.email}</td>
                     <td className="py-3">
-                      <span className="px-2 py-1 rounded-full text-xs bg-[#ffd700]/10 text-[#ffd700]">
+                      <span className="px-2 py-1 rounded-full text-xs bg-[#0071e3]/10 text-[#0071e3]">
                         {sub.source || 'website'}
                       </span>
                     </td>
@@ -87,7 +87,7 @@ export default function SubscribersPage() {
 function StatsGrid({ stats }: { stats: { totalCount: number; thisMonth: number; sourceCount: number } }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <StatCard label="Total de Leads" value={stats.totalCount} color="text-[#ffd700]" />
+      <StatCard label="Total de Leads" value={stats.totalCount} color="text-[#0071e3]" />
       <StatCard label="Este Mês" value={stats.thisMonth} color="text-[#00ff7f]" />
       <StatCard label="Origem" value={stats.sourceCount} color="text-[#dcdcdc]" />
     </div>
@@ -121,7 +121,7 @@ function FiltersCard({ searchTerm, setSearchTerm, sourceFilter, setSourceFilter,
               placeholder="Digite o email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all"
             />
           </div>
         </div>
@@ -131,8 +131,8 @@ function FiltersCard({ searchTerm, setSearchTerm, sourceFilter, setSourceFilter,
             id="source"
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
-            className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-          >
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all"
+            >
             <option value="all">Todas</option>
             {sources.map((source) => (
               <option key={source} value={source}>{source}</option>

@@ -19,7 +19,7 @@ function CursosPageInner() {
   if (!h) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando cursos...</div>
+        <div className="text-[#0071e3] text-xl">Carregando cursos...</div>
       </div>
     )
   }
@@ -27,7 +27,7 @@ function CursosPageInner() {
   if (h.loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando cursos...</div>
+        <div className="text-[#0071e3] text-xl">Carregando cursos...</div>
       </div>
     )
   }
@@ -52,7 +52,7 @@ function CursosPageInner() {
             key={t}
             onClick={() => h.setTab(t)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              h.tab === t ? 'border-[#ffd700] text-[#ffd700]' : 'border-transparent text-[#a0a0a0] hover:text-[#dcdcdc]'
+              h.tab === t ? 'border-[#0071e3] text-[#0071e3]' : 'border-transparent text-[#a0a0a0] hover:text-[#dcdcdc]'
             }`}
           >
             {t === 'courses' ? 'Cursos' : t === 'modules' ? 'Módulos' : 'Aulas'}

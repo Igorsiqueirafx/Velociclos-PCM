@@ -31,7 +31,7 @@ function buildLeadData(body: {
 
 async function upsertLead(
   leadData: Record<string, unknown>,
-  email: string
+  _email: string
 ) {
   const res = await fetch(`${BACKEND_URL}/api/leads`, {
     method: 'POST',

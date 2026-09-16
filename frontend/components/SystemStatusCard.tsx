@@ -18,10 +18,10 @@ export default function SystemStatusCard({
       <div className="flex items-center gap-4">
         <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
           overallStatus === 'online'
-            ? 'bg-[#00ff7f]/20 text-[#00ff7f]'
+            ? 'bg-[#34c759]/20 text-[#34c759]'
             : overallStatus === 'warning'
-            ? 'bg-[#ffd700]/20 text-[#ffd700]'
-            : 'bg-[#ff4444]/20 text-[#ff4444]'
+            ? 'bg-[#ff9500]/20 text-[#ff9500]'
+            : 'bg-[#ff453a]/20 text-[#ff453a]'
         }`}>
           <i className={`fas ${
             overallStatus === 'online'
@@ -32,14 +32,14 @@ export default function SystemStatusCard({
           } text-3xl`}></i>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-[#dcdcdc]">
+          <h2 className="text-xl font-semibold text-white">
             Sistema {overallStatus === 'online' ? 'Operacional' : overallStatus === 'warning' ? 'Parcialmente Operacional' : 'Indisponível'}
           </h2>
-          <p className="text-[#a0a0a0]">
+          <p className="text-[#8a8a8d]">
             {onlineCount} online · {warningCount} avisos · {offlineCount} offline
           </p>
           {health?.timestamp && (
-            <p className="text-sm text-[#707070] mt-1">
+            <p className="text-sm text-[#8a8a8d] mt-1">
               última verificação: {new Date(health.timestamp).toLocaleString('pt-BR')}
             </p>
           )}

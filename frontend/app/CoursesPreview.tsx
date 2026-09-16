@@ -7,34 +7,34 @@ const COURSES = [
     title: 'Método Fimathe',
     description: 'Aprenda a metodologia completa de análise técnica para Forex e Ouro',
     icon: 'fa-graduation-cap',
-    color: 'from-blue-500 to-cyan-500',
+    color: 'from-[#0071e3] to-[#6567f1]',
     href: '/metodo-fimathe',
   },
   {
     title: 'Cursos Completos',
     description: 'Playlists organizadas por tema para seu aprendizado',
     icon: 'fa-play-circle',
-    color: 'from-[#ffd700] to-[#ffed4e]',
+    color: 'from-[#0071e3] to-[#3a84ff]',
     href: '/cursos',
   },
   {
     title: 'Análises de Mercado',
     description: 'Acompanhe as análises semanais do mercado',
     icon: 'fa-chart-bar',
-    color: 'from-green-500 to-emerald-500',
+    color: 'from-[#34c759] to-[#28a745]',
     href: '/artigos',
   },
 ]
 
 export default function CoursesPreview() {
   return (
-    <section className="py-20 bg-gradient-to-b from-[#0a0a12] to-[#1a1f25]">
+    <section className="py-20 bg-gradient-to-b from-[#0a0a12] to-[#121212]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Aprenda com os <span className="text-[#ffd700]">Melhores</span>
+          <h2 className="text-4xl sm:text-5xl font-semibold text-white mb-4 tracking-tight">
+            Aprenda com os <span className="text-[#0071e3]">Melhores</span>
           </h2>
-          <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
+          <p className="text-[#8a8a8d] text-lg max-w-2xl mx-auto">
             Conteúdo completo para você dominar o mercado financeiro
           </p>
         </div>
@@ -44,23 +44,23 @@ export default function CoursesPreview() {
             <Link
               key={item.title}
               href={item.href}
-              className="group relative bg-[#1e2329] border border-[#404858] rounded-2xl p-8 overflow-hidden transition-all duration-500 hover:border-[#ffd700] hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(255,215,0,0.15)]"
+              className="group relative bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-8 overflow-hidden transition-all duration-300 hover:border-[#0071e3] hover:shadow-[0_0_30px_rgba(0,113,227,0.15)]"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
 
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 shadow-lg`}>
-                <i className={`fas ${item.icon} text-2xl text-white`} />
+              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 shadow-md`}>
+                <i className={`fas ${item.icon} text-xl text-white`} />
               </div>
 
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#ffd700] transition-colors">
+              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#0071e3] transition-colors">
                 {item.title}
               </h3>
-              <p className="text-[#a0a0a0] text-sm leading-relaxed">
+              <p className="text-[#8a8a8d] text-sm leading-relaxed">
                 {item.description}
               </p>
 
-              <div className="mt-6 flex items-center gap-2 text-[#ffd700] opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-6 flex items-center gap-2 text-[#0071e3] opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-sm font-medium">Saiba mais</span>
                 <i className="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform" />
               </div>

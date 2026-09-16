@@ -5,10 +5,10 @@ import { useScrollProgress } from '@/hooks/useScrollProgress'
 
 const particleLayerStyles = (progress: number) => ({
   backgroundImage: `
-    radial-gradient(2px 2px at 15% 25%, rgba(255,215,0,0.35), transparent),
-    radial-gradient(1px 1px at 70% 65%, rgba(255,215,0,0.25), transparent),
-    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,215,0,0.2), transparent),
-    radial-gradient(1px 1px at 35% 85%, rgba(255,215,0,0.2), transparent)
+    radial-gradient(2px 2px at 15% 25%, rgba(0,113,227,0.35), transparent),
+    radial-gradient(1px 1px at 70% 65%, rgba(0,113,227,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(0,113,227,0.2), transparent),
+    radial-gradient(1px 1px at 35% 85%, rgba(0,113,227,0.2), transparent)
   `,
   backgroundRepeat: 'no-repeat',
   transform: `translateZ(-120px) scale(1.2) translateY(${progress * -100}px) rotateX(${progress * -6}deg)`,
@@ -17,7 +17,7 @@ const particleLayerStyles = (progress: number) => ({
 } as React.CSSProperties)
 
 const glowLayerStyles = (progress: number) => ({
-  background: 'radial-gradient(ellipse at center, rgba(255, 215, 0, 0.12) 0%, transparent 60%)',
+  background: 'radial-gradient(ellipse at center, rgba(0, 113, 227, 0.12) 0%, transparent 60%)',
   filter: 'blur(80px)',
   transform: `translateZ(-60px) scale(1.1) translateY(${progress * -50}px)`,
   opacity: Math.min(progress * 1.5, 0.25),
@@ -33,7 +33,7 @@ const mainImageWrapperStyles = (progress: number) => ({
 
 const imageCoreStyles = {
   transformStyle: 'preserve-3d',
-  filter: 'drop-shadow(0 30px 80px rgba(0,0,0,0.5)) drop-shadow(0 0 60px rgba(255,215,0,0.08))',
+  filter: 'drop-shadow(0 30px 80px rgba(0,0,0,0.5)) drop-shadow(0 0 60px rgba(0,113,227,0.08))',
 } as React.CSSProperties
 
 const imageStyles = {
@@ -47,7 +47,7 @@ const vignetteStyles = {
 } as React.CSSProperties
 
 const catchLightStyles = {
-  background: 'linear-gradient(to bottom, rgba(255,215,0,0.08), transparent, transparent)',
+  background: 'linear-gradient(to bottom, rgba(0,113,227,0.08), transparent, transparent)',
   opacity: 0,
   transition: 'opacity 0.7s ease-out',
 } as React.CSSProperties
@@ -61,10 +61,10 @@ const revealMaskStyles = (progress: number) => ({
 
 const foregroundParticlesStyles = (progress: number) => ({
   backgroundImage: `
-    radial-gradient(2px 2px at 15% 25%, rgba(255,215,0,0.35), transparent),
-    radial-gradient(1px 1px at 70% 65%, rgba(255,215,0,0.25), transparent),
-    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,215,0,0.2), transparent),
-    radial-gradient(1px 1px at 35% 85%, rgba(255,215,0,0.2), transparent)
+    radial-gradient(2px 2px at 15% 25%, rgba(0,113,227,0.35), transparent),
+    radial-gradient(1px 1px at 70% 65%, rgba(0,113,227,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(0,113,227,0.2), transparent),
+    radial-gradient(1px 1px at 35% 85%, rgba(0,113,227,0.2), transparent)
   `,
   backgroundRepeat: 'no-repeat',
   transform: `translateZ(80px) scale(0.95) translateY(${progress * 50}px) rotateX(${progress * 2.5}deg)`,
@@ -95,9 +95,9 @@ export default function CertificateHero() {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
             />
             <div className="mt-10 text-center opacity-100 transform-none transition-none">
-              <p className="text-[#a0a0a0] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                Fundador do <span className="text-[#ffd700] font-medium">Velohub</span> e criador do
-                <span className="text-[#ffd700] font-medium">Velociclos PCM</span>. A fimathe é arte!
+              <p className="text-[#8a8a8d] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                Fundador do <span className="text-[#0071e3] font-medium">Velohub</span> e criador do
+                <span className="text-[#0071e3] font-medium">Velociclos PCM</span>. A fimathe é arte!
               </p>
             </div>
           </div>
@@ -178,9 +178,9 @@ export default function CertificateHero() {
           className="mt-10 text-center"
           style={bioTextStyles(progress)}
         >
-          <p className="text-[#a0a0a0] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Fundador do <span className="text-[#ffd700] font-medium">Velohub</span> e criador do
-            <span className="text-[#ffd700] font-medium">Velociclos PCM</span>. A fimathe é arte!
+          <p className="text-[#8a8a8d] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Fundador do <span className="text-[#0071e3] font-medium">Velohub</span> e criador do
+            <span className="text-[#0071e3] font-medium">Velociclos PCM</span>. A fimathe é arte!
           </p>
         </div>
       </div>

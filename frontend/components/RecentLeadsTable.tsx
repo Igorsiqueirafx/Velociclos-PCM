@@ -16,22 +16,22 @@ export default function RecentLeadsTable({ subscribers }: RecentLeadsTableProps)
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-left border-b border-[#404857]">
-            <th className="pb-3 text-[#a0a0a0] font-medium">Email</th>
-            <th className="pb-3 text-[#a0a0a0] font-medium">Origem</th>
-            <th className="pb-3 text-[#a0a0a0] font-medium">Data</th>
+          <tr className="text-left border-b border-[#3a3a3c]">
+            <th className="pb-3 text-[#8a8a8d] font-medium">Email</th>
+            <th className="pb-3 text-[#8a8a8d] font-medium">Origem</th>
+            <th className="pb-3 text-[#8a8a8d] font-medium">Data</th>
           </tr>
         </thead>
         <tbody>
           {subscribers.map((sub) => (
-            <tr key={sub.id} className="border-b border-[#404857]/30 last:border-0">
-              <td className="py-3 text-[#dcdcdc]">{sub.email}</td>
+            <tr key={sub.id} className="border-b border-[#3a3a3c]/30 last:border-0">
+              <td className="py-3 text-white">{sub.email}</td>
               <td className="py-3">
-                <span className="px-2 py-1 rounded-full text-xs bg-[#ffd700]/10 text-[#ffd700]">
+                <span className="px-2 py-1 rounded-full text-xs bg-[#0071e3]/10 text-[#0071e3]">
                   {sub.source || 'website'}
                 </span>
               </td>
-              <td className="py-3 text-[#a0a0a0]">
+              <td className="py-3 text-[#8a8a8d]">
                 {new Date(sub.created_at).toLocaleDateString('pt-BR')}
               </td>
             </tr>

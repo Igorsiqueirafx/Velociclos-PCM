@@ -13,7 +13,7 @@ export default function CoursesTab() {
         <h2 className="text-lg font-semibold text-[#dcdcdc]">Cursos ({courses.length})</h2>
         <button
           onClick={() => { h.setShowCourseForm(!showCourseForm); h.setEditingCourseId(null); h.setCourseForm({ title: '', slug: '', description: '', thumbnail: '', category: '', is_published: false, order_index: 0 }) }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0071e3] to-[#6567f1] text-white font-bold rounded-lg shadow-[0_0_20px_rgba(0,113,227,0.3)] hover:from-[#005fd9] hover:to-[#0071e3] transition-all duration-200"
         >
           <i className={`fas ${showCourseForm ? 'fa-times' : 'fa-plus'}`}></i>
           {showCourseForm ? 'Cancelar' : 'Novo Curso'}
@@ -26,43 +26,43 @@ export default function CoursesTab() {
             <label className="block text-sm text-[#a0a0a0] mb-2">Título</label>
             <input type="text" value={courseForm.title}
               onChange={(e) => h.setCourseForm({ ...courseForm, title: e.target.value })} required
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all" />
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all" />
           </div>
           <div>
             <label className="block text-sm text-[#a0a0a0] mb-2">Slug</label>
             <input type="text" value={courseForm.slug}
               onChange={(e) => h.setCourseForm({ ...courseForm, slug: e.target.value })}
               placeholder="Ex: metodo-fimathe"
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all" />
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all" />
           </div>
           <div>
             <label className="block text-sm text-[#a0a0a0] mb-2">Thumbnail URL</label>
             <input type="text" value={courseForm.thumbnail}
               onChange={(e) => h.setCourseForm({ ...courseForm, thumbnail: e.target.value })}
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all" />
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all" />
           </div>
           <div>
             <label className="block text-sm text-[#a0a0a0] mb-2">Categoria</label>
             <input type="text" value={courseForm.category}
               onChange={(e) => h.setCourseForm({ ...courseForm, category: e.target.value })}
               placeholder="Ex: Forex, Método Fimathe"
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all" />
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all" />
           </div>
           <div className="sm:col-span-2">
             <label className="block text-sm text-[#a0a0a0] mb-2">Descrição</label>
             <textarea value={courseForm.description}
               onChange={(e) => h.setCourseForm({ ...courseForm, description: e.target.value })} rows={3}
-              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all" />
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all" />
           </div>
           <div className="flex items-center gap-2">
             <input id="published" type="checkbox" checked={courseForm.is_published}
               onChange={(e) => h.setCourseForm({ ...courseForm, is_published: e.target.checked })}
-              className="w-4 h-4 rounded border-[#404857] bg-[#1e2329] text-[#ffd700] focus:ring-[#ffd700]" />
+              className="w-4 h-4 rounded border-[#404857] bg-[#1e2329] text-[#0071e3] focus:ring-[#0071e3]" />
             <label htmlFor="published" className="text-sm text-[#dcdcdc]">Publicado</label>
           </div>
           <div className="sm:col-span-2">
             <button type="submit" disabled={saving}
-              className="px-6 py-2.5 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffdd33] hover:to-[#ffd700] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+              className="px-6 py-2.5 bg-gradient-to-r from-[#0071e3] to-[#6567f1] text-white font-bold rounded-lg shadow-[0_0_20px_rgba(0,113,227,0.3)] hover:from-[#005fd9] hover:to-[#0071e3] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
             >
               {saving ? 'Salvando...' : editingCourseId ? 'Atualizar Curso' : 'Salvar Curso'}
             </button>

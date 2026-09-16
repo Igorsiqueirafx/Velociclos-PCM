@@ -12,8 +12,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-[#252b33] rounded-2xl border border-[#404857] p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#ffd700] mb-2">Velociclos Admin</h1>
-            <p className="text-[#a0a0a0]">Faça login com sua conta GitHub</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Velociclos Admin</h1>
+            <p className="text-[#8a8a8d]">Faça login com sua conta GitHub</p>
           </div>
 
           <button

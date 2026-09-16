@@ -41,7 +41,7 @@ export default async function RootLayout({
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-      <body className="bg-[#1e2329] text-[#dcdcdc] font-sans antialiased">
+      <body className="bg-[#121212] text-[#e5e5e5] font-sans antialiased">
         <SkipLink />
         {!isAdminSite && <Header />}
         <main
@@ -60,10 +60,9 @@ function SkipLink() {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] px-4 py-2 bg-[#2a2e39] text-[#dcdcdc] rounded-md focus:ring-2 focus:ring-[#ffd700] transition-transform"
+      className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] px-4 py-2 bg-[#1e1e1e] text-[#e5e5e5] rounded-lg focus:ring-2 focus:ring-[#0071e3] transition-transform"
     >
       Ir para o conteúdo
     </a>
   )
 }
-

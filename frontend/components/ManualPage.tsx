@@ -1,3 +1,5 @@
+'use client'
+
 type ManualStep = {
   number: number
   title: string
@@ -98,32 +100,32 @@ const manualSections: ManualSection[] = [
 
 export default function ManualPage() {
   return (
-    <div className="py-16 bg-[#1e2329]">
+    <div className="py-16 bg-[#121212]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <section className="mb-16">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#ffd700]/10 text-[#ffd700] px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6">
               <i className="fas fa-book-open" aria-hidden="true"></i>
               <span>Documentação Oficial</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-[#dcdcdc] mb-6">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-6 tracking-tight">
               Manual do Usuário
             </h1>
-            <p className="text-[#a0a0a0] text-lg mb-8">
+            <p className="text-[#8a8a8d] text-lg mb-8">
               Guia completo para instalar, configurar e operar o Expert Advisor Velociclos PCM no MetaTrader 5.
             </p>
             <div className="flex gap-8 flex-wrap mb-8">
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-[#ffd700]">v7.33</span>
-                <span className="text-sm text-[#707070]">Versão Atual</span>
+                <span className="text-3xl font-semibold text-[#0071e3]">v7.33</span>
+                <span className="text-sm text-[#8a8a8d]">Versão Atual</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-[#ffd700]">MT5</span>
-                <span className="text-sm text-[#707070]">Plataforma</span>
+                <span className="text-3xl font-semibold text-[#0071e3]">MT5</span>
+                <span className="text-sm text-[#8a8a8d]">Plataforma</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-[#ffd700]">5</span>
-                <span className="text-sm text-[#707070]">Configurações</span>
+                <span className="text-3xl font-semibold text-[#0071e3]">5</span>
+                <span className="text-sm text-[#8a8a8d]">Configurações</span>
               </div>
             </div>
           </div>
@@ -132,26 +134,26 @@ export default function ManualPage() {
         {manualSections.map((section) => (
           <section key={section.id} className="mb-16">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-[#dcdcdc] flex items-center gap-3 mb-3">
+              <h2 className="text-3xl font-semibold text-white flex items-center gap-3 mb-3">
                 <i className={`fas ${section.icon}`} aria-hidden="true"></i>
                 {section.title}
               </h2>
-              <p className="text-[#a0a0a0]">{section.description}</p>
+              <p className="text-[#8a8a8d]">{section.description}</p>
             </div>
 
             {section.steps && (
               <div className="space-y-6">
                 {section.steps.map((step) => (
                   <div key={step.number} className="flex gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-[#ffd700] text-[#1e2329] rounded-full flex items-center justify-center font-bold">
+                    <div className="flex-shrink-0 w-10 h-10 bg-[#0071e3] text-white rounded-full flex items-center justify-center font-semibold">
                       {step.number}
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-[#dcdcdc] mb-2">{step.title}</h3>
-                      <p className="text-[#a0a0a0] mb-2">
+                      <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                      <p className="text-[#8a8a8d] mb-2">
                         {step.content}{' '}
                         {step.link && (
-                          <a href={step.link} className="text-[#ffd700] hover:underline">
+                          <a href={step.link} className="text-[#0071e3] hover:underline">
                             {step.linkText}
                           </a>
                         )}
@@ -160,8 +162,8 @@ export default function ManualPage() {
                         <div
                           className={`mt-2 p-3 rounded-lg text-sm ${
                             step.hintType === 'warning'
-                              ? 'bg-[#450a0a]/20 border border-[#ef4444]/30 text-[#fca5a5]'
-                              : 'bg-[#343a47]/50 border border-[#404857] text-[#a0a0a0]'
+                              ? 'bg-[#451a03]/20 border border-[#ff9500]/30 text-[#ffcc80]'
+                              : 'bg-[#1e1e1e]/50 border border-[#3a3a3c] text-[#8a8a8d]'
                           }`}
                         >
                           <i className={`${step.hintIcon} mr-2`} aria-hidden="true"></i>
@@ -179,20 +181,20 @@ export default function ManualPage() {
                 {section.modes.map((mode) => (
                   <div
                     key={mode.title}
-                    className="bg-[#2a2e39] border border-[#404857] rounded-xl p-8 transition-all hover:border-[#ffd700]"
+                    className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-8 transition-all hover:border-[#0071e3]"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-lg flex items-center justify-center text-[#1e2329]">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">
                         <i className={`fas ${mode.icon}`} aria-hidden="true"></i>
                       </div>
-                      <h3 className="text-2xl font-bold text-[#dcdcdc]">{mode.title}</h3>
+                      <h3 className="text-2xl font-semibold text-white">{mode.title}</h3>
                     </div>
-                    <p className="text-[#a0a0a0] mb-4">{mode.description}</p>
+                    <p className="text-[#8a8a8d] mb-4">{mode.description}</p>
                     {mode.features && (
                       <ul className="space-y-2">
                         {mode.features.map((feature) => (
-                          <li key={feature} className="flex items-center gap-2 text-sm text-[#a0a0a0]">
-                            <i className="fas fa-check text-[#00ff7f]" aria-hidden="true"></i>
+                          <li key={feature} className="flex items-center gap-2 text-sm text-[#8a8a8d]">
+                            <i className="fas fa-check text-[#34c759]" aria-hidden="true"></i>
                             {feature}
                           </li>
                         ))}

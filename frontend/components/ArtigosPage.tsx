@@ -79,26 +79,26 @@ const filterButtons = [
 export default function ArtigosPage() {
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center bg-[#1a1a2e]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
+      <section className="relative min-h-[60vh] flex items-center bg-[#0a0a12]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-[#dcdcdc] mb-4">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4">
               <span className="block">Nossos</span>
-              <span className="text-[#ffd700]">Artigos</span>
+              <span className="text-[#0071e3]">Artigos</span>
             </h1>
-            <p className="text-[#a0a0a0] text-lg">
+            <p className="text-[#8a8a8d] text-lg">
               Conteúdo exclusivo sobre trading, mesas proprietárias e estratégias.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#1e2329]">
+      <section className="py-16 bg-[#121212]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#dcdcdc] mb-3">Nossos Artigos</h2>
-            <p className="text-[#a0a0a0]">Desenvolvido com dedicação para traders</p>
+            <h2 className="text-3xl font-semibold text-white mb-3">Nossos Artigos</h2>
+            <p className="text-[#8a8a8d]">Desenvolvido com dedicação para traders</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -108,8 +108,8 @@ export default function ArtigosPage() {
                 data-filter={btn.value}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all border ${
                   btn.value === 'all'
-                    ? 'bg-[#ffd700] text-[#1e2329] border-[#ffd700] shadow-[0_0_15px_rgba(255,215,0,0.4)]'
-                    : 'bg-[#1e2329]/50 text-[#a0a0a0] border-[#404857] hover:text-[#ffd700] hover:border-[#ffd700]/30'
+                    ? 'bg-[#0071e3] text-white border-[#0071e3] shadow-md shadow-black/20'
+                    : 'bg-[#1e1e1e]/50 text-[#8a8a8d] border-[#3a3a3c] hover:text-white hover:border-[#0071e3]'
                 }`}
                 type="button"
               >
@@ -123,32 +123,32 @@ export default function ArtigosPage() {
               <article
                 key={article.id}
                 data-category={article.category}
-                className="bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden transition-all hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)] text-left"
+                className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20 text-left"
               >
                 <div className="p-6 flex flex-col h-full">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-lg flex items-center justify-center text-[#1e2329]">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">
                       <i className={`fas ${article.icon}`} aria-hidden="true"></i>
                     </div>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
                         article.badgeColor === 'iniciante'
-                          ? 'bg-green-500/15 text-green-400 border border-green-500/30'
+                          ? 'bg-[#34c759]/15 text-[#34c759] border border-[#34c759]/30'
                           : article.badgeColor === 'intermediario'
-                          ? 'bg-[#ffd700]/15 text-[#ffd700] border border-[#ffd700]/30'
-                          : 'bg-[#ef4444]/15 text-[#ef4444] border border-[#ef4444]/30'
+                          ? 'bg-[#0071e3]/15 text-[#0071e3] border border-[#0071e3]/30'
+                          : 'bg-[#ff453a]/15 text-[#ff453a] border border-[#ff453a]/30'
                       }`}
                     >
                       {article.badge}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-[#dcdcdc] mb-3 line-clamp-2">
+                  <h3 className="text-xl font-semibold text-white mb-3 line-clamp-2">
                     {article.title}
                   </h3>
-                  <p className="text-[#a0a0a0] text-sm mb-4 flex-1 line-clamp-3">
+                  <p className="text-[#8a8a8d] text-sm mb-4 flex-1 line-clamp-3">
                     {article.excerpt}
                   </p>
-                  <div className="flex items-center gap-4 text-sm text-[#707070] mb-4">
+                  <div className="flex items-center gap-4 text-sm text-[#8a8a8d] mb-4">
                     <span className="flex items-center gap-1">
                       <i className="fas fa-clock" aria-hidden="true"></i> {article.readTime}
                     </span>
@@ -158,7 +158,7 @@ export default function ArtigosPage() {
                   </div>
                   <button
                     onClick={() => (window.location.href = `/artigos/${article.id}`)}
-                    className="w-full px-4 py-2 bg-[#ffd700] text-[#1e2329] font-bold rounded-md hover:bg-[#ffdd33] transition-colors focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
+                    className="w-full px-4 py-2 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
                   >
                     Ler Artigo
                   </button>

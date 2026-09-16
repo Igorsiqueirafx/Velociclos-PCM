@@ -37,7 +37,7 @@ export default function DashboardLeadsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando leads…</div>
+        <div className="text-[#0071e3] text-xl">Carregando leads…</div>
       </div>
     )
   }
@@ -49,7 +49,7 @@ export default function DashboardLeadsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="card">
           <p className="text-sm text-[#a0a0a0] mb-1">Total de Leads</p>
-          <p className="text-3xl font-bold text-[#ffd700]">{stats.total}</p>
+          <p className="text-3xl font-bold text-[#0071e3]">{stats.total}</p>
         </div>
         <div className="card">
           <p className="text-sm text-[#a0a0a0] mb-1">Este Mês</p>
@@ -69,7 +69,7 @@ export default function DashboardLeadsPage() {
             placeholder="Buscar por email ou nome…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all"
           />
         </div>
       </div>
@@ -97,7 +97,7 @@ export default function DashboardLeadsPage() {
                     <td className="py-3 text-[#dcdcdc]">{lead.email || '—'}</td>
                     <td className="py-3">
                       {lead.utm_campaign ? (
-                        <span className="px-2 py-1 rounded-full text-xs bg-[#ffd700]/10 text-[#ffd700]">
+                        <span className="px-2 py-1 rounded-full text-xs bg-[#0071e3]/10 text-[#0071e3]">
                           {lead.utm_campaign}
                         </span>
                       ) : (

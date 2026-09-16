@@ -1,4 +1,5 @@
 import { apiGet } from '@/lib/api'
+import { logEvent } from '@/lib/logging'
 
 export interface DashboardStats {
   subscriberCount: number
@@ -12,41 +13,42 @@ export interface DashboardStats {
 
 export async function getDashboardStats(): Promise<DashboardStats> {
   try {
-    const safeCount = async (endpoint: string): Promise<number> => {
-      try {
-        const data = await apiGet<any[]>(endpoint)
-        return Array.isArray(data) ? data.length : 0
-      } catch {
-        return 0
-      }
-    }
-
     const [subscribers, courses, lessons, articles, certificates, downloads] =
       await Promise.all([
-        apiGet<any[]>('/api/subscribers').catch(() => []),
-        apiGet<any[]>('/api/courses').catch(() => []),
-        apiGet<any[]>('/api/videos').catch(() => []), // Uses lessons table
-        apiGet<any[]>('/api/articles').catch(() => []),
-        apiGet<any[]>('/api/certificates').catch(() => []),
-        apiGet<any[]>('/api/downloads').catch(() => []),
+        apiGet<unknown[]>('/api/subscribers').catch(() => []),
+        apiGet<unknown[]>('/api/courses').catch(() => []),
+        apiGet<unknown[]>('/api/videos').catch(() => []), // Uses lessons table
+        apiGet<unknown[]>('/api/articles').catch(() => []),
+        apiGet<unknown[]>('/api/certificates').catch(() => []),
+        apiGet<unknown[]>('/api/downloads').catch(() => []),
       ])
 
+    const getRecords = (value: unknown): Array<Record<string, unknown>> =>
+      Array.isArray(value) ? value as Array<Record<string, unknown>> : []
+
+    const subscriberRecords = getRecords(subscribers)
+    const courseRecords = getRecords(courses)
+    const lessonRecords = getRecords(lessons)
+    const articleRecords = getRecords(articles)
+    const certificateRecords = getRecords(certificates)
+    const downloadRecords = getRecords(downloads)
+
     return {
-      subscriberCount: subscribers.length,
-      recentSubscribers: subscribers.slice(0, 5).map(s => ({
-        id: s.id,
-        email: s.email,
-        source: s.source || '',
-        created_at: s.created_at || new Date().toISOString(),
+      subscriberCount: subscriberRecords.length,
+      recentSubscribers: subscriberRecords.slice(0, 5).map((subscriber) => ({
+        id: String(subscriber.id),
+        email: String(subscriber.email),
+        source: String(subscriber.source || ''),
+        created_at: String(subscriber.created_at || new Date().toISOString()),
       })),
-      courseCount: courses.length,
-      lessonCount: lessons.length,
-      articleCount: articles.length,
-      downloadCount: downloads.length,
-      certificateCount: certificates.length,
+      courseCount: courseRecords.length,
+      lessonCount: lessonRecords.length,
+      articleCount: articleRecords.length,
+      downloadCount: downloadRecords.length,
+      certificateCount: certificateRecords.length,
     }
   } catch (error) {
-    console.error('Error fetching dashboard stats:', error)
+    logEvent('dashboard_stats', 'error', 'Error fetching dashboard stats', { error: error instanceof Error ? error.message : String(error) })
     return {
       subscriberCount: 0,
       recentSubscribers: [],

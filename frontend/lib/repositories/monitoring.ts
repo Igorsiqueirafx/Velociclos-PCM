@@ -1,4 +1,5 @@
 import { apiGet } from '@/lib/api'
+import { logEvent } from '@/lib/logging'
 
 export interface MonitoringCounts {
   courseCount: number | null
@@ -11,7 +12,7 @@ export async function getMonitoringCounts(): Promise<MonitoringCounts> {
   try {
     const safeCount = async (endpoint: string): Promise<number> => {
       try {
-        const data = await apiGet<any[]>(endpoint)
+        const data = await apiGet<unknown[]>(endpoint)
         return Array.isArray(data) ? data.length : 0
       } catch {
         return 0
@@ -32,7 +33,7 @@ export async function getMonitoringCounts(): Promise<MonitoringCounts> {
       subscriberCount,
     }
   } catch (error) {
-    console.error('Error fetching monitoring counts:', error)
+    logEvent('monitoring_counts', 'error', 'Error fetching monitoring counts', { error: error instanceof Error ? error.message : String(error) })
     return {
       courseCount: null,
       lessonCount: null,

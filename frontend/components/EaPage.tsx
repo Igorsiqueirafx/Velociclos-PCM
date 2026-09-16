@@ -37,15 +37,15 @@ export default function EaPage() {
   return (
     <>
       <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[50vh]">
             <div className="flex flex-col gap-6">
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-[#dcdcdc] leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight tracking-tight">
                 Expert Advisor
-                <span className="block text-[#ffd700]">Velociclos PCM</span>
+                <span className="block text-[#0071e3]">Velociclos PCM</span>
               </h1>
-              <p className="text-[#a0a0a0] text-lg">
+              <p className="text-[#8a8a8d] text-lg">
                 Instale, configure e use o seu sistema automatizado no MetaTrader com segurança.
               </p>
 
@@ -53,7 +53,7 @@ export default function EaPage() {
                 <a
                   href="/velociclos-pcm.ex5"
                   download
-                  className="inline-flex items-center justify-center px-8 py-4 bg-[#ffd700] text-[#1e2329] font-bold rounded-lg shadow-lg hover:bg-[#ffdd33] transition-all focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1a1a2e]"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-[#0071e3] text-white font-semibold rounded-lg shadow-md hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
                   aria-label="Baixar o arquivo Velociclos PCM.ex5"
                 >
                   <i className="fas fa-download mr-2" aria-hidden="true"></i>
@@ -61,14 +61,14 @@ export default function EaPage() {
                 </a>
                 <a
                   href="/manual"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-[#404857] text-[#dcdcdc] font-bold rounded-lg hover:border-[#ffd700] hover:text-[#ffd700] transition-all focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1a1a2e]"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-[#3a3a3c] text-white font-medium rounded-lg hover:border-[#0071e3] hover:text-[#0071e3] transition-all focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
                   aria-label="Abrir manual do usuário"
                 >
                   Manual do Usuário
                 </a>
               </div>
 
-              <p className="text-sm text-[#a0a0a0]">
+              <p className="text-sm text-[#8a8a8d]">
                 <i className="fas fa-info-circle mr-1" aria-hidden="true"></i>
                 Disponível apenas para Windows. Em mobile, use um desktop para baixar o arquivo .ex5.
               </p>
@@ -79,17 +79,17 @@ export default function EaPage() {
                 <img
                   src="/ea-screenshot.webp"
                   alt="Expert Advisor Velociclos PCM"
-                  className="w-full max-w-md rounded-lg shadow-2xl transition-transform group-hover:scale-105"
+                  className="w-full max-w-md rounded-xl shadow-lg transition-transform group-hover:scale-105"
                   loading="lazy"
                 />
                 <div
-                  className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                  className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                   onClick={openVideo}
                   aria-label="Assistir vídeo demonstrativo"
                   role="button"
                 >
                   <button
-                    className="w-16 h-16 bg-[#ffd700] text-[#1e2329] rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#ffdd33] transition-colors focus:ring-2 focus:ring-[#ffd700]"
+                    className="w-16 h-16 bg-[#0071e3] text-white rounded-full flex items-center justify-center font-semibold text-xl hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3]"
                     aria-label="Assistir vídeo demonstrativo"
                   >
                     <i className="fas fa-play" aria-hidden="true"></i>
@@ -101,19 +101,19 @@ export default function EaPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-[#2a2e39]">
+      <section className="py-16 bg-[#121212]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {features.map((item) => (
               <div
                 key={item.title}
-                className="bg-[#1e2329] border border-[#404857] rounded-xl p-8 text-center transition-all hover:border-[#ffd700]"
+                className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-8 text-center transition-all hover:border-[#0071e3]"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className={`fas ${item.icon} text-2xl text-[#1e2329]`} aria-hidden="true"></i>
+                <div className="w-16 h-16 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className={`fas ${item.icon} text-2xl text-white`} aria-hidden="true"></i>
                 </div>
-                <h3 className="text-xl font-bold text-[#dcdcdc] mb-3">{item.title}</h3>
-                <p className="text-[#a0a0a0] text-sm">{item.description}</p>
+                <h3 className="text-xl font-semibold text-white mb-3">{item.title}</h3>
+                <p className="text-[#8a8a8d] text-sm">{item.description}</p>
               </div>
             ))}
           </div>
@@ -129,12 +129,12 @@ export default function EaPage() {
           aria-label="Vídeo demonstrativo"
         >
           <div
-            className="relative w-full max-w-4xl mx-4 aspect-video bg-black rounded-lg overflow-hidden"
+            className="relative w-full max-w-4xl mx-4 aspect-video bg-black rounded-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={closeVideo}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#2a2e39] text-[#a0a0a0] hover:text-[#ffd700] rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#ffd700]"
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#1e1e1e] text-[#8a8a8d] hover:text-white rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#0071e3]"
               aria-label="Fechar vídeo"
             >
               <i className="fas fa-times" aria-hidden="true"></i>

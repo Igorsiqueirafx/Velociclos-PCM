@@ -53,33 +53,33 @@ export default function CertificadosPage() {
 
   return (
     <>
-      <section className="relative min-h-[50vh] flex items-center bg-[#1a1a2e]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/85 to-[#1e2329]/75 z-10"></div>
+      <section className="relative min-h-[50vh] flex items-center bg-[#0a0a12]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#ffd700]/10 text-[#ffd700] px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6">
               <i className="fas fa-award" aria-hidden="true"></i>
               <span>Conquistas</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-[#dcdcdc] mb-6 flex items-center gap-3">
-              <i className="fas fa-award text-[#ffd700]" aria-hidden="true"></i>
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-6 flex items-center gap-3">
+              <i className="fas fa-award text-[#0071e3]" aria-hidden="true"></i>
               <span>Certificados</span>
             </h1>
-            <p className="text-[#a0a0a0] text-lg">
+            <p className="text-[#8a8a8d] text-lg">
               Conquistas do Igor Siqueira durante sua trajetória no Grupo Fimathe.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#1e2329]">
+      <section className="py-16 bg-[#121212]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {certificates.map((cert) => (
               <button
                 key={cert.id}
                 onClick={() => openCert(cert.image)}
-                className="group bg-[#2a2e39] border border-[#404857] rounded-xl overflow-hidden transition-all duration-300 hover:border-[#ffd700] hover:shadow-[0_0_25px_rgba(255,215,0,0.2)] text-left focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-[#1e2329]"
+                className="group bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all duration-300 hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20 text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
               >
                 <div className="aspect-square overflow-hidden">
                   <img
@@ -94,10 +94,10 @@ export default function CertificadosPage() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-bold text-[#dcdcdc] group-hover:text-[#ffd700] transition-colors">
+                  <h3 className="text-lg font-semibold text-white group-hover:text-[#0071e3] transition-colors">
                     {cert.title}
                   </h3>
-                  <p className="text-sm text-[#a0a0a0] mt-1 line-clamp-2">
+                  <p className="text-sm text-[#8a8a8d] mt-1 line-clamp-2">
                     {cert.description}
                   </p>
                 </div>
@@ -121,7 +121,7 @@ export default function CertificadosPage() {
           >
             <button
               onClick={closeCert}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#2a2e39] text-[#a0a0a0] hover:text-[#ffd700] rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#ffd700]"
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#1e1e1e] text-[#8a8a8d] hover:text-white rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#0071e3]"
               aria-label="Fechar certificado"
             >
               <i className="fas fa-times" aria-hidden="true"></i>

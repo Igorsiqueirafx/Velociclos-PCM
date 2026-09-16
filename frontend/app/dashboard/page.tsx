@@ -9,7 +9,7 @@ const STAT_CARDS = [
     label: 'Cursos',
     valuePlaceholder: 'courseCount' as const,
     icon: 'fas fa-play-circle',
-    color: 'from-[#ffd700] to-[#ffeb3b]',
+    color: 'from-[#0071e3] to-[#6567f1]',
     href: '/dashboard/cursos',
   },
   {
@@ -44,7 +44,7 @@ const STAT_CARDS = [
     label: 'Leads',
     valuePlaceholder: 'subscriberCount' as const,
     icon: 'fas fa-users',
-    color: 'from-[#ffd700] to-[#ffeb3b]',
+    color: 'from-[#0071e3] to-[#6567f1]',
     href: '/dashboard/leads',
   },
 ]
@@ -55,7 +55,7 @@ export default function DashboardHome() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando dados...</div>
+        <div className="text-[#0071e3] text-xl">Carregando dados...</div>
       </div>
     )
   }
@@ -74,7 +74,7 @@ export default function DashboardHome() {
       <div className="card">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-[#dcdcdc]">Leads Recentes</h2>
-          <a href="/dashboard/leads" className="text-sm text-[#ffd700] hover:text-[#ffdd33] transition-colors">
+          <a href="/dashboard/leads" className="text-sm text-[#0071e3] hover:text-[#005fd9] transition-colors">
             Ver todos
           </a>
         </div>
@@ -120,7 +120,7 @@ function SystemStatus({ health }: { health: { status?: string } | null }) {
              </p>
           </div>
         </div>
-        <a href="/dashboard/monitoramento" className="text-sm text-[#ffd700] hover:text-[#ffdd33] transition-colors">
+        <a href="/dashboard/monitoramento" className="text-sm text-[#0071e3] hover:text-[#005fd9] transition-colors">
           Detalhes
         </a>
       </div>

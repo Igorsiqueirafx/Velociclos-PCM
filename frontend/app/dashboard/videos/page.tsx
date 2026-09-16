@@ -20,7 +20,7 @@ export default function VideosPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando vídeos...</div>
+        <div className="text-[#0071e3] text-xl">Carregando vídeos...</div>
       </div>
     )
   }
@@ -96,7 +96,7 @@ export default function VideosPage() {
                           href={`https://www.youtube.com/watch?v=${video.videoId}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 text-[#a0a0a0] hover:text-[#ffd700] transition-colors"
+                          className="p-2 text-[#a0a0a0] hover:text-[#0071e3] transition-colors"
                           title="Ver no YouTube"
                         >
                           <i className="fas fa-external-link-alt"></i>
@@ -128,7 +128,7 @@ export default function VideosPage() {
 function StatsGrid({ stats }: { stats: { total: number; moduleCount: number; filtered: number } }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <StatCard label="Total de Vídeos" value={stats.total} color="text-[#ffd700]" />
+      <StatCard label="Total de Vídeos" value={stats.total} color="text-[#0071e3]" />
       <StatCard label="Módulos" value={stats.moduleCount} color="text-[#00ff7f]" />
       <StatCard label="Filtrados" value={stats.filtered} color="text-[#dcdcdc]" />
     </div>
@@ -162,7 +162,7 @@ function FiltersCard({ searchTerm, setSearchTerm, moduleFilter, setModuleFilter,
               placeholder="Título ou descrição..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] placeholder-[#707070] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all"
             />
           </div>
         </div>
@@ -172,8 +172,8 @@ function FiltersCard({ searchTerm, setSearchTerm, moduleFilter, setModuleFilter,
             id="module"
             value={moduleFilter}
             onChange={(e) => setModuleFilter(e.target.value)}
-            className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent transition-all"
-          >
+              className="w-full px-4 py-2.5 bg-[#1e2329] border border-[#404857] rounded-lg text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:border-transparent transition-all"
+            >
             <option value="all">Todos</option>
             {modules.map((mod) => (
               <option key={mod} value={mod}>{mod}</option>

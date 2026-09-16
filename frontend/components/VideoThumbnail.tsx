@@ -38,7 +38,7 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
   }
 
   return (
-    <div className="relative aspect-video bg-[#1a1f25] group">
+    <div className="relative aspect-video bg-[#121212] group">
       {isPlaying && /^[A-Za-z0-9_-]{11}$/.test(videoId) ? (
         <>
           <iframe
@@ -78,8 +78,8 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
             className="absolute inset-0 flex items-center justify-center cursor-pointer"
             onClick={handlePlayClick}
           >
-            <div className="w-14 h-14 bg-[#ffd700] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#ffd700]/40">
-              <i className="fas fa-play text-[#1a1f25] text-xl ml-1" />
+            <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
+              <i className="fas fa-play text-white text-xl ml-1" />
             </div>
           </div>
           {duration && (
@@ -88,7 +88,7 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
             </div>
           )}
           {category && CATEGORY_LABELS[category] && (
-            <div className={`absolute top-2 left-2 ${CATEGORY_COLORS[category] || 'bg-[#ffd700]/20 text-[#ffd700]'} text-xs px-2 py-1 rounded font-medium`}>
+            <div className={`absolute top-2 left-2 ${CATEGORY_COLORS[category] || 'bg-[#0071e3]/20 text-[#0071e3]'} text-xs px-2 py-1 rounded font-medium`}>
               {CATEGORY_LABELS[category]}
             </div>
           )}

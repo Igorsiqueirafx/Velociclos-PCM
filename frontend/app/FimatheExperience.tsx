@@ -48,7 +48,7 @@ function CarouselNavigation({
             role="tab"
             aria-selected={index === currentIndex}
             aria-label={`Ir para foto ${index + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50 ${index === currentIndex ? 'w-10 bg-[#ffd700]' : 'w-2 bg-white/40 hover:bg-white/70'}`}
+            className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-black/50 ${index === currentIndex ? 'w-10 bg-[#0071e3]' : 'w-2 bg-white/40 hover:bg-white/70'}`}
             onClick={() => onGoToSlide(index)}
           />
         ))}
@@ -58,7 +58,7 @@ function CarouselNavigation({
         type="button"
         aria-label={isPlaying ? 'Pausar carrossel' : 'Retomar carrossel'}
         aria-pressed={isPlaying}
-        className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700]"
+        className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#0071e3] hover:bg-black/70 hover:text-[#0071e3] focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
         onClick={onTogglePlay}
       >
         {isPlaying ? (
@@ -92,7 +92,7 @@ function CarouselThumbnails({ images, currentIndex, onGoToSlide }: CarouselThumb
             type="button"
             aria-label={`Ver miniatura ${index + 1}`}
             aria-current={index === currentIndex ? 'true' : 'false'}
-            className={`flex-shrink-0 aspect-[4/3] w-32 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ffd700] ${index === currentIndex ? 'border-[#ffd700] opacity-100 ring-2 ring-[#ffd700]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
+            className={`flex-shrink-0 aspect-[4/3] w-32 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] ${index === currentIndex ? 'border-[#0071e3] opacity-100 ring-2 ring-[#0071e3]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
             onClick={() => onGoToSlide(index)}
             scroll-snap-align="center"
           >
@@ -110,8 +110,8 @@ interface CarouselProgressBarProps {
 
 function CarouselProgressBar({ progress }: CarouselProgressBarProps) {
   return (
-    <div className="absolute top-0 left-0 h-1 bg-[#404857] z-10 transition-all duration-500">
-      <div className="h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transform origin-left transition-transform duration-500 ease-linear" style={{ transform: `scaleX(${progress / 100})` }} />
+    <div className="absolute top-0 left-0 h-1 bg-[#3a3a3c] z-10 transition-all duration-500">
+      <div className="h-full bg-gradient-to-r from-[#0071e3] to-[#6567f1] transform origin-left transition-transform duration-500 ease-linear" style={{ transform: `scaleX(${progress / 100})` }} />
     </div>
   )
 }
@@ -154,7 +154,7 @@ function CarouselControls({ onPrev, onNext }: CarouselControlsProps) {
     <>
       <button
         type="button"
-        className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
+        className="absolute left-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#0071e3] hover:bg-black/70 hover:text-[#0071e3] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-black/50"
         aria-label="Foto anterior"
         onClick={onPrev}
       >
@@ -164,7 +164,7 @@ function CarouselControls({ onPrev, onNext }: CarouselControlsProps) {
       </button>
       <button
         type="button"
-        className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#ffd700] hover:bg-black/70 hover:text-[#ffd700] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-offset-2 focus:ring-offset-black/50"
+        className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex h-12 w-12 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur-sm transition hover:border-[#0071e3] hover:bg-black/70 hover:text-[#0071e3] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-black/50"
         aria-label="Próxima foto"
         onClick={onNext}
       >
@@ -268,17 +268,17 @@ export default function FimatheExperience() {
   }
 
   return (
-    <section className="bg-[#161b20] py-20" aria-labelledby="experience-title" data-carousel-container>
+    <section className="bg-[#0a0a12] py-20" aria-labelledby="experience-title" data-carousel-container>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#ffd700]">Fimathe Experience</p>
-            <h2 id="experience-title" className="text-3xl font-bold text-[#f3f4f6] sm:text-4xl">Aprendizado que acontece junto</h2>
-            <p className="mt-4 text-base leading-7 text-[#a0a0a0]">Um pouco da comunidade, dos encontros e da experiência por trás do Método Fimathe.</p>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#0071e3]">Fimathe Experience</p>
+            <h2 id="experience-title" className="text-3xl font-semibold text-white sm:text-4xl tracking-tight">Aprendizado que acontece junto</h2>
+            <p className="mt-4 text-base leading-7 text-[#8a8a8d]">Um pouco da comunidade, dos encontros e da experiência por trás do Método Fimathe.</p>
           </div>
-          <div className="text-sm text-[#a0a0a0]" aria-live="polite">
-            <span className="font-semibold text-[#f3f4f6]">{String(currentIndex + 1).padStart(2, '0')}</span>
-            <span className="mx-2 text-[#404857]">/</span>
+          <div className="text-sm text-[#8a8a8d]" aria-live="polite">
+            <span className="font-semibold text-white">{String(currentIndex + 1).padStart(2, '0')}</span>
+            <span className="mx-2 text-[#3a3a3c]">/</span>
             <span>{IMAGES.length}</span>
           </div>
         </div>
@@ -286,7 +286,7 @@ export default function FimatheExperience() {
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)]">
           <div className="relative">
             <div 
-              className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#404857] bg-[#2a2e39] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#ffd700]" 
+              className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]" 
               role="region" 
               aria-roledescription="carousel" 
               aria-label="Galeria de fotos do Fimathe Experience" 

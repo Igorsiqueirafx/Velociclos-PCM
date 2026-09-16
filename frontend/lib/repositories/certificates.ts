@@ -56,13 +56,13 @@ const FALLBACK_CERTIFICATES: CertificateRow[] = [
 
 export async function getCertificates(): Promise<CertificateRow[]> {
   try {
-    const data = await apiGet<any[]>('/api/certificates')
+    const data = await apiGet<unknown[]>('/api/certificates')
     
     if (data && data.length > 0) {
-      return data.map((cert) => ({
+      return (data as CertificateRow[]).map((cert) => ({
         ...cert,
-        image_url: cert.image || cert.image_url,
-      })) as CertificateRow[]
+        image_url: (cert as Record<string, unknown>).image ? String((cert as Record<string, unknown>).image) : cert.image_url,
+      }))
     }
     
     // Use fallback data if backend returns empty

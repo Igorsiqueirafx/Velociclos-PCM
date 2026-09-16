@@ -23,17 +23,17 @@ export default function VideoMeta({ title, description, publishedAt, viewCount, 
   return (
     <div className="p-4">
       <h3
-        className="text-sm font-medium text-[#dcdcdc] line-clamp-2 hover:text-[#ffd700] transition-colors mb-2 cursor-pointer"
+        className="text-sm font-medium text-white line-clamp-2 hover:text-[#0071e3] transition-colors mb-2 cursor-pointer"
         onClick={onPlay}
       >
         {title}
       </h3>
       {description && (
-        <p className="text-xs text-[#707070] line-clamp-2 mb-3">
+        <p className="text-xs text-[#8a8a8d] line-clamp-2 mb-3">
           {description}
         </p>
       )}
-      <div className="flex items-center justify-between text-xs text-[#707070]">
+      <div className="flex items-center justify-between text-xs text-[#8a8a8d]">
         <span>{formatDate(publishedAt)}</span>
         {viewCount && (
           <span className="flex items-center gap-1">

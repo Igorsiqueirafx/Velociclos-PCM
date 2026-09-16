@@ -14,7 +14,7 @@ export default function MonitoramentoPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Verificando sistema...</div>
+        <div className="text-[#0071e3] text-xl">Verificando sistema...</div>
       </div>
     )
   }

@@ -18,7 +18,7 @@ export default function CertificadosPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando certificados...</div>
+        <div className="text-[#0071e3] text-xl">Carregando certificados...</div>
       </div>
     )
   }
@@ -58,7 +58,7 @@ export default function CertificadosPage() {
               <tr key={cert.id} className="border-b border-[#404857]/30 last:border-0 hover:bg-[#343a47]/30 transition-colors">
                 <td className="py-3 text-[#dcdcdc]">{cert.title}</td>
                 <td className="py-3 text-[#a0a0a0]">
-                  <a href={cert.image_url} target="_blank" rel="noopener noreferrer" className="text-[#ffd700] hover:text-[#ffdd33]">
+                  <a href={cert.image_url} target="_blank" rel="noopener noreferrer" className="text-[#0071e3] hover:text-[#005fd9]">
                     Abrir imagem
                   </a>
                 </td>

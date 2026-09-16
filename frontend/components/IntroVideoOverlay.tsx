@@ -66,7 +66,7 @@ export default function IntroVideoOverlay({ onComplete }: { onComplete: () => vo
           setVisible(false)
           onComplete()
         }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-[#2a2e39] hover:bg-[#343a47] text-[#dcdcdc] px-6 py-3 rounded-full font-medium flex items-center gap-2 focus:ring-2 focus:ring-[#ffd700] transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-[#1e1e1e] hover:bg-[#2a2a2e] text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 focus:ring-2 focus:ring-[#0071e3] transition-colors"
         aria-label="Pular vídeo"
       >
         <span>Pular</span>

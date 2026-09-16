@@ -115,7 +115,7 @@ function CheckboxField({ id, label, checked, onChange }: { id: string; label: st
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="w-4 h-4 rounded border-[#404857] bg-[#1e2329] text-[#ffd700] focus:ring-[#ffd700]"
+        className="w-4 h-4 rounded border-[#3a3a3c] bg-[#1e1e1e] text-[#0071e3] focus:ring-[#0071e3]"
       />
       <label htmlFor={id} className="text-sm text-[#dcdcdc]">{label}</label>
     </div>

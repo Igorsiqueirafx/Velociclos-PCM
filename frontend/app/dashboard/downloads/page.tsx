@@ -18,7 +18,7 @@ export default function DownloadsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-[#ffd700] text-xl">Carregando downloads...</div>
+        <div className="text-[#0071e3] text-xl">Carregando downloads...</div>
       </div>
     )
   }

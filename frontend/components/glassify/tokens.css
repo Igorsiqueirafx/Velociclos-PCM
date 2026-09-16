@@ -1,110 +1,108 @@
 :root {
   /* Global Constants */
   --glass-border-width: 1px;
-  --glass-radius: 12px;
-  --glass-font-sans: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --glass-radius: var(--radius-lg);
+  --glass-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --glass-speed-fast: 0.15s;
   --glass-speed-normal: 0.3s;
   --glass-speed-slow: 0.6s;
 
-  /* Theme Defaults - Light Mode */
-  --glass-text: #111827;
-  --glass-text-muted: rgba(17, 24, 39, 0.6);
-  --glass-text-inverse: #f3f4f6;        /* Text on filled/solid dark surfaces */
-  --glass-primary: rgba(0, 0, 0, 0.05);
-  --glass-primary-hover: rgba(0, 0, 0, 0.1);
+  /* Apple-style Dark Theme Tokens */
+  --glass-text: #e5e5e5;
+  --glass-text-muted: rgba(229, 229, 229, 0.6);
+  --glass-text-inverse: #000000;
+  --glass-primary: rgba(0, 113, 227, 0.1);
+  --glass-primary-hover: rgba(0, 113, 227, 0.2);
 
-  /* 1. Frosted Glass — classic frosted window, moderate blur */
-  --glass-bg-frosted: rgba(255, 255, 255, 0.15);
-  --glass-filter-frosted: blur(16px) saturate(180%);
-  --glass-border-frosted: rgba(0, 0, 0, 0.06);
-  --glass-shadow-frosted: 0 8px 32px rgba(0, 0, 0, 0.06);
+  /* Subtle elevation tokens (Apple-style, no glass blur) */
+  --glass-bg-frosted: rgba(37, 37, 38, 0.8);
+  --glass-filter-frosted: none;
+  --glass-border-frosted: rgba(58, 58, 60, 0.8);
+  --glass-shadow-frosted: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-  /* 2. Liquid Glass — crystal clear, minimal blur */
-  --glass-bg-liquid: rgba(255, 255, 255, 0.05);
-  --glass-filter-liquid: blur(6px) saturate(200%) brightness(1.02);
-  --glass-border-liquid: rgba(0, 0, 0, 0.08);
-  --glass-shadow-liquid: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --glass-bg-liquid: rgba(30, 30, 30, 0.6);
+  --glass-filter-liquid: none;
+  --glass-border-liquid: rgba(58, 58, 60, 0.6);
+  --glass-shadow-liquid: 0 1px 4px rgba(0, 0, 0, 0.15);
 
-  /* 3. Matte Glass — heavy frosted, strongest blur */
-  --glass-bg-matte: rgba(255, 255, 255, 0.72);
-  --glass-filter-matte: blur(28px) saturate(140%);
-  --glass-border-matte: rgba(0, 0, 0, 0.06);
-  --glass-shadow-matte: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --glass-bg-matte: rgba(25, 25, 26, 0.9);
+  --glass-filter-matte: none;
+  --glass-border-matte: rgba(58, 58, 60, 0.4);
+  --glass-shadow-matte: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* Dark Mode Overrides (if prefers-color-scheme is active) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --glass-text: #f3f4f6;
-    --glass-text-muted: rgba(243, 244, 246, 0.6);
-    --glass-text-inverse: #0b0b0f;        /* Text on filled/solid bright surfaces */
-    --glass-primary: rgba(255, 255, 255, 0.08);
-    --glass-primary-hover: rgba(255, 255, 255, 0.15);
+    --glass-text: #e5e5e5;
+    --glass-text-muted: rgba(229, 229, 229, 0.6);
+    --glass-text-inverse: #000000;
+    --glass-primary: rgba(0, 113, 227, 0.1);
+    --glass-primary-hover: rgba(0, 113, 227, 0.2);
 
-    --glass-bg-frosted: rgba(255, 255, 255, 0.03);
-    --glass-filter-frosted: blur(16px) saturate(180%);
-    --glass-border-frosted: rgba(255, 255, 255, 0.12);
-    --glass-shadow-frosted: rgba(0, 0, 0, 0.2);
+    --glass-bg-frosted: rgba(37, 37, 38, 0.8);
+    --glass-filter-frosted: none;
+    --glass-border-frosted: rgba(58, 58, 60, 0.8);
+    --glass-shadow-frosted: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-    --glass-bg-liquid: rgba(255, 255, 255, 0.01);
-    --glass-filter-liquid: blur(6px) saturate(200%) brightness(1.05);
-    --glass-border-liquid: rgba(255, 255, 255, 0.18);
-    --glass-shadow-liquid: rgba(0, 0, 0, 0.12);
+    --glass-bg-liquid: rgba(30, 30, 30, 0.6);
+    --glass-filter-liquid: none;
+    --glass-border-liquid: rgba(58, 58, 60, 0.6);
+    --glass-shadow-liquid: 0 1px 4px rgba(0, 0, 0, 0.15);
 
-    --glass-bg-matte: rgba(15, 15, 22, 0.65);
-    --glass-filter-matte: blur(28px) saturate(160%);
-    --glass-border-matte: rgba(255, 255, 255, 0.08);
-    --glass-shadow-matte: 0 12px 40px rgba(0, 0, 0, 0.4);
+    --glass-bg-matte: rgba(25, 25, 26, 0.9);
+    --glass-filter-matte: none;
+    --glass-border-matte: rgba(58, 58, 60, 0.4);
+    --glass-shadow-matte: 0 4px 12px rgba(0, 0, 0, 0.25);
   }
 }
 
 /* Class-based Dark Mode Overrides */
 .dark,
 [data-theme="dark"] {
-  --glass-text: #f3f4f6;
-  --glass-text-muted: rgba(243, 244, 246, 0.6);
-  --glass-text-inverse: #0b0b0f;
-  --glass-primary: rgba(255, 255, 255, 0.08);
-  --glass-primary-hover: rgba(255, 255, 255, 0.15);
+  --glass-text: #e5e5e5;
+  --glass-text-muted: rgba(229, 229, 229, 0.6);
+  --glass-text-inverse: #000000;
+  --glass-primary: rgba(0, 113, 227, 0.1);
+  --glass-primary-hover: rgba(0, 113, 227, 0.2);
 
-  --glass-bg-frosted: rgba(255, 255, 255, 0.03);
-  --glass-filter-frosted: blur(16px) saturate(180%);
-  --glass-border-frosted: rgba(255, 255, 255, 0.12);
-  --glass-shadow-frosted: rgba(0, 0, 0, 0.2);
+  --glass-bg-frosted: rgba(37, 37, 38, 0.8);
+  --glass-filter-frosted: none;
+  --glass-border-frosted: rgba(58, 58, 60, 0.8);
+  --glass-shadow-frosted: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-  --glass-bg-liquid: rgba(255, 255, 255, 0.01);
-  --glass-filter-liquid: blur(6px) saturate(200%) brightness(1.05);
-  --glass-border-liquid: rgba(255, 255, 255, 0.18);
-  --glass-shadow-liquid: rgba(0, 0, 0, 0.12);
+  --glass-bg-liquid: rgba(30, 30, 30, 0.6);
+  --glass-filter-liquid: none;
+  --glass-border-liquid: rgba(58, 58, 60, 0.6);
+  --glass-shadow-liquid: 0 1px 4px rgba(0, 0, 0, 0.15);
 
-  --glass-bg-matte: rgba(15, 15, 22, 0.65);
-  --glass-filter-matte: blur(28px) saturate(160%);
-  --glass-border-matte: rgba(255, 255, 255, 0.08);
-  --glass-shadow-matte: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --glass-bg-matte: rgba(25, 25, 26, 0.9);
+  --glass-filter-matte: none;
+  --glass-border-matte: rgba(58, 58, 60, 0.4);
+  --glass-shadow-matte: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Class/data-attribute Light Mode Overrides (always win over system dark media) */
+/* Class/data-attribute Light Mode Overrides */
 .light,
 [data-theme="light"] {
-  --glass-text: #111827;
-  --glass-text-muted: rgba(17, 24, 39, 0.6);
-  --glass-text-inverse: #f3f4f6;
-  --glass-primary: rgba(0, 0, 0, 0.05);
-  --glass-primary-hover: rgba(0, 0, 0, 0.1);
+  --glass-text: #1d1d1f;
+  --glass-text-muted: rgba(29, 29, 31, 0.6);
+  --glass-text-inverse: #ffffff;
+  --glass-primary: rgba(0, 113, 227, 0.1);
+  --glass-primary-hover: rgba(0, 113, 227, 0.2);
 
-  --glass-bg-frosted: rgba(255, 255, 255, 0.15);
-  --glass-filter-frosted: blur(16px) saturate(180%);
-  --glass-border-frosted: rgba(0, 0, 0, 0.06);
-  --glass-shadow-frosted: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --glass-bg-frosted: rgba(255, 255, 255, 0.7);
+  --glass-filter-frosted: none;
+  --glass-border-frosted: rgba(200, 200, 205, 0.6);
+  --glass-shadow-frosted: 0 2px 8px rgba(0, 0, 0, 0.08);
 
-  --glass-bg-liquid: rgba(255, 255, 255, 0.05);
-  --glass-filter-liquid: blur(6px) saturate(200%) brightness(1.02);
-  --glass-border-liquid: rgba(0, 0, 0, 0.08);
-  --glass-shadow-liquid: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --glass-bg-liquid: rgba(242, 242, 247, 0.6);
+  --glass-filter-liquid: none;
+  --glass-border-liquid: rgba(200, 200, 205, 0.4);
+  --glass-shadow-liquid: 0 1px 4px rgba(0, 0, 0, 0.06);
 
-  --glass-bg-matte: rgba(255, 255, 255, 0.72);
-  --glass-filter-matte: blur(28px) saturate(140%);
-  --glass-border-matte: rgba(0, 0, 0, 0.06);
-  --glass-shadow-matte: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --glass-bg-matte: rgba(255, 255, 255, 0.9);
+  --glass-filter-matte: none;
+  --glass-border-matte: rgba(200, 200, 205, 0.3);
+  --glass-shadow-matte: 0 4px 12px rgba(0, 0, 0, 0.08);
 }

@@ -32,7 +32,7 @@ export default function CertificateModal({ imageUrl, onClose }: CertificateModal
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#2a2e39] text-[#a0a0a0] hover:text-[#ffd700] rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#ffd700] transition-colors"
+          className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#1e1e1e] text-[#8a8a8d] hover:text-white rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#0071e3] transition-colors"
           aria-label="Fechar certificado"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
