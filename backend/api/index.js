@@ -2,7 +2,7 @@ let app;
 let initError = null;
 
 try {
-  app = require('../server');
+  app = require('../server').app;
 } catch (error) {
   initError = error;
   console.error('Server init error:', error);
