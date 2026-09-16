@@ -100,7 +100,7 @@
 // URL: /auth/login
 // Método: GET/POST
 // Auth: Não (mas usuários logados são redirecionados)
-// Descrição: Página de login com Supabase + Google OAuth
+// Descrição: Página de login com GitHub OAuth via NextAuth
 // Status: ✅ Implementada
 
 // ✅ Register
@@ -113,7 +113,7 @@
 // ✅ Auth Callback
 // URL: /auth/callback
 // Método: GET
-// Auth: Supabase OAuth Callback
+// Auth: NextAuth OAuth Callback
 // Descrição: Handler para redirect OAuth
 // Status: ✅ Implementada
 
@@ -131,14 +131,14 @@
 // ✅ Meus Leads
 // URL: /leads
 // Método: GET
-// Auth: Sim (Supabase)
+// Auth: Sim (NextAuth)
 // Descrição: Painel de leads capturados pelo usuário
 // Status: ✅ Implementada
 
 // ✅ Downloads Exclusivos
 // URL: /download
 // Método: GET
-// Auth: Sim (Supabase)
+// Auth: Sim (NextAuth)
 // Descrição: Acesso a downloads autenticados
 // Status: ✅ Implementada
 
@@ -149,56 +149,56 @@
 // ✅ Dashboard Admin
 // URL: /dashboard
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: Painel administrativo principal
 // Status: ✅ Implementada
 
 // ✅ Gestão de Cursos
 // URL: /dashboard/cursos
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: CRUD de cursos
 // Status: ✅ Implementada
 
 // ✅ Gestão de Artigos
 // URL: /dashboard/artigos
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: CRUD de artigos/blog
 // Status: ✅ Implementada
 
 // ✅ Gestão de Certificados
 // URL: /dashboard/certificados
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: CRUD de certificados
 // Status: ✅ Implementada
 
 // ✅ Gestão de Downloads
 // URL: /dashboard/downloads
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: CRUD de downloads/EA
 // Status: ✅ Implementada
 
 // ✅ Gestão de Páginas
 // URL: /dashboard/pages
 // Método: GET/POST
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: CRUD de páginas estáticas
 // Status: ✅ Implementada
 
 // ✅ Gestão de Leads/Subscribers
 // URL: /dashboard/subscribers ou /dashboard/leads
 // Método: GET
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: Listagem de leads capturados
 // Status: ✅ Implementada
 
 // ✅ Monitoramento
 // URL: /dashboard/monitoramento
 // Método: GET
-// Auth: Sim (Supabase + Admin)
+// Auth: Sim (NextAuth + Admin)
 // Descrição: Health check e monitoramento
 // Status: ✅ Implementada
 
@@ -212,8 +212,9 @@ ANTES DO DEPLOY:
 - [ ] `npm run lint` — Linting passed
 - [ ] TypeScript — `npx tsc --noEmit` sem erros
 - [ ] Variáveis de ambiente adicionadas no Vercel dashboard
-  - [ ] NEXT_PUBLIC_SUPABASE_URL
-  - [ ] NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  - [ ] GITHUB_CLIENT_ID
+  - [ ] GITHUB_CLIENT_SECRET
+  - [ ] AUTH_SECRET
   - [ ] BREVO_API_KEY (para email)
   - [ ] ADMIN_PASSWORD (opcional)
   - [ ] ADMIN_EMAILS (para acesso dashboard)
@@ -235,7 +236,6 @@ APÓS O DEPLOY:
   - [ ] /sitemap
 - [ ] Links de autenticação funcionam:
   - [ ] /auth/login
-  - [ ] /auth/register
 - [ ] Formulário /entrar com rate limiting:
   - [ ] 1ª tentativa — sucesso
   - [ ] 2ª tentativa — sucesso
@@ -243,8 +243,8 @@ APÓS O DEPLOY:
   - [ ] 4ª tentativa — erro (rate limit)
 - [ ] Email de boas-vindas enviado (se Brevo configurado)
 - [ ] Painel /dashboard protegido (redireciona para login)
-- [ ] Supabase conectado e tabelas criadas:
-  - [ ] subscribers table com dados
+- [ ] Backend API conectado e funcionando:
+  - [ ] /api/health retorna status ok
 
 MONITORAMENTO:
 - [ ] Verificar logs do Vercel para erros

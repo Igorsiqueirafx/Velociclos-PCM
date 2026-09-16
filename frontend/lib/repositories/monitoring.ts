@@ -1,4 +1,4 @@
-import { createClient } from '@/app/lib/supabase/client'
+import { apiGet } from '@/lib/api'
 
 export interface MonitoringCounts {
   courseCount: number | null
@@ -8,19 +8,36 @@ export interface MonitoringCounts {
 }
 
 export async function getMonitoringCounts(): Promise<MonitoringCounts> {
-  const supabase = createClient()
+  try {
+    const safeCount = async (endpoint: string): Promise<number> => {
+      try {
+        const data = await apiGet<any[]>(endpoint)
+        return Array.isArray(data) ? data.length : 0
+      } catch {
+        return 0
+      }
+    }
 
-  const [coursesResult, lessonsResult, articlesResult, subscribersResult] = await Promise.all([
-    supabase.from('courses').select('*', { count: 'exact', head: true }),
-    supabase.from('lessons').select('*', { count: 'exact', head: true }),
-    supabase.from('articles').select('*', { count: 'exact', head: true }),
-    supabase.from('subscribers').select('*', { count: 'exact', head: true }),
-  ])
+    const [courseCount, lessonCount, articleCount, subscriberCount] = await Promise.all([
+      safeCount('/api/courses'),
+      safeCount('/api/videos'),
+      safeCount('/api/articles'),
+      safeCount('/api/subscribers'),
+    ])
 
-  return {
-    courseCount: coursesResult.count ?? 0,
-    lessonCount: lessonsResult.count ?? 0,
-    articleCount: articlesResult.count ?? 0,
-    subscriberCount: subscribersResult.count ?? 0,
+    return {
+      courseCount,
+      lessonCount: lessonCount,
+      articleCount,
+      subscriberCount,
+    }
+  } catch (error) {
+    console.error('Error fetching monitoring counts:', error)
+    return {
+      courseCount: null,
+      lessonCount: null,
+      articleCount: null,
+      subscriberCount: null,
+    }
   }
 }

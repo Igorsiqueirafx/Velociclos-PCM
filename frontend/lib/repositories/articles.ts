@@ -1,4 +1,4 @@
-import { createClient } from '@/app/lib/supabase/server'
+import { apiGet } from '@/lib/api'
 import { logEvent } from '@/lib/logging'
 
 export type ArticleRow = {
@@ -13,18 +13,11 @@ export type ArticleRow = {
 }
 
 export async function getPublishedArticles(): Promise<ArticleRow[]> {
-  const supabase = await createClient()
-  let articles: ArticleRow[] = []
   try {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
-
-    if (!error) articles = data || []
+    const articles = await apiGet<ArticleRow[]>('/api/articles')
+    return articles
   } catch (e) {
     logEvent('articles_load', 'error', 'Failed to load articles', { error: e instanceof Error ? e.message : String(e) })
+    return []
   }
-  return articles
 }

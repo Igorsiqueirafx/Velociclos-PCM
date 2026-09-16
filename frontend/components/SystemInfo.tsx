@@ -11,11 +11,11 @@ export default function SystemInfo({ backendUrl }: { backendUrl: string }) {
         </div>
         <div className="flex items-center gap-2 text-[#a0a0a0]">
           <i className="fas fa-database text-[#ffd700]"></i>
-          <span>Banco: Supabase (PostgreSQL)</span>
+          <span>Banco: Vercel KV (Redis)</span>
         </div>
         <div className="flex items-center gap-2 text-[#a0a0a0]">
           <i className="fas fa-shield-alt text-[#ffd700]"></i>
-          <span>Auth: Supabase Auth (Google OAuth + Magic Link)</span>
+          <span>Auth: GitHub OAuth (via Vercel Authentication)</span>
         </div>
         <div className="flex items-center gap-2 text-[#a0a0a0]">
           <i className="fas fa-clock text-[#ffd700]"></i>

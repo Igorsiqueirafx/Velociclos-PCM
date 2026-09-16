@@ -1,39 +1,14 @@
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { auth } from '@/app/lib/auth/config'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.up.railway.app'
+
 export default async function DownloadPage() {
-  const cookieStore = await cookies()
+  const session = await auth()
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase environment variables')
-  }
-
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseKey,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options)
-          })
-        },
-      },
-    },
-  )
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session || !session.user?.email) {
+  if (!session?.user?.email) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0f0f19] via-[#1e2329] to-[#1a1f25] flex items-center justify-center">
         <div className="text-center">
@@ -54,14 +29,18 @@ export default async function DownloadPage() {
     )
   }
 
-  // Check if user's email exists in leads table
-  const { data: lead, error: leadError } = await supabase
-    .from('leads')
-    .select('email')
-    .eq('email', session.user.email)
-    .maybeSingle()
-
-  const hasAccess = !!lead && !leadError
+   let hasAccess = false;
+  const userEmail = session?.user?.email || '';
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
+    if (res.ok) {
+      const leads = await res.json()
+      const found = leads.find((l: { email: string }) => l.email === userEmail)
+      hasAccess = !!found
+    }
+  } catch (error) {
+    console.error('Error checking lead access:', error)
+  }
 
   if (!hasAccess) {
     return (
@@ -138,16 +117,6 @@ export default async function DownloadPage() {
               Acessar Cursos
             </Link>
           </div>
-        </div>
-
-        <div className="text-center">
-          <Link
-            href="/leads"
-            className="text-[#a0a0a0] hover:text-[#ffd700] text-sm transition-colors flex items-center justify-center gap-2"
-          >
-            <i className="fas fa-user-circle"></i>
-            Meu painel de leads
-          </Link>
         </div>
       </div>
     </div>

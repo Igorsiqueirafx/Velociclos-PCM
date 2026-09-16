@@ -1,38 +1,31 @@
-import Link from 'next/link'
+'use client'
+
+import { GlassCard } from '@/components/glassify/glass-card'
+import { GlassButton } from '@/components/glassify/glass-button'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0f19] via-[#1e2329] to-[#1a1f25] flex items-center justify-center relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%)`,
-        }}
-      />
-
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-[#ffd700]/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#ffd700]/5 to-transparent rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl" />
-
-      <div className="relative z-10 w-full max-w-md mx-auto px-4">
-        <div className="bg-[#2a2e39] border border-[#404857] rounded-2xl p-8 shadow-[0_0_40px_rgba(0,0,0,0.3)] text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] rounded-full mb-6 shadow-[0_0_30px_rgba(255,215,0,0.4)]">
-            <i className="fas fa-exclamation-triangle text-2xl text-[#1e2329]" aria-hidden="true"></i>
-          </div>
-          <h1 className="text-3xl font-extrabold text-[#dcdcdc] mb-2">
-            Página não encontrada
-          </h1>
-          <p className="text-[#a0a0a0] text-sm mb-6">
-            A página que você está procurando não existe ou foi movida.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#ffd700] to-[#ffeb3b] text-[#1e2329] font-bold rounded-lg shadow-lg hover:from-[#ffdd33] hover:to-[#ffd700] transition-all duration-200"
-          >
-            Voltar ao início
-          </Link>
+    <div className="min-h-[60vh] flex items-center justify-center px-4">
+      <GlassCard glass="frosted" className="max-w-md w-full p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-6 bg-[#ffd700]/10 rounded-full flex items-center justify-center">
+          <svg className="w-8 h-8 text-[#ffd700]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
-      </div>
+        <h1 className="text-4xl font-extrabold text-[#ffd700] mb-2">404</h1>
+        <h2 className="text-xl font-bold text-[#dcdcdc] mb-3">Página não encontrada</h2>
+        <p className="text-[#a0a0a0] mb-6">
+          A página que você procura não existe ou foi movida.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <GlassButton variant="solid" onClick={() => window.location.href = '/'}>
+            Voltar ao início
+          </GlassButton>
+          <GlassButton variant="outline" onClick={() => window.location.href = '/site-map'}>
+            Ver mapa do site
+          </GlassButton>
+        </div>
+      </GlassCard>
     </div>
   )
 }

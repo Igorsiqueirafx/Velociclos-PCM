@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import { getCurrentUser, signOut } from '@/lib/repositories/auth'
-import type { User } from '@supabase/supabase-js'
+import { useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: 'fas fa-th-large' },
@@ -21,29 +20,12 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data: session, status } = useSession()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const router = useRouter()
   const pathname = usePathname()
+  const user = session?.user
 
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      if (!user) {
-        router.push('/auth/login')
-      } else {
-        setUser(user)
-      }
-      setLoading(false)
-    })
-  }, [router])
-
-  const handleLogout = async () => {
-    await signOut()
-    router.push('/auth/login')
-  }
-
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-[#1e2329] flex items-center justify-center">
         <div className="text-[#ffd700] text-xl">Carregando...</div>
@@ -51,7 +33,7 @@ export default function DashboardLayout({
     )
   }
 
-  if (!user) return null
+  if (status === "unauthenticated") return null
 
   return (
     <div className="app">
@@ -103,7 +85,7 @@ export default function DashboardLayout({
         </nav>
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#404857]">
           <button
-            onClick={handleLogout}
+            onClick={() => signOut({ redirectTo: "/auth/login" })}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#ff4444] hover:bg-[#ff4444]/10 transition-colors w-full"
           >
             <i className="fas fa-sign-out-alt text-lg w-5 text-center"></i>
@@ -130,10 +112,19 @@ export default function DashboardLayout({
             </div>
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 text-sm text-[#a0a0a0]">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] flex items-center justify-center text-[#1e2329] font-bold text-xs">
-                  {user.email?.[0]?.toUpperCase()}
-                </div>
-                <span className="max-w-[150px] truncate">{user.email}</span>
+                {user?.image && (
+                  <img
+                    src={user.image}
+                    alt={user.name || "User"}
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
+                {!user?.image && (
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffeb3b] flex items-center justify-center text-[#1e2329] font-bold text-xs">
+                    {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
+                  </div>
+                )}
+                <span className="max-w-[150px] truncate">{user?.name || user?.email}</span>
               </div>
             </div>
           </div>

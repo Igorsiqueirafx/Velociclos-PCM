@@ -115,9 +115,9 @@ function SystemStatus({ health }: { health: { status?: string } | null }) {
             <h2 className="text-xl font-bold text-[#dcdcdc]">
               Sistema {health?.status === 'ok' ? 'Operacional' : 'Offline'}
             </h2>
-            <p className="text-[#a0a0a0] text-sm">
-              Backend API → Supabase (PostgreSQL) → Auth: Supabase Auth
-            </p>
+             <p className="text-[#a0a0a0] text-sm">
+               Backend API (Vercel KV) → Auth: GitHub OAuth
+             </p>
           </div>
         </div>
         <a href="/dashboard/monitoramento" className="text-sm text-[#ffd700] hover:text-[#ffdd33] transition-colors">

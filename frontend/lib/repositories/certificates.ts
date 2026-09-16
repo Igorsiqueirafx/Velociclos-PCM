@@ -1,4 +1,4 @@
-import { createClient } from '@/app/lib/supabase/server'
+import { apiGet } from '@/lib/api'
 import { logEvent } from '@/lib/logging'
 
 export type CertificateRow = {
@@ -10,7 +10,7 @@ export type CertificateRow = {
   created_at: string
 }
 
-// Fallback static data when Supabase is unavailable or empty
+// Fallback static data when backend is unavailable or empty
 const FALLBACK_CERTIFICATES: CertificateRow[] = [
   {
     id: 'formula-ouro',
@@ -55,26 +55,20 @@ const FALLBACK_CERTIFICATES: CertificateRow[] = [
 ]
 
 export async function getCertificates(): Promise<CertificateRow[]> {
-  const supabase = await createClient()
-  let certificates: CertificateRow[] = []
   try {
-    const { data, error } = await supabase
-      .from('certificates')
-      .select('*')
-      .order('order_index', { ascending: true })
-
-    if (!error && data && data.length > 0) {
-      certificates = (data || []).map((cert) => ({
+    const data = await apiGet<any[]>('/api/certificates')
+    
+    if (data && data.length > 0) {
+      return data.map((cert) => ({
         ...cert,
         image_url: cert.image || cert.image_url,
       })) as CertificateRow[]
-    } else {
-      // Use fallback data when Supabase returns empty or error
-      certificates = FALLBACK_CERTIFICATES
     }
+    
+    // Use fallback data if backend returns empty
+    return FALLBACK_CERTIFICATES
   } catch (e) {
     logEvent('certificates_load', 'error', 'Failed to load certificates', { error: e instanceof Error ? e.message : String(e) })
-    certificates = FALLBACK_CERTIFICATES
+    return FALLBACK_CERTIFICATES
   }
-  return certificates
 }

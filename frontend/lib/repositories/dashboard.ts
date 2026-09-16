@@ -1,4 +1,4 @@
-import { createClient } from '@/app/lib/supabase/client'
+import { apiGet } from '@/lib/api'
 
 export interface DashboardStats {
   subscriberCount: number
@@ -11,34 +11,50 @@ export interface DashboardStats {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const supabase = createClient()
-
-  const safeCount = async (table: string): Promise<number> => {
-    try {
-      const { count } = await supabase.from(table).select('*', { count: 'exact', head: true })
-      return count || 0
-    } catch {
-      return 0
+  try {
+    const safeCount = async (endpoint: string): Promise<number> => {
+      try {
+        const data = await apiGet<any[]>(endpoint)
+        return Array.isArray(data) ? data.length : 0
+      } catch {
+        return 0
+      }
     }
-  }
 
-  const [subscribersRes, coursesRes, lessonsRes, articlesRes, certificatesRes, downloads] =
-    await Promise.all([
-      supabase.from('subscribers').select('*', { count: 'exact' }).order('created_at', { ascending: false }).limit(5),
-      supabase.from('courses').select('*', { count: 'exact', head: true }),
-      supabase.from('lessons').select('*', { count: 'exact', head: true }),
-      supabase.from('articles').select('*', { count: 'exact', head: true }),
-      supabase.from('certificates').select('*', { count: 'exact', head: true }),
-      safeCount('downloads'),
-    ])
+    const [subscribers, courses, lessons, articles, certificates, downloads] =
+      await Promise.all([
+        apiGet<any[]>('/api/subscribers').catch(() => []),
+        apiGet<any[]>('/api/courses').catch(() => []),
+        apiGet<any[]>('/api/videos').catch(() => []), // Uses lessons table
+        apiGet<any[]>('/api/articles').catch(() => []),
+        apiGet<any[]>('/api/certificates').catch(() => []),
+        apiGet<any[]>('/api/downloads').catch(() => []),
+      ])
 
-  return {
-    subscriberCount: subscribersRes.count || 0,
-    recentSubscribers: subscribersRes.data || [],
-    courseCount: coursesRes.count || 0,
-    lessonCount: lessonsRes.count || 0,
-    articleCount: articlesRes.count || 0,
-    downloadCount: downloads,
-    certificateCount: certificatesRes.count || 0,
+    return {
+      subscriberCount: subscribers.length,
+      recentSubscribers: subscribers.slice(0, 5).map(s => ({
+        id: s.id,
+        email: s.email,
+        source: s.source || '',
+        created_at: s.created_at || new Date().toISOString(),
+      })),
+      courseCount: courses.length,
+      lessonCount: lessons.length,
+      articleCount: articles.length,
+      downloadCount: downloads.length,
+      certificateCount: certificates.length,
+    }
+  } catch (error) {
+    console.error('Error fetching dashboard stats:', error)
+    return {
+      subscriberCount: 0,
+      recentSubscribers: [],
+      courseCount: 0,
+      lessonCount: 0,
+      articleCount: 0,
+      downloadCount: 0,
+      certificateCount: 0,
+    }
   }
 }

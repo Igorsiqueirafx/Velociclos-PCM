@@ -1,0 +1,21 @@
+module.exports = {
+  VercelKVBaseRepository: require('./VercelKVBaseRepository'),
+  VercelKVCourseRepository: require('./VercelKVCourseRepository'),
+  VercelKVModuleRepository: require('./VercelKVModuleRepository'),
+  VercelKVLessonRepository: require('./VercelKVLessonRepository'),
+  VercelKVArticleRepository: require('./VercelKVArticleRepository'),
+  VercelKVCertificateRepository: require('./VercelKVCertificateRepository'),
+  VercelKVSubscriberRepository: require('./VercelKVSubscriberRepository'),
+  VercelKVDownloadRepository: require('./VercelKVDownloadRepository'),
+  VercelKVPageRepository: require('./VercelKVPageRepository'),
+
+  InMemoryBaseRepository: require('./InMemoryBaseRepository'),
+  InMemoryCourseRepository: require('./InMemoryCourseRepository'),
+  InMemoryModuleRepository: require('./InMemoryModuleRepository'),
+  InMemoryLessonRepository: require('./InMemoryLessonRepository'),
+  InMemoryArticleRepository: require('./InMemoryArticleRepository'),
+  InMemoryCertificateRepository: require('./InMemoryCertificateRepository'),
+  InMemorySubscriberRepository: require('./InMemorySubscriberRepository'),
+  InMemoryDownloadRepository: require('./InMemoryDownloadRepository'),
+  InMemoryPageRepository: require('./InMemoryPageRepository'),
+};

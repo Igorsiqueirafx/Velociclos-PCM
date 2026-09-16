@@ -1,13 +1,11 @@
-import { createClient } from '@/app/lib/supabase/client'
-import type { User } from '@supabase/supabase-js'
+import { auth } from "@/app/lib/auth/config"
 
-export async function getCurrentUser(): Promise<User | null> {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  return user
+export async function getCurrentUser() {
+  const session = await auth()
+  return session?.user ?? null
 }
 
-export async function signOut(): Promise<void> {
-  const supabase = createClient()
-  await supabase.auth.signOut()
+export async function signOut() {
+  const { signOut } = await import("@/app/lib/auth/config")
+  await signOut({ redirectTo: "/auth/login" })
 }

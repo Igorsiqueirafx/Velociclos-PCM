@@ -1,4 +1,4 @@
-name: Sync YouTube to Supabase
+name: Sync YouTube Playlists
 
 on:
   schedule:
@@ -10,15 +10,13 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install @supabase/supabase-js dotenv
-      - name: Sync all channel playlists to Supabase
-        run: node .kilo/scripts/sync-youtube-to-supabase.js
+      - name: Sync all channel playlists
+        run: |
+          curl -sf -X POST "${{ secrets.BACKEND_URL }}/api/playlists/sync" \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_PASSWORD }}" \
+            -H "Content-Type: application/json" \
+            > /dev/null && echo "YouTube playlists synced: $(date -u)" \
+            || { echo "YouTube sync failed: $(date -u)"; exit 1; }
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_CHANNEL_ID: 'UCwk7RuafgXHRqSmS3qO8qQQ'
-          SUPABASE_URL: https://iskzakpvxuowkbzovjxw.supabase.co
-          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}

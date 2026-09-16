@@ -47,9 +47,8 @@ export default defineConfig([
 
   {
     // import-x resolves TypeScript path aliases so no-unresolved is accurate.
-    // The two no-restricted-paths entries are the architecture boundary: the
-    // first plugin key carries what must never regress, the second carries
-    // the debt that already exists.
+    // The no-restricted-paths entries prevent direct access to internal
+    // layers from the wrong layer.
     plugins: { "import-x": importX, "import-x-debt": importX },
     settings: {
       "import-x/resolver-next": [createTypeScriptImportResolver()],
@@ -57,42 +56,6 @@ export default defineConfig([
     rules: {
       "import-x/no-unresolved": "error",
       "import-x/no-duplicates": "error",
-      "import-x/no-restricted-paths": [
-        "error",
-        {
-          zones: [
-            {
-              target: "./app/**/*",
-              from: "@/app/lib/supabase/client",
-            },
-            {
-              target: ["./app/**/*", "./components/**/*"],
-              from: "@/app/lib/supabase/server",
-            },
-          ],
-        },
-      ],
-      // The same package, registered a second time under a different plugin
-      // key. Flat config cannot mix severities inside one rule's `zones`
-      // array, and two blocks matching the same files replace each other
-      // rather than merging their zones -- so an aliased key is the only way
-      // to run "error" zones and "warn" zones side by side. Put pre-existing
-      // boundary debt here, fix it, then promote the zone into the block
-      // above and delete it from this one.
-      "import-x-debt/no-restricted-paths": [
-        "warn",
-        {
-          zones: [
-            {
-              target: "./app/**/*",
-              from: [
-                "./app/lib/supabase/**/*",
-                "./app/lib/supabase.*",
-              ],
-            },
-          ],
-        },
-      ],
     },
   },
   {
@@ -124,17 +87,8 @@ export default defineConfig([
       "max-nested-callbacks": ["warn", 3],
       "quality/max-lines": "error",
       "quality/no-direct-console": [
-        "warn", // baseline: 24 violations
+        "warn",
         { logger: "lib/logging.ts" },
-      ],
-      "quality/no-direct-data-access": [
-        "warn", // baseline: 16 violations
-        {
-          modules: ["@/app/lib/supabase/client", "@/app/lib/supabase/server"],
-          bindings: ["createClient"],
-          layers: ["/app/", "/components/"],
-          extensions: [".tsx"],
-        },
       ],
     },
   },
@@ -173,11 +127,6 @@ export default defineConfig([
       "max-statements": "off",
       "max-lines-per-function": "off",
       "max-nested-callbacks": "off",
-      // no-restricted-paths has no concept of a test file the way the
-      // quality/* rules do, and fixtures legitimately import schema objects
-      // directly.
-      "import-x/no-restricted-paths": "off",
-      "import-x-debt/no-restricted-paths": "off",
     },
   },
   {
