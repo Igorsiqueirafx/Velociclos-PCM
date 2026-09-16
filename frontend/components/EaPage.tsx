@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 type FeatureItem = {
   title: string
@@ -8,7 +8,7 @@ type FeatureItem = {
   icon: string
 }
 
-const VIDEO_URL = 'https://www.youtube.com/embed/_BaLT-9zzwU?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1'
+const VIDEO_ID = '_BaLT-9zzwU'
 
 const features: FeatureItem[] = [
   {
@@ -30,9 +30,56 @@ const features: FeatureItem[] = [
 
 export default function EaPage() {
   const [showVideo, setShowVideo] = useState(false)
+  const [playerReady, setPlayerReady] = useState(false)
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
 
   const openVideo = useCallback(() => setShowVideo(true), [])
-  const closeVideo = useCallback(() => setShowVideo(false), [])
+  const closeVideo = useCallback(() => {
+    setShowVideo(false)
+    setPlayerReady(false)
+  }, [])
+
+  useEffect(() => {
+    if (!showVideo) return
+    const container = document.getElementById('ea-video-player')
+    if (!container) return
+
+    const ytWindow = window as any // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (!ytWindow.YT) {
+      const script = document.createElement('script')
+      script.src = 'https://www.youtube.com/iframe_api'
+      document.body.appendChild(script)
+    }
+
+    const createPlayer = () => {
+      if (!ytWindow.YT || !ytWindow.YT.Player) return
+      new ytWindow.YT.Player('ea-video-player', {
+        videoId: VIDEO_ID,
+        playerVars: {
+          rel: '0',
+          modestbranding: '1',
+          showinfo: '0',
+          iv_load_policy: '3',
+          controls: '1',
+          fs: '0',
+          disablekb: '1',
+          autoplay: '1',
+          mute: '0',
+          enablejsapi: '1',
+          origin: origin,
+        },
+        events: {
+          onReady: () => setPlayerReady(true),
+        },
+      })
+    }
+
+    if (ytWindow.YT && ytWindow.YT.Player) {
+      createPlayer()
+    } else {
+      ytWindow.onYouTubeIframeAPIReady = createPlayer
+    }
+  }, [showVideo, origin])
 
   return (
     <>
@@ -139,14 +186,11 @@ export default function EaPage() {
             >
               <i className="fas fa-times" aria-hidden="true"></i>
             </button>
-            <iframe
-              width="100%"
-              height="100%"
-              src={VIDEO_URL}
-              title="Expert Advisor Velociclos PCM - Demonstração"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+            {playerReady ? (
+              <div id="ea-video-player" className="w-full h-full" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#8a8a8d]">Carregando vídeo...</div>
+            )}
           </div>
         </div>
       )}

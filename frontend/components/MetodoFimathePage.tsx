@@ -18,6 +18,12 @@ const aulas: Aula[] = [
   { id: 'aula-06', title: 'AULA 05 - ANÁLISE NO OURO PART. 5', videoId: 'rYd_oE_z7vo' },
 ]
 
+const origin = typeof window !== 'undefined' ? window.location.origin : ''
+
+function embedUrl(videoId: string) {
+  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`
+}
+
 export default function MetodoFimathePage() {
   const [showIntro, setShowIntro] = useState(true)
 
@@ -83,7 +89,7 @@ export default function MetodoFimathePage() {
             </div>
             <div className="aspect-video">
               <iframe
-                src="https://www.youtube-nocookie.com/embed/HM0cOcrXwaM"
+                src={embedUrl('HM0cOcrXwaM')}
                 title="Fimathe O Legado de Marcelo Ferreira"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -102,7 +108,7 @@ export default function MetodoFimathePage() {
               >
                 <div className="aspect-video">
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${aula.videoId}`}
+                    src={embedUrl(aula.videoId)}
                     title={aula.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

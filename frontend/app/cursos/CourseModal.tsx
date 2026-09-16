@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useMemo } from 'react'
 import type { Course, Module, Lesson } from './CursosClient'
 
 interface CourseModalProps {
@@ -14,7 +15,83 @@ interface CourseModalProps {
 export default function CourseModal({
   course, modules, loading, currentLesson, onSelectLesson, onClose,
 }: CourseModalProps) {
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+  const flatLessons = useMemo(() => modules.flatMap((mod) => mod.lessons), [modules])
+  const currentIndex = useMemo(
+    () => flatLessons.findIndex((lesson) => lesson.id === currentLesson?.id),
+    [flatLessons, currentLesson]
+  )
   const videoId = currentLesson?.video_id || ''
+
+  useEffect(() => {
+    if (!videoId || typeof window === 'undefined') return
+
+    const loadPlayer = () => {
+      const container = document.getElementById('fimathe-course-player')
+      if (!container) return
+
+      const ytWindow = window as typeof window & {
+        YT?: {
+          Player: new (id: string, config: {
+            videoId: string
+            playerVars: Record<string, string | number>
+            events: {
+              onReady: () => void
+              onStateChange: (event: { data: number }) => void
+            }
+          }) => {
+            addEventListener: (arg0: string, arg1: (event: { data: number }) => void) => void
+          }
+        }
+        onYouTubeIframeAPIReady?: () => void
+      }
+      if (!ytWindow.YT) {
+        const script = document.createElement('script')
+        script.src = 'https://www.youtube.com/iframe_api'
+        document.body.appendChild(script)
+      }
+
+      const advance = () => {
+        const next = flatLessons[currentIndex + 1]
+        if (next) onSelectLesson(next)
+      }
+
+      const createPlayer = () => {
+        const YTConstructor = ytWindow.YT
+        if (!YTConstructor) return
+        new YTConstructor.Player('fimathe-course-player', {
+          videoId,
+          playerVars: {
+            rel: '0',
+            modestbranding: '1',
+            showinfo: '0',
+            iv_load_policy: '3',
+            controls: '1',
+            fs: '0',
+            disablekb: '1',
+            autoplay: '1',
+            mute: '0',
+            enablejsapi: '1',
+            origin: origin,
+          },
+          events: {
+            onReady: () => {},
+            onStateChange: (event) => {
+              if (event.data === 0) advance()
+            },
+          },
+        })
+      }
+
+      if (ytWindow.YT) {
+        createPlayer()
+      } else {
+        ytWindow.onYouTubeIframeAPIReady = createPlayer
+      }
+    }
+
+    loadPlayer()
+  }, [videoId, flatLessons, currentIndex, onSelectLesson, origin])
 
   return (
     <div
@@ -38,14 +115,7 @@ export default function CourseModal({
 
         <div className="aspect-video bg-[#121212]">
           {currentLesson && videoId ? (
-            <iframe
-              width="100%"
-              height="100%"
-              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1`}
-              title={currentLesson.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+            <div id="fimathe-course-player" className="w-full h-full" />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-[#8a8a8d]">
               {loading ? 'Carregando aulas...' : 'Selecione uma aula para começar.'}

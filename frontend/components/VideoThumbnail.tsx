@@ -32,6 +32,7 @@ interface VideoThumbnailProps {
 }
 
 export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, imageLoaded, imageError, onPlay, onClose, duration, category, onImageLoad, onImageError }: VideoThumbnailProps) {
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
   const handlePlayClick = () => {
     if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return
     onPlay()
@@ -42,7 +43,7 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
       {isPlaying && /^[A-Za-z0-9_-]{11}$/.test(videoId) ? (
         <>
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(origin)}`}
             title={title}
             className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
