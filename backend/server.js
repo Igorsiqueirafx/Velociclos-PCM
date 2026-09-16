@@ -79,6 +79,75 @@ const subscribersRepo = repos.subscribers;
 const downloadsRepo = repos.downloads;
 const pagesRepo = repos.pages;
 
+if (process.env.USE_IN_MEMORY === 'true') {
+  const seed = async () => {
+    const existing = await coursesRepo.findAll({});
+    if (existing.length === 0) {
+      const course = await coursesRepo.create({
+        title: 'Curso Fimathe Completo',
+        slug: 'curso-fimathe-completo',
+        description: 'Conteúdo completo do Método Fimathe aplicado ao mercado.',
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        category: 'forex',
+        is_published: true,
+        order_index: 1,
+      });
+
+      const module1 = await modulesRepo.create({
+        course_id: course.id,
+        title: 'Módulo 1 - Fundamentos',
+        description: 'Introdução e fundamentos do método.',
+        order_index: 1,
+      });
+
+      const module2 = await modulesRepo.create({
+        course_id: course.id,
+        title: 'Módulo 2 - Aplicação',
+        description: 'Aplicação prática nas operações.',
+        order_index: 2,
+      });
+
+      await lessonsRepo.create({
+        module_id: module1.id,
+        course_id: course.id,
+        title: 'Aula 1 - Introdução',
+        description: 'Introdução ao método.',
+        video_id: 'dQw4w9WgXcQ',
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+        duration: 600,
+        order_index: 1,
+        is_published: true,
+      });
+
+      await lessonsRepo.create({
+        module_id: module1.id,
+        course_id: course.id,
+        title: 'Aula 2 - Conceitos básicos',
+        description: 'Conceitos básicos.',
+        video_id: 'dQw4w9WgXcQ',
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+        duration: 800,
+        order_index: 2,
+        is_published: true,
+      });
+
+      await lessonsRepo.create({
+        module_id: module2.id,
+        course_id: course.id,
+        title: 'Aula 3 - Prática',
+        description: 'Aplicação prática.',
+        video_id: 'dQw4w9WgXcQ',
+        thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+        duration: 900,
+        order_index: 1,
+        is_published: true,
+      });
+    }
+  };
+
+  seed().catch((e) => console.error('Seed error:', e));
+}
+
 // ============================================
 // HEALTH
 // ============================================
