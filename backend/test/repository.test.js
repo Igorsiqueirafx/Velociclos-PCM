@@ -71,6 +71,29 @@ async function runTests() {
   assert.strictEqual(modules.length, 1, 'Should find 1 module for course');
   console.log('✓ modules repository works');
 
+  // Test sorting with equal values
+  coursesRepo.reset([
+    { id: 'a', title: 'First', order_index: 0, created_at: '2024-01-01' },
+    { id: 'b', title: 'Second', order_index: 0, created_at: '2024-01-01' },
+    { id: 'c', title: 'Third', order_index: 0, created_at: '2024-01-01' },
+  ]);
+  const sorted = await coursesRepo.findAll({ orderBy: 'order_index', ascending: true });
+  assert.strictEqual(sorted.length, 3, 'Should have 3 courses');
+  // Ensure stable sort doesn't break with equal values
+  assert.strictEqual(sorted[0].id, 'a', 'First item should remain first');
+  assert.strictEqual(sorted[2].id, 'c', 'Last item should be last');
+  console.log('✓ sorting with equal values works');
+
+  // Test delete returns false for non-existent item
+  const deleteResult = await coursesRepo.delete('non-existent-id');
+  assert.strictEqual(deleteResult, false, 'Should return false for non-existent item');
+  console.log('✓ delete returns false for non-existent item');
+
+  // Test delete returns true for existing item
+  const deleteResult2 = await coursesRepo.delete('a');
+  assert.strictEqual(deleteResult2, true, 'Should return true for deleted item');
+  console.log('✓ delete returns true for existing item');
+
   console.log('\n✅ All tests passed!');
   console.log('Repository abstraction is working correctly.');
 }

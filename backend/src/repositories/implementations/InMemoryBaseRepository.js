@@ -24,7 +24,7 @@ class InMemoryBaseRepository extends BaseRepository {
       data = data.sort((a, b) => {
         const aVal = a[options.orderBy] || '';
         const bVal = b[options.orderBy] || '';
-        return ascending ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1);
+        return ascending ? (aVal > bVal ? 1 : aVal < bVal ? -1 : 0) : (aVal < bVal ? 1 : aVal > bVal ? -1 : 0);
       });
     }
 

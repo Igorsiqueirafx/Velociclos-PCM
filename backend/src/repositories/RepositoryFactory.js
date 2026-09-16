@@ -1,5 +1,3 @@
-const repositoryInterfaces = require('./index');
-
 class RepositoryFactory {
   constructor() {
     this.repositories = null;
