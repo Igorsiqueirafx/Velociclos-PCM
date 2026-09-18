@@ -4,8 +4,8 @@ import { getCertificates } from '@/lib/repositories/certificates'
 import CertificadosClient from './CertificadosClient'
 
 export const metadata: Metadata = {
-  title: 'Certificados - Velociclos PCM | Conquistas Fimathe',
-  description: 'Veja os certificados e conquistas da Velociclos PCM. Certificações em Forex, Trading e Investimentos.',
+  title: 'Certificados - Velociclos PCM | Igor Siqueira',
+  description: 'Certificados que comprovam a capacitação técnica de Igor Siqueira para divulgar o método Fimathe de Marcelo Ferreira e democratizar o acesso ao Mercado Forex.',
 }
 
 interface Certificate {

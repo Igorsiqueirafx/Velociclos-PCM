@@ -5,6 +5,7 @@ import { logEvent } from '@/lib/logging'
 import { useCourseData } from './use-course-data'
 import PlaylistCard from './PlaylistCard'
 import CourseModal from './CourseModal'
+import ApiErrorState from '@/components/ApiErrorState'
 
 export interface Lesson {
   id: string
@@ -41,8 +42,8 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
   const h = useCourseData(initialCourses)
   const {
     courses, playlists, playlistVideos, selectedCourse, modules, loading, currentLesson,
-    loadingPlaylists,
-    loadModules, closeModal,
+    loadingPlaylists, coursesError,
+    loadModules, closeModal, retryCourses,
   } = h
 
   useEffect(() => {
@@ -55,6 +56,10 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
         .finally(() => h.setLoadingPlaylists(false))
     }
   }, [courses.length, playlists.length, loadingPlaylists])
+
+  if (coursesError && courses.length === 0 && playlists.length === 0) {
+    return <ApiErrorState title="Não foi possível carregar os cursos" retry={retryCourses} fallbackHref="/" />
+  }
 
   return (
     <>

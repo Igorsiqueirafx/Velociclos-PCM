@@ -28,6 +28,28 @@ const features: FeatureItem[] = [
   },
 ]
 
+type YouTubePlayer = {
+  playVideo(): void
+}
+
+type YouTubeIframeAPI = {
+  Player: new (
+    elementId: string,
+    config: {
+      videoId: string
+      playerVars: Record<string, string | number>
+      events: {
+        onReady?: () => void
+      }
+    }
+  ) => YouTubePlayer
+}
+
+interface YouTubeWindow extends Window {
+  YT?: YouTubeIframeAPI
+  onYouTubeIframeAPIReady?: () => void
+}
+
 export default function EaPage() {
   const [showVideo, setShowVideo] = useState(false)
   const [playerReady, setPlayerReady] = useState(false)
@@ -44,7 +66,7 @@ export default function EaPage() {
     const container = document.getElementById('ea-video-player')
     if (!container) return
 
-    const ytWindow = window as any // eslint-disable-line @typescript-eslint/no-explicit-any
+    const ytWindow = window as YouTubeWindow
     if (!ytWindow.YT) {
       const script = document.createElement('script')
       script.src = 'https://www.youtube.com/iframe_api'
@@ -52,7 +74,7 @@ export default function EaPage() {
     }
 
     const createPlayer = () => {
-      if (!ytWindow.YT || !ytWindow.YT.Player) return
+      if (!ytWindow.YT?.Player) return
       new ytWindow.YT.Player('ea-video-player', {
         videoId: VIDEO_ID,
         playerVars: {
@@ -74,7 +96,7 @@ export default function EaPage() {
       })
     }
 
-    if (ytWindow.YT && ytWindow.YT.Player) {
+    if (ytWindow.YT?.Player) {
       createPlayer()
     } else {
       ytWindow.onYouTubeIframeAPIReady = createPlayer

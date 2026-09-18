@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/manual',
     '/ea',
     '/relogio',
+    '/site-map',
   ]
 
   return publicRoutes.map((route) => ({

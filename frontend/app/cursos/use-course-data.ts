@@ -17,6 +17,7 @@ interface CourseDataState {
   currentLesson: Lesson | null
   loadingPlaylists: boolean
   loadingPlaylistVideos: Record<string, boolean>
+  coursesError: Error | null
 }
 
 export function useCourseData(initialCourses: Course[]): CourseDataState & {
@@ -28,6 +29,7 @@ export function useCourseData(initialCourses: Course[]): CourseDataState & {
   setCurrentLesson: (l: Lesson | null) => void
   setPlaylists: (p: YouTubePlaylist[]) => void
   setLoadingPlaylists: (v: boolean) => void
+  retryCourses: () => Promise<void>
 } {
   const [courses, setCourses] = useState<Course[]>(initialCourses)
   const [playlists, setPlaylists] = useState<YouTubePlaylist[]>([])
@@ -38,6 +40,7 @@ export function useCourseData(initialCourses: Course[]): CourseDataState & {
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null)
   const [loadingPlaylists, setLoadingPlaylists] = useState(false)
   const [loadingPlaylistVideos, setLoadingPlaylistVideos] = useState<Record<string, boolean>>({})
+  const [coursesError, setCoursesError] = useState<Error | null>(null)
 
   const loadModules = useCallback(async (courseId: string) => {
     setLoading(true)
@@ -75,10 +78,16 @@ export function useCourseData(initialCourses: Course[]): CourseDataState & {
     setCurrentLesson(null)
   }, [])
 
+  const retryCourses = useCallback(async () => {
+    setCoursesError(null)
+    setCourses(initialCourses)
+  }, [initialCourses])
+
   return {
     courses, playlists, playlistVideos, selectedCourse, modules,
-    loading, currentLesson, loadingPlaylists, loadingPlaylistVideos,
+    loading, currentLesson, loadingPlaylists, loadingPlaylistVideos, coursesError,
     loadModules, loadPlaylistVideos, closeModal,
     setCourses, setSelectedCourse, setCurrentLesson, setPlaylists, setLoadingPlaylists,
+    retryCourses,
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import ApiErrorState from '@/components/ApiErrorState'
 
 interface Article {
   id: string
@@ -26,6 +27,7 @@ const filterButtons = [
 
 export default function ArtigosClient({ initialArticles }: ArtigosClientProps) {
   const [activeCategory, setActiveCategory] = useState('all')
+  const [articlesError, setArticlesError] = useState<Error | null>(null)
   const articles = initialArticles.filter((a) => a.is_published)
 
   const filteredArticles = useMemo(() => {
@@ -36,6 +38,15 @@ export default function ArtigosClient({ initialArticles }: ArtigosClientProps) {
       return slug.includes(activeCategory) || title.includes(activeCategory)
     })
   }, [articles, activeCategory])
+
+  const retryArticles = () => {
+    setArticlesError(null)
+    window.location.reload()
+  }
+
+  if (articlesError && articles.length === 0) {
+    return <ApiErrorState title="Não foi possível carregar os artigos" retry={retryArticles} fallbackHref="/" />
+  }
 
   return (
     <>

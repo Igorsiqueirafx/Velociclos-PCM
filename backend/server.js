@@ -53,7 +53,7 @@ function saveJSON(filePath, data) {
 }
 
 // Initialize repositories with in-memory fallback for local development
-const useInMemory = process.env.USE_IN_MEMORY === 'true' || !process.env.VERCEL_KV_REST_API_URL;
+const useInMemory = process.env.USE_IN_MEMORY === 'true';
 repositoryFactory.initialize({ useInMemory });
 const repos = repositoryFactory.getRepositories();
 
@@ -65,6 +65,7 @@ const certificatesRepo = repos.certificates;
 const subscribersRepo = repos.subscribers;
 const downloadsRepo = repos.downloads;
 const pagesRepo = repos.pages;
+const playlistsRepo = repos.playlists;
 
 const seed = async () => {
   const existing = await coursesRepo.findAll({});
@@ -781,10 +782,14 @@ app.delete('/api/pages/:id', async (req, res) => {
 // ============================================
 // YOUTUBE (mantido para backward compatibility)
 // ============================================
-app.get('/api/playlists', (req, res) => {
-  const PLAYLISTS_FILE = path.join(config.DATA_DIR, 'data', 'playlists.json');
-  const data = loadJSON(PLAYLISTS_FILE, { playlists: [] });
-  res.json(data.playlists || []);
+app.get('/api/playlists', async (req, res) => {
+  try {
+    const data = await playlistsRepo.findAll({});
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching playlists:', error);
+    res.status(500).json({ error: 'Failed to fetch playlists' });
+  }
 });
 
 app.post('/api/playlists/sync', async (req, res) => {
@@ -807,7 +812,7 @@ app.post('/api/playlists/sync', async (req, res) => {
             title: snippet.title || 'Sem título',
             description: snippet.description || '',
             thumbnail: (snippet.thumbnails || {}).medium?.url || (snippet.thumbnails || {}).default?.url || '',
-            videoCount: contentDetails.itemCount || 0
+            video_count: contentDetails.itemCount || 0
           });
         }
       } catch (e) {
@@ -816,10 +821,14 @@ app.post('/api/playlists/sync', async (req, res) => {
       }
     }
 
-    const PLAYLISTS_FILE = path.join(config.DATA_DIR, 'data', 'playlists.json');
-    const fileData = loadJSON(PLAYLISTS_FILE, { playlists: [] });
-    fileData.playlists = playlists;
-    saveJSON(PLAYLISTS_FILE, fileData);
+    for (const playlist of playlists) {
+      try {
+        await playlistsRepo.upsert(playlist);
+      } catch (e) {
+        console.warn('Failed to upsert playlist', playlist.id, e.message);
+        throw e;
+      }
+    }
     res.json({ synced: playlists.length, playlists });
   } catch (error) {
     console.error('Error syncing playlists:', error);

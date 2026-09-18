@@ -10,6 +10,8 @@ export type ArticleRow = {
   is_published: boolean
   published_at: string
   created_at: string
+  content?: string | null
+  tags?: string[] | null
 }
 
 export async function getPublishedArticles(): Promise<ArticleRow[]> {

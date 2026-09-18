@@ -94,12 +94,12 @@ export default function CertificateHero() {
               priority
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
             />
-            <div className="mt-10 text-center opacity-100 transform-none transition-none">
-              <p className="text-[#8a8a8d] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                Fundador do <span className="text-[#0071e3] font-medium">Velohub</span> e criador do
-                <span className="text-[#0071e3] font-medium">Velociclos PCM</span>. A fimathe é arte!
-              </p>
-            </div>
+          <div className="mt-10 text-center opacity-100 transform-none transition-none">
+            <p className="text-[#8a8a8d] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Desenvolvedor do ecossistema <span className="text-[#ffd700] font-medium">Velociclos PCM</span> e responsável por divulgar o método
+              <span className="text-[#ffd700] font-medium">Fimathe</span> de Marcelo Ferreira, com a missão de democratizar o acesso ao Mercado Forex.
+            </p>
+          </div>
           </div>
         </div>
       </section>
@@ -179,8 +179,8 @@ export default function CertificateHero() {
           style={bioTextStyles(progress)}
         >
           <p className="text-[#8a8a8d] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Fundador do <span className="text-[#0071e3] font-medium">Velohub</span> e criador do
-            <span className="text-[#0071e3] font-medium">Velociclos PCM</span>. A fimathe é arte!
+            Desenvolvedor do ecossistema <span className="text-[#ffd700] font-medium">Velociclos PCM</span> e responsável por divulgar o método
+            <span className="text-[#ffd700] font-medium">Fimathe</span> de Marcelo Ferreira, com a missão de democratizar o acesso ao Mercado Forex.
           </p>
         </div>
       </div>

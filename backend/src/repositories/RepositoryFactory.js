@@ -9,11 +9,32 @@ class RepositoryFactory {
       return this.repositories;
     }
 
+    const useSupabase = config.useSupabase !== false;
     const useInMemory = config.useInMemory || process.env.USE_IN_MEMORY === 'true';
-    const initialData = config.initialData || {};
 
-    if (useInMemory) {
-      // Lazy require in-memory implementations
+    if (useSupabase && !useInMemory) {
+      const SupabaseCourseRepository = require('./implementations/SupabaseCourseRepository');
+      const SupabaseModuleRepository = require('./implementations/SupabaseModuleRepository');
+      const SupabaseLessonRepository = require('./implementations/SupabaseLessonRepository');
+      const SupabaseArticleRepository = require('./implementations/SupabaseArticleRepository');
+      const SupabaseCertificateRepository = require('./implementations/SupabaseCertificateRepository');
+      const SupabaseSubscriberRepository = require('./implementations/SupabaseSubscriberRepository');
+      const SupabaseDownloadRepository = require('./implementations/SupabaseDownloadRepository');
+      const SupabasePageRepository = require('./implementations/SupabasePageRepository');
+      const SupabasePlaylistRepository = require('./implementations/SupabasePlaylistRepository');
+
+      this.repositories = {
+        courses: new SupabaseCourseRepository(),
+        modules: new SupabaseModuleRepository(),
+        lessons: new SupabaseLessonRepository(),
+        articles: new SupabaseArticleRepository(),
+        certificates: new SupabaseCertificateRepository(),
+        subscribers: new SupabaseSubscriberRepository(),
+        downloads: new SupabaseDownloadRepository(),
+        pages: new SupabasePageRepository(),
+        playlists: new SupabasePlaylistRepository(),
+      };
+    } else {
       const InMemoryCourseRepository = require('./implementations/InMemoryCourseRepository');
       const InMemoryModuleRepository = require('./implementations/InMemoryModuleRepository');
       const InMemoryLessonRepository = require('./implementations/InMemoryLessonRepository');
@@ -24,35 +45,14 @@ class RepositoryFactory {
       const InMemoryPageRepository = require('./implementations/InMemoryPageRepository');
 
       this.repositories = {
-        courses: new InMemoryCourseRepository(initialData.courses || []),
-        modules: new InMemoryModuleRepository(initialData.modules || []),
-        lessons: new InMemoryLessonRepository(initialData.lessons || []),
-        articles: new InMemoryArticleRepository(initialData.articles || []),
-        certificates: new InMemoryCertificateRepository(initialData.certificates || []),
-        subscribers: new InMemorySubscriberRepository(initialData.subscribers || []),
-        downloads: new InMemoryDownloadRepository(initialData.downloads || []),
-        pages: new InMemoryPageRepository(initialData.pages || []),
-      };
-    } else {
-      // Lazy require Vercel KV implementations only when needed
-      const VercelKVCourseRepository = require('./implementations/VercelKVCourseRepository');
-      const VercelKVModuleRepository = require('./implementations/VercelKVModuleRepository');
-      const VercelKVLessonRepository = require('./implementations/VercelKVLessonRepository');
-      const VercelKVArticleRepository = require('./implementations/VercelKVArticleRepository');
-      const VercelKVCertificateRepository = require('./implementations/VercelKVCertificateRepository');
-      const VercelKVSubscriberRepository = require('./implementations/VercelKVSubscriberRepository');
-      const VercelKVDownloadRepository = require('./implementations/VercelKVDownloadRepository');
-      const VercelKVPageRepository = require('./implementations/VercelKVPageRepository');
-
-      this.repositories = {
-        courses: new VercelKVCourseRepository(),
-        modules: new VercelKVModuleRepository(),
-        lessons: new VercelKVLessonRepository(),
-        articles: new VercelKVArticleRepository(),
-        certificates: new VercelKVCertificateRepository(),
-        subscribers: new VercelKVSubscriberRepository(),
-        downloads: new VercelKVDownloadRepository(),
-        pages: new VercelKVPageRepository(),
+        courses: new InMemoryCourseRepository(config.initialData?.courses || []),
+        modules: new InMemoryModuleRepository(config.initialData?.modules || []),
+        lessons: new InMemoryLessonRepository(config.initialData?.lessons || []),
+        articles: new InMemoryArticleRepository(config.initialData?.articles || []),
+        certificates: new InMemoryCertificateRepository(config.initialData?.certificates || []),
+        subscribers: new InMemorySubscriberRepository(config.initialData?.subscribers || []),
+        downloads: new InMemoryDownloadRepository(config.initialData?.downloads || []),
+        pages: new InMemoryPageRepository(config.initialData?.pages || []),
       };
     }
 

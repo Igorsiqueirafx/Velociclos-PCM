@@ -12,6 +12,29 @@ interface CourseModalProps {
   onClose: () => void
 }
 
+type YouTubePlayer = {
+  playVideo(): void
+}
+
+type YouTubeIframeAPI = {
+  Player: new (
+    elementId: string,
+    config: {
+      videoId: string
+      playerVars: Record<string, string | number>
+      events: {
+        onReady?: () => void
+        onStateChange?: (event: { data: number }) => void
+      }
+    }
+  ) => YouTubePlayer
+}
+
+interface YouTubeWindow extends Window {
+  YT?: YouTubeIframeAPI
+  onYouTubeIframeAPIReady?: () => void
+}
+
 export default function CourseModal({
   course, modules, loading, currentLesson, onSelectLesson, onClose,
 }: CourseModalProps) {
@@ -30,22 +53,8 @@ export default function CourseModal({
       const container = document.getElementById('fimathe-course-player')
       if (!container) return
 
-      const ytWindow = window as typeof window & {
-        YT?: {
-          Player: new (id: string, config: {
-            videoId: string
-            playerVars: Record<string, string | number>
-            events: {
-              onReady: () => void
-              onStateChange: (event: { data: number }) => void
-            }
-          }) => {
-            addEventListener: (arg0: string, arg1: (event: { data: number }) => void) => void
-          }
-        }
-        onYouTubeIframeAPIReady?: () => void
-      }
-      if (!ytWindow.YT) {
+      const ytWindow = window as YouTubeWindow
+      if (!ytWindow.YT?.Player) {
         const script = document.createElement('script')
         script.src = 'https://www.youtube.com/iframe_api'
         document.body.appendChild(script)
@@ -58,7 +67,7 @@ export default function CourseModal({
 
       const createPlayer = () => {
         const YTConstructor = ytWindow.YT
-        if (!YTConstructor) return
+        if (!YTConstructor?.Player) return
         new YTConstructor.Player('fimathe-course-player', {
           videoId,
           playerVars: {
@@ -83,7 +92,7 @@ export default function CourseModal({
         })
       }
 
-      if (ytWindow.YT) {
+      if (ytWindow.YT?.Player) {
         createPlayer()
       } else {
         ytWindow.onYouTubeIframeAPIReady = createPlayer
