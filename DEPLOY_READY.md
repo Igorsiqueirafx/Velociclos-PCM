@@ -16,7 +16,7 @@
 | **Pages** | ✅ | 14 páginas públicas + 8 admin + 4 auth |
 | **Navigation** | ✅ | Header (9 links) + Footer (5 colunas) |
 | **Sitemap** | ✅ | XML automático + página visual |
-| **Email** | ✅ | Brevo integration pronto |
+| **Email** | Removido | Sem integração de e-mail no momento |
 | **Rate Limit** | ✅ | Proteção em /entrar funcional |
 
 ---
@@ -79,12 +79,11 @@
    - Configuração padrão mantida
 
 ✅ frontend/.env.example
-   - BREVO_API_KEY adicionado
+   - NEXTAUTH_URL adicionado
 
 ✅ frontend/app/entrar/actions.ts
-   - sendWelcomeEmail() + Brevo integration
    - Rate limiting (3/10min)
-   - Fallback robusto
+   - Sem integração de e-mail
 ```
 
 ---
@@ -126,7 +125,6 @@ First Load JS: ~102-176 kB (otimizado)
 - [x] /site-map página carrega
 - [x] /sitemap.xml gerado
 - [x] Rate limiting em /entrar
-- [x] Email integration (Brevo) ready
 
 ### SEO & Discoverability
 - [x] Sitemap XML generated
@@ -174,15 +172,9 @@ git push origin main
 ## 🎯 Próximas Etapas (Após Deploy)
 
 ### Curto Prazo
-1. Configure BREVO_API_KEY em Vercel:
-   - Vá para: Vercel Dashboard → Project Settings → Environment Variables
-   - Nome: `BREVO_API_KEY`
-   - Valor: (copie de https://app.brevo.com/account/api)
-
-3. Teste end-to-end:
-   - Form submission em /entrar
-   - Email recebido do Brevo
-   - Rate limiting ativo (3 attempts/10 min)
+1. Testar fluxo do `/entrar`:
+   - Submissão salva lead
+   - Rate limiting ativo (3 tentativas/10 min)
 
 ### Médio Prazo
 1. **Plan 1**: Separar backend/frontend (2-3 horas)

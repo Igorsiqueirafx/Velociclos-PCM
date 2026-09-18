@@ -55,10 +55,9 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 - **Ação**: Criar página `frontend/app/entrar/page.tsx` e `actions.ts` com:
   - Formulário de e-mail/nome.
   - Rate limiting (3 tentativas/10min).
-  - Integração com Brevo quando `BREVO_API_KEY` estiver configurada.
-  - Fallback gracioso quando Brevo não estiver configurado.
+  - Fallback gracioso sem dependência de e-mail.
 - **Validação**: Submissão retorna 200 e salva lead em `/api/leads`.
-- **Status**: Não iniciado.
+- **Status**: Concluído.
 - **Responsável**: Frontend.
 
 ### 3.2 Remover referência a `/auth/register`
@@ -71,13 +70,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 
 ## Fase 4 - Integrações (72-96h)
 
-### 4.1 Configurar Brevo
-- **Ação**: Adicionar `BREVO_API_KEY` no Vercel (Frontend) e validar envio de e-mail.
-- **Validação**: Submeter formulário `/entrar` e receber e-mail de boas-vindas.
-- **Status**: Pendente.
-- **Responsável**: Frontend.
-
-### 4.2 Confirmar domínio de produção
+### 4.1 Confirmar domínio de produção
 - **Ação**: Manter `https://velociclos.vercel.app` como domínio oficial. Garantir `CORS_ORIGIN`, `FRONTEND_URL` e `NEXTAUTH_URL` alinhados.
 - **Validação**: Site acessível e CORS ok.
 - **Status**: Pendente.
@@ -97,7 +90,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 - Frontend build: 0 erros.
 - Backend health: `{"status":"ok"}`.
 - `/cursos`: lista cursos do backend.
-- `/entrar`: salva lead e envia e-mail (se Brevo).
+- `/entrar`: salva lead com sucesso.
 - Todas as rotas do header/footer retornam 200.
 
 ---
@@ -109,7 +102,6 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 | ESLint bloqueando build novamente | Baixa | Alto | Mantido `ignoreDuringBuilds: true`. |
 | Dados de produção vazios | Alta | Alto | Popular manualmente via admin antes de abrir ao público. |
 | Auth OAuth quebrado por variável faltando | Alta | Alto | Checklist rigoroso de env vars antes de deploy. |
-| Brevo não configurado | Média | Médio | Fallback gracioso no código. |
 | CORS bloqueando frontend | Baixa | Alto | Testar com `curl` antes de abrir ao público. |
 
 ---

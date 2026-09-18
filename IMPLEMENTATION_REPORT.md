@@ -132,7 +132,7 @@ npm run dev
 2. Clicar em cada link do Header — todas as rotas devem existir
 3. Scroll até Footer — verificar links funcionam
 4. Acessar `/sitemap` — deve listar todas as rotas
-5. Testar formulário `/entrar` — rate limiting + email (se Brevo)
+5. Testar formulário `/entrar` — rate limiting
 6. Testar autenticação:
    - Acessar `/dashboard` sem login → redireciona para `/auth/login`
    - Fazer login → acesso permitido
@@ -199,9 +199,8 @@ frontend/
 
 ## ⚠️ Notas Importantes
 
-1. **Brevo**: BREVO_API_KEY precisa ser configurado no Vercel para enviar emails
-2. **Admin Auth**: Usuários específicos precisam estar em ADMIN_EMAILS para acessar `/dashboard`
-3. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
+1. **Admin Auth**: Usuários específicos precisam estar em ADMIN_EMAILS para acessar `/dashboard`
+2. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
 
 ---
 

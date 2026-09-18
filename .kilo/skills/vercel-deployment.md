@@ -43,9 +43,6 @@ git push origin feature/my-feature
 ```env
 # Vercel Dashboard → Settings → Environment Variables
 
-# Email (Brevo)
-BREVO_API_KEY=xkeysib-xxxxxxxxxxxxx
-
 # Admin
 ADMIN_EMAILS=admin@domain.com,admin2@domain.com
 ADMIN_PASSWORD=secure-password-here

@@ -41,31 +41,6 @@ function recordAttempt(ip: string) {
   }
 }
 
-async function sendBrevoEmail(email: string, name: string) {
-  const apiKey = process.env.BREVO_API_KEY
-  if (!apiKey) {
-    logEvent('brevo_skip', 'warn', 'BREVO_API_KEY not configured. Skipping welcome email.')
-    return
-  }
-  try {
-    await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': apiKey,
-      },
-      body: JSON.stringify({
-        sender: { name: 'Velociclos', email: 'contato@velociclos.com.br' },
-        to: [{ email, name: name || undefined }],
-        subject: 'Bem-vindo ao Velociclos PCM!',
-        htmlContent: `<p>Olá ${name || ''},</p><p>Seja bem-vindo ao Velociclos PCM! Em breve você receberá novidades.</p>`,
-      }),
-    })
-  } catch (err) {
-    logEvent('brevo_error', 'error', 'Failed to send welcome email', { error: err instanceof Error ? err.message : String(err) })
-  }
-}
-
 export type SubscribeState =
   | { success: true; message: string }
   | { success: false; error: string }
@@ -86,10 +61,7 @@ export async function subscribeToNewsletter(formData: FormData): Promise<Subscri
   }
 
   recordAttempt(ip)
-  return await saveLeadAndNotify(email, name)
-}
 
-async function saveLeadAndNotify(email: string, name: string | null): Promise<SubscribeState> {
   try {
     const res = await fetch(`${BACKEND_URL}/api/leads`, {
       method: 'POST',
@@ -101,11 +73,9 @@ async function saveLeadAndNotify(email: string, name: string | null): Promise<Su
       return { success: false, error: result.error || `Erro ao salvar lead (${res.status})` }
     }
 
-    sendBrevoEmail(email, name || '')
-
     return { success: true, message: 'Cadastro realizado com sucesso!' }
   } catch (err) {
-    logEvent('lead_subscribe_error', 'error', 'Erro interno no saveLeadAndNotify', { error: err instanceof Error ? err.message : String(err) })
+    logEvent('lead_subscribe_error', 'error', 'Erro interno no subscribeToNewsletter', { error: err instanceof Error ? err.message : String(err) })
     return { success: false, error: 'Erro interno do servidor' }
   }
 }

@@ -68,7 +68,7 @@
 // URL: /entrar
 // Método: GET/POST
 // Auth: Não
-// Descrição: Formulário de lead capture com rate limiting e Brevo
+// Descrição: Formulário de lead capture com rate limiting
 // Status: ✅ Implementada
 
 // ✅ Sitemap / Índice
@@ -194,7 +194,6 @@ ANTES DO DEPLOY:
   - [ ] GITHUB_CLIENT_ID
   - [ ] GITHUB_CLIENT_SECRET
   - [ ] AUTH_SECRET
-  - [ ] BREVO_API_KEY (para email)
   - [ ] ADMIN_PASSWORD (opcional)
   - [ ] ADMIN_EMAILS (para acesso dashboard)
 
@@ -220,7 +219,6 @@ APÓS O DEPLOY:
   - [ ] 2ª tentativa — sucesso
   - [ ] 3ª tentativa — sucesso
   - [ ] 4ª tentativa — erro (rate limit)
-- [ ] Email de boas-vindas enviado (se Brevo configurado)
 - [ ] Painel /dashboard protegido (redireciona para login)
 - [ ] Backend API conectado e funcionando:
   - [ ] /api/health retorna status ok
