@@ -9,7 +9,7 @@ Garantir que **TODAS as páginas públicas** estejam acessíveis e bem navegáve
 **Arquivo:** `frontend/app/sitemap.tsx`
 
 - Página índice com **todas as rotas públicas**
-- Categorizado por seção (Principal, Conteúdo, Certificados, Ferramentas, Auth, Admin)
+- Categorizado por seção (Principal, Conteúdo, Certificados, Ferramentas, Auth)
 - Links clicáveis para cada página
 - Descrição de cada rota
 - Design responsivo com branding Velociclos
@@ -86,12 +86,6 @@ Documento completo com:
 | `/leads` | Meus leads | ✅ |
 | `/download` | Downloads auth | ✅ |
 
-### Admin (Login + Admin role)
-| Rota | Descrição | Status |
-|------|-----------|--------|
-| `/dashboard` | Admin home | ✅ |
-| `/dashboard/*` | Gerenciamento | ✅ |
-
 ---
 
 ## 🚀 Como Testar Localmente
@@ -133,9 +127,6 @@ npm run dev
 3. Scroll até Footer — verificar links funcionam
 4. Acessar `/sitemap` — deve listar todas as rotas
 5. Testar formulário `/entrar` — rate limiting
-6. Testar autenticação:
-   - Acessar `/dashboard` sem login → redireciona para `/auth/login`
-   - Fazer login → acesso permitido
 
 ---
 
@@ -191,7 +182,6 @@ frontend/
 
 - **Total de rotas públicas**: 14
 - **Rotas com autenticação**: 2
-- **Rotas admin**: 8+
 - **Novo links adicionados ao Header**: 3
 - **Novo links adicionados ao Footer**: 15+
 
@@ -199,8 +189,7 @@ frontend/
 
 ## ⚠️ Notas Importantes
 
-1. **Admin Auth**: Usuários específicos precisam estar em ADMIN_EMAILS para acessar `/dashboard`
-2. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
+1. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
 
 ---
 

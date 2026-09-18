@@ -36,7 +36,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 ## Fase 2 - Conteúdo e Dados (24-48h)
 
 ### 2.1 Popular backend com cursos reais
-- **Ação**: Cadastrar cursos, módulos e aulas via admin do dashboard ou seed manual em produção.
+- **Ação**: Cadastrar cursos, módulos e aulas via painel administrativo quando disponível ou aguardando integração futura.
 - **Validação**: `GET https://velociclos-api.vercel.app/api/courses` retorna dados não-vazios.
 - **Status**: Pendente.
 - **Responsável**: Conteúdo / Produto.
@@ -83,7 +83,6 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 ### 5.1 Testes end-to-end
 - Rotas públicas: `/`, `/cursos`, `/artigos`, `/certificados`, `/manual`, `/ea`, `/relogio`, `/sitemap`.
 - Auth: `/auth/login` redireciona para GitHub, callback funciona.
-- Admin: `/dashboard` acessível apenas para admins.
 - API: `/api/health`, `/api/courses`, `/api/articles` respondem.
 
 ### 5.2 Métricas de sucesso
@@ -100,7 +99,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
 | ESLint bloqueando build novamente | Baixa | Alto | Mantido `ignoreDuringBuilds: true`. |
-| Dados de produção vazios | Alta | Alto | Popular manualmente via admin antes de abrir ao público. |
+| Dados de produção vazios | Alta | Alto | Popular manualmente quando houver painel administrativo. |
 | Auth OAuth quebrado por variável faltando | Alta | Alto | Checklist rigoroso de env vars antes de deploy. |
 | CORS bloqueando frontend | Baixa | Alto | Testar com `curl` antes de abrir ao público. |
 

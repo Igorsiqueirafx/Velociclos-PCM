@@ -52,19 +52,6 @@ function saveJSON(filePath, data) {
   }
 }
 
-function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || authHeader !== `Bearer ${config.ADMIN_PASSWORD}`) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  next();
-}
-
-if (!config.ADMIN_PASSWORD) {
-  console.error('FATAL: ADMIN_PASSWORD environment variable is not set. Server startup aborted.');
-  process.exit(1);
-}
-
 // Initialize repositories with in-memory fallback for local development
 const useInMemory = process.env.USE_IN_MEMORY === 'true' || !process.env.VERCEL_KV_REST_API_URL;
 repositoryFactory.initialize({ useInMemory });
@@ -177,7 +164,7 @@ app.get('/api/courses/:id', async (req, res) => {
   }
 });
 
-app.post('/api/courses', authenticate, async (req, res) => {
+app.post('/api/courses', async (req, res) => {
   try {
     const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
     const payload = {
@@ -198,7 +185,7 @@ app.post('/api/courses', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/courses/:id', authenticate, async (req, res) => {
+app.put('/api/courses/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -220,7 +207,7 @@ app.put('/api/courses/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/courses/:id', authenticate, async (req, res) => {
+app.delete('/api/courses/:id', async (req, res) => {
   try {
     const result = await coursesRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Course not found' });
@@ -244,7 +231,7 @@ app.get('/api/courses/:courseId/modules', async (req, res) => {
   }
 });
 
-app.post('/api/courses/:courseId/modules', authenticate, async (req, res) => {
+app.post('/api/courses/:courseId/modules', async (req, res) => {
   try {
     const payload = {
       course_id: req.params.courseId,
@@ -272,7 +259,7 @@ app.get('/api/modules/:id', async (req, res) => {
   }
 });
 
-app.put('/api/modules/:id', authenticate, async (req, res) => {
+app.put('/api/modules/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -290,7 +277,7 @@ app.put('/api/modules/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/modules/:id', authenticate, async (req, res) => {
+app.delete('/api/modules/:id', async (req, res) => {
   try {
     const result = await modulesRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Module not found' });
@@ -324,7 +311,7 @@ app.get('/api/courses/:courseId/lessons', async (req, res) => {
   }
 });
 
-app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
+app.post('/api/modules/:moduleId/lessons', async (req, res) => {
   try {
     const moduleId = req.params.moduleId;
     const module = await modulesRepo.findById(moduleId);
@@ -350,7 +337,7 @@ app.post('/api/modules/:moduleId/lessons', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/lessons/:id', authenticate, async (req, res) => {
+app.put('/api/lessons/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -372,7 +359,7 @@ app.put('/api/lessons/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/lessons/:id', authenticate, async (req, res) => {
+app.delete('/api/lessons/:id', async (req, res) => {
   try {
     const result = await lessonsRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Lesson not found' });
@@ -407,7 +394,7 @@ app.get('/api/articles/:id', async (req, res) => {
   }
 });
 
-app.post('/api/articles', authenticate, async (req, res) => {
+app.post('/api/articles', async (req, res) => {
   try {
     const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
     const payload = {
@@ -433,7 +420,7 @@ app.post('/api/articles', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/articles/:id', authenticate, async (req, res) => {
+app.put('/api/articles/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -460,7 +447,7 @@ app.put('/api/articles/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/articles/:id', authenticate, async (req, res) => {
+app.delete('/api/articles/:id', async (req, res) => {
   try {
     const result = await articlesRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Article not found' });
@@ -484,7 +471,7 @@ app.get('/api/certificates', async (req, res) => {
   }
 });
 
-app.post('/api/certificates', authenticate, async (req, res) => {
+app.post('/api/certificates', async (req, res) => {
   try {
     const payload = {
       title: req.body.title || '',
@@ -502,7 +489,7 @@ app.post('/api/certificates', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/certificates/:id', authenticate, async (req, res) => {
+app.put('/api/certificates/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -521,7 +508,7 @@ app.put('/api/certificates/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/certificates/:id', authenticate, async (req, res) => {
+app.delete('/api/certificates/:id', async (req, res) => {
   try {
     const result = await certificatesRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Certificate not found' });
@@ -599,7 +586,7 @@ app.get('/api/subscribers', async (req, res) => {
   }
 });
 
-app.post('/api/subscribers', authenticate, async (req, res) => {
+app.post('/api/subscribers', async (req, res) => {
   try {
     const { email } = req.body;
     if (!email || !email.includes('@')) {
@@ -643,7 +630,7 @@ app.get('/api/downloads/:id', async (req, res) => {
   }
 });
 
-app.post('/api/downloads', authenticate, async (req, res) => {
+app.post('/api/downloads', async (req, res) => {
   try {
     const payload = {
       title: req.body.title || '',
@@ -664,7 +651,7 @@ app.post('/api/downloads', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/downloads/:id', authenticate, async (req, res) => {
+app.put('/api/downloads/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -687,7 +674,7 @@ app.put('/api/downloads/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/downloads/:id', authenticate, async (req, res) => {
+app.delete('/api/downloads/:id', async (req, res) => {
   try {
     const result = await downloadsRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Download not found' });
@@ -733,7 +720,7 @@ app.get('/api/pages/slug/:slug', async (req, res) => {
   }
 });
 
-app.post('/api/pages', authenticate, async (req, res) => {
+app.post('/api/pages', async (req, res) => {
   try {
     const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
     const payload = {
@@ -756,7 +743,7 @@ app.post('/api/pages', authenticate, async (req, res) => {
   }
 });
 
-app.put('/api/pages/:id', authenticate, async (req, res) => {
+app.put('/api/pages/:id', async (req, res) => {
   try {
     const payload = {
       title: req.body.title,
@@ -780,7 +767,7 @@ app.put('/api/pages/:id', authenticate, async (req, res) => {
   }
 });
 
-app.delete('/api/pages/:id', authenticate, async (req, res) => {
+app.delete('/api/pages/:id', async (req, res) => {
   try {
     const result = await pagesRepo.delete(req.params.id);
     if (!result) return res.status(404).json({ error: 'Page not found' });
@@ -800,7 +787,7 @@ app.get('/api/playlists', (req, res) => {
   res.json(data.playlists || []);
 });
 
-app.post('/api/playlists/sync', authenticate, async (req, res) => {
+app.post('/api/playlists/sync', async (req, res) => {
   if (!config.YOUTUBE_API_KEY) {
     return res.status(500).json({ error: 'YouTube API key not configured' });
   }
@@ -877,7 +864,7 @@ app.get('/api/videos', async (req, res) => {
   }
 });
 
-app.post('/api/videos', authenticate, async (req, res) => {
+app.post('/api/videos', async (req, res) => {
   try {
     const payload = {
       title: req.body.title || '',

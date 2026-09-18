@@ -13,7 +13,7 @@
 | **Build** | ✅ | 45 rotas compiladas em 23.3s |
 | **TypeScript** | ✅ | Type checking passed |
 | **Linting** | ✅ | Zero erros de lint |
-| **Pages** | ✅ | 14 páginas públicas + 8 admin + 4 auth |
+| **Pages** | ✅ | Páginas públicas + auth |
 | **Navigation** | ✅ | Header (9 links) + Footer (5 colunas) |
 | **Sitemap** | ✅ | XML automático + página visual |
 | **Email** | Removido | Sem integração de e-mail no momento |
@@ -41,12 +41,6 @@
 /relogio
 /entrar (newsletter com rate limit)
 /site-map (NOVO!)
-```
-
-### 🔐 ROTAS PROTEGIDAS (Admin)
-```
-/dashboard/*
-/api/admin/*
 ```
 
 ---
@@ -164,7 +158,6 @@ git push origin main
 ✓ https://velociclos.vercel.app/site-map (page loads)
 ✓ https://velociclos.vercel.app/sitemap.xml (XML valid)
 ✓ /entrar form (test rate limiting)
-✓ /dashboard without auth (redirects to login)
 ```
 
 ---

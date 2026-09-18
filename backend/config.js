@@ -1,6 +1,5 @@
 module.exports = {
   PORT: process.env.PORT || 3001,
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || null,
   DATA_DIR: process.env.DATA_DIR || __dirname,
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY || process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || '',
   YOUTUBE_API_BASE: 'https://www.googleapis.com/youtube/v3',

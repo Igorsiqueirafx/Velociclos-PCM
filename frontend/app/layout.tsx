@@ -1,9 +1,7 @@
 ﻿import './globals.css'
 import './glassify.css'
-import { headers } from 'next/headers'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { resolveIsAdminSite } from '@/lib/admin-config'
 
 export const metadata = {
   title: 'Velociclos PCM - Automação de Mercado | Opere com Liberdade!',
@@ -25,10 +23,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const headersList = await headers()
-  const host = headersList.get('host')
-  const isAdminSite = resolveIsAdminSite(host)
-
   return (
     <html lang="pt-BR" data-theme="dark" className="scroll-smooth">
       <head>
@@ -38,19 +32,19 @@ export default async function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          href="https://unpkg.com/boxicons@2.1.4/dist/css/boxicons.min.css"
         />
       </head>
       <body className="bg-[#121212] text-[#e5e5e5] font-sans antialiased">
         <SkipLink />
-        {!isAdminSite && <Header />}
+        <Header />
         <main
           id="main-content"
-          className={isAdminSite ? "min-h-screen" : "min-h-[calc(100vh-120px)]"}
+          className="min-h-[calc(100vh-120px)]"
         >
           {children}
         </main>
-        {!isAdminSite && <Footer />}
+        <Footer />
       </body>
     </html>
   )
