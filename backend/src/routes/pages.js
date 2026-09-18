@@ -1,5 +1,6 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (pagesRepo) => {
@@ -35,7 +36,7 @@ module.exports = (pagesRepo) => {
     }
   });
 
-  router.post('/', validateBody(['title']), async (req, res) => {
+  router.post('/', authMiddleware, validateBody(['title']), async (req, res) => {
     try {
       const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
       const payload = {
@@ -58,7 +59,7 @@ module.exports = (pagesRepo) => {
     }
   });
 
-  router.put('/:id', async (req, res) => {
+  router.put('/:id', authMiddleware, async (req, res) => {
     try {
       const payload = {
         title: req.body.title,
@@ -82,7 +83,7 @@ module.exports = (pagesRepo) => {
     }
   });
 
-  router.delete('/:id', async (req, res) => {
+  router.delete('/:id', authMiddleware, async (req, res) => {
     try {
       const result = await pagesRepo.delete(req.params.id);
       if (!result) return res.status(404).json({ error: 'Page not found' });

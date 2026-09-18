@@ -1,4 +1,5 @@
 const express = require('express');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (playlistsRepo) => {
@@ -12,7 +13,7 @@ module.exports = (playlistsRepo) => {
     }
   });
 
-  router.post('/playlists/sync', async (req, res) => {
+  router.post('/playlists/sync', authMiddleware, async (req, res) => {
     try {
       const config = require('../config');
       const playlists = [];

@@ -1,5 +1,6 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (coursesRepo) => {
@@ -24,7 +25,7 @@ module.exports = (coursesRepo) => {
     }
   });
 
-  router.post('/', validateBody(['title']), async (req, res) => {
+  router.post('/', authMiddleware, validateBody(['title']), async (req, res) => {
     try {
       const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
       const payload = {
@@ -45,7 +46,7 @@ module.exports = (coursesRepo) => {
     }
   });
 
-  router.put('/:id', async (req, res) => {
+  router.put('/:id', authMiddleware, async (req, res) => {
     try {
       const payload = {
         title: req.body.title,
@@ -67,7 +68,7 @@ module.exports = (coursesRepo) => {
     }
   });
 
-  router.delete('/:id', async (req, res) => {
+  router.delete('/:id', authMiddleware, async (req, res) => {
     try {
       const result = await coursesRepo.delete(req.params.id);
       if (!result) return res.status(404).json({ error: 'Course not found' });

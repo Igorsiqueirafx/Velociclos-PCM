@@ -1,5 +1,6 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (lessonsRepo, modulesRepo) => {
@@ -23,7 +24,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
     }
   });
 
-  router.post('/modules/:moduleId/lessons', validateBody(['title']), async (req, res) => {
+  router.post('/modules/:moduleId/lessons', authMiddleware, validateBody(['title']), async (req, res) => {
     try {
       const moduleId = req.params.moduleId;
       const module = await modulesRepo.findById(moduleId);
@@ -49,7 +50,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
     }
   });
 
-  router.put('/lessons/:id', async (req, res) => {
+  router.put('/lessons/:id', authMiddleware, async (req, res) => {
     try {
       const payload = {
         title: req.body.title,
@@ -71,7 +72,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
     }
   });
 
-  router.delete('/lessons/:id', async (req, res) => {
+  router.delete('/lessons/:id', authMiddleware, async (req, res) => {
     try {
       const result = await lessonsRepo.delete(req.params.id);
       if (!result) return res.status(404).json({ error: 'Lesson not found' });

@@ -1,5 +1,6 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 module.exports = (certificatesRepo) => {
@@ -13,7 +14,7 @@ module.exports = (certificatesRepo) => {
     }
   });
 
-  router.post('/', validateBody(['title']), async (req, res) => {
+  router.post('/', authMiddleware, validateBody(['title']), async (req, res) => {
     try {
       const payload = {
         title: req.body.title || '',
@@ -31,7 +32,7 @@ module.exports = (certificatesRepo) => {
     }
   });
 
-  router.put('/:id', async (req, res) => {
+  router.put('/:id', authMiddleware, async (req, res) => {
     try {
       const payload = {
         title: req.body.title,
@@ -50,7 +51,7 @@ module.exports = (certificatesRepo) => {
     }
   });
 
-  router.delete('/:id', async (req, res) => {
+  router.delete('/:id', authMiddleware, async (req, res) => {
     try {
       const result = await certificatesRepo.delete(req.params.id);
       if (!result) return res.status(404).json({ error: 'Certificate not found' });
