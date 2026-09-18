@@ -186,8 +186,7 @@ git push origin main
 
 ### Médio Prazo
 1. **Plan 1**: Separar backend/frontend (2-3 horas)
-2. **Plan 3**: Google OAuth + Leads Dashboard (4-6 horas)
-3. **Analytics**: Implementar tracking de eventos
+2. **Analytics**: Implementar tracking de eventos
 
 ### Longo Prazo
 1. Performance optimization (Core Web Vitals)

@@ -61,11 +61,11 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 - **Status**: Não iniciado.
 - **Responsável**: Frontend.
 
-### 3.2 Implementar `/auth/register`
-- **Ação**: Decidir: Google OAuth ou remover referência. Se for manter, adicionar provider em `config.ts` e criar página.
-- **Validação**: Fluxo de registro funciona ou documentação removida.
-- **Status**: Não iniciado.
-- **Responsável**: Frontend + Backend.
+### 3.2 Remover referência a `/auth/register`
+- **Ação**: Remover link e referência de checklist/docs. Google OAuth fica postergado.
+- **Validação**: Navegação e docs não apontam mais para `/auth/register`.
+- **Status**: Concluído.
+- **Responsável**: Frontend.
 
 ---
 
@@ -77,9 +77,9 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 - **Status**: Pendente.
 - **Responsável**: Frontend.
 
-### 4.2 Configurar domínio customizado (opcional)
-- **Ação**: Se houver domínio próprio, adicionar no Vercel e atualizar `CORS_ORIGIN`, `FRONTEND_URL`, `NEXTAUTH_URL`.
-- **Validação**: Site acessível no domínio customizado.
+### 4.2 Confirmar domínio de produção
+- **Ação**: Manter `https://velociclos.vercel.app` como domínio oficial. Garantir `CORS_ORIGIN`, `FRONTEND_URL` e `NEXTAUTH_URL` alinhados.
+- **Validação**: Site acessível e CORS ok.
 - **Status**: Pendente.
 - **Responsável**: DevOps.
 
@@ -114,13 +114,8 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 
 ---
 
-## Decisões Pendentes
+## Decisões
 
-1. **Google OAuth**: Implementar ou remover referência no checklist?
-   - **Recomendação**: remover referência até ser decidido, para evitar confusão.
-
-2. **Seed de cursos**: Deve ser automático em produção ou manual via admin?
-   - **Recomendação**: manual via admin, para controle de conteúdo.
-
-3. **Domínio customizado**: Haverá domínio próprio ou ficar no `vercel.app`?
-   - **Recomendação**: confirmar com o usuário.
+1. **Google OAuth**: Referência removida do checklist e docs. Implementação fica postergada.
+2. **Seed de cursos**: Automático em produção. O backend cria dados iniciais se a base estiver vazia.
+3. **Domínio customizado**: Não haverá domínio próprio por enquanto. Produção usa `https://velociclos.vercel.app`.

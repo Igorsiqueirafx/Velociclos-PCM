@@ -177,7 +177,6 @@ export async function getArticles(): Promise<Article[]> {
 
 ### Potential ADRs
 - [ ] Backend separation (Plan 1 from DEPLOY_READY.md)
-- [ ] Google OAuth + Leads Dashboard (Plan 3)
 - [ ] Analytics implementation
 - [ ] i18n support
 - [ ] Micro-frontend architecture
