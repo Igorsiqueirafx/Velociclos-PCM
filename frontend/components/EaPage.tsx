@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
+import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 
 type FeatureItem = {
   title: string
@@ -28,80 +29,22 @@ const features: FeatureItem[] = [
   },
 ]
 
-type YouTubePlayer = {
-  playVideo(): void
-}
-
-type YouTubeIframeAPI = {
-  Player: new (
-    elementId: string,
-    config: {
-      videoId: string
-      playerVars: Record<string, string | number>
-      events: {
-        onReady?: () => void
-      }
-    }
-  ) => YouTubePlayer
-}
-
-interface YouTubeWindow extends Window {
-  YT?: YouTubeIframeAPI
-  onYouTubeIframeAPIReady?: () => void
-}
-
 export default function EaPage() {
   const [showVideo, setShowVideo] = useState(false)
-  const [playerReady, setPlayerReady] = useState(false)
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
 
   const openVideo = useCallback(() => setShowVideo(true), [])
-  const closeVideo = useCallback(() => {
-    setShowVideo(false)
-    setPlayerReady(false)
-  }, [])
+  const closeVideo = useCallback(() => setShowVideo(false), [])
 
   useEffect(() => {
-    if (!showVideo) return
-    const container = document.getElementById('ea-video-player')
-    if (!container) return
-
-    const ytWindow = window as YouTubeWindow
-    if (!ytWindow.YT) {
-      const script = document.createElement('script')
-      script.src = 'https://www.youtube.com/iframe_api'
-      document.body.appendChild(script)
-    }
-
-    const createPlayer = () => {
-      if (!ytWindow.YT?.Player) return
-      new ytWindow.YT.Player('ea-video-player', {
-        videoId: VIDEO_ID,
-        playerVars: {
-          rel: '0',
-          modestbranding: '1',
-          showinfo: '0',
-          iv_load_policy: '3',
-          controls: '1',
-          fs: '0',
-          disablekb: '1',
-          autoplay: '1',
-          mute: '0',
-          enablejsapi: '1',
-          origin: origin,
-        },
-        events: {
-          onReady: () => setPlayerReady(true),
-        },
-      })
-    }
-
-    if (ytWindow.YT?.Player) {
-      createPlayer()
+    if (showVideo) {
+      document.body.style.overflow = 'hidden'
     } else {
-      ytWindow.onYouTubeIframeAPIReady = createPlayer
+      document.body.style.overflow = ''
     }
-  }, [showVideo, origin])
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [showVideo])
 
   return (
     <>
@@ -208,11 +151,11 @@ export default function EaPage() {
             >
               <i className="fas fa-times" aria-hidden="true"></i>
             </button>
-            {playerReady ? (
-              <div id="ea-video-player" className="w-full h-full" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#8a8a8d]">Carregando vídeo...</div>
-            )}
+            <ResponsiveVideoEmbed
+              videoId={VIDEO_ID}
+              title="Vídeo demonstrativo Velociclos PCM"
+              params={{ showinfo: '0', iv_load_policy: '3', disablekb: '0', fs: '1' }}
+            />
           </div>
         </div>
       )}

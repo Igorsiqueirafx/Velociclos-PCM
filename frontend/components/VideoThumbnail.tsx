@@ -1,5 +1,8 @@
 'use client'
 
+import { useCallback } from 'react'
+import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
+
 const CATEGORY_LABELS: Record<string, string> = {
   'exaustao': 'Exaustão',
   'canal': 'Canal',
@@ -24,7 +27,7 @@ interface VideoThumbnailProps {
   imageLoaded: boolean
   imageError: boolean
   onPlay: () => void
-  onClose: (e: React.MouseEvent) => void
+  onClose: () => void
   duration?: string
   category?: string
   onImageLoad?: () => void
@@ -32,32 +35,30 @@ interface VideoThumbnailProps {
 }
 
 export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, imageLoaded, imageError, onPlay, onClose, duration, category, onImageLoad, onImageError }: VideoThumbnailProps) {
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  const handlePlayClick = () => {
+  const handlePlayClick = useCallback(() => {
     if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return
     onPlay()
-  }
+  }, [videoId, onPlay])
+
+  const handleCloseClick = useCallback(() => {
+    onClose()
+  }, [onClose])
 
   return (
     <div className="relative aspect-video bg-[#121212] group">
       {isPlaying && /^[A-Za-z0-9_-]{11}$/.test(videoId) ? (
-        <>
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(origin)}`}
-            title={title}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            sandbox="allow-scripts allow-same-origin allow-presentation"
-          />
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 w-8 h-8 bg-black/70 hover:bg-black rounded-full flex items-center justify-center text-white transition-colors z-10"
-            aria-label="Fechar vídeo"
-          >
-            <i className="fas fa-times" />
-          </button>
-        </>
+        <ResponsiveVideoEmbed
+          videoId={videoId}
+          title={title}
+          autoplay
+          onClose={handleCloseClick}
+          overlay={
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              onClick={handlePlayClick}
+            />
+          }
+        />
       ) : (
         <>
           {!imageLoaded && (

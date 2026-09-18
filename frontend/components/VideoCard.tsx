@@ -51,8 +51,7 @@ export default function VideoCard({
     setIsPlaying(true)
   }
 
-  const handleClose = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const handleClose = () => {
     setIsPlaying(false)
   }
 

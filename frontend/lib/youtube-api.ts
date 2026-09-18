@@ -1,5 +1,6 @@
 import type { YouTubePlaylist, YouTubeVideo, VideoMoment } from './youtube-types'
 import { PLAYLIST_CATEGORIES, VIDEO_CATEGORIES, STATIC_PLAYLISTS } from './youtube-constants'
+import { logEvent } from '@/lib/logging'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY || ''
@@ -67,16 +68,16 @@ export async function fetchPlaylists(): Promise<YouTubePlaylist[]> {
   try {
     return await api<YouTubePlaylist[]>('/api/playlists')
   } catch (error) {
-    console.warn('Backend /api/playlists unavailable', error)
+    logEvent('playlists_fallback', 'warn', 'Backend /api/playlists unavailable', { error: error instanceof Error ? error.message : String(error) })
   }
   if (!YOUTUBE_API_KEY) {
-    console.warn('No YouTube API key available for fallback')
+    logEvent('playlists_fallback', 'warn', 'No YouTube API key available for fallback')
     return STATIC_PLAYLISTS
   }
   try {
     return await fetchPlaylistsFromYouTube()
   } catch (error) {
-    console.error('Failed to fetch playlists from YouTube API', error)
+    logEvent('playlists_fallback', 'error', 'Failed to fetch playlists from YouTube API', { error: error instanceof Error ? error.message : String(error) })
     return STATIC_PLAYLISTS
   }
 }
@@ -144,7 +145,7 @@ async function fetchPlaylistItemsFromYouTube(playlistId: string): Promise<YouTub
     }
     const json = (await res.json()) as Record<string, unknown>
     if ((json as { error?: { message?: string } }).error) {
-      console.error('YouTube API error', (json as { error: { message: string } }).error.message)
+      logEvent('playlist_items_error', 'error', 'YouTube API error', { message: (json as { error: { message: string } }).error.message })
       break
     }
     for (const item of (json.items || []) as Array<Record<string, unknown>>) {
@@ -159,10 +160,10 @@ export async function fetchPlaylistItems(playlistId: string): Promise<YouTubeVid
   try {
     return await api<YouTubeVideo[]>(`/api/playlist/${playlistId}/items`)
   } catch (error) {
-    console.warn(`Backend unavailable for playlist ${playlistId}`, error)
+    logEvent('playlist_items_fallback', 'warn', `Backend unavailable for playlist ${playlistId}`, { error: error instanceof Error ? error.message : String(error) })
   }
   if (!YOUTUBE_API_KEY) {
-    console.error('No YouTube API key available for fallback')
+    logEvent('playlist_items_fallback', 'error', 'No YouTube API key available for fallback')
     return []
   }
   return fetchPlaylistItemsFromYouTube(playlistId)
@@ -224,7 +225,7 @@ export async function fetchVideoDetails(videoIds: string[]): Promise<YouTubeVide
   const url = `${YOUTUBE_API_BASE}/videos?${params.toString()}`
   const res = await fetch(url, { next: { revalidate: 3600 } })
   if (!res.ok) {
-    console.error('Failed to fetch video details')
+    logEvent('video_details_error', 'error', 'Failed to fetch video details')
     return []
   }
   const json = (await res.json()) as Record<string, unknown>

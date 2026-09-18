@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 import IntroVideoOverlay from '@/components/IntroVideoOverlay'
 
 type Aula = {
@@ -17,12 +18,6 @@ const aulas: Aula[] = [
   { id: 'aula-05', title: 'AULA 04 - ANÁLISE NO OURO PART. 4', videoId: 'SaR-4Dp_0AI' },
   { id: 'aula-06', title: 'AULA 05 - ANÁLISE NO OURO PART. 5', videoId: 'rYd_oE_z7vo' },
 ]
-
-const origin = typeof window !== 'undefined' ? window.location.origin : ''
-
-function embedUrl(videoId: string) {
-  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&controls=1&fs=0&disablekb=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`
-}
 
 export default function MetodoFimathePage() {
   const [showIntro, setShowIntro] = useState(true)
@@ -88,14 +83,10 @@ export default function MetodoFimathePage() {
               </p>
             </div>
             <div className="aspect-video">
-              <iframe
-                src={embedUrl('HM0cOcrXwaM')}
+              <ResponsiveVideoEmbed
+                videoId="HM0cOcrXwaM"
                 title="Fimathe O Legado de Marcelo Ferreira"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="w-full h-full"
+                params={{ showinfo: '0', iv_load_policy: '3', disablekb: '0', fs: '1' }}
               />
             </div>
           </div>
@@ -107,14 +98,10 @@ export default function MetodoFimathePage() {
                 className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20"
               >
                 <div className="aspect-video">
-                  <iframe
-                    src={embedUrl(aula.videoId)}
+                  <ResponsiveVideoEmbed
+                    videoId={aula.videoId}
                     title={aula.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    className="w-full h-full"
+                    params={{ showinfo: '0', iv_load_policy: '3', disablekb: '0', fs: '1' }}
                   />
                 </div>
                 <div className="p-4">
