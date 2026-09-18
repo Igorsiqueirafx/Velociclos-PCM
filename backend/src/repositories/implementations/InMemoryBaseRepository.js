@@ -1,4 +1,5 @@
 const BaseRepository = require('../BaseRepository');
+const { randomUUID } = require('crypto');
 
 class InMemoryBaseRepository extends BaseRepository {
   constructor(initialData = []) {
@@ -7,7 +8,7 @@ class InMemoryBaseRepository extends BaseRepository {
   }
 
   _generateId() {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return randomUUID();
   }
 
   async findAll(options = {}) {
