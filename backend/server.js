@@ -8,6 +8,7 @@ const { repositoryFactory } = require('./src/repositories');
 const errorHandler = require('./src/middleware/errorHandler');
 const { requestLogger } = require('./src/middleware/requestLogger');
 const { logError, logWarn } = require('./src/middleware/logger');
+const { authMiddleware } = require('./src/middleware/auth');
 const createCoursesRoutes = require('./src/routes/courses');
 const createModulesRoutes = require('./src/routes/modules');
 const createLessonsRoutes = require('./src/routes/lessons');
@@ -153,6 +154,36 @@ seed().catch((e) => logError('server:seed', e));
 // ============================================
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// ============================================
+// ADMIN STATUS
+// ============================================
+app.get('/api/admin/status', authMiddleware, async (req, res) => {
+  try {
+    const repos = repositoryFactory.getRepositories();
+    const counts = {
+      courses: await repos.courses.count(),
+      modules: await repos.modules.count(),
+      lessons: await repos.lessons.count(),
+      articles: await repos.articles.count(),
+      certificates: await repos.certificates.count(),
+      subscribers: await repos.subscribers.count(),
+      downloads: await repos.downloads.count(),
+      pages: await repos.pages.count(),
+      playlists: await repos.playlists.count(),
+    };
+
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      counts,
+      persistence: process.env.USE_IN_MEMORY === 'true' ? 'in-memory' : 'supabase',
+    });
+  } catch (error) {
+    logError('admin:status', error);
+    res.status(500).json({ error: 'Failed to fetch admin status' });
+  }
 });
 
 // ============================================
