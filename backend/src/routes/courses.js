@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateBody } = require('../middleware/validation');
 const router = express.Router();
 
 module.exports = (coursesRepo) => {
@@ -23,7 +24,7 @@ module.exports = (coursesRepo) => {
     }
   });
 
-  router.post('/', async (req, res) => {
+  router.post('/', validateBody(['title']), async (req, res) => {
     try {
       const slug = req.body.slug || (req.body.title ? req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '');
       const payload = {
