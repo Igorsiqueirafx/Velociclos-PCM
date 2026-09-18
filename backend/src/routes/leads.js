@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateBody } = require('../middleware/validation');
 const router = express.Router();
 
 module.exports = (subscribersRepo) => {
@@ -12,7 +13,7 @@ module.exports = (subscribersRepo) => {
     }
   });
 
-  router.post('/', async (req, res) => {
+  router.post('/', validateBody(['email']), async (req, res) => {
     try {
       const { email, name, phone, utm_campaign, utm_source, utm_medium, utm_content } = req.body;
       if (!email || !email.includes('@')) {

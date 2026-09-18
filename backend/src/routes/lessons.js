@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateBody } = require('../middleware/validation');
 const router = express.Router();
 
 module.exports = (lessonsRepo, modulesRepo) => {
@@ -22,7 +23,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
     }
   });
 
-  router.post('/modules/:moduleId/lessons', async (req, res) => {
+  router.post('/modules/:moduleId/lessons', validateBody(['title']), async (req, res) => {
     try {
       const moduleId = req.params.moduleId;
       const module = await modulesRepo.findById(moduleId);

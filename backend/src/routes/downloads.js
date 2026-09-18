@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateBody } = require('../middleware/validation');
 const router = express.Router();
 
 module.exports = (downloadsRepo) => {
@@ -12,7 +13,7 @@ module.exports = (downloadsRepo) => {
     }
   });
 
-  router.post('/', async (req, res) => {
+  router.post('/', validateBody(['email']), async (req, res) => {
     try {
       const payload = {
         email: req.body.email || '',

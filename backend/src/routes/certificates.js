@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateBody } = require('../middleware/validation');
 const router = express.Router();
 
 module.exports = (certificatesRepo) => {
@@ -12,7 +13,7 @@ module.exports = (certificatesRepo) => {
     }
   });
 
-  router.post('/', async (req, res) => {
+  router.post('/', validateBody(['title']), async (req, res) => {
     try {
       const payload = {
         title: req.body.title || '',
