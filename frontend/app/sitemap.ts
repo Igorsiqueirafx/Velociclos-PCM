@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/artigos',
     '/certificados',
     '/metodo-fimathe',
+    '/metodo-fimathe/documentacao',
     '/manual',
     '/ea',
     '/relogio',

@@ -10,7 +10,7 @@ describe('Header', () => {
 
   it('renders all navigation links', () => {
     const routes = [
-      'Início', 'EA', 'Cursos', 'Vídeos', 'Método',
+      'Início', 'EA', 'Cursos', 'Vídeos', 'Método', 'Documentação',
       'Artigos', 'Certificados', 'Manual', 'Relógio', 'Sitemap',
     ]
     render(<Header />)

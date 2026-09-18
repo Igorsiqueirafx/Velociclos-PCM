@@ -8,6 +8,7 @@ const publicRoutes = [
   { href: '/artigos', label: 'Artigos' },
   { href: '/certificados', label: 'Certificados' },
   { href: '/metodo-fimathe', label: 'Método Fimathe' },
+  { href: '/metodo-fimathe/documentacao', label: 'Documentação do Método' },
   { href: '/manual', label: 'Manual' },
   { href: '/ea', label: 'Expert Advisor' },
   { href: '/relogio', label: 'Relógio Forex' },
