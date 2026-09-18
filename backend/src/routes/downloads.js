@@ -1,6 +1,9 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
+const { rateLimit } = require('../middleware/rateLimiter');
 const router = express.Router();
+
+const downloadRateLimit = rateLimit({ windowMs: 60000, max: 10 });
 
 module.exports = (downloadsRepo) => {
   router.get('/', async (req, res) => {
@@ -13,7 +16,7 @@ module.exports = (downloadsRepo) => {
     }
   });
 
-  router.post('/', validateBody(['email']), async (req, res) => {
+  router.post('/', downloadRateLimit, validateBody(['email']), async (req, res) => {
     try {
       const payload = {
         email: req.body.email || '',
