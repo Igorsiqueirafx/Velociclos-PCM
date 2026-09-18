@@ -10,8 +10,8 @@ describe('Header', () => {
 
   it('renders all navigation links', () => {
     const routes = [
-      'Início', 'Expert Advisor', 'Cursos', 'Momentos Chave', 'Método Fimathe',
-      'Artigos', 'Certificados', 'Manual', 'Relógio',
+      'Início', 'EA', 'Cursos', 'Vídeos', 'Método',
+      'Artigos', 'Certificados', 'Manual', 'Relógio', 'Sitemap',
     ]
     render(<Header />)
     routes.forEach(route => {

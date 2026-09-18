@@ -11,6 +11,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-white mb-3">Conteúdo</h4>
             <ul className="space-y-2">
               <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos">Cursos</a></li>
+              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos/videos">Vídeos</a></li>
               <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/artigos">Artigos</a></li>
               <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/certificados">Certificados</a></li>
               <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/manual">Manual</a></li>
