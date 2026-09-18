@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const publicRoutes = [
     '',
     '/cursos',
+    '/cursos/videos',
     '/cursos/momentos',
     '/artigos',
     '/certificados',

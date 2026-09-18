@@ -3,6 +3,7 @@ import Link from 'next/link'
 const publicRoutes = [
   { href: '/', label: 'Início' },
   { href: '/cursos', label: 'Cursos' },
+  { href: '/cursos/videos', label: 'Todos os Vídeos' },
   { href: '/cursos/momentos', label: 'Momentos Chave' },
   { href: '/artigos', label: 'Artigos' },
   { href: '/certificados', label: 'Certificados' },

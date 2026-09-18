@@ -7,6 +7,7 @@ const navigation = [
   { name: 'Início', href: '/' },
   { name: 'EA', href: '/ea' },
   { name: 'Cursos', href: '/cursos' },
+  { name: 'Vídeos', href: '/cursos/videos' },
   { name: 'Método', href: '/metodo-fimathe' },
   { name: 'Artigos', href: '/artigos' },
   { name: 'Certificados', href: '/certificados' },
