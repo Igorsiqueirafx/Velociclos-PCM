@@ -4,8 +4,7 @@ Backend API para o site Velociclos PCM.
 
 ## Tecnologias
 
-- **Node.js + Express** (server.js) — API REST para gerenciamento de vídeos e playlists
-- **Python HTTP Server** (server.py) — alternativa standalone para Railway sem Node
+- **Node.js + Express** (server.js) — API REST para gerenciamento de conteúdo
 
 ## Deploy
 
