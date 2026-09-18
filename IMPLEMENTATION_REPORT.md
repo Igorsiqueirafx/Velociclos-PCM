@@ -77,7 +77,6 @@ Documento completo com:
 | `/manual` | Guia do EA | ✅ |
 | `/ea` | Expert Advisor | ✅ |
 | `/relogio` | Clock Forex | ✅ |
-| `/entrar` | Newsletter signup | ✅ |
 | `/sitemap` | Índice completo | ✅ **NOVO** |
 
 ### Com Autenticação (Login obrigatório)
@@ -126,7 +125,6 @@ npm run dev
 2. Clicar em cada link do Header — todas as rotas devem existir
 3. Scroll até Footer — verificar links funcionam
 4. Acessar `/sitemap` — deve listar todas as rotas
-5. Testar formulário `/entrar` — rate limiting
 
 ---
 
@@ -189,7 +187,7 @@ frontend/
 
 ## ⚠️ Notas Importantes
 
-1. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
+Nenhuma no momento.
 
 ---
 

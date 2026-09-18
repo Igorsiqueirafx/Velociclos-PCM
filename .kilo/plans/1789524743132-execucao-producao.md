@@ -36,7 +36,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 ## Fase 2 - Conteúdo e Dados (24-48h)
 
 ### 2.1 Popular backend com cursos reais
-- **Ação**: Cadastrar cursos, módulos e aulas via painel administrativo quando disponível ou aguardando integração futura.
+- **Ação**: Cadastrar cursos, módulos e aulas no backend quando a integração com YouTube estiver disponível.
 - **Validação**: `GET https://velociclos-api.vercel.app/api/courses` retorna dados não-vazios.
 - **Status**: Pendente.
 - **Responsável**: Conteúdo / Produto.
@@ -49,18 +49,9 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 
 ---
 
-## Fase 3 - Páginas Faltantes (48-72h)
+## Fase 3 - Ajustes de Navegação (48-72h)
 
-### 3.1 Implementar `/entrar`
-- **Ação**: Criar página `frontend/app/entrar/page.tsx` e `actions.ts` com:
-  - Formulário de e-mail/nome.
-  - Rate limiting (3 tentativas/10min).
-  - Fallback gracioso sem dependência de e-mail.
-- **Validação**: Submissão retorna 200 e salva lead em `/api/leads`.
-- **Status**: Concluído.
-- **Responsável**: Frontend.
-
-### 3.2 Remover referência a `/auth/register`
+### 3.1 Remover referência a `/auth/register`
 - **Ação**: Remover link e referência de checklist/docs. Google OAuth fica postergado.
 - **Validação**: Navegação e docs não apontam mais para `/auth/register`.
 - **Status**: Concluído.
@@ -89,7 +80,6 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 - Frontend build: 0 erros.
 - Backend health: `{"status":"ok"}`.
 - `/cursos`: lista cursos do backend.
-- `/entrar`: salva lead com sucesso.
 - Todas as rotas do header/footer retornam 200.
 
 ---
@@ -99,7 +89,7 @@ Colocar o site Velociclos PCM em produção operacional no domínio `https://vel
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
 | ESLint bloqueando build novamente | Baixa | Alto | Mantido `ignoreDuringBuilds: true`. |
-| Dados de produção vazios | Alta | Alto | Popular manualmente quando houver painel administrativo. |
+| Dados de produção vazios | Alta | Alto | Popular manualmente via integração futura. |
 | Auth OAuth quebrado por variável faltando | Alta | Alto | Checklist rigoroso de env vars antes de deploy. |
 | CORS bloqueando frontend | Baixa | Alto | Testar com `curl` antes de abrir ao público. |
 

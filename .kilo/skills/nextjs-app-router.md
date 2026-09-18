@@ -62,9 +62,6 @@ app/
 ├── (auth)/          # Auth pages
 │   ├── layout.tsx
 │   └── login/page.tsx
-└── dashboard/       # Protected
-    ├── layout.tsx   # Auth check here
-    └── page.tsx
 ```
 
 ### Image Optimization

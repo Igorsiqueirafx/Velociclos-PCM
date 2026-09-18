@@ -13,10 +13,8 @@ jobs:
       - name: Sync all channel playlists
         run: |
           curl -sf -X POST "${{ secrets.BACKEND_URL }}/api/playlists/sync" \
-            -H "Authorization: Bearer ${{ secrets.ADMIN_PASSWORD }}" \
             -H "Content-Type: application/json" \
             > /dev/null && echo "YouTube playlists synced: $(date -u)" \
             || { echo "YouTube sync failed: $(date -u)"; exit 1; }
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}

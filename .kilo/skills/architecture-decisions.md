@@ -167,9 +167,9 @@ export async function getArticles(): Promise<Article[]> {
 
 **Decision**: 
 - `NEXT_PUBLIC_*` for client-safe vars
-- Non-prefixed for server-only (Admin password)
+- Non-prefixed for server-only
 - `.env.local` for local (gitignored)
-- Vercel dashboard for production
+- Vercel UI for production
 
 ---
 

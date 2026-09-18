@@ -27,11 +27,11 @@ export default function HomeHero() {
             </div>
             <div className="flex gap-6">
               <a
-                href="/entrar"
+                href="/cursos"
                 className="inline-flex items-center justify-center px-8 py-4 border border-2 border-[#0071e3] text-[#0071e3] font-semibold rounded-lg transition-all duration-200 ease-in-out hover:bg-[#0071e3] hover:text-white hover:shadow-[0_0_30px_rgba(0,113,227,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3] focus-visible:ring-offset-2"
-                aria-label="Entrar ou cadastrar email"
+                aria-label="Ver cursos"
               >
-                Entrar
+                Cursos
               </a>
               <a
                 href="/ea"

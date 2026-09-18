@@ -17,7 +17,6 @@
 | **Navigation** | ✅ | Header (9 links) + Footer (5 colunas) |
 | **Sitemap** | ✅ | XML automático + página visual |
 | **Email** | Removido | Sem integração de e-mail no momento |
-| **Rate Limit** | ✅ | Proteção em /entrar funcional |
 
 ---
 
@@ -39,7 +38,6 @@
 /manual
 /ea
 /relogio
-/entrar (newsletter com rate limit)
 /site-map (NOVO!)
 ```
 
@@ -74,10 +72,6 @@
 
 ✅ frontend/.env.example
    - NEXTAUTH_URL adicionado
-
-✅ frontend/app/entrar/actions.ts
-   - Rate limiting (3/10min)
-   - Sem integração de e-mail
 ```
 
 ---
@@ -118,8 +112,6 @@ First Load JS: ~102-176 kB (otimizado)
 - [x] Footer layout responsive
 - [x] /site-map página carrega
 - [x] /sitemap.xml gerado
-- [x] Rate limiting em /entrar
-
 ### SEO & Discoverability
 - [x] Sitemap XML generated
 - [x] Visual sitemap page created
@@ -148,7 +140,7 @@ git push origin main
 ### 2. Vercel Auto-Deploy
 - Automatic deployment triggers on git push
 - Build time: ~3-5 minutes
-- Monitor: https://vercel.com/dashboard
+- Monitor deployments in Vercel UI
 
 ### 3. Post-Deploy Validation
 ```bash
@@ -157,7 +149,6 @@ git push origin main
 ✓ Click each Header link (9 total)
 ✓ https://velociclos.vercel.app/site-map (page loads)
 ✓ https://velociclos.vercel.app/sitemap.xml (XML valid)
-✓ /entrar form (test rate limiting)
 ```
 
 ---
@@ -165,9 +156,7 @@ git push origin main
 ## 🎯 Próximas Etapas (Após Deploy)
 
 ### Curto Prazo
-1. Testar fluxo do `/entrar`:
-   - Submissão salva lead
-   - Rate limiting ativo (3 tentativas/10 min)
+1. Validar rotas públicas e backend no deploy
 
 ### Médio Prazo
 1. **Plan 1**: Separar backend/frontend (2-3 horas)

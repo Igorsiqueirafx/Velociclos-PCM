@@ -13,7 +13,7 @@ ANTES DO DEPLOY:
 - [ ] `npm run build` — Build sem erros
 - [ ] `npm run lint` — Linting passed
 - [ ] TypeScript — `npx tsc --noEmit` sem erros
-- [ ] Variáveis de ambiente adicionadas no Vercel dashboard
+- [ ] Variáveis de ambiente adicionadas no Vercel
   - [ ] GITHUB_CLIENT_ID
   - [ ] GITHUB_CLIENT_SECRET
   - [ ] AUTH_SECRET
@@ -31,15 +31,9 @@ APÓS O DEPLOY:
   - [ ] /manual
   - [ ] /ea
   - [ ] /relogio
-  - [ ] /entrar
   - [ ] /sitemap
 - [ ] Links de autenticação funcionam:
   - [ ] /auth/login
-- [ ] Formulário /entrar com rate limiting:
-  - [ ] 1ª tentativa — sucesso
-  - [ ] 2ª tentativa — sucesso
-  - [ ] 3ª tentativa — sucesso
-  - [ ] 4ª tentativa — erro (rate limit)
 - [ ] Backend API conectado e funcionando:
   - [ ] /api/health retorna status ok
 

@@ -3,7 +3,7 @@
 ## Project Context
 - Next.js 15 on Vercel
 - Automatic deployments on git push
-- Environment variables in Vercel dashboard
+- Environment variables in Vercel UI
 
 ## Deployment Workflow
 
@@ -43,10 +43,6 @@ git push origin feature/my-feature
 ```env
 # Vercel Dashboard → Settings → Environment Variables
 
-# Admin
-ADMIN_EMAILS=admin@domain.com,admin2@domain.com
-ADMIN_PASSWORD=secure-password-here
-
 # Backend
 NEXT_PUBLIC_BACKEND_URL=https://api.domain.com
 
@@ -58,7 +54,7 @@ GITHUB_CLIENT_SECRET=your-github-client-secret
 ```
 
 ### Preview vs Production
-- **Preview**: All vars from dashboard (non-sensitive)
+- **Preview**: All vars from Vercel UI (non-sensitive)
 - **Production**: Add sensitive vars only to Production environment
 
 ## Build Optimization
@@ -101,22 +97,18 @@ npm run build 2>&1 | grep -E "First Load JS|Build error"
 - [ ] Footer links work
 - [ ] `/sitemap` renders
 - [ ] `/sitemap.xml` valid XML
-- [ ] `/entrar` form submits
-- [ ] Rate limiting works (3/10min)
-- [ ] `/dashboard` redirects to login
-- [ ] Auth flow works (login/register)
-- [ ] Admin panel accessible
+- [ ] Auth flow works (login)
 
 ## Rollback
 ```bash
 # Vercel CLI
 vercel rollback [deployment-url]
 
-# Or in dashboard: Deployments → ... → Promote to Production
+# Or in Vercel UI: Deployments → ... → Promote to Production
 ```
 
 ## Monitoring
-- Vercel Analytics (enable in dashboard)
+- Vercel Analytics
 - Vercel Speed Insights
 - Function logs: `vercel logs`
 - Edge runtime logs for middleware

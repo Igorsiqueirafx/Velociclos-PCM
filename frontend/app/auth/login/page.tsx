@@ -5,14 +5,14 @@ import { useSearchParams } from "next/navigation"
 
 export default function LoginPage() {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
+  const callbackUrl = searchParams.get("callbackUrl") || "/"
 
   return (
     <div className="min-h-screen bg-[#1e2329] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-[#252b33] rounded-2xl border border-[#404857] p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Velociclos Admin</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Velociclos</h1>
             <p className="text-[#8a8a8d]">Faça login com sua conta GitHub</p>
           </div>
 
@@ -25,10 +25,6 @@ export default function LoginPage() {
             </svg>
             Continuar com GitHub
           </button>
-
-          <p className="text-center text-xs text-[#606877] mt-6">
-            Apenas usuários autorizados podem acessar o painel administrativo.
-          </p>
         </div>
       </div>
     </div>

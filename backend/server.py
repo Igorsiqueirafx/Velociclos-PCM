@@ -23,7 +23,6 @@ load_env_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.e
 
 CONFIG = {
     'PORT': 3001,
-    'ADMIN_PASSWORD': 'velociclos2024',
     'DATA_DIR': os.path.dirname(os.path.abspath(__file__)),
     'YOUTUBE_API_KEY': os.environ.get('YOUTUBE_API_KEY', ''),
     'PLAYLIST_IDS': [
@@ -88,11 +87,6 @@ class APIHandler(SimpleHTTPRequestHandler):
         if path.startswith('/api/youtube/playlist/'):
             playlist_id = path.split('/')[-1]
             return self.handle_youtube_playlist_items(playlist_id)
-
-        if path.startswith('/admin/'):
-            self.path = '/admin/index.html'
-            super().do_GET()
-            return
 
         self.send_error(404)
 
@@ -270,8 +264,7 @@ class APIHandler(SimpleHTTPRequestHandler):
 def run():
     server = HTTPServer(('0.0.0.0', CONFIG['PORT']), APIHandler)
     print(f'Velociclos API running on http://localhost:{CONFIG["PORT"]}')
-    print(f'Admin panel: http://localhost:{CONFIG["PORT"]}/admin/index.html')
-    print(f'Password: {CONFIG["ADMIN_PASSWORD"]}')
+    print(f'Server running at http://localhost:{CONFIG["PORT"]}')
     server.serve_forever()
 
 if __name__ == '__main__':
