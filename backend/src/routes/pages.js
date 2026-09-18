@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (pagesRepo) => {
@@ -9,7 +10,7 @@ module.exports = (pagesRepo) => {
       const data = await pagesRepo.findAll({ orderBy: 'created_at', ascending: false });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching pages:', error);
+      logError('pages:list', error);
       res.status(500).json({ error: 'Failed to fetch pages' });
     }
   });
@@ -20,7 +21,7 @@ module.exports = (pagesRepo) => {
       if (!data) return res.status(404).json({ error: 'Page not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching page:', error);
+      logError('pages:get', error);
       res.status(500).json({ error: 'Failed to fetch page' });
     }
   });
@@ -31,7 +32,7 @@ module.exports = (pagesRepo) => {
       if (!data) return res.status(404).json({ error: 'Page not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching page by slug:', error);
+      logError('pages:getBySlug', error);
       res.status(500).json({ error: 'Failed to fetch page' });
     }
   });
@@ -54,7 +55,7 @@ module.exports = (pagesRepo) => {
       const data = await pagesRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating page:', error);
+      logError('pages:create', error);
       res.status(500).json({ error: 'Failed to create page' });
     }
   });
@@ -78,7 +79,7 @@ module.exports = (pagesRepo) => {
       if (!data) return res.status(404).json({ error: 'Page not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error updating page:', error);
+      logError('pages:update', error);
       res.status(500).json({ error: 'Failed to update page' });
     }
   });
@@ -89,7 +90,7 @@ module.exports = (pagesRepo) => {
       if (!result) return res.status(404).json({ error: 'Page not found' });
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting page:', error);
+      logError('pages:delete', error);
       res.status(500).json({ error: 'Failed to delete page' });
     }
   });

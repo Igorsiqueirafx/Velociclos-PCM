@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (modulesRepo, lessonsRepo) => {
@@ -9,7 +10,7 @@ module.exports = (modulesRepo, lessonsRepo) => {
       const data = await modulesRepo.findByCourseId(req.params.courseId);
       res.json(data);
     } catch (error) {
-      console.error('Error fetching modules:', error);
+      logError('modules:list', error);
       res.status(500).json({ error: 'Failed to fetch modules' });
     }
   });
@@ -26,7 +27,7 @@ module.exports = (modulesRepo, lessonsRepo) => {
       const data = await modulesRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating module:', error);
+      logError('modules:create', error);
       res.status(500).json({ error: 'Failed to create module' });
     }
   });
@@ -37,7 +38,7 @@ module.exports = (modulesRepo, lessonsRepo) => {
       if (!data) return res.status(404).json({ error: 'Module not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching module:', error);
+      logError('modules:get', error);
       res.status(500).json({ error: 'Failed to fetch module' });
     }
   });
@@ -55,7 +56,7 @@ module.exports = (modulesRepo, lessonsRepo) => {
       if (!data) return res.status(404).json({ error: 'Module not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error updating module:', error);
+      logError('modules:update', error);
       res.status(500).json({ error: 'Failed to update module' });
     }
   });
@@ -66,7 +67,7 @@ module.exports = (modulesRepo, lessonsRepo) => {
       if (!result) return res.status(404).json({ error: 'Module not found' });
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting module:', error);
+      logError('modules:delete', error);
       res.status(500).json({ error: 'Failed to delete module' });
     }
   });

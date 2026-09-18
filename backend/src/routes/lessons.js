@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (lessonsRepo, modulesRepo) => {
@@ -9,7 +10,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
       const data = await lessonsRepo.findByModuleId(req.params.moduleId);
       res.json(data);
     } catch (error) {
-      console.error('Error fetching lessons:', error);
+      logError('lessons:listByModule', error);
       res.status(500).json({ error: 'Failed to fetch lessons' });
     }
   });
@@ -19,7 +20,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
       const data = await lessonsRepo.findByCourseId(req.params.courseId);
       res.json(data);
     } catch (error) {
-      console.error('Error fetching lessons:', error);
+      logError('lessons:listByCourse', error);
       res.status(500).json({ error: 'Failed to fetch lessons' });
     }
   });
@@ -45,7 +46,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
       const data = await lessonsRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating lesson:', error);
+      logError('lessons:create', error);
       res.status(500).json({ error: 'Failed to create lesson' });
     }
   });
@@ -67,7 +68,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
       if (!data) return res.status(404).json({ error: 'Lesson not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error updating lesson:', error);
+      logError('lessons:update', error);
       res.status(500).json({ error: 'Failed to update lesson' });
     }
   });
@@ -78,7 +79,7 @@ module.exports = (lessonsRepo, modulesRepo) => {
       if (!result) return res.status(404).json({ error: 'Lesson not found' });
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting lesson:', error);
+      logError('lessons:delete', error);
       res.status(500).json({ error: 'Failed to delete lesson' });
     }
   });

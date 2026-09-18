@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { rateLimit } = require('../middleware/rateLimiter');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 const leadRateLimit = rateLimit({ windowMs: 60000, max: 5 });
@@ -11,7 +12,7 @@ module.exports = (subscribersRepo) => {
       const data = await subscribersRepo.findAll({ orderBy: 'created_at', ascending: false });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching leads:', error);
+      logError('leads:list', error);
       res.status(500).json({ error: 'Failed to fetch leads' });
     }
   });
@@ -52,7 +53,7 @@ module.exports = (subscribersRepo) => {
       });
       res.status(201).json({ success: true, message: 'Lead salvo com sucesso!', data });
     } catch (error) {
-      console.error('Error saving lead:', error);
+      logError('leads:create', error);
       res.status(500).json({ error: 'Failed to save lead' });
     }
   });

@@ -1,5 +1,6 @@
 const express = require('express');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (playlistsRepo) => {
@@ -8,14 +9,14 @@ module.exports = (playlistsRepo) => {
       const data = await playlistsRepo.findAll({});
       res.json(data);
     } catch (error) {
-      console.error('Error fetching playlists:', error);
+      logError('playlists:list', error);
       res.status(500).json({ error: 'Failed to fetch playlists' });
     }
   });
 
   router.post('/playlists/sync', authMiddleware, async (req, res) => {
     try {
-      const config = require('../config');
+      const config = require('../../config');
       const playlists = [];
       const playlistIds = config.PLAYLIST_IDS || [];
 
@@ -42,14 +43,14 @@ module.exports = (playlistsRepo) => {
 
       res.json({ synced: playlists.length, playlists });
     } catch (error) {
-      console.error('Error syncing playlists:', error);
+      logError('playlists:sync', error);
       res.status(500).json({ error: 'Failed to sync playlists' });
     }
   });
 
   router.get('/playlist/:id/items', async (req, res) => {
     try {
-      const config = require('../config');
+      const config = require('../../config');
       const playlistId = req.params.id;
       const url = `${config.YOUTUBE_API_BASE}/playlistItems?key=${config.YOUTUBE_API_KEY}&playlistId=${encodeURIComponent(playlistId)}&maxResults=50&part=snippet,contentDetails`;
       const response = await fetch(url);
@@ -65,7 +66,7 @@ module.exports = (playlistsRepo) => {
 
       res.json(videos);
     } catch (error) {
-      console.error('Error fetching playlist items:', error);
+      logError('playlists:items', error);
       res.status(500).json({ error: 'Failed to fetch playlist items' });
     }
   });

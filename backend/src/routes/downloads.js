@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { rateLimit } = require('../middleware/rateLimiter');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 const downloadRateLimit = rateLimit({ windowMs: 60000, max: 10 });
@@ -11,7 +12,7 @@ module.exports = (downloadsRepo) => {
       const data = await downloadsRepo.findAll({ orderBy: 'created_at', ascending: false });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching downloads:', error);
+      logError('downloads:list', error);
       res.status(500).json({ error: 'Failed to fetch downloads' });
     }
   });
@@ -30,7 +31,7 @@ module.exports = (downloadsRepo) => {
       const data = await downloadsRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating download:', error);
+      logError('downloads:create', error);
       res.status(500).json({ error: 'Failed to create download' });
     }
   });

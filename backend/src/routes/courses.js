@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (coursesRepo) => {
@@ -9,7 +10,7 @@ module.exports = (coursesRepo) => {
       const data = await coursesRepo.findAll({ orderBy: 'order_index', ascending: true });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching courses:', error);
+      logError('courses:list', error);
       res.status(500).json({ error: 'Failed to fetch courses' });
     }
   });
@@ -20,7 +21,7 @@ module.exports = (coursesRepo) => {
       if (!data) return res.status(404).json({ error: 'Course not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching course:', error);
+      logError('courses:get', error);
       res.status(500).json({ error: 'Failed to fetch course' });
     }
   });
@@ -41,7 +42,7 @@ module.exports = (coursesRepo) => {
       const data = await coursesRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating course:', error);
+      logError('courses:create', error);
       res.status(500).json({ error: 'Failed to create course' });
     }
   });
@@ -63,7 +64,7 @@ module.exports = (coursesRepo) => {
       if (!data) return res.status(404).json({ error: 'Course not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error updating course:', error);
+      logError('courses:update', error);
       res.status(500).json({ error: 'Failed to update course' });
     }
   });
@@ -74,7 +75,7 @@ module.exports = (coursesRepo) => {
       if (!result) return res.status(404).json({ error: 'Course not found' });
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting course:', error);
+      logError('courses:delete', error);
       res.status(500).json({ error: 'Failed to delete course' });
     }
   });

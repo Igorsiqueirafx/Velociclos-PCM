@@ -1,6 +1,7 @@
 const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { authMiddleware } = require('../middleware/auth');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 module.exports = (certificatesRepo) => {
@@ -9,7 +10,7 @@ module.exports = (certificatesRepo) => {
       const data = await certificatesRepo.findAll({ orderBy: 'order_index', ascending: true });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching certificates:', error);
+      logError('certificates:list', error);
       res.status(500).json({ error: 'Failed to fetch certificates' });
     }
   });
@@ -27,7 +28,7 @@ module.exports = (certificatesRepo) => {
       const data = await certificatesRepo.create(payload);
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error creating certificate:', error);
+      logError('certificates:create', error);
       res.status(500).json({ error: 'Failed to create certificate' });
     }
   });
@@ -46,7 +47,7 @@ module.exports = (certificatesRepo) => {
       if (!data) return res.status(404).json({ error: 'Certificate not found' });
       res.json(data);
     } catch (error) {
-      console.error('Error updating certificate:', error);
+      logError('certificates:update', error);
       res.status(500).json({ error: 'Failed to update certificate' });
     }
   });
@@ -57,7 +58,7 @@ module.exports = (certificatesRepo) => {
       if (!result) return res.status(404).json({ error: 'Certificate not found' });
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting certificate:', error);
+      logError('certificates:delete', error);
       res.status(500).json({ error: 'Failed to delete certificate' });
     }
   });

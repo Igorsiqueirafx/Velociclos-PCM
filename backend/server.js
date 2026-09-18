@@ -7,6 +7,7 @@ const config = require('./config');
 const { repositoryFactory } = require('./src/repositories');
 const errorHandler = require('./src/middleware/errorHandler');
 const { requestLogger } = require('./src/middleware/requestLogger');
+const { logError, logWarn } = require('./src/middleware/logger');
 const createCoursesRoutes = require('./src/routes/courses');
 const createModulesRoutes = require('./src/routes/modules');
 const createLessonsRoutes = require('./src/routes/lessons');
@@ -48,7 +49,7 @@ function loadJSON(filePath, defaultValue) {
       return JSON.parse(raw);
     }
   } catch (err) {
-    console.warn('loadJSON error:', err.message);
+    logWarn('server:loadJSON', err.message);
   }
   return defaultValue;
 }
@@ -61,7 +62,7 @@ function saveJSON(filePath, data) {
     }
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   } catch (err) {
-    console.error('saveJSON error:', err.message);
+    logError('server:saveJSON', err);
   }
 }
 
@@ -145,7 +146,7 @@ const seed = async () => {
   }
 };
 
-seed().catch((e) => console.error('Seed error:', e));
+seed().catch((e) => logError('server:seed', e));
 
 // ============================================
 // HEALTH
@@ -210,7 +211,7 @@ app.get('/api/videos', async (req, res) => {
     const data = await lessonsRepo.findAll({ orderBy: 'created_at', ascending: false });
     res.json(data);
   } catch (error) {
-    console.error('Error fetching videos:', error);
+    logError('legacy:videos:list', error);
     res.status(500).json({ error: 'Failed to fetch videos' });
   }
 });
@@ -228,7 +229,7 @@ app.post('/api/videos', async (req, res) => {
     const data = await lessonsRepo.create(payload);
     res.status(201).json(data);
   } catch (error) {
-    console.error('Error creating video:', error);
+    logError('legacy:videos:create', error);
     res.status(500).json({ error: 'Failed to save video' });
   }
 });

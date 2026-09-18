@@ -1,5 +1,6 @@
 const express = require('express');
 const { rateLimit } = require('../middleware/rateLimiter');
+const { logError } = require('../middleware/logger');
 const router = express.Router();
 
 const subscriberRateLimit = rateLimit({ windowMs: 60000, max: 5 });
@@ -10,7 +11,7 @@ module.exports = (subscribersRepo) => {
       const data = await subscribersRepo.findAll({ orderBy: 'created_at', ascending: false });
       res.json(data);
     } catch (error) {
-      console.error('Error fetching subscribers:', error);
+      logError('subscribers:list', error);
       res.status(500).json({ error: 'Failed to fetch subscribers' });
     }
   });
@@ -30,7 +31,7 @@ module.exports = (subscribersRepo) => {
       const data = await subscribersRepo.create({ email, source: 'website' });
       res.status(201).json(data);
     } catch (error) {
-      console.error('Error saving subscriber:', error);
+      logError('subscribers:create', error);
       res.status(500).json({ error: 'Failed to save subscriber' });
     }
   });

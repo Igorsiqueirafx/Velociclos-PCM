@@ -1,3 +1,5 @@
+const { logError } = require('../src/middleware/logger');
+
 let app;
 let initError = null;
 
@@ -5,7 +7,7 @@ try {
   app = require('../server').app;
 } catch (error) {
   initError = error;
-  console.error('Server init error:', error);
+  logError('server:init', error);
 }
 
 const handler = (req, res) => {
@@ -20,7 +22,7 @@ const handler = (req, res) => {
   try {
     return app(req, res);
   } catch (err) {
-    console.error('Handler error:', err);
+    logError('server:handler', err);
     res.status(500).json({
       error: 'Handler error',
       message: err.message,
