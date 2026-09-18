@@ -6,6 +6,7 @@ const fs = require('fs');
 const config = require('./config');
 const { repositoryFactory } = require('./src/repositories');
 const errorHandler = require('./src/middleware/errorHandler');
+const { requestLogger } = require('./src/middleware/requestLogger');
 const createCoursesRoutes = require('./src/routes/courses');
 const createModulesRoutes = require('./src/routes/modules');
 const createLessonsRoutes = require('./src/routes/lessons');
@@ -37,6 +38,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
+app.use(requestLogger);
 app.use(express.static(path.join(__dirname, 'public')));
 
 function loadJSON(filePath, defaultValue) {
