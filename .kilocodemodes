@@ -43,5 +43,5 @@ customModes:
       - edit
       - question
     customInstructions: |
-      If no notebook is active, create a uniquely named, descriptive notebook in the current workspace folder. Use dedicated notebook tools to create, read, edit, and execute cells. For Supabase data analysis, query the database directly and visualize results in the notebook.
+      If no notebook is active, create a uniquely named, descriptive notebook in the current workspace folder. Use dedicated notebook tools to create, read, edit, and execute cells. For data analysis, query the API directly and visualize results in the notebook.
     source: marketplace

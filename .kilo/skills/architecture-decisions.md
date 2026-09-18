@@ -3,8 +3,7 @@
 ## Project Overview
 Velociclos PCM - Educational platform for trading/forex automation
 - Next.js 15 App Router
-- Supabase (Auth + Database + Storage)
-- Vercel deployment
+- Vercel deployment (frontend + serverless backend)
 - TypeScript + Tailwind + Vitest
 
 ---
@@ -26,25 +25,7 @@ Velociclos PCM - Educational platform for trading/forex automation
 
 ---
 
-## ADR 002: Supabase for Backend
-**Date**: 2024-08-30
-**Status**: Accepted
-
-**Context**: Need auth, database, storage, realtime.
-
-**Decision**: Supabase (PostgreSQL + Auth + Storage + Realtime).
-
-**Consequences**:
-- ✅ PostgreSQL with Row Level Security
-- ✅ Built-in auth (email, OAuth, magic links)
-- ✅ Auto-generated TypeScript types
-- ✅ Realtime subscriptions
-- ⚠️ Vendor lock-in
-- ⚠️ Cold starts on free tier
-
----
-
-## ADR 003: Repository Pattern for Data Access
+## ADR 002: Repository Pattern for Data Access
 **Date**: 2024-08-30
 **Status**: Accepted
 
@@ -55,11 +36,7 @@ Velociclos PCM - Educational platform for trading/forex automation
 ```ts
 // lib/repositories/articles.ts
 export async function getArticles(): Promise<Article[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('articles').select('*')
-  if (error || !data?.length) return FALLBACK_ARTICLES
-  return data
+  // Backend-backed via centralized API client
 }
 ```
 
@@ -71,7 +48,7 @@ export async function getArticles(): Promise<Article[]> {
 
 ---
 
-## ADR 004: Client Components Only When Necessary
+## ADR 003: Client Components Only When Necessary
 **Date**: 2024-08-30
 **Status**: Accepted
 
@@ -190,7 +167,7 @@ export async function getArticles(): Promise<Article[]> {
 
 **Decision**: 
 - `NEXT_PUBLIC_*` for client-safe vars
-- Non-prefixed for server-only (Supabase service key, Brevo API)
+- Non-prefixed for server-only (Brevo API, Admin password)
 - `.env.local` for local (gitignored)
 - Vercel dashboard for production
 

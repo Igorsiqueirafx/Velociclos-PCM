@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { logEvent } from '@/lib/logging'
+import type { Course } from './CursosClient'
 import CursosHero from './CursosHero'
 import CursosClient from './CursosClient'
 import CursosCtaSection from './CursosCtaSection'
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 async function getCourses() {
   try {
     const { apiGet } = await import('@/lib/api')
-    return await apiGet<any[]>('/api/courses')
+    return await apiGet<Course[]>('/api/courses')
   } catch (error) {
     logEvent('courses_load', 'error', 'Failed to load courses', { error: error instanceof Error ? error.message : String(error) })
     return []

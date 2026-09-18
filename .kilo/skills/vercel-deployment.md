@@ -43,10 +43,6 @@ git push origin feature/my-feature
 ```env
 # Vercel Dashboard → Settings → Environment Variables
 
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
 # Email (Brevo)
 BREVO_API_KEY=xkeysib-xxxxxxxxxxxxx
 
@@ -54,9 +50,14 @@ BREVO_API_KEY=xkeysib-xxxxxxxxxxxxx
 ADMIN_EMAILS=admin@domain.com,admin2@domain.com
 ADMIN_PASSWORD=secure-password-here
 
-# Optional
-YOUTUBE_API_KEY=AIzaSyxxxxxxxxxxxx
+# Backend
 NEXT_PUBLIC_BACKEND_URL=https://api.domain.com
+
+# Auth
+AUTH_SECRET=your-auth-secret-here-generate-with-openssl-rand-base64-32
+NEXTAUTH_URL=https://velociclos.vercel.app
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
 ```
 
 ### Preview vs Production

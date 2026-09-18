@@ -40,10 +40,6 @@
 /ea
 /relogio
 /entrar (newsletter com rate limit)
-/lead-capture
-/cadastro-lead
-/auth/login
-/auth/register
 /site-map (NOVO!)
 ```
 
@@ -178,13 +174,7 @@ git push origin main
 ## 🎯 Próximas Etapas (Após Deploy)
 
 ### Curto Prazo
-1. Execute SQL migration em Supabase:
-   ```sql
-   -- Copie e execute em: https://app.supabase.com/project/*/sql/new
-   -- Arquivo: .kilo/queries/subscribers.sql
-   ```
-
-2. Configure BREVO_API_KEY em Vercel:
+1. Configure BREVO_API_KEY em Vercel:
    - Vá para: Vercel Dashboard → Project Settings → Environment Variables
    - Nome: `BREVO_API_KEY`
    - Valor: (copie de https://app.brevo.com/account/api)

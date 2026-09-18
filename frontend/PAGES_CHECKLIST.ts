@@ -68,21 +68,7 @@
 // URL: /entrar
 // Método: GET/POST
 // Auth: Não
-// Descrição: Formulário de lead capture
-// Status: ✅ Implementada (com rate limiting + Brevo email)
-
-// ✅ Lead Capture Landing Page
-// URL: /lead-capture
-// Método: GET/POST
-// Auth: Não
-// Descrição: Landing page para captura de contatos
-// Status: ✅ Implementada
-
-// ✅ Cadastro Lead
-// URL: /cadastro-lead
-// Método: GET/POST
-// Auth: Não
-// Descrição: Formulário de cadastro de leads
+// Descrição: Formulário de lead capture com rate limiting e Brevo
 // Status: ✅ Implementada
 
 // ✅ Sitemap / Índice
@@ -101,13 +87,6 @@
 // Método: GET/POST
 // Auth: Não (mas usuários logados são redirecionados)
 // Descrição: Página de login com GitHub OAuth via NextAuth
-// Status: ✅ Implementada
-
-// ✅ Register
-// URL: /auth/register
-// Método: GET/POST
-// Auth: Não (mas usuários logados são redirecionados)
-// Descrição: Página de registro com Google OAuth
 // Status: ✅ Implementada
 
 // ✅ Auth Callback

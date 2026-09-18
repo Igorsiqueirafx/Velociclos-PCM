@@ -33,23 +33,19 @@ export default defineConfig({
 import '@testing-library/jest-dom'
 import { vi } from 'vitest'
 
-// Mock next/navigation
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
-  usePathname: () => '/',
-  useSearchParams: () => new URLSearchParams(),
+// Mock next-auth
+vi.mock('next-auth/react', () => ({
+  SessionProvider: ({ children }: { children: React.ReactNode }) => children,
+  useSession: () => ({ data: null, status: 'unauthenticated' }),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
 }))
 
-// Mock Supabase
-vi.mock('@/app/lib/supabase/server', () => ({
-  createClient: () => ({
-    auth: { getUser: vi.fn() },
-    from: vi.fn(() => ({
-      select: vi.fn().mockReturnThis(),
-      eq: vi.fn().mockReturnThis(),
-      single: vi.fn().mockResolvedValue({ data: null, error: null }),
-    })),
-  }),
+// Mock backend API
+vi.mock('@/lib/api', () => ({
+  api: vi.fn(),
+  apiGet: vi.fn(),
+  apiPost: vi.fn(),
 }))
 ```
 
@@ -152,6 +148,6 @@ npm run test -- --watch  # Watch mode
 ## Best Practices
 - Test behavior, not implementation
 - Use `screen.getByRole` for accessibility
-- Mock external dependencies (Supabase, APIs)
+- Mock external dependencies (APIs, server actions)
 - Keep tests fast and isolated
 - Aim for 80%+ coverage on critical paths

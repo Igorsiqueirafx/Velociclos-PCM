@@ -78,10 +78,6 @@ Documento completo com:
 | `/ea` | Expert Advisor | ✅ |
 | `/relogio` | Clock Forex | ✅ |
 | `/entrar` | Newsletter signup | ✅ |
-| `/lead-capture` | Lead landing | ✅ |
-| `/cadastro-lead` | Lead form | ✅ |
-| `/auth/login` | Login | ✅ |
-| `/auth/register` | Registro | ✅ |
 | `/sitemap` | Índice completo | ✅ **NOVO** |
 
 ### Com Autenticação (Login obrigatório)
@@ -203,10 +199,9 @@ frontend/
 
 ## ⚠️ Notas Importantes
 
-1. **Supabase**: Tabelas `subscribers` precisa estar criada (execute `.kilo/queries/subscribers.sql`)
-2. **Brevo**: BREVO_API_KEY precisa ser configurado no Vercel para enviar emails
-3. **Admin Auth**: Usuários específicos precisam estar em ADMIN_EMAILS para acessar `/dashboard`
-4. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
+1. **Brevo**: BREVO_API_KEY precisa ser configurado no Vercel para enviar emails
+2. **Admin Auth**: Usuários específicos precisam estar em ADMIN_EMAILS para acessar `/dashboard`
+3. **Rate Limiting**: `/entrar` tem proteção (máx 3 tentativas por 10 min)
 
 ---
 

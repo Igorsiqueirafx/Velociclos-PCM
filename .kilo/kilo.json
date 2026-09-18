@@ -16,14 +16,6 @@
         "GITHUB_READ_ONLY": "1"
       }
     },
-    "supabase": {
-      "type": "local",
-      "command": ["npx", "-y", "@supabase/mcp-server-supabase@0.5.5", "--access-token", "{{SUPABASE_ACCESS_TOKEN}}"],
-      "enabled": true,
-      "env": {
-        "SUPABASE_ACCESS_TOKEN": "{{SUPABASE_ACCESS_TOKEN}}"
-      }
-    },
     "filesystem": {
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\igorl\\OneDrive\\Desktop\\Kilo de código"],
