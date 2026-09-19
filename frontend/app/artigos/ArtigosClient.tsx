@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useMemo } from 'react'
 import AppleCard from '@/components/AppleCard'
@@ -93,7 +93,7 @@ export default function ArtigosClient({ initialArticles }: ArtigosClientProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredArticles.map((article) => (
-              <AppleCard key={article.id} className="h-full text-left">
+              <AppleCard key={article.id} hover className="h-full text-left">
                 <div className="p-6 flex flex-col h-full">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">

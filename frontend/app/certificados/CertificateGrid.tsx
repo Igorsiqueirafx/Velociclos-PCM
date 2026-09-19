@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Image from 'next/image'
 import AppleCard from '@/components/AppleCard'
@@ -30,14 +30,14 @@ export default function CertificateGrid({ certificates, onSelect }: CertificateG
               className="group text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
               aria-label={`Ver certificado: ${cert.title}`}
             >
-              <AppleCard className="overflow-hidden">
+              <AppleCard hover className="overflow-hidden">
                 <div className="aspect-square overflow-hidden relative">
                   {cert.image ? (
                     <Image
                       src={cert.image}
                       alt={`Certificado ${cert.title}`}
                       fill
-                      className="object-cover transition-transform group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 20vw"
                       placeholder="blur"
                       blurDataURL={PLACEHOLDER_SVG}
@@ -51,7 +51,7 @@ export default function CertificateGrid({ certificates, onSelect }: CertificateG
                   )}
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-white group-hover:text-[#0071e3] transition-colors">
+                  <h3 className="text-lg font-semibold text-white">
                     {cert.title}
                   </h3>
                   <p className="text-sm text-[#8a8a8d] mt-1 line-clamp-2">
