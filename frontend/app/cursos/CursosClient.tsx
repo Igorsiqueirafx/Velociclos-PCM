@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useRef } from 'react'
 import { logEvent } from '@/lib/logging'
@@ -116,24 +116,27 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
               onClick={() => loadModules(course.id)}
               className="text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
             >
-              <AppleCard className="h-full overflow-hidden">
+              <AppleCard hover className="h-full overflow-hidden">
                 <div className="relative aspect-video">
                   <img
                     src={course.thumbnail || '/placeholder-course.jpg'}
                     alt={course.title}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.src = 'https://via.placeholder.com/320x180/1e1e1e/8a8a8d?text=Sem+thumbnail'
                     }}
                   />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i className="fas fa-play text-3xl text-white" aria-hidden="true"></i>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
+                      <i className="fas fa-play text-white text-xl ml-1" aria-hidden="true" />
+                    </div>
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#0071e3] transition-colors line-clamp-1">
+                  <h3 className="text-lg font-semibold text-white mb-1 line-clamp-1">
                     {course.title}
                   </h3>
                   <p className="text-sm text-[#8a8a8d] line-clamp-2">
