@@ -283,52 +283,50 @@ export default function FimatheExperience() {
           </div>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)]">
-          <div className="relative w-full">
-            <div
-              className="relative w-full overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
-              role="region"
-              aria-roledescription="carousel"
-              aria-label="Galeria de fotos do Fimathe Experience"
-              tabIndex={0}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                <CarouselProgressBar progress={progress} />
+        <div className="w-full">
+          <div
+            className="relative w-full max-w-full overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Galeria de fotos do Fimathe Experience"
+            tabIndex={0}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <CarouselProgressBar progress={progress} />
 
-                <div className="absolute inset-0">
-                  {IMAGES.map((image, index) => (
-                    <CarouselSlide
-                      key={image.src}
-                      image={image}
-                      index={index}
-                      currentIndex={currentIndex}
-                      totalSlides={IMAGES.length}
-                    />
-                  ))}
-                  <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
-                </div>
+              <div className="absolute inset-0">
+                {IMAGES.map((image, index) => (
+                  <CarouselSlide
+                    key={image.src}
+                    image={image}
+                    index={index}
+                    currentIndex={currentIndex}
+                    totalSlides={IMAGES.length}
+                  />
+                ))}
+                <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
               </div>
-
-              <CarouselNavigation
-                currentIndex={currentIndex}
-                totalSlides={IMAGES.length}
-                isPlaying={isPlaying}
-                _onPrev={prevSlide}
-                _onNext={nextSlide}
-                onGoToSlide={goToSlide}
-                onTogglePlay={() => setIsPlaying(!isPlaying)}
-              />
             </div>
 
-            <CarouselThumbnails
-              images={IMAGES}
+            <CarouselNavigation
               currentIndex={currentIndex}
+              totalSlides={IMAGES.length}
+              isPlaying={isPlaying}
+              _onPrev={prevSlide}
+              _onNext={nextSlide}
               onGoToSlide={goToSlide}
+              onTogglePlay={() => setIsPlaying(!isPlaying)}
             />
           </div>
+
+          <CarouselThumbnails
+            images={IMAGES}
+            currentIndex={currentIndex}
+            onGoToSlide={goToSlide}
+          />
         </div>
       </div>
     </section>
