@@ -2,6 +2,9 @@
 <#
 .SYNOPSIS
 Deploy the Velociclos backend to Vercel production without Railway or paid GitHub Actions.
+
+.PARAMETER DryRun
+Run deployment in dry-run mode without actually deploying.
 #>
 param(
   [switch]$DryRun
@@ -68,7 +71,18 @@ if ($statusCode -eq 200) {
   Write-Ok "Backend health check passed: $healthUrl"
 } else {
   Write-Fail "Backend health check failed with status: $statusCode"
+  Write-Host "Make sure Supabase environment variables are configured in Vercel Dashboard."
   exit 1
 }
 
 Write-Ok 'Backend deploy finished.'
+Write-Host "`nRequired Vercel environment variables:"
+Write-Host "  SUPABASE_URL"
+Write-Host "  SUPABASE_PUBLISHABLE_KEY"
+Write-Host "  SUPABASE_SECRET_KEY (optional)"
+Write-Host "  FRONTEND_URL=https://velociclos.vercel.app"
+Write-Host "  CORS_ORIGIN=https://velociclos.vercel.app"
+Write-Host "  YOUTUBE_API_KEY"
+Write-Host "  PLAYLIST_IDS"
+Write-Host "  USE_IN_MEMORY=false"
+Write-Host "  BACKEND_URL=https://velociclos-api.vercel.app"

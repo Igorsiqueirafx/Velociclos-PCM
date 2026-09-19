@@ -10,4 +10,7 @@ module.exports = {
     : null,
   BACKEND_URL: process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3001}`,
   USE_IN_MEMORY: process.env.USE_IN_MEMORY === 'true',
+  SUPABASE_URL: process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '',
+  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY || '',
 };
