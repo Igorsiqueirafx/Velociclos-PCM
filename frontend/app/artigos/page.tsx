@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: 'Artigos completos sobre Forex, trading e mesas proprietárias. Conteúdo exclusivo sobre análise técnica, gestão de risco e estratégias Fimathe.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function ArtigosPage() {
   let articles: ArticleRow[] = []
 

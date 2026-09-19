@@ -55,6 +55,10 @@ const FALLBACK_CERTIFICATES: CertificateRow[] = [
 ]
 
 export async function getCertificates(): Promise<CertificateRow[]> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return FALLBACK_CERTIFICATES
+  }
+
   try {
     const data = await apiGet<unknown[]>('/api/certificates')
     

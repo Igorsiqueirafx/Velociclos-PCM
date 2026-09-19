@@ -14,7 +14,7 @@ export type ArticleRow = {
   tags?: string[] | null
 }
 
-const FALLBACK_ARTICLES: ArticleRow[] = [
+export const FALLBACK_ARTICLES: ArticleRow[] = [
   {
     id: 'mitos-prop-firms',
     title: '5 Mitos sobre Mesas Proprietárias no Forex',
@@ -78,6 +78,10 @@ const FALLBACK_ARTICLES: ArticleRow[] = [
 ]
 
 export async function getPublishedArticles(): Promise<ArticleRow[]> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return FALLBACK_ARTICLES
+  }
+
   try {
     const articles = await apiGet<ArticleRow[]>('/api/articles')
     if (articles && articles.length > 0) {

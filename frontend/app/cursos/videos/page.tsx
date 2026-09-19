@@ -1,11 +1,14 @@
 import { Metadata } from 'next'
 import { logEvent } from '@/lib/logging'
 import VideoCard from '@/components/VideoCard'
+import AppleCard from '@/components/AppleCard'
 
 export const metadata: Metadata = {
   title: 'Todos os Vídeos - Velociclos PCM',
   description: 'Catálogo completo de vídeos do canal Velociclos PCM. Acesse todas as aulas, análises e conteúdos sobre o Método Fimathe.',
 }
+
+export const dynamic = 'force-dynamic'
 
 async function getAllVideos() {
   try {
@@ -64,14 +67,15 @@ export default async function VideosPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {videos.map((video: { videoId: string; title: string; description?: string; thumbnail: string; publishedAt: string }) => (
-                  <VideoCard
-                    key={video.videoId}
-                    videoId={video.videoId}
-                    title={video.title}
-                    description={video.description}
-                    thumbnail={video.thumbnail}
-                    publishedAt={video.publishedAt}
-                  />
+                  <AppleCard key={video.videoId} hover className="h-full">
+                    <VideoCard
+                      videoId={video.videoId}
+                      title={video.title}
+                      description={video.description}
+                      thumbnail={video.thumbnail}
+                      publishedAt={video.publishedAt}
+                    />
+                  </AppleCard>
                 ))}
               </div>
             </>

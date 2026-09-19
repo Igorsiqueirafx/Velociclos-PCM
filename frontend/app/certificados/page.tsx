@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: 'Certificados que comprovam a capacitação técnica de Igor Siqueira para divulgar o método Fimathe de Marcelo Ferreira e democratizar o acesso ao Mercado Forex.',
 }
 
+export const dynamic = 'force-dynamic'
+
 interface Certificate {
   id: string
   title: string

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getPublishedArticles, type ArticleRow } from '@/lib/repositories/articles'
+import { getPublishedArticles, FALLBACK_ARTICLES, type ArticleRow } from '@/lib/repositories/articles'
 import { logEvent } from '@/lib/logging'
 
 interface PageProps {
@@ -25,7 +25,9 @@ export async function generateStaticParams() {
       slug: article.slug,
     }))
   } catch {
-    return []
+    return FALLBACK_ARTICLES.map((article) => ({
+      slug: article.slug,
+    }))
   }
 }
 
