@@ -1,22 +1,22 @@
-'use client'
+﻿'use client'
 
 import { useCallback } from 'react'
 import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 
 const CATEGORY_LABELS: Record<string, string> = {
-  'exaustao': 'Exaustão',
-  'canal': 'Canal',
-  'erro': 'Erro',
-  'rotina': 'Rotina',
-  'setup': 'Setup',
+  exaustao: 'Exaustão',
+  canal: 'Canal',
+  erro: 'Erro',
+  rotina: 'Rotina',
+  setup: 'Setup',
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'exaustao': 'bg-red-500/20 text-red-400',
-  'canal': 'bg-blue-500/20 text-blue-400',
-  'erro': 'bg-yellow-500/20 text-yellow-400',
-  'rotina': 'bg-green-500/20 text-green-400',
-  'setup': 'bg-purple-500/20 text-purple-400',
+  exaustao: 'bg-red-500/20 text-red-400',
+  canal: 'bg-blue-500/20 text-blue-400',
+  erro: 'bg-yellow-500/20 text-yellow-400',
+  rotina: 'bg-green-500/20 text-green-400',
+  setup: 'bg-purple-500/20 text-purple-400',
 }
 
 interface VideoThumbnailProps {
@@ -34,7 +34,20 @@ interface VideoThumbnailProps {
   onImageError?: () => void
 }
 
-export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, imageLoaded, imageError, onPlay, onClose, duration, category, onImageLoad, onImageError }: VideoThumbnailProps) {
+export default function VideoThumbnail({
+  videoId,
+  title,
+  thumbnail,
+  isPlaying,
+  imageLoaded,
+  imageError,
+  onPlay,
+  onClose,
+  duration,
+  category,
+  onImageLoad,
+  onImageError,
+}: VideoThumbnailProps) {
   const handlePlayClick = useCallback(() => {
     if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return
     onPlay()
@@ -52,12 +65,6 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
           title={title}
           autoplay
           onClose={handleCloseClick}
-          overlay={
-            <div
-              className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              onClick={handlePlayClick}
-            />
-          }
         />
       ) : (
         <>
@@ -67,21 +74,28 @@ export default function VideoThumbnail({ videoId, title, thumbnail, isPlaying, i
           <img
             src={imageError ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : thumbnail}
             alt={title}
-            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
             decoding="async"
             onLoad={onImageLoad}
             onError={onImageError}
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          />
-          <div
-            className="absolute inset-0 flex items-center justify-center cursor-pointer"
+            className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"
             onClick={handlePlayClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handlePlayClick()
+              }
+            }}
           >
-            <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
-              <i className="fas fa-play text-white text-xl ml-1" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
+                <i className="fas fa-play text-white text-xl ml-1" aria-hidden="true" />
+              </div>
             </div>
           </div>
           {duration && (

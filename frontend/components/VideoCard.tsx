@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import VideoCardCompact from './VideoCardCompact'
@@ -73,21 +73,23 @@ export default function VideoCard({
   const handleImageError = () => { setImageError(true); setImageLoaded(true) }
 
   return (
-    <AppleCard hover className="h-full">
-      <VideoThumbnail
-        videoId={videoId}
-        title={title}
-        thumbnail={thumbnail}
-        isPlaying={isPlaying}
-        imageLoaded={imageLoaded}
-        imageError={imageError}
-        onPlay={handlePlay}
-        onClose={handleClose}
-        duration={duration}
-        category={category}
-        onImageLoad={handleImageLoad}
-        onImageError={handleImageError}
-      />
+    <AppleCard hover className="h-full flex flex-col">
+      <div className="flex-1">
+        <VideoThumbnail
+          videoId={videoId}
+          title={title}
+          thumbnail={thumbnail}
+          isPlaying={isPlaying}
+          imageLoaded={imageLoaded}
+          imageError={imageError}
+          onPlay={handlePlay}
+          onClose={handleClose}
+          duration={duration}
+          category={category}
+          onImageLoad={handleImageLoad}
+          onImageError={handleImageError}
+        />
+      </div>
       <VideoMeta
         title={title}
         description={description}
