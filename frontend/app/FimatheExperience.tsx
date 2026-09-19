@@ -284,7 +284,7 @@ export default function FimatheExperience() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)]">
-          <div className="relative w-full max-w-5xl mx-auto">
+          <div className="relative w-full">
             <div
               className="relative w-full overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
               role="region"
