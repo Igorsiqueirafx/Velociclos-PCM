@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 
@@ -92,7 +92,7 @@ function CarouselThumbnails({ images, currentIndex, onGoToSlide }: CarouselThumb
             type="button"
             aria-label={`Ver miniatura ${index + 1}`}
             aria-current={index === currentIndex ? 'true' : 'false'}
-            className={`flex-shrink-0 aspect-[4/3] w-32 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] ${index === currentIndex ? 'border-[#0071e3] opacity-100 ring-2 ring-[#0071e3]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
+            className={`flex-shrink-0 aspect-[4/3] w-28 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] ${index === currentIndex ? 'border-[#0071e3] opacity-100 ring-2 ring-[#0071e3]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
             onClick={() => onGoToSlide(index)}
             scroll-snap-align="center"
           >
@@ -284,30 +284,32 @@ export default function FimatheExperience() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)]">
-          <div className="relative">
-            <div 
-              className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]" 
-              role="region" 
-              aria-roledescription="carousel" 
-              aria-label="Galeria de fotos do Fimathe Experience" 
+          <div className="relative w-full max-w-5xl mx-auto">
+            <div
+              className="relative w-full overflow-hidden rounded-2xl border border-[#3a3a3c] bg-[#1e1e1e] touch-pan-y focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Galeria de fotos do Fimathe Experience"
               tabIndex={0}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <CarouselProgressBar progress={progress} />
-              
-              <div className="relative h-full w-full">
-                {IMAGES.map((image, index) => (
-                  <CarouselSlide
-                    key={image.src}
-                    image={image}
-                    index={index}
-                    currentIndex={currentIndex}
-                    totalSlides={IMAGES.length}
-                  />
-                ))}
-                <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <CarouselProgressBar progress={progress} />
+
+                <div className="absolute inset-0">
+                  {IMAGES.map((image, index) => (
+                    <CarouselSlide
+                      key={image.src}
+                      image={image}
+                      index={index}
+                      currentIndex={currentIndex}
+                      totalSlides={IMAGES.length}
+                    />
+                  ))}
+                  <CarouselControls onPrev={prevSlide} onNext={nextSlide} />
+                </div>
               </div>
 
               <CarouselNavigation
