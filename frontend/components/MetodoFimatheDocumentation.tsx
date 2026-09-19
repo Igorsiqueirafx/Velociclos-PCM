@@ -1,14 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { sections } from '@/lib/fimathe-docs'
 import { sectionRenderers } from './MetodoFimatheDocumentationRenderers'
 
 export default function MetodoFimatheDocumentation() {
   const [activeSection, setActiveSection] = useState('historia')
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-20% 0px -80% 0px' }
+    )
+
+    sections.forEach((section) => {
+      const element = document.getElementById(section.id)
+      if (element) observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#0a0a12] via-[#0f0f19] to-[#1a1f25]">
+    <main className="min-h-screen">
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#0071e3] rounded-full filter blur-[150px] opacity-[0.04]" />
@@ -33,17 +53,17 @@ export default function MetodoFimatheDocumentation() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <aside className="lg:col-span-1">
-              <div className="sticky top-24 bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-4">
+              <div className="sticky top-24 glass-card rounded-xl p-4">
                 <h3 className="text-white font-semibold mb-3 text-sm">Navegação</h3>
                 <nav className="space-y-1">
                   {sections.map((section) => (
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                         activeSection === section.id
                           ? 'bg-[#0071e3] text-white'
-                          : 'text-[#8a8a8d] hover:text-white hover:bg-[#2a2a2d]'
+                          : 'text-[#8a8a8d] hover:text-white hover:bg-white/5'
                       }`}
                     >
                       {section.title}
@@ -54,11 +74,12 @@ export default function MetodoFimatheDocumentation() {
             </aside>
 
             <div className="lg:col-span-3 space-y-12">
-              {sections.map((section) => (
+              {sections.map((section, index) => (
                 <article
                   key={section.id}
                   id={section.id}
-                  className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6 sm:p-8 scroll-mt-24"
+                  className="glass-card rounded-xl p-6 sm:p-8 scroll-mt-24 animate-slide-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-6">{section.title}</h2>
                   {sectionRenderers[section.id]?.(section)}

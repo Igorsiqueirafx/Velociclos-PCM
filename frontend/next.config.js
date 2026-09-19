@@ -31,10 +31,29 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
+    return [
+      {
+        source: '/api/articles',
+        destination: `${backend}/api/articles`,
+      },
+      {
+        source: '/api/certificates',
+        destination: `${backend}/api/certificates`,
+      },
+      {
+        source: '/api/courses',
+        destination: `${backend}/api/courses`,
+      },
+      {
+        source: '/api/courses/:courseId/modules',
+        destination: `${backend}/api/courses/:courseId/modules`,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
-
-
 
 

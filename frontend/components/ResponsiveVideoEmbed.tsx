@@ -100,64 +100,98 @@ export default function ResponsiveVideoEmbed({
     onReady?.()
   }, [handleLoad, onReady])
 
+  const iframeProps = {
+    src,
+    title,
+    iframeRef,
+    loading,
+    onLoad: handleLoadWithReady,
+    onError: handleError,
+  }
+
   return (
     <div className={`relative aspect-video w-full bg-black ${className}`}>
-      {loading && !error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#121212]">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-10 h-10 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs text-[#8a8a8d]">Carregando vídeo...</span>
-          </div>
-        </div>
-      )}
+      {loading && !error && <LoadingSpinner />}
 
-      {error ? (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#121212]">
-          <div className="text-center">
-            <svg className="w-10 h-10 text-[#ff453a] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <p className="text-sm text-[#8a8a8d]">Não foi possível carregar o vídeo.</p>
-            <button
-              onClick={retry}
-              className="mt-3 px-4 py-2 bg-[#0071e3] text-white text-sm font-semibold rounded-lg hover:bg-[#005fd9] transition-colors"
-            >
-              Tentar novamente
-            </button>
-          </div>
-        </div>
-      ) : (
-        <iframe
-          ref={iframeRef}
-          src={src}
-          title={title}
-          className="absolute inset-0 w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin allow-presentation"
-          onLoad={handleLoadWithReady}
-          onError={handleError}
-          style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.3s ease' }}
-        />
-      )}
+      {error ? <ErrorState onRetry={retry} /> : <VideoIframe {...iframeProps} />}
 
       {overlay && !loading && !error && (
         <div className="absolute inset-0 pointer-events-none">{overlay}</div>
       )}
 
-      {onClose && !loading && !error && (
+      {onClose && !loading && !error && <CloseButton onClose={onClose} />}
+    </div>
+  )
+}
+
+type IframeProps = {
+  src: string
+  title: string
+  iframeRef: React.RefObject<HTMLIFrameElement | null>
+  loading: boolean
+  onLoad: () => void
+  onError: () => void
+}
+
+function VideoIframe({ src, title, iframeRef, loading, onLoad, onError }: IframeProps) {
+  return (
+    <iframe
+      ref={iframeRef}
+      src={src}
+      title={title}
+      className="absolute inset-0 w-full h-full"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-presentation"
+      onLoad={onLoad}
+      onError={onError}
+      style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.3s ease' }}
+    />
+  )
+}
+
+function CloseButton({ onClose }: { onClose: () => void }) {
+  return (
+    <button
+      onClick={onClose}
+      className="absolute top-3 right-3 z-10 w-8 h-8 bg-black/70 hover:bg-black rounded-full flex items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+      aria-label="Fechar vídeo"
+      type="button"
+    >
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  )
+}
+
+function LoadingSpinner() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-[#121212]">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-10 h-10 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs text-[#8a8a8d]">Carregando vídeo...</span>
+      </div>
+    </div>
+  )
+}
+
+function ErrorState({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-[#121212]">
+      <div className="text-center">
+        <svg className="w-10 h-10 text-[#ff453a] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <p className="text-sm text-[#8a8a8d]">Não foi possível carregar o vídeo.</p>
         <button
-          onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 bg-black/70 hover:bg-black rounded-full flex items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
-          aria-label="Fechar vídeo"
-          type="button"
+          onClick={onRetry}
+          className="mt-3 px-4 py-2 bg-[#0071e3] text-white text-sm font-semibold rounded-lg hover:bg-[#005fd9] transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          Tentar novamente
         </button>
-      )}
+      </div>
     </div>
   )
 }

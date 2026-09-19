@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import AppleCard from '@/components/AppleCard'
 
 type Certificate = {
   id: string
@@ -76,32 +77,34 @@ export default function CertificadosPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {certificates.map((cert) => (
-              <button
-                key={cert.id}
-                onClick={() => openCert(cert.image)}
-                className="group bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all duration-300 hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20 text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-              >
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={cert.image}
-                    alt={`Certificado ${cert.title}`}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = FALLBACK_IMAGE
-                    }}
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-white group-hover:text-[#0071e3] transition-colors">
-                    {cert.title}
-                  </h3>
-                  <p className="text-sm text-[#8a8a8d] mt-1 line-clamp-2">
-                    {cert.description}
-                  </p>
-                </div>
-              </button>
+              <AppleCard key={cert.id} hover className="h-full">
+                <button
+                  onClick={() => openCert(cert.image)}
+                  className="w-full text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded-2xl"
+                  aria-label={`Abrir certificado ${cert.title}`}
+                >
+                  <div className="aspect-square overflow-hidden rounded-t-2xl">
+                    <img
+                      src={cert.image}
+                      alt={`Certificado ${cert.title}`}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.src = FALLBACK_IMAGE
+                      }}
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-[#0071e3] transition-colors">
+                      {cert.title}
+                    </h3>
+                    <p className="text-sm text-[#8a8a8d] mt-1 line-clamp-2">
+                      {cert.description}
+                    </p>
+                  </div>
+                </button>
+              </AppleCard>
             ))}
           </div>
         </div>
@@ -121,7 +124,7 @@ export default function CertificadosPage() {
           >
             <button
               onClick={closeCert}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#1e1e1e] text-[#8a8a8d] hover:text-white rounded-full flex items-center justify-center focus:ring-2 focus:ring-[#0071e3]"
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-[#1e1e1e] text-[#8a8a8d] hover:text-white rounded-full flex items-center justify-center transition-colors duration-200 focus:ring-2 focus:ring-[#0071e3]"
               aria-label="Fechar certificado"
             >
               <i className="fas fa-times" aria-hidden="true"></i>
@@ -129,7 +132,7 @@ export default function CertificadosPage() {
             <img
               src={selectedCert}
               alt="Certificado ampliado"
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
             />
           </div>
         </div>

@@ -40,6 +40,11 @@ export interface Criticism {
   bullets: string[]
 }
 
+export interface Concept {
+  title: string
+  description: string
+}
+
 export interface Section {
   id: string
   title: string
@@ -64,4 +69,6 @@ export interface Section {
   tools?: Tool[]
   criticismItems?: Criticism[]
   paragraphs?: string[]
+  highlights?: string[]
+  concepts?: Concept[]
 }

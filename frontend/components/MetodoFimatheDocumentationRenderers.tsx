@@ -93,6 +93,36 @@ function PillarItem({ text }: { text: string }) {
   )
 }
 
+function ConceptCard({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      <h4 className="text-white font-semibold mb-2">{title}</h4>
+      <p className="text-[#8a8a8d]">{description}</p>
+    </div>
+  )
+}
+
+function renderCriador(section: Section) {
+  return (
+    <div className="space-y-4">
+      <p className="text-[#8a8a8d] leading-relaxed">{section.body}</p>
+      {section.highlights && (
+        <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+          <h4 className="text-white font-semibold mb-4">Destaques</h4>
+          <ul className="space-y-2 text-[#8a8a8d]">
+            {section.highlights.map((item) => (
+              <li key={item} className="flex items-start gap-2">
+                <span className="text-[#0071e3] mt-1">▸</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function renderHistoria(section: Section) {
   return (
     <div className="space-y-4">
@@ -155,6 +185,19 @@ function renderZonaNeutra(section: Section) {
             <BulletItem key={bullet} text={bullet} />
           ))}
         </ul>
+      </div>
+    </div>
+  )
+}
+
+function renderConceitos(section: Section) {
+  return (
+    <div className="space-y-4">
+      <p className="text-[#8a8a8d] leading-relaxed">{section.body}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {section.concepts?.map((concept) => (
+          <ConceptCard key={concept.title} title={concept.title} description={concept.description} />
+        ))}
       </div>
     </div>
   )
@@ -269,9 +312,11 @@ function renderConclusao(section: Section) {
 
 export const sectionRenderers: Record<string, (section: Section) => React.ReactNode> = {
   historia: renderHistoria,
+  criador: renderCriador,
   fundamentos: renderFundamentos,
   mecanica: renderMecanica,
   'zona-neutra': renderZonaNeutra,
+  conceitos: renderConceitos,
   regras: renderRegras,
   timeframes: renderTimeframes,
   risco: renderRisco,

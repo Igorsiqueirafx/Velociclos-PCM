@@ -1,5 +1,7 @@
 'use client'
 
+import AppleCard from '@/components/AppleCard'
+
 type ManualStep = {
   number: number
   title: string
@@ -160,7 +162,7 @@ export default function ManualPage() {
                       </p>
                       {step.hint && (
                         <div
-                          className={`mt-2 p-3 rounded-lg text-sm ${
+                          className={`mt-2 p-3 rounded-xl text-sm ${
                             step.hintType === 'warning'
                               ? 'bg-[#451a03]/20 border border-[#ff9500]/30 text-[#ffcc80]'
                               : 'bg-[#1e1e1e]/50 border border-[#3a3a3c] text-[#8a8a8d]'
@@ -177,30 +179,29 @@ export default function ManualPage() {
             )}
 
             {section.modes && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {section.modes.map((mode) => (
-                  <div
-                    key={mode.title}
-                    className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-8 transition-all hover:border-[#0071e3]"
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">
-                        <i className={`fas ${mode.icon}`} aria-hidden="true"></i>
+                  <AppleCard key={mode.title} hover className="h-full">
+                    <div className="p-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-xl flex items-center justify-center text-white">
+                          <i className={`fas ${mode.icon}`} aria-hidden="true"></i>
+                        </div>
+                        <h3 className="text-2xl font-semibold text-white">{mode.title}</h3>
                       </div>
-                      <h3 className="text-2xl font-semibold text-white">{mode.title}</h3>
+                      <p className="text-[#8a8a8d] mb-4">{mode.description}</p>
+                      {mode.features && (
+                        <ul className="space-y-2">
+                          {mode.features.map((feature) => (
+                            <li key={feature} className="flex items-center gap-2 text-sm text-[#8a8a8d]">
+                              <i className="fas fa-check text-[#34c759]" aria-hidden="true"></i>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                    <p className="text-[#8a8a8d] mb-4">{mode.description}</p>
-                    {mode.features && (
-                      <ul className="space-y-2">
-                        {mode.features.map((feature) => (
-                          <li key={feature} className="flex items-center gap-2 text-sm text-[#8a8a8d]">
-                            <i className="fas fa-check text-[#34c759]" aria-hidden="true"></i>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                  </AppleCard>
                 ))}
               </div>
             )}

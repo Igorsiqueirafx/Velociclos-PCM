@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { logEvent } from '@/lib/logging'
 import { useCourseData } from './use-course-data'
 import PlaylistCard from './PlaylistCard'
@@ -46,16 +46,37 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
     loadModules, closeModal, retryCourses,
   } = h
 
+  const playlistsControllerRef = useRef<AbortController | null>(null)
+
   useEffect(() => {
     if (courses.length === 0 && playlists.length === 0 && !loadingPlaylists) {
+      if (playlistsControllerRef.current) {
+        playlistsControllerRef.current.abort()
+      }
+      const controller = new AbortController()
+      playlistsControllerRef.current = controller
+
       h.setLoadingPlaylists(true)
       import('@/lib/youtube')
         .then(({ fetchPlaylists }) => fetchPlaylists())
-        .then((result) => h.setPlaylists(result))
-        .catch((e) => logEvent('playlists_discover', 'error', 'Failed to discover playlists', { error: e instanceof Error ? e.message : String(e) }))
-        .finally(() => h.setLoadingPlaylists(false))
+        .then((result) => {
+          if (!controller.signal.aborted) {
+            h.setPlaylists(result)
+          }
+        })
+        .catch((e) => {
+          if (!controller.signal.aborted) {
+            logEvent('playlists_discover', 'error', 'Failed to discover playlists', { error: e instanceof Error ? e.message : String(e) })
+          }
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) {
+            h.setLoadingPlaylists(false)
+          }
+          playlistsControllerRef.current = null
+        })
     }
-  }, [courses.length, playlists.length, loadingPlaylists])
+  }, [courses.length, playlists.length, loadingPlaylists, h])
 
   if (coursesError && courses.length === 0 && playlists.length === 0) {
     return <ApiErrorState title="Não foi possível carregar os cursos" retry={retryCourses} fallbackHref="/" />

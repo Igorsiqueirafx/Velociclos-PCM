@@ -1,5 +1,8 @@
 'use client'
 
+import AppleCard from '@/components/AppleCard'
+import AppleButton from '@/components/AppleButton'
+
 const articles = [
   {
     id: 'mitos-prop-firms',
@@ -108,7 +111,7 @@ export default function ArtigosPage() {
                 data-filter={btn.value}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all border ${
                   btn.value === 'all'
-                    ? 'bg-[#0071e3] text-white border-[#0071e3] shadow-md shadow-black/20'
+                    ? 'bg-[#0071e3] text-white border-[#0071e3] shadow-lg shadow-black/20'
                     : 'bg-[#1e1e1e]/50 text-[#8a8a8d] border-[#3a3a3c] hover:text-white hover:border-[#0071e3]'
                 }`}
                 type="button"
@@ -120,14 +123,10 @@ export default function ArtigosPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => (
-              <article
-                key={article.id}
-                data-category={article.category}
-                className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20 text-left"
-              >
+              <AppleCard key={article.id} className="h-full">
                 <div className="p-6 flex flex-col h-full">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-xl flex items-center justify-center text-white">
                       <i className={`fas ${article.icon}`} aria-hidden="true"></i>
                     </div>
                     <span
@@ -156,14 +155,11 @@ export default function ArtigosPage() {
                       <i className="fas fa-signal" aria-hidden="true"></i> {article.level}
                     </span>
                   </div>
-                  <button
-                    onClick={() => (window.location.href = `/artigos/${article.id}`)}
-                    className="w-full px-4 py-2 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-                  >
+                  <AppleButton href={`/artigos/${article.id}`} className="w-full">
                     Ler Artigo
-                  </button>
+                  </AppleButton>
                 </div>
-              </article>
+              </AppleCard>
             ))}
           </div>
         </div>

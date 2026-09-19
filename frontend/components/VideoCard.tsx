@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import VideoCardCompact from './VideoCardCompact'
 import VideoThumbnail from './VideoThumbnail'
 import VideoMeta from './VideoMeta'
+import AppleCard from './AppleCard'
 
 interface VideoCardProps {
   videoId: string
@@ -72,7 +73,7 @@ export default function VideoCard({
   const handleImageError = () => { setImageError(true); setImageLoaded(true) }
 
   return (
-    <div className="group bg-[#1e1e1e] border border-[#3a3a3c]/80 rounded-xl overflow-hidden hover:border-[#0071e3] transition-all duration-300 hover:shadow-md hover:shadow-black/20">
+    <AppleCard hover className="h-full">
       <VideoThumbnail
         videoId={videoId}
         title={title}
@@ -94,6 +95,6 @@ export default function VideoCard({
         viewCount={viewCount}
         onPlay={handlePlay}
       />
-    </div>
+    </AppleCard>
   )
 }

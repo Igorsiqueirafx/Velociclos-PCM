@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { fetchPlaylistItems } from '@/lib/youtube'
 import { logEvent } from '@/lib/logging'
 import type { Lesson, Module, Course } from './CursosClient'
@@ -41,22 +41,32 @@ export function useCourseData(initialCourses: Course[]): CourseDataState & {
   const [loadingPlaylists, setLoadingPlaylists] = useState(false)
   const [loadingPlaylistVideos, setLoadingPlaylistVideos] = useState<Record<string, boolean>>({})
   const [coursesError, setCoursesError] = useState<Error | null>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const loadModules = useCallback(async (courseId: string) => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+
     setLoading(true)
     setSelectedCourse(courses.find((c) => c.id === courseId) || null)
     setModules([])
     setCurrentLesson(null)
 
     try {
-      const mappedModules = await loadModulesFromRepo(courseId)
+      const mappedModules = await loadModulesFromRepo(courseId, controller.signal)
       setModules(mappedModules)
       const firstLesson = mappedModules[0]?.lessons[0]
       if (firstLesson) setCurrentLesson(firstLesson)
     } catch (e) {
-      logEvent('modules_load', 'error', 'Failed to load modules', { error: e instanceof Error ? e.message : String(e) })
+      if ((e as Error)?.name !== 'AbortError') {
+        logEvent('modules_load', 'error', 'Failed to load modules', { error: e instanceof Error ? e.message : String(e) })
+      }
     } finally {
       setLoading(false)
+      abortControllerRef.current = null
     }
   }, [courses])
 
@@ -73,6 +83,10 @@ export function useCourseData(initialCourses: Course[]): CourseDataState & {
   }, [])
 
   const closeModal = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
+    }
     setSelectedCourse(null)
     setModules([])
     setCurrentLesson(null)

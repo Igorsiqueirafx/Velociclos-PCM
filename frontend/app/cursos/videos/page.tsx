@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 async function getAllVideos() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/youtube/channel-videos`, {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
+    const res = await fetch(`${backendUrl}/api/youtube/channel-videos`, {
       next: { revalidate: 1800 },
     })
 

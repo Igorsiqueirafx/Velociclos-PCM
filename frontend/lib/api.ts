@@ -11,6 +11,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   const { controller, clear } = createAbortController()
   const method = (options.method || 'GET').toUpperCase()
   const isRevalidationCandidate = method === 'GET' && !options.next?.revalidate
+  const signal = options.signal ? (options.signal as AbortSignal) : controller.signal
 
   try {
     const res = await fetch(`${BACKEND_URL}${path}`, {
@@ -19,7 +20,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
         ...(options.headers || {}),
       },
       ...options,
-      signal: controller.signal,
+      signal,
       next: {
         revalidate: isRevalidationCandidate ? 60 : 0,
         ...options.next,
@@ -41,26 +42,29 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   }
 }
 
-export async function apiGet<T>(path: string): Promise<T> {
-  return api<T>(path)
+export async function apiGet<T>(path: string, options?: RequestInit): Promise<T> {
+  return api<T>(path, options)
 }
 
-export async function apiPost<T>(path: string, body: unknown): Promise<T> {
+export async function apiPost<T>(path: string, body: unknown, options?: RequestInit): Promise<T> {
   return api<T>(path, {
+    ...options,
     method: 'POST',
     body: JSON.stringify(body),
   })
 }
 
-export async function apiPut<T>(path: string, body: unknown): Promise<T> {
+export async function apiPut<T>(path: string, body: unknown, options?: RequestInit): Promise<T> {
   return api<T>(path, {
+    ...options,
     method: 'PUT',
     body: JSON.stringify(body),
   })
 }
 
-export async function apiDelete<T>(path: string): Promise<T> {
+export async function apiDelete<T>(path: string, options?: RequestInit): Promise<T> {
   return api<T>(path, {
+    ...options,
     method: 'DELETE',
   })
 }

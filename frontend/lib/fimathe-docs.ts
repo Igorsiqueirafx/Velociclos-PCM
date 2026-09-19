@@ -4,22 +4,35 @@ export const sections: Section[] = [
   {
     id: 'historia',
     title: '1. Contexto Histórico e Evolução',
-    body: 'O método FIMATHE foi desenvolvido por Marcelo Ferreira, trader profissional com mais de 23 anos de experiência no mercado financeiro. Criado para corrigir erros da análise gráfica tradicional, o método evoluiu de uma estratégia pessoal para a técnica de análise técnica mais utilizada nos países de língua portuguesa.',
+    body: 'O Método Fimathe foi criado por Marcelo Ferreira, trader profissional com mais de 25 anos de experiência no mercado financeiro. Natural de Cataguases, interior de Minas Gerais, Marcelo começou sua trajetória no mercado ainda jovem, após trabalhar como entregador de remédios na Barra da Tijuca, Rio de Janeiro. Ele perdeu mais da metade do seu patrimônio inicial, mas essa experiência o motivou a estudar ainda mais as técnicas clássicas de análise gráfica até desenvolver a Fimathe — uma metodologia própria baseada em Fibonacci e matemática.',
     stats: [
-      { value: '150K+', label: 'Alunos Treinados' },
-      { value: '23+', label: 'Anos de Mercado' },
-      { value: '446K', label: 'Inscritos no YouTube' },
+      { value: '180K+', label: 'Pessoas impactadas' },
+      { value: '25+', label: 'Anos de Mercado' },
+      { value: '650K+', label: 'Seguidores nas redes' },
+    ],
+  },
+  {
+    id: 'criador',
+    title: '2. Marcelo Ferreira',
+    body: 'Marcelo Ferreira é mais do que um trader: é um estudioso e visionário. Ele é o criador da Técnica Fimathe, hoje a metodologia de análise gráfica mais utilizada em toda a América Latina e nos países de língua portuguesa. Ele criou conceitos fundamentais como Zonas Neutras e Canais de Referência, Linhas do Equador, Teoria Macro, Micro e do Ciclo do Canal, Subciclo e o famoso "Stop Fora da Caixinha", além da Teoria dos Ciclos Fimathe.',
+    highlights: [
+      'Mais de 25 anos de experiência no mercado financeiro',
+      'Criador da Técnica Fimathe: análise gráfica baseada em Fibonacci e matemática',
+      'Reconhecido por operar com consistência ao longo de mais de uma década',
+      'CEO do Grupo Fimathe, que inclui Fimathe App, Fimathe Prop, Robô Fimathe 2.0 e o Fimathe Experience',
     ],
   },
   {
     id: 'fundamentos',
-    title: '2. Fundamentos Teóricos',
-    body: 'O método FIMATHE baseia-se em princípios matemáticos e na sequência de Fibonacci para criar regras objetivas de entrada e saída no mercado.',
+    title: '3. Fundamentos Teóricos',
+    body: 'O Método Fimathe baseia-se em princípios matemáticos e na sequência de Fibonacci para criar regras objetivas de entrada e saída no mercado. Diferente da análise gráfica tradicional, que pode ser subjetiva, a Fimathe usa geometria e matemática pura para eliminar o achismo e trazer clareza às operações.',
     pillars: [
       'Sequência de Fibonacci: Usada para definir a largura do canal, alvos de lucro e níveis de retração.',
       'Razão Áurea (1.618): Aplicada em extensões de Fibonacci e relação risco-retorno.',
       'Análise de Estrutura de Preço: Identificação objetiva de swing highs e swing lows.',
       'Probabilidade de Rompimento: Abordagem estatística para breakouts de canal.',
+      'Zona Neutra: Filtro decisório baseado no quartil central do canal.',
+      'Canais de Referência: Estrutura horizontal que delimita o campo de preço.',
     ],
     fibLevels: [
       { pct: '23.6%', label: 'Retração' },
@@ -29,9 +42,32 @@ export const sections: Section[] = [
     ],
   },
   {
-    id: 'mecanica',
-    title: '3. Mecânica Técnica do PCM',
-    body: 'O Price Channel Method (PCM) é o coração da estratégia FIMATHE. Trata-se de um sistema de rompimento de canal de preço com regras objetivas de entrada, saída e gerenciamento de risco.',
+    id: 'conceitos',
+    title: '4. Conceitos Fundamentais',
+    body: 'A Fimathe introduz diversos conceitos proprietários que diferenciam a metodologia de outras formas de análise técnica. Esses conceitos foram desenvolvidos ao longo de anos de operação e validação prática.',
+    concepts: [
+      {
+        title: 'Zona Neutra',
+        description: 'A Zona Neutra é o quartil central do canal. Ela funciona como uma zona de decisão durante a consolidação. O rompimento dessa zona confirma o viés direcional e gera sinais de Breakout NZ para ativação de canais de lucro.',
+      },
+      {
+        title: 'Canais de Referência',
+        description: 'Linhas horizontais traçadas com base no Highest High e Lowest Low das primeiras velas do período. O preço deve operar dentro desses limites até que ocorra um rompimento válido.',
+      },
+      {
+        title: 'Linhas do Equador',
+        description: 'Conceito que divide o canal em zonas de equilíbrio e desequilíbrio, ajudando o trader a identificar onde o preço está mais propenso a reagir.',
+      },
+      {
+        title: 'Stop Fora da Caixinha',
+        description: 'Estratégia de proteção de capital que coloca o stop loss além da máxima/mínima das velas de entrada, evitando ser atingido prematuramente por volatilidade normal.',
+      },
+    ],
+  },
+  {
+    id: 'pcm',
+    title: '5. Mecânica Técnica do PCM',
+    body: 'O Price Channel Method (PCM) é o coração da estratégia Fimathe. Trata-se de um sistema de rompimento de canal de preço com regras objetivas de entrada, saída e gerenciamento de risco.',
     steps: [
       {
         num: 1,
@@ -48,22 +84,16 @@ export const sections: Section[] = [
         title: 'Confirmação',
         text: 'Para compra: vela de 5min fecha acima e faz pullback. Para venda: vela de 5min fecha abaixo e faz pullback.',
       },
-    ],
-  },
-  {
-    id: 'zona-neutra',
-    title: '4. Zona Neutra',
-    body: 'A Zona Neutra é um conceito distintivo do FIMATHE que adiciona uma camada extra de filtragem às operações.',
-    bullets: [
-      'Definida como o quartil central (50%) do canal.',
-      'Atua como zona de decisão durante consolidação.',
-      'Rompimento da Zona Neutra confirma viés direcional.',
-      'Gera sinais de <strong>Breakout NZ</strong> para ativação de canais de lucro.',
+      {
+        num: 4,
+        title: 'Execução e Gerenciamento',
+        text: 'Entrada na confirmação, stop no lado oposto do canal, alvos em extensões Fibonacci. Usar a estratégia de "costurar" para transformar resultados de operações anteriores em novas entradas.',
+      },
     ],
   },
   {
     id: 'regras',
-    title: '5. Regras de Entrada e Saída',
+    title: '6. Regras de Entrada e Saída',
     entries: {
       long: [
         'Fechamento acima da linha superior do canal',
@@ -91,7 +121,7 @@ export const sections: Section[] = [
   },
   {
     id: 'timeframes',
-    title: '6. Aplicação por Timeframe',
+    title: '7. Aplicação por Timeframe',
     timeframes: [
       {
         title: 'Day Trading',
@@ -109,11 +139,11 @@ export const sections: Section[] = [
   },
   {
     id: 'risco',
-    title: '7. Gestão de Risco',
+    title: '8. Gestão de Risco',
     riskItems: [
       {
         title: 'Position Sizing',
-        text: 'Risco máximo de 1-2% por trade. Tamanho baseado na distância entrada-stop. Sem martingale ou aumento de posição em prejuízo.',
+        text: 'Risco máximo de 1-2% por trade. Tamanho baseado na distância entrada-stop. Sem martingale ou aumento de posição em prejuízo. Marcelo Ferreira sempre enfatiza: "nunca arrisque mais que 2% em uma operação".',
       },
       {
         title: 'Relação Risco-Retorno',
@@ -130,21 +160,29 @@ export const sections: Section[] = [
   },
   {
     id: 'ferramentas',
-    title: '8. Ferramentas e Implementação',
+    title: '9. Ferramentas e Implementação',
     tools: [
       {
         title: 'Indicador Oficial para MetaTrader 5',
         text: 'Suporte e resistência interativos, canal de referência automático, zona neutra com slicing em quartis, alertas visuais e sonoros de rompimento, modos Uptrend/Downtrend.',
       },
       {
+        title: 'Robô Fimathe 2.0',
+        text: 'Automação da operação com base na primeira entrada da Técnica. Modo PCM Dedicado, decisão automática (corpo x pavio), fatiamento automático e proteção de capital.',
+      },
+      {
+        title: 'Fimathe App',
+        text: 'Centro de aprendizado e acompanhamento diário. Inclui análises, setups, conteúdo educacional e suporte para traders de todos os níveis.',
+      },
+      {
         title: 'Implementações Open Source',
-        text: 'O projeto <strong>cgmello/fimathe-pcm</strong> no GitHub oferece gráficos interativos estilo TradingView, motor de backtesting, visualização de canais e estatísticas de trades.',
+        text: 'O projeto cgmello/fimathe-pcm no GitHub oferece gráficos interativos estilo TradingView, motor de backtesting, visualização de canais e estatísticas de trades.',
       },
     ],
   },
   {
     id: 'criticas',
-    title: '9. Críticas e Limitações',
+    title: '10. Críticas e Limitações',
     criticismItems: [
       {
         title: 'Críticas Comuns',
@@ -168,9 +206,9 @@ export const sections: Section[] = [
   },
   {
     id: 'conclusao',
-    title: '10. Conclusão',
+    title: '11. Conclusão',
     paragraphs: [
-      'O método FIMATHE representa uma abordagem sistematizada e matematicamente orientada para trading de rompimento de canal. Suas características definidoras são regras objetivas para formação de canal, alvos de lucro baseados em Fibonacci, confirmação obrigatória de entrada e o conceito de Zona Neutra.',
+      'O Método Fimathe representa uma abordagem sistematizada e matematicamente orientada para trading de rompimento de canal. Suas características definidoras são regras objetivas para formação de canal, alvos de lucro baseados em Fibonacci, confirmação obrigatória de entrada e o conceito de Zona Neutra.',
       'Embora o método tenha demonstrado popularidade significativa e produzido traders bem-sucedidos, sua eficácia depende de implementação disciplinada, seleção apropriada de mercado e gerenciamento de risco rigoroso. A disponibilidade de implementações open-source e indicadores para MetaTrader facilita o teste e validação, mas traders devem realizar extensivos backtests e testes forward antes de operar com capital real.',
     ],
   },
