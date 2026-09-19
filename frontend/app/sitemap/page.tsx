@@ -1,3 +1,4 @@
+import AppleCard from '@/components/AppleCard'
 import Link from 'next/link'
 
 const publicRoutes = [
@@ -38,19 +39,21 @@ export default function SiteMapPage() {
               <Link
                 key={route.href}
                 href={route.href}
-                className="group bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6 transition-all duration-300 hover:border-[#0071e3] hover:shadow-[0_0_25px_rgba(0,113,227,0.15)] text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+                className="group block focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#0071e3]/10 rounded-lg flex items-center justify-center text-[#0071e3] group-hover:bg-[#0071e3] group-hover:text-white transition-colors">
-                    <i className="fas fa-link" aria-hidden="true" />
+                <AppleCard className="p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#0071e3]/10 rounded-lg flex items-center justify-center text-[#0071e3] group-hover:bg-[#0071e3] group-hover:text-white transition-colors">
+                      <i className="fas fa-link" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold group-hover:text-[#0071e3] transition-colors">
+                        {route.label}
+                      </h3>
+                      <p className="text-xs text-[#8a8a8d] font-mono">{route.href}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold group-hover:text-[#0071e3] transition-colors">
-                      {route.label}
-                    </h3>
-                    <p className="text-xs text-[#8a8a8d] font-mono">{route.href}</p>
-                  </div>
-                </div>
+                </AppleCard>
               </Link>
             ))}
           </div>

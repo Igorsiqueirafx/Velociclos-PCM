@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import AppleButton from '@/components/AppleButton'
 
 export default function CursosHero() {
   return (
@@ -27,20 +27,13 @@ export default function CursosHero() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/cursos/momentos"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#0071e3] text-white font-semibold rounded-xl hover:bg-[#005fd9] hover:shadow-[0_0_40px_rgba(0,113,227,0.25)] transition-all duration-300"
-            >
-              <i className="fas fa-play-circle" />
+            <AppleButton href="/cursos/momentos" size="lg" icon={<i className="fas fa-play-circle" aria-hidden="true" />}>
               <span>Momentos Chave</span>
               <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/metodo-fimathe"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-[#3a3a3c] text-white font-medium rounded-xl hover:border-[#0071e3] hover:text-[#0071e3] transition-all duration-300"
-            >
+            </AppleButton>
+            <AppleButton href="/metodo-fimathe" variant="secondary" size="lg">
               <span>Sobre o Método</span>
-            </Link>
+            </AppleButton>
           </div>
         </div>
       </div>

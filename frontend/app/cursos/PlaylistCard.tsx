@@ -1,14 +1,12 @@
 'use client'
 
 import { YouTubePlaylist, YouTubeVideo, CATEGORY_LABELS } from '@/lib/youtube'
+import AppleCard from '@/components/AppleCard'
 import VideoCard from '@/components/VideoCard'
 
 export default function PlaylistCard({ playlist, videos, index }: { playlist: YouTubePlaylist; videos: YouTubeVideo[]; index: number }) {
   return (
-    <div
-      className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-2xl overflow-hidden hover:border-[#0071e3]/30 transition-all duration-300"
-      style={{ animationDelay: `${index * 100}ms` }}
-    >
+    <AppleCard className="overflow-hidden" style={{ animationDelay: `${index * 100}ms` }}>
       <div className="p-6 sm:p-8 border-b border-[#3a3a3c]/50">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           <div className="relative w-full sm:w-48 h-28 rounded-xl overflow-hidden flex-shrink-0">
@@ -54,6 +52,6 @@ export default function PlaylistCard({ playlist, videos, index }: { playlist: Yo
           ))}
         </div>
       </div>
-    </div>
+    </AppleCard>
   )
 }

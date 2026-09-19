@@ -1,4 +1,6 @@
 import { auth } from '@/app/lib/auth/config'
+import AppleCard from '@/components/AppleCard'
+import AppleButton from '@/components/AppleButton'
 import Link from 'next/link'
 import { logEvent } from '@/lib/logging'
 
@@ -93,31 +95,23 @@ export default async function DownloadPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6 text-center hover:border-[#0071e3] transition-colors duration-200">
+          <AppleCard className="p-6 text-center">
             <i className="fas fa-robot text-3xl text-[#0071e3] mb-4"></i>
             <h3 className="text-lg font-semibold text-white mb-2">Expert Advisor</h3>
             <p className="text-[#8a8a8d] text-sm mb-4">Versão completa</p>
-            <a
-              href="/ea"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors duration-200 text-sm"
-            >
-              <i className="fas fa-download"></i>
+            <AppleButton href="/ea" icon={<i className="fas fa-download" aria-hidden="true" />} className="text-sm">
               Baixar Agora
-            </a>
-          </div>
+            </AppleButton>
+          </AppleCard>
 
-          <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6 text-center hover:border-[#0071e3] transition-colors duration-200">
+          <AppleCard className="p-6 text-center">
             <i className="fas fa-play-circle text-3xl text-[#0071e3] mb-4"></i>
             <h3 className="text-lg font-semibold text-white mb-2">Cursos Gratuitos</h3>
             <p className="text-[#8a8a8d] text-sm mb-4">700+ aulas exclusivas</p>
-            <Link
-              href="/cursos"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors duration-200 text-sm"
-            >
-              <i className="fas fa-arrow-right"></i>
+            <AppleButton href="/cursos" icon={<i className="fas fa-arrow-right" aria-hidden="true" />} className="text-sm">
               Acessar Cursos
-            </Link>
-          </div>
+            </AppleButton>
+          </AppleCard>
         </div>
       </div>
     </div>
