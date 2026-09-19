@@ -56,10 +56,6 @@ const FALLBACK_COURSES: Module[] = [
 ]
 
 export async function loadModules(courseId: string, signal?: AbortSignal): Promise<Module[]> {
-  if (process.env.NEXT_PHASE === 'phase-production-build') {
-    return FALLBACK_COURSES
-  }
-
   try {
     const data = await apiGet<ModuleRow[]>(`/api/courses/${courseId}/modules`, { signal })
 

@@ -1,5 +1,7 @@
 'use client'
 
+import AppleButton from '@/components/AppleButton'
+
 export default function HomeHero() {
   return (
     <section className="relative min-h-[70vh] flex items-center overflow-hidden bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.png')]">
@@ -26,20 +28,12 @@ export default function HomeHero() {
               </div>
             </div>
             <div className="flex gap-6">
-              <a
-                href="/cursos"
-                className="inline-flex items-center justify-center px-8 py-4 border border-2 border-[#0071e3] text-[#0071e3] font-semibold rounded-lg transition-all duration-200 ease-in-out hover:bg-[#0071e3] hover:text-white hover:shadow-[0_0_30px_rgba(0,113,227,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3] focus-visible:ring-offset-2"
-                aria-label="Ver cursos"
-              >
+              <AppleButton href="/cursos" size="lg" aria-label="Ver cursos">
                 Cursos
-              </a>
-              <a
-                href="/ea"
-                className="inline-flex items-center justify-center px-8 py-4 bg-[#0071e3] text-white font-semibold rounded-lg shadow-md transition-all duration-200 ease-in-out hover:bg-[#005fd9] hover:shadow-[0_0_30px_rgba(0,113,227,0.4)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3] focus-visible:ring-offset-2"
-                aria-label="Conhecer o Expert Advisor Velociclos PCM"
-              >
+              </AppleButton>
+              <AppleButton href="/ea" variant="primary" size="lg" aria-label="Conhecer o Expert Advisor Velociclos PCM">
                 Saiba sobre o E.A.
-              </a>
+              </AppleButton>
             </div>
           </div>
 

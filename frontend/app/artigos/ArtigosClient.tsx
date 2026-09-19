@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import AppleCard from '@/components/AppleCard'
+import AppleButton from '@/components/AppleButton'
 import ApiErrorState from '@/components/ApiErrorState'
 
 interface Article {
@@ -91,10 +93,7 @@ export default function ArtigosClient({ initialArticles }: ArtigosClientProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredArticles.map((article) => (
-              <article
-                key={article.id}
-                className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden transition-all hover:border-[#0071e3] hover:shadow-md hover:shadow-black/20 text-left"
-              >
+              <AppleCard key={article.id} className="h-full text-left">
                 <div className="p-6 flex flex-col h-full">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-lg flex items-center justify-center text-white">
@@ -116,14 +115,11 @@ export default function ArtigosClient({ initialArticles }: ArtigosClientProps) {
                       {article.published_at ? new Date(article.published_at).toLocaleDateString('pt-BR') : '-'}
                     </span>
                   </div>
-                  <button
-                    onClick={() => (window.location.href = `/artigos/${article.slug || article.id}`)}
-                    className="w-full px-4 py-2 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-                  >
+                  <AppleButton onClick={() => (window.location.href = `/artigos/${article.slug || article.id}`)} className="w-full">
                     Ler Artigo
-                  </button>
+                  </AppleButton>
                 </div>
-              </article>
+              </AppleCard>
             ))}
           </div>
         </div>

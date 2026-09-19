@@ -1,3 +1,5 @@
+import AppleButton from '@/components/AppleButton'
+
 export default function AboutMarcelo() {
   return (
     <section className="py-16 bg-[#121212]" aria-labelledby="about-title">
@@ -23,16 +25,12 @@ export default function AboutMarcelo() {
             </p>
             <img src="/logo-fimathe.webp" alt="Fimathe Logo" className="h-12 mb-6" loading="lazy" />
             <div className="flex flex-wrap gap-4">
-              <a
-                className="inline-flex items-center justify-center px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg shadow-md hover:bg-[#005fd9] transition-colors focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-                aria-label="Conhecer o Método Fimathe"
-                href="/metodo-fimathe"
-              >Conheça o Método</a>
-              <a
-                className="inline-flex items-center justify-center px-6 py-3 bg-transparent border border-[#3a3a3c] text-white font-medium rounded-lg hover:border-[#0071e3] hover:text-[#0071e3] transition-all focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-                aria-label="Ver cursos gratuitos"
-                href="/cursos"
-              >Cursos Gratuitos</a>
+              <AppleButton href="/metodo-fimathe" aria-label="Conhecer o Método Fimathe">
+                Conheça o Método
+              </AppleButton>
+              <AppleButton href="/cursos" variant="secondary" aria-label="Ver cursos gratuitos">
+                Cursos Gratuitos
+              </AppleButton>
             </div>
           </div>
         </div>

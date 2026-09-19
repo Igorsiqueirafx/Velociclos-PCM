@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import AppleButton from '@/components/AppleButton'
 
 export default function CtaSection() {
   return (
@@ -12,13 +12,10 @@ export default function CtaSection() {
         <p className="text-[#8a8a8d] text-lg mb-8 max-w-2xl mx-auto">
           Explore nossos cursos e comece sua jornada no mercado financeiro hoje mesmo.
         </p>
-        <Link
-          href="/cursos"
-          className="inline-flex items-center gap-3 px-10 py-5 bg-[#0071e3] text-white font-semibold rounded-xl text-lg hover:bg-[#005fd9] hover:shadow-[0_0_40px_rgba(0,113,227,0.3)] transition-all duration-300"
-        >
+        <AppleButton href="/cursos" size="lg">
           <span>Começar Agora</span>
           <i className="fas fa-arrow-right" />
-        </Link>
+        </AppleButton>
       </div>
     </section>
   )

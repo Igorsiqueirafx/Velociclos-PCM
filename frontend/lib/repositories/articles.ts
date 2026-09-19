@@ -78,10 +78,6 @@ export const FALLBACK_ARTICLES: ArticleRow[] = [
 ]
 
 export async function getPublishedArticles(): Promise<ArticleRow[]> {
-  if (process.env.NEXT_PHASE === 'phase-production-build') {
-    return FALLBACK_ARTICLES
-  }
-
   try {
     const articles = await apiGet<ArticleRow[]>('/api/articles')
     if (articles && articles.length > 0) {

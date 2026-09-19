@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { logEvent } from '@/lib/logging'
 import { useCourseData } from './use-course-data'
+import AppleCard from '@/components/AppleCard'
 import PlaylistCard from './PlaylistCard'
 import CourseModal from './CourseModal'
 import ApiErrorState from '@/components/ApiErrorState'
@@ -113,31 +114,33 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
             <button
               key={course.id}
               onClick={() => loadModules(course.id)}
-              className="group bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden text-left transition-all duration-300 hover:border-[#0071e3] hover:shadow-[0_0_25px_rgba(0,113,227,0.15)] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
+              className="text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
             >
-              <div className="relative aspect-video">
-                <img
-                  src={course.thumbnail || '/placeholder-course.jpg'}
-                  alt={course.title}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = 'https://via.placeholder.com/320x180/1e1e1e/8a8a8d?text=Sem+thumbnail'
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <i className="fas fa-play text-3xl text-white" aria-hidden="true"></i>
+              <AppleCard className="h-full overflow-hidden">
+                <div className="relative aspect-video">
+                  <img
+                    src={course.thumbnail || '/placeholder-course.jpg'}
+                    alt={course.title}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    loading="lazy"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = 'https://via.placeholder.com/320x180/1e1e1e/8a8a8d?text=Sem+thumbnail'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i className="fas fa-play text-3xl text-white" aria-hidden="true"></i>
+                  </div>
                 </div>
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#0071e3] transition-colors line-clamp-1">
-                  {course.title}
-                </h3>
-                <p className="text-sm text-[#8a8a8d] line-clamp-2">
-                  {course.description || 'Curso completo do Método Fimathe.'}
-                </p>
-              </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#0071e3] transition-colors line-clamp-1">
+                    {course.title}
+                  </h3>
+                  <p className="text-sm text-[#8a8a8d] line-clamp-2">
+                    {course.description || 'Curso completo do Método Fimathe.'}
+                  </p>
+                </div>
+              </AppleCard>
             </button>
           ))}
         </div>
