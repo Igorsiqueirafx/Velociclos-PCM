@@ -8,8 +8,9 @@ Backend API para o site Velociclos PCM.
 
 ## Deploy
 
-- **Railway**: `railway.json` configurado para `node backend/server.js`
-- **CORS**: Configurável via `CORS_ORIGIN` (default: `*`)
+- **Vercel**: `vercel.json` configura a API como serverless function (`api/index.js`)
+- **CLI**: `vercel --prod --project velociclos-api`
+- **Frontend rewrite**: use `NEXT_PUBLIC_BACKEND_URL=https://velociclos-api.vercel.app`
 
 ## Endpoints
 
