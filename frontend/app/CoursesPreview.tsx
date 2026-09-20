@@ -1,6 +1,7 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
+import AppleCard from '@/components/AppleCard'
 
 const COURSES = [
   {
@@ -44,26 +45,28 @@ export default function CoursesPreview() {
             <Link
               key={item.title}
               href={item.href}
-              className="group relative bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-8 overflow-hidden transition-all duration-300 hover:border-[#0071e3] hover:shadow-[0_0_30px_rgba(0,113,227,0.15)]"
+              className="group relative block h-full focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+              <AppleCard hover className="h-full overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
 
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 shadow-md`}>
-                <i className={`fas ${item.icon} text-xl text-white`} />
-              </div>
+                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 shadow-md`}>
+                  <i className={`fas ${item.icon} text-xl text-white`} />
+                </div>
 
-              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#0071e3] transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-[#8a8a8d] text-sm leading-relaxed">
-                {item.description}
-              </p>
+                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#0071e3] transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-[#8a8a8d] text-sm leading-relaxed">
+                  {item.description}
+                </p>
 
-              <div className="mt-6 flex items-center gap-2 text-[#0071e3] opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-sm font-medium">Saiba mais</span>
-                <i className="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform" />
-              </div>
+                <div className="mt-6 flex items-center gap-2 text-[#0071e3] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-sm font-medium">Saiba mais</span>
+                  <i className="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform" />
+                </div>
+              </AppleCard>
             </Link>
           ))}
         </div>

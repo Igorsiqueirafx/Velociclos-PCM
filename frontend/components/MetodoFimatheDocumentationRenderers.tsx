@@ -1,23 +1,24 @@
-import type { Section } from '@/lib/fimathe-docs-types'
+﻿import type { Section } from '@/lib/fimathe-docs-types'
+import AppleCard from '@/components/AppleCard'
 
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6 text-center">
+    <AppleCard className="p-6 text-center">
       <div className="text-3xl font-bold text-[#0071e3] mb-2">{value}</div>
       <div className="text-sm text-[#8a8a8d]">{label}</div>
-    </div>
+    </AppleCard>
   )
 }
 
 function StepBlock({ num, title, text }: { num: number; title: string; text: string }) {
   return (
-    <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+    <AppleCard className="p-6">
       <h4 className="text-white font-semibold mb-2 flex items-center gap-2">
         <span className="w-6 h-6 bg-[#0071e3] rounded-full flex items-center justify-center text-sm">{num}</span>
         {title}
       </h4>
       <p className="text-[#8a8a8d]">{text}</p>
-    </div>
+    </AppleCard>
   )
 }
 
@@ -64,14 +65,14 @@ function RiskRow({ label, value }: { label: string; value: string }) {
 
 function TimeframeCard({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+    <AppleCard className="p-6">
       <h4 className="text-white font-semibold mb-3">{title}</h4>
       <ul className="space-y-1 text-sm text-[#8a8a8d]">
         {items.map((item) => (
           <li key={item}>• {item}</li>
         ))}
       </ul>
-    </div>
+    </AppleCard>
   )
 }
 
@@ -95,10 +96,10 @@ function PillarItem({ text }: { text: string }) {
 
 function ConceptCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+    <AppleCard className="p-6">
       <h4 className="text-white font-semibold mb-2">{title}</h4>
       <p className="text-[#8a8a8d]">{description}</p>
-    </div>
+    </AppleCard>
   )
 }
 
@@ -107,7 +108,7 @@ function renderCriador(section: Section) {
     <div className="space-y-4">
       <p className="text-[#8a8a8d] leading-relaxed">{section.body}</p>
       {section.highlights && (
-        <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+        <AppleCard className="p-6">
           <h4 className="text-white font-semibold mb-4">Destaques</h4>
           <ul className="space-y-2 text-[#8a8a8d]">
             {section.highlights.map((item) => (
@@ -117,7 +118,7 @@ function renderCriador(section: Section) {
               </li>
             ))}
           </ul>
-        </div>
+        </AppleCard>
       )}
     </div>
   )
@@ -140,15 +141,15 @@ function renderFundamentos(section: Section) {
   return (
     <div className="space-y-4">
       <p className="text-[#8a8a8d] leading-relaxed">{section.body}</p>
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      <AppleCard className="p-6">
         <h4 className="text-white font-semibold mb-4">Pilares Matemáticos</h4>
         <ul className="space-y-2 text-[#8a8a8d]">
           {section.pillars?.map((pillar) => (
             <PillarItem key={pillar} text={pillar} />
           ))}
         </ul>
-      </div>
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      </AppleCard>
+      <AppleCard className="p-6">
         <h4 className="text-white font-semibold mb-4">Níveis de Fibonacci Utilizados</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           {section.fibLevels?.map((level) => (
@@ -158,7 +159,7 @@ function renderFundamentos(section: Section) {
             </div>
           ))}
         </div>
-      </div>
+      </AppleCard>
     </div>
   )
 }
@@ -178,14 +179,14 @@ function renderZonaNeutra(section: Section) {
   return (
     <div className="space-y-4">
       <p className="text-[#8a8a8d] leading-relaxed">{section.body}</p>
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      <AppleCard className="p-6">
         <h4 className="text-white font-semibold mb-4">Características</h4>
         <ul className="space-y-2 text-[#8a8a8d]">
           {section.bullets?.map((bullet) => (
             <BulletItem key={bullet} text={bullet} />
           ))}
         </ul>
-      </div>
+      </AppleCard>
     </div>
   )
 }
@@ -206,15 +207,15 @@ function renderConceitos(section: Section) {
 function renderRegras(section: Section) {
   return (
     <div className="space-y-6">
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden">
+      <AppleCard className="overflow-hidden">
         <div className="p-4 bg-[#0071e3]/10 border-b border-[#3a3a3c]">
           <h4 className="text-white font-semibold">Regras de Entrada</h4>
         </div>
         <div className="p-6">
           <EntryColumns longItems={section.entries?.long || []} shortItems={section.entries?.short || []} />
         </div>
-      </div>
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      </AppleCard>
+      <AppleCard className="p-6">
         <h4 className="text-white font-semibold mb-4">Stop Loss</h4>
         <div className="space-y-2 text-[#8a8a8d]">
           <p>
@@ -224,8 +225,8 @@ function renderRegras(section: Section) {
             <strong className="text-white">Posições Curtas:</strong> {section.stopLoss?.short}
           </p>
         </div>
-      </div>
-      <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+      </AppleCard>
+      <AppleCard className="p-6">
         <h4 className="text-white font-semibold mb-4">Alvos de Lucro (Multi-Tier)</h4>
         <div className="space-y-3">
           {section.targets?.map((target) => (
@@ -235,7 +236,7 @@ function renderRegras(section: Section) {
         <p className="text-sm text-[#8a8a8d] mt-4">
           <strong className="text-white">Estratégia de saída parcial:</strong> {section.exitNote}
         </p>
-      </div>
+      </AppleCard>
     </div>
   )
 }
@@ -254,7 +255,7 @@ function renderRisco(section: Section) {
   return (
     <div className="space-y-6">
       {section.riskItems?.map((item) => (
-        <div key={item.title} className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+        <AppleCard key={item.title} className="p-6">
           <h4 className="text-white font-semibold mb-4">{item.title}</h4>
           {item.text && <p className="text-[#8a8a8d]">{item.text}</p>}
           {item.rows && (
@@ -264,7 +265,7 @@ function renderRisco(section: Section) {
               ))}
             </div>
           )}
-        </div>
+        </AppleCard>
       ))}
     </div>
   )
@@ -274,10 +275,10 @@ function renderFerramentas(section: Section) {
   return (
     <div className="space-y-6">
       {section.tools?.map((tool) => (
-        <div key={tool.title} className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+        <AppleCard key={tool.title} className="p-6">
           <h4 className="text-white font-semibold mb-4">{tool.title}</h4>
           <p className="text-[#8a8a8d]" dangerouslySetInnerHTML={{ __html: tool.text }} />
-        </div>
+        </AppleCard>
       ))}
     </div>
   )
@@ -287,14 +288,14 @@ function renderCriticas(section: Section) {
   return (
     <div className="space-y-6">
       {section.criticismItems?.map((item) => (
-        <div key={item.title} className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl p-6">
+        <AppleCard key={item.title} className="p-6">
           <h4 className="text-white font-semibold mb-4">{item.title}</h4>
           <ul className="space-y-2 text-[#8a8a8d]">
             {item.bullets.map((bullet) => (
               <BulletItem key={bullet} text={bullet} />
             ))}
           </ul>
-        </div>
+        </AppleCard>
       ))}
     </div>
   )

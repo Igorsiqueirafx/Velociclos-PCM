@@ -1,6 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import AppleCard from '@/components/AppleCard'
 
 type ForexSession = {
   name: string
@@ -49,7 +50,7 @@ export default function ClockPage() {
   return (
     <section className="py-16 bg-[#121212]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#1e1e1e] border border-[#3a3a3c] rounded-xl overflow-hidden shadow-lg">
+        <AppleCard className="overflow-hidden">
           <div className="border-b border-[#3a3a3c] p-6">
             <div className="flex items-center gap-3">
               <i className="fas fa-globe-americas text-2xl text-[#0071e3]" aria-hidden="true"></i>
@@ -106,7 +107,7 @@ export default function ClockPage() {
               </p>
             </div>
           </div>
-        </div>
+        </AppleCard>
       </div>
     </section>
   )
