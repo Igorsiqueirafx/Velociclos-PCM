@@ -12,10 +12,10 @@ export default function MediaLogos() {
         </p>
         <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12">
           <a
-            href="https://forbes.com.br"
+            href="https://forbes.com.br/forbes-money/2021/02/marcelo-ferreira-do-delivery-a-trader-milionario/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Matéria Forbes sobre o Método Fimathe"
+            aria-label="Matéria Forbes: Marcelo Ferreira, do delivery a trader milionário"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
             <img
@@ -26,10 +26,10 @@ export default function MediaLogos() {
             />
           </a>
           <a
-            href="https://istoe.com.br"
+            href="https://istoe.com.br/youtuber-marcelo-ferreira-faz-sucesso-nas-redes-sociais-com-dicas-de-investimento"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Matéria Istoé sobre o Método Fimathe"
+            aria-label="Matéria Istoé: Youtuber Marcelo Ferreira faz sucesso com dicas de investimento"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
             <img
@@ -40,10 +40,10 @@ export default function MediaLogos() {
             />
           </a>
           <a
-            href="https://investing.com"
+            href="https://br.investing.com/news/cryptocurrency-news/primeiro-contato-com-forex-do-brasileiro-e-com-piramide-financeira-afirma-marcelo-ferreira-768233"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Matéria Investing sobre o Método Fimathe"
+            aria-label="Matéria Investing.com: Primeiro contato com forex do brasileiro é com pirâmide financeira"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
             <img
@@ -68,10 +68,10 @@ export default function MediaLogos() {
             />
           </a>
           <a
-            href="https://extra.globo.com"
+            href="https://extra.globo.com/economia-e-financas/trader-marcelo-ferreira-cria-tecnica-que-democratiza-forma-de-analisar-graficos-no-mercado-financeiro-25283214.html"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Matéria Extra sobre o Método Fimathe"
+            aria-label="Matéria Extra: Trader Marcelo Ferreira cria técnica que democratiza análise de gráficos"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
             <img
