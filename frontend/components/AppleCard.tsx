@@ -11,9 +11,9 @@ interface AppleCardProps {
 }
 
 export default function AppleCard({ children, className = '', hover = true, onClick, style }: AppleCardProps) {
-  const base = 'bg-[#1e1e1e] border border-[#3a3a3c] rounded-2xl transition-all duration-300'
+  const base = 'bg-surface border border-border rounded-xl transition-all duration-300 ease-apple--smooth'
   const hoverClasses = hover
-    ? 'hover:border-white/10 hover:shadow-xl hover:shadow-black/20 hover:-translate-y-1'
+    ? 'hover:border-white/20 hover:shadow-lg hover:shadow-black/30 hover:-translate-y-1'
     : ''
   const interactive = onClick ? 'cursor-pointer' : ''
 

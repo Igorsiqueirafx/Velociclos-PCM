@@ -35,7 +35,7 @@ export default async function RootLayout({
           href="https://unpkg.com/boxicons@2.1.4/dist/css/boxicons.min.css"
         />
       </head>
-      <body className="bg-[#121212] text-[#e5e5e5] font-sans antialiased">
+      <body className="bg-[var(--cor-fundo)] text-[var(--cor-texto-principal)] font-primary antialiased">
         <SkipLink />
         <Header />
         <main
