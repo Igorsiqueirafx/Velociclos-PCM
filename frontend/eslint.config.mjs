@@ -9,6 +9,7 @@
 import js from "@eslint/js";
 import { defineConfig, globalIgnores } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import nextPlugin from "@next/eslint-plugin-next";
 import importX from "eslint-plugin-import-x";
 import tseslint from "typescript-eslint";
 
@@ -35,6 +36,10 @@ export default defineConfig([
   },
   js.configs.recommended,
   ...tseslint.configs.strict,
+  {
+    plugins: { "@next/next": nextPlugin },
+    rules: nextPlugin.configs.recommended.rules,
+  },
 
   // Framework presets. Uncomment only what this project actually uses, and
   // add the matching import at the top of the file. Turning on a preset

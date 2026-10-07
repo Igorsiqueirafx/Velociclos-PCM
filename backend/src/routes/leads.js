@@ -2,12 +2,13 @@ const express = require('express');
 const { validateBody } = require('../middleware/validation');
 const { rateLimit } = require('../middleware/rateLimiter');
 const { logError } = require('../middleware/logger');
+const { authMiddleware } = require('../middleware/auth');
 const router = express.Router();
 
 const leadRateLimit = rateLimit({ windowMs: 60000, max: 5 });
 
 module.exports = (subscribersRepo) => {
-  router.get('/', async (req, res) => {
+  router.get('/', authMiddleware, async (req, res) => {
     try {
       const data = await subscribersRepo.findAll({ orderBy: 'created_at', ascending: false });
       res.json(data);
@@ -17,7 +18,7 @@ module.exports = (subscribersRepo) => {
     }
   });
 
-  router.post('/', leadRateLimit, validateBody(['email']), async (req, res) => {
+  router.post('/', leadRateLimit, validateBody(['email']), authMiddleware, async (req, res) => {
     try {
       const { email, name, phone, utm_campaign, utm_source, utm_medium, utm_content } = req.body;
       if (!email || !email.includes('@')) {

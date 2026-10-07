@@ -32,8 +32,39 @@ export default async function DownloadPage() {
     )
   }
 
-  let hasAccess = false;
-  const userEmail = session?.user?.email || '';
+  const userEmail = session?.user?.email || ''
+  const [checkingAccess, setCheckingAccess] = useState(true)
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
+        if (res.ok) {
+          const leads = await res.json()
+          const found = leads.find((l: { email: string }) => l.email === userEmail)
+          ;(async () => { setCheckingAccess(false) })()
+        } else {
+          ;(async () => { setCheckingAccess(false) })()
+        }
+      } catch (error) {
+        logEvent('download_access', 'error', 'Error checking lead access', { error: error instanceof Error ? error.message : String(error) })
+        ;(async () => { setCheckingAccess(false) })()
+      }
+    })()
+  }, [userEmail, BACKEND_URL])
+
+  if (checkingAccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
+        <div className="text-center">
+          <LoaderSpinner size="lg" />
+          <p className="mt-4 text-[#8a8a8d]">Verificando seu acesso...</p>
+        </div>
+      </div>
+    )
+  }
+
+  let hasAccess = false
   try {
     const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
     if (res.ok) {

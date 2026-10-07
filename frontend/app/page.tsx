@@ -1,6 +1,7 @@
 ﻿import HomeHero from './HomeHero'
 import FeaturesSection from './FeaturesSection'
 import FimatheExperience from './FimatheExperience'
+import OfficialFimatheSection from './OfficialFimatheSection'
 import MediaLogos from './MediaLogos'
 import AboutMarcelo from './AboutMarcelo'
 import CtaSection from './CtaSection'
@@ -11,6 +12,7 @@ export default function Home() {
       <HomeHero />
       <FeaturesSection />
       <FimatheExperience />
+      <OfficialFimatheSection />
       <MediaLogos />
       <AboutMarcelo />
       <CtaSection />
