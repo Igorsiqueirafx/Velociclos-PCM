@@ -8,10 +8,13 @@ export const dynamic = 'force-dynamic'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
 
+type Lead = { email: string }
+
 export default async function DownloadPage() {
   const session = await auth()
+  const userEmail = session?.user?.email
 
-  if (!session?.user?.email) {
+  if (!userEmail) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
         <div className="text-center">
@@ -32,48 +35,21 @@ export default async function DownloadPage() {
     )
   }
 
-  const userEmail = session?.user?.email || ''
-  const [checkingAccess, setCheckingAccess] = useState(true)
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
-        if (res.ok) {
-          const leads = await res.json()
-          const found = leads.find((l: { email: string }) => l.email === userEmail)
-          ;(async () => { setCheckingAccess(false) })()
-        } else {
-          ;(async () => { setCheckingAccess(false) })()
-        }
-      } catch (error) {
-        logEvent('download_access', 'error', 'Error checking lead access', { error: error instanceof Error ? error.message : String(error) })
-        ;(async () => { setCheckingAccess(false) })()
-      }
-    })()
-  }, [userEmail, BACKEND_URL])
-
-  if (checkingAccess) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
-        <div className="text-center">
-          <LoaderSpinner size="lg" />
-          <p className="mt-4 text-[#8a8a8d]">Verificando seu acesso...</p>
-        </div>
-      </div>
-    )
-  }
-
   let hasAccess = false
+
   try {
-    const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
-    if (res.ok) {
-      const leads = await res.json()
-      const found = leads.find((l: { email: string }) => l.email === userEmail)
-      hasAccess = !!found
+    const response = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
+
+    if (response.ok) {
+      const leads: unknown = await response.json()
+      hasAccess = Array.isArray(leads) && leads.some(
+        (lead: Lead) => lead.email === userEmail,
+      )
     }
   } catch (error) {
-    logEvent('download_access', 'error', 'Error checking lead access', { error: error instanceof Error ? error.message : String(error) })
+    logEvent('download_access', 'error', 'Error checking lead access', {
+      error: error instanceof Error ? error.message : String(error),
+    })
   }
 
   if (!hasAccess) {
@@ -104,8 +80,7 @@ export default async function DownloadPage() {
       <div
         className="absolute inset-0 opacity-30"
         style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(0,113,227,0.08) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 80%, rgba(0,113,227,0.05) 0%, transparent 50%)`,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(0,113,227,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,113,227,0.05) 0%, transparent 50%)`,
         }}
       />
       <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-[#0071e3]/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl" />
