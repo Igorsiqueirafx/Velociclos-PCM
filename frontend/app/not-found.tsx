@@ -21,7 +21,7 @@ export default function NotFound() {
           <GlassButton variant="solid" onClick={() => window.location.href = '/'}>
             Voltar ao início
           </GlassButton>
-          <GlassButton variant="outline" onClick={() => window.location.href = '/site-map'}>
+          <GlassButton variant="outline" onClick={() => window.location.href = '/sitemap'}>
             Ver mapa do site
           </GlassButton>
         </div>

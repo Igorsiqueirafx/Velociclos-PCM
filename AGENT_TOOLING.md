@@ -21,6 +21,20 @@ or grant agents additional credentials or production access.
   integrity, reliability and release verification across the frontend, backend
   and database.
 
+## Browser testing
+
+The frontend uses Microsoft's [Playwright](https://github.com/microsoft/playwright)
+Test for repeatable end-to-end checks. Run `npm run test:e2e` from the repository
+root; the Playwright config starts the frontend development server and tests the
+desktop and mobile sitemap navigation. Test artifacts are written to the ignored
+repository-root `test-results/` directory so Next.js does not watch those files
+and trigger development-server reloads during browser tests. Install the matching
+browser once with `npx playwright install chromium` from `frontend/`.
+
+Interactive browser inspection is already available through the user's VS Code
+Chrome DevTools MCP configuration. Do not add a second browser MCP server unless
+a project requirement cannot be met by the existing tools.
+
 The agents are available in `.github/agents/`. The official GitHub
 [`awesome-copilot`](https://github.com/github/awesome-copilot) collection was
 reviewed as a source; its broad third-party catalog was not copied wholesale.
@@ -35,5 +49,5 @@ example into the Next.js 15 codebase.
 The `skills` CLI is the upstream open-source option for discovering and
 installing compatible Agent Skills from GitHub. It was not added as a project
 dependency: the checked-in adaptations need no executable installer at
-runtime, and no MCP server, external credential or production permission is
-required to use them.
+runtime, and no external credential or production permission is required to use
+them.

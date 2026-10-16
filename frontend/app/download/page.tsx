@@ -1,4 +1,4 @@
-import { auth } from '@/app/lib/auth/config'
+import { createClient } from '@/app/lib/supabase/server'
 import AppleCard from '@/components/AppleCard'
 import AppleButton from '@/components/AppleButton'
 import Link from 'next/link'
@@ -6,142 +6,89 @@ import { logEvent } from '@/lib/logging'
 
 export const dynamic = 'force-dynamic'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://velociclos-api.vercel.app'
+function VerificationError() {
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center px-4">
+      <div className="text-center max-w-md" role="alert">
+        <h1 className="text-2xl font-semibold text-white mb-3">Não foi possível verificar seu acesso</h1>
+        <p className="text-[#b0b0b0] mb-6">O serviço de verificação está temporariamente indisponível. Tente novamente mais tarde.</p>
+        <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg">
+          Voltar ao início
+        </Link>
+      </div>
+    </main>
+  )
+}
 
 export default async function DownloadPage() {
-  const session = await auth()
+  const supabase = await createClient()
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
 
-  if (!session?.user?.email) {
+  if (userError) {
+    logEvent('download_access_check', 'error', 'Failed to verify authenticated user', {
+      error: userError.message,
+    })
+    return <VerificationError />
+  }
+
+  if (!user?.email) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
+      <main className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="mb-4 text-[#ff453a]">
-            <i className="fas fa-lock-open text-3xl"></i>
-          </div>
-          <h2 className="text-xl font-semibold text-white mb-2">Acesso restrito</h2>
-          <p className="text-[#8a8a8d] mb-4">Faça login para acessar o download.</p>
-          <Link
-            href="/auth/login"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors duration-200"
-          >
-            <i className="fas fa-sign-in-alt"></i>
+          <h1 className="text-2xl font-semibold text-white mb-3">Acesso restrito</h1>
+          <p className="text-[#b0b0b0] mb-6">Entre com sua conta para verificar seu acesso.</p>
+          <Link href="/auth/login?callbackUrl=%2Fdownload" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg">
             Entrar
           </Link>
         </div>
-      </div>
+      </main>
     )
   }
 
-  const userEmail = session?.user?.email || ''
-  const [checkingAccess, setCheckingAccess] = useState(true)
+  const { data: lead, error: leadError } = await supabase
+    .from('leads')
+    .select('id')
+    .eq('email', user.email)
+    .maybeSingle()
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
-        if (res.ok) {
-          const leads = await res.json()
-          const found = leads.find((l: { email: string }) => l.email === userEmail)
-          ;(async () => { setCheckingAccess(false) })()
-        } else {
-          ;(async () => { setCheckingAccess(false) })()
-        }
-      } catch (error) {
-        logEvent('download_access', 'error', 'Error checking lead access', { error: error instanceof Error ? error.message : String(error) })
-        ;(async () => { setCheckingAccess(false) })()
-      }
-    })()
-  }, [userEmail, BACKEND_URL])
-
-  if (checkingAccess) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
-        <div className="text-center">
-          <LoaderSpinner size="lg" />
-          <p className="mt-4 text-[#8a8a8d]">Verificando seu acesso...</p>
-        </div>
-      </div>
-    )
+  if (leadError) {
+    logEvent('download_access_check', 'error', 'Failed to query lead access', {
+      error: leadError.message,
+    })
+    return <VerificationError />
   }
 
-  let hasAccess = false
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/leads`, { cache: 'no-store' })
-    if (res.ok) {
-      const leads = await res.json()
-      const found = leads.find((l: { email: string }) => l.email === userEmail)
-      hasAccess = !!found
-    }
-  } catch (error) {
-    logEvent('download_access', 'error', 'Error checking lead access', { error: error instanceof Error ? error.message : String(error) })
-  }
-
-  if (!hasAccess) {
+  if (!lead) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center">
+      <main className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="mb-4 text-[#0071e3]">
-            <i className="fas fa-download text-3xl"></i>
-          </div>
-          <h2 className="text-xl font-semibold text-white mb-2">Libere o acesso</h2>
-          <p className="text-[#8a8a8d] mb-6">
-            Você precisa cadastrar seu email na página de captura antes de poder baixar o robô.
+          <h1 className="text-2xl font-semibold text-white mb-3">Acesso não liberado</h1>
+          <p className="text-[#b0b0b0] mb-6">
+            Não encontramos um cadastro de lead associado a este email. Entre com a conta cadastrada ou contate o suporte para solicitar acesso.
           </p>
-          <Link
-            href="/cadastro-lead"
-            className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg hover:bg-[#005fd9] transition-colors duration-200"
-          >
-            <i className="fas fa-bullseye"></i>
-            Garantir acesso ao download
+          <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg">
+            Voltar ao início
           </Link>
         </div>
-      </div>
+      </main>
     )
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(0,113,227,0.08) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 80%, rgba(0,113,227,0.05) 0%, transparent 50%)`,
-        }}
-      />
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-[#0071e3]/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#0071e3]/5 to-transparent rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl" />
-
-      <div className="relative z-10 w-full max-w-3xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-full mb-6 shadow-lg">
-            <i className="fas fa-robot text-3xl text-white"></i>
-          </div>
-          <h1 className="text-4xl font-semibold text-white mb-4 tracking-tight">
-            Download do Expert Advisor
-          </h1>
-          <p className="text-[#8a8a8d] text-lg max-w-2xl mx-auto">
-            Seu acesso foi liberado! Você já é parte da comunidade e pode
-            baixar o robô de trading e acompanhar os cursos.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="relative z-10 w-full max-w-3xl mx-auto px-4 py-12 text-center">
+        <h1 className="text-4xl font-semibold text-white mb-4">Download do Expert Advisor</h1>
+        <p className="text-[#8a8a8d] text-lg mb-8">Seu acesso foi liberado!</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <AppleCard className="p-6 text-center">
-            <i className="fas fa-robot text-3xl text-[#0071e3] mb-4"></i>
-            <h3 className="text-lg font-semibold text-white mb-2">Expert Advisor</h3>
-            <p className="text-[#8a8a8d] text-sm mb-4">Versão completa</p>
-            <AppleButton href="/ea" icon={<i className="fas fa-download" aria-hidden="true" />} className="text-sm">
-              Baixar Agora
-            </AppleButton>
+            <i className="fas fa-robot text-3xl text-[#0071e3] mb-4" aria-hidden="true"></i>
+            <h2 className="text-lg font-semibold text-white mb-2">Expert Advisor</h2>
+            <AppleButton href="/ea" className="text-sm">Baixar Agora</AppleButton>
           </AppleCard>
-
           <AppleCard className="p-6 text-center">
-            <i className="fas fa-play-circle text-3xl text-[#0071e3] mb-4"></i>
-            <h3 className="text-lg font-semibold text-white mb-2">Cursos Gratuitos</h3>
-            <p className="text-[#8a8a8d] text-sm mb-4">700+ aulas exclusivas</p>
-            <AppleButton href="/cursos" icon={<i className="fas fa-arrow-right" aria-hidden="true" />} className="text-sm">
-              Acessar Cursos
-            </AppleButton>
+            <i className="fas fa-play-circle text-3xl text-[#0071e3] mb-4" aria-hidden="true"></i>
+            <h2 className="text-lg font-semibold text-white mb-2">Cursos Gratuitos</h2>
+            <AppleButton href="/cursos" className="text-sm">Acessar Cursos</AppleButton>
           </AppleCard>
         </div>
       </div>

@@ -13,6 +13,7 @@ const publicRoutes = [
   { href: '/manual', label: 'Manual' },
   { href: '/ea', label: 'Expert Advisor' },
   { href: '/relogio', label: 'Relógio Forex' },
+  { href: '/sitemap', label: 'Mapa do Site' },
 ]
 
 export const metadata = {

@@ -1,6 +1,7 @@
 'use client'
 
 import { Component, type ReactNode, type ErrorInfo } from 'react'
+import Link from 'next/link'
 import { GlassCard } from '@/components/glassify/glass-card'
 import { GlassButton } from '@/components/glassify/glass-button'
 import { logEvent } from '@/lib/logging'
@@ -67,9 +68,9 @@ export class DynamicPageErrorBoundary extends Component<ErrorBoundaryProps, Erro
               <GlassButton variant="solid" onClick={this.handleReset}>
                 Tentar novamente
               </GlassButton>
-              <a href="/" className="flex items-center justify-center px-6 py-3 text-[#8a8a8d] hover:text-white transition-colors">
+              <Link href="/" className="flex items-center justify-center px-6 py-3 text-[#8a8a8d] hover:text-white transition-colors">
                 Voltar ao início
-              </a>
+              </Link>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-6 text-left">

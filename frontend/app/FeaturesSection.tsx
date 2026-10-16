@@ -6,6 +6,7 @@ export default function FeaturesSection() {
   return (
     <section className="py-16 sm:py-20 bg-[#1e1e1e]" aria-labelledby="benefits-title">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="benefits-title" className="sr-only">Benefícios da plataforma</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <AppleCard className="p-8 text-center">
             <div className="w-20 h-20 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-full flex items-center justify-center mx-auto mb-6">

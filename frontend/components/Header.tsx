@@ -14,7 +14,7 @@ const navigation = [
   { name: 'Certificados', href: '/certificados' },
   { name: 'Manual', href: '/manual' },
   { name: 'Relógio', href: '/relogio' },
-  { name: 'Sitemap', href: '/site-map' },
+  { name: 'Sitemap', href: '/sitemap' },
 ]
 
 export default function Header() {
@@ -56,13 +56,14 @@ export default function Header() {
 
           <nav className="hidden md:flex items-center gap-1" aria-label="Menu de navegação principal">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
+                prefetch={false}
                 className="px-3 py-2 text-[#b0b0b0] hover:text-white transition-all duration-200 font-medium text-sm rounded-lg hover:bg-white/5"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -86,6 +87,7 @@ export default function Header() {
             <Link
               key={item.name}
               href={item.href}
+              prefetch={false}
               className="block px-4 py-3 text-[#b0b0b0] hover:text-white transition-all duration-200 rounded-xl text-sm font-medium hover:bg-white/5"
               onClick={closeMenu}
             >

@@ -14,9 +14,9 @@ ANTES DO DEPLOY:
 - [ ] `npm run lint` — Linting passed
 - [ ] TypeScript — `npx tsc --noEmit` sem erros
 - [ ] Variáveis de ambiente adicionadas no Vercel
-  - [ ] GITHUB_CLIENT_ID
-  - [ ] GITHUB_CLIENT_SECRET
-  - [ ] AUTH_SECRET
+  - [ ] NEXT_PUBLIC_SUPABASE_URL (mesmo projeto do painel)
+  - [ ] NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (mesmo projeto do painel)
+  - [ ] URL de callback do Supabase Auth inclui o domínio publicado
 
 APÓS O DEPLOY:
 - [ ] Homepage carrega corretamente: https://velociclos.vercel.app/
@@ -34,6 +34,8 @@ APÓS O DEPLOY:
   - [ ] /sitemap
 - [ ] Links de autenticação funcionam:
   - [ ] /auth/login
+- [ ] Login Supabase por email e Google funciona
+- [ ] /download só libera usuários autenticados cujo email está cadastrado em leads
 - [ ] Backend API conectado e funcionando:
   - [ ] /api/health retorna status ok
 

@@ -1,26 +1,27 @@
-{
+﻿{
   "$schema": "https://app.kilo.ai/config.json",
   "mcp": {
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@0.0.38"],
+      "command": ["npx", "-y", "@playwright/mcp@0.0.38", "--browser", "chrome"],
       "enabled": true,
       "env": {}
     },
     "github": {
-      "type": "local",
-      "command": ["docker", "run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "-e", "GITHUB_READ_ONLY", "ghcr.io/github/github-mcp-server@sha256:2afb26356481d1a350e14544a6e160f7f7ec1561a1ea309b823665abf0309036", "stdio"],
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
       "enabled": true,
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{{GITHUB_PERSONAL_ACCESS_TOKEN}}",
-        "GITHUB_READ_ONLY": "1"
+      "headers": {
+        "X-MCP-Toolsets": "repos,issues,pull_requests",
+        "X-MCP-Readonly": "true"
       }
     },
     "filesystem": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\igorl\\OneDrive\\Desktop\\Kilo de código"],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\igorl\\Projects\\Velociclos-PCM"],
       "enabled": true,
       "env": {}
     }
   }
 }
+

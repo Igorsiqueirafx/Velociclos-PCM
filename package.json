@@ -12,7 +12,8 @@
     "dev:backend": "cd backend && npm run dev",
     "build": "node scripts/sync-public.js && cd frontend && npm run build",
     "lint": "cd frontend && npm run lint",
-    "typecheck": "cd frontend && npx tsc --noEmit"
+    "typecheck": "cd frontend && npx tsc --noEmit",
+    "test:e2e": "npm --workspace frontend run test:e2e"
   },
   "engines": {
     "node": ">=18.x"

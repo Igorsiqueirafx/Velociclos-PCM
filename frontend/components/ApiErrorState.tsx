@@ -1,6 +1,7 @@
 'use client'
 
 import { GlassButton } from '@/components/glassify/glass-button'
+import Link from 'next/link'
 
 type ApiErrorStateProps = {
   title?: string
@@ -30,12 +31,12 @@ export default function ApiErrorState({
             Tentar novamente
           </GlassButton>
         )}
-        <a
+        <Link
           href={fallbackHref}
           className="inline-flex items-center justify-center px-6 py-3 text-[#8a8a8d] hover:text-white transition-colors"
         >
           Voltar ao início
-        </a>
+        </Link>
       </div>
     </div>
   )

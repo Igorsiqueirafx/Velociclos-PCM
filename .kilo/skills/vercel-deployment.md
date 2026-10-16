@@ -46,12 +46,13 @@ git push origin feature/my-feature
 # Backend
 NEXT_PUBLIC_BACKEND_URL=https://api.domain.com
 
-# Auth
-AUTH_SECRET=your-auth-secret-here-generate-with-openssl-rand-base64-32
-NEXTAUTH_URL=https://velociclos.vercel.app
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+# Supabase Auth (use the same Supabase project as velociclos-admin)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
+
+Configure the production domain as an allowed redirect URL in Supabase Auth.
+Never add a Supabase secret/service-role key to a `NEXT_PUBLIC_*` variable.
 
 ### Preview vs Production
 - **Preview**: All vars from Vercel UI (non-sensitive)

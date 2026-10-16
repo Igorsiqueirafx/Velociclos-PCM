@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/manual',
     '/ea',
     '/relogio',
-    '/site-map',
+    '/sitemap',
   ]
 
   return publicRoutes.map((route) => ({

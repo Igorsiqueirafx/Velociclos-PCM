@@ -1,11 +1,66 @@
 "use client"
 
-import { signIn } from "next-auth/react"
-import { useSearchParams } from "next/navigation"
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { createClient } from "@/app/lib/supabase/client"
 
 export default function LoginPage() {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/"
+  const router = useRouter()
+  const requestedCallbackUrl = searchParams.get("callbackUrl")
+  const callbackUrl = requestedCallbackUrl
+    ? (() => {
+        try {
+          const url = new URL(requestedCallbackUrl, window.location.origin)
+          return url.origin === window.location.origin
+            ? `${url.pathname}${url.search}${url.hash}`
+            : "/"
+        } catch {
+          return "/"
+        }
+      })()
+    : "/"
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState(
+    searchParams.get("error") ? "Não foi possível concluir o login. Tente novamente." : "",
+  )
+  const [isLoading, setIsLoading] = useState(false)
+  const supabase = createClient()
+
+  const handlePasswordLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setError("")
+    setIsLoading(true)
+
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (authError) {
+      setError("Não foi possível entrar. Confira seu email e senha.")
+      setIsLoading(false)
+      return
+    }
+
+    router.replace(callbackUrl)
+    router.refresh()
+  }
+
+  const handleGoogleLogin = async () => {
+    setError("")
+    setIsLoading(true)
+
+    const redirectTo = new URL("/auth/callback", window.location.origin)
+    redirectTo.searchParams.set("next", callbackUrl)
+    const { error: authError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: redirectTo.toString() },
+    })
+
+    if (authError) {
+      setError("Não foi possível iniciar o login com Google. Tente novamente.")
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#1e2329] flex items-center justify-center p-4">
@@ -13,17 +68,61 @@ export default function LoginPage() {
         <div className="bg-[#252b33] rounded-2xl border border-[#404857] p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Velociclos</h1>
-            <p className="text-[#8a8a8d]">Faça login com sua conta GitHub</p>
+            <p className="text-[#8a8a8d]">Entre com a mesma conta usada no painel</p>
+          </div>
+
+          <form onSubmit={handlePasswordLogin} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-medium text-[#a0a0a0]">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-lg border border-[#404857] bg-[#1e2329] px-4 py-3 text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="mb-2 block text-sm font-medium text-[#a0a0a0]">
+                Senha
+              </label>
+              <input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="w-full rounded-lg border border-[#404857] bg-[#1e2329] px-4 py-3 text-[#dcdcdc] focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+              />
+            </div>
+            {error && <p role="alert" className="text-sm text-[#ff6b6b]">{error}</p>}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full rounded-xl bg-[#0071e3] px-6 py-3.5 font-medium text-white transition-colors hover:bg-[#0062c4] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Entrar com email
+            </button>
+          </form>
+
+          <div className="my-5 flex items-center gap-3 text-xs text-[#8a8a8d]">
+            <span className="h-px flex-1 bg-[#404857]" />
+            ou
+            <span className="h-px flex-1 bg-[#404857]" />
           </div>
 
           <button
-            onClick={() => signIn("github", { callbackUrl })}
-            className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[#2d333d] border border-[#404857] rounded-xl text-[#dcdcdc] font-medium hover:bg-[#343a47] hover:border-[#505867] transition-colors"
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+            className="w-full rounded-xl border border-[#404857] bg-[#2d333d] px-6 py-3.5 font-medium text-[#dcdcdc] transition-colors hover:bg-[#343a47] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.305-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-            </svg>
-            Continuar com GitHub
+            Continuar com Google
           </button>
         </div>
       </div>

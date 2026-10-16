@@ -42,6 +42,7 @@ function cleanupRateLimits() {
   }
 }
 
-setInterval(cleanupRateLimits, 60000);
+const cleanupInterval = setInterval(cleanupRateLimits, 60000);
+cleanupInterval.unref?.();
 
 module.exports = { rateLimit };

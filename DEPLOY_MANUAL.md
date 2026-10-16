@@ -1,30 +1,29 @@
-DEPLOY MANUAL - VELOCICLOS PCM
+# Deploy do Velociclos PCM
 
-O projeto já está vinculado ao Vercel (frontend/.vercel/project.json: projectName=velociclos).
+O frontend usa o projeto Supabase Auth compartilhado com `velociclos-admin`.
+Configure os valores no projeto `velociclos` da Vercel, em
+**Settings → Environment Variables**, para o ambiente **Production**:
 
-PASSO 1: Instalar o CLI (se ainda não tiver)
-  npm install -g vercel
+- `NEXT_PUBLIC_SUPABASE_URL`: URL do projeto Supabase compartilhado.
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: publishable key do mesmo projeto.
+- `NEXT_PUBLIC_BACKEND_URL`: URL da API usada pelo conteúdo, por exemplo
+  `https://velociclos-api.vercel.app`.
+- `YOUTUBE_API_KEY`: chave opcional do YouTube Data API.
 
-PASSO 2: Fazer login
-  vercel login
+No Supabase, em **Authentication → URL Configuration**, mantenha o domínio
+principal do site como Site URL e adicione
+`https://velociclos-pcm.vercel.app/auth/callback` à lista de redirect URLs.
+Configure também o domínio de preview se for testar login em previews.
 
-PASSO 3: Configurar variáveis de ambiente no Vercel Dashboard
-  Acesse: https://vercel.com/dashboard
-  Vá em: velociclos → Settings → Environment Variables
-  Adicione:
-    - NEXT_PUBLIC_BACKEND_URL=https://velociclos-api.vercel.app
-    - YOUTUBE_API_KEY=AIzaSyAVbe-6kOb-KjUDnrME8s4ISoGESbCEgKc
-    - NEXTAUTH_URL=https://velociclos.vercel.app
-    - AUTH_SECRET=<gerar com: openssl rand -base64 32>
-    - GITHUB_CLIENT_ID=<seu client id>
-    - GITHUB_CLIENT_SECRET=<seu client secret>
+O acesso a `/download` exige uma sessão Supabase válida e um registro em
+`leads` cujo email corresponda ao email verificado do usuário. O frontend usa a
+sessão autenticada e consulta apenas o identificador do lead; não configure uma
+service-role/secret key nem `BACKEND_ADMIN_PASSWORD` neste projeto.
 
-PASSO 4: Fazer deploy
-  cd frontend
-  vercel --prod
+Depois de salvar as variáveis, publique um novo deployment de produção e teste:
 
-PASSO 5: Verificar
-  Acesse: https://velociclos.vercel.app
-  Verifique se a página inicial carrega, o vídeo toca, os links funcionam e o sitemap está acessível.
+1. Login por email/senha e Google em `/auth/login`.
+2. Acesso a `/download` com uma conta cujo email está cadastrado em `leads`.
+3. Acesso negado a uma conta sem registro correspondente.
 
-NOTA: Se o deploy falhar, verifique se o arquivo .env.local no frontend contém NEXTAUTH_URL e se o backend está configurado com ADMIN_PASSWORD.
+As alterações locais devem passar por revisão e commit antes de publicar.

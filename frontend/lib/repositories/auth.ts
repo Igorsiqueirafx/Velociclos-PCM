@@ -1,11 +1,12 @@
-import { auth } from "@/app/lib/auth/config"
+import { createClient } from '@/app/lib/supabase/server'
 
 export async function getCurrentUser() {
-  const session = await auth()
-  return session?.user ?? null
-}
+  const supabase = await createClient()
+  const { data: { user }, error } = await supabase.auth.getUser()
 
-export async function signOut() {
-  const { signOut } = await import("@/app/lib/auth/config")
-  await signOut({ redirectTo: "/auth/login" })
+  if (error) {
+    throw error
+  }
+
+  return user
 }

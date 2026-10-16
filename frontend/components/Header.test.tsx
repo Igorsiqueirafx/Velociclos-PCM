@@ -19,6 +19,11 @@ describe('Header', () => {
     })
   })
 
+  it('links the sitemap navigation item to the implemented route', () => {
+    render(<Header />)
+    expect(screen.getByRole('link', { name: 'Sitemap' })).toHaveAttribute('href', '/sitemap')
+  })
+
   it('toggles mobile menu when hamburger button is clicked', async () => {
     const user = userEvent.setup()
     render(<Header />)

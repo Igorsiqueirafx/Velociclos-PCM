@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Link from 'next/link'
 import { logEvent } from '@/lib/logging'
 import { GlassCard } from '@/components/glassify/glass-card'
 import { GlassButton } from '@/components/glassify/glass-button'
@@ -36,9 +37,9 @@ export default function Error({
           <GlassButton variant="solid" onClick={reset}>
             Tentar novamente
           </GlassButton>
-          <a href="/" className="flex items-center justify-center px-6 py-3 text-[#8a8a8d] hover:text-white transition-colors">
+          <Link href="/" className="flex items-center justify-center px-6 py-3 text-[#8a8a8d] hover:text-white transition-colors">
             Voltar ao início
-          </a>
+          </Link>
         </div>
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-6 text-left">

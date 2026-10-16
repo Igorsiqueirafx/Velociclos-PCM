@@ -29,6 +29,6 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: 'Artigos' })).toHaveAttribute('href', '/artigos')
     expect(screen.getByRole('link', { name: 'Expert Advisor' })).toHaveAttribute('href', '/ea')
     expect(screen.getByRole('link', { name: 'Método Fimathe' })).toHaveAttribute('href', '/metodo-fimathe')
-    expect(screen.getByRole('link', { name: 'Mapa do Site' })).toHaveAttribute('href', '/site-map')
+    expect(screen.getByRole('link', { name: 'Mapa do Site' })).toHaveAttribute('href', '/sitemap')
   })
 })

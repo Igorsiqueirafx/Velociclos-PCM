@@ -1,0 +1,16 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "web_search": true,
+  "instructions": [".kilo/rules/*.md"],
+  "agent": {
+    "code-reviewer": {
+      "description": "Revisa alterações em busca de bugs, riscos de segurança e problemas de manutenção.",
+      "mode": "subagent",
+      "prompt": "Revise as mudanças solicitadas e o contexto necessário. Priorize problemas concretos de comportamento, segurança, acessibilidade e manutenção. Não edite arquivos. Apresente achados por severidade com arquivo e linha; se não encontrar problemas, diga isso claramente.",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    }
+  }
+}

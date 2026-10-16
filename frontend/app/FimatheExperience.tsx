@@ -272,7 +272,7 @@ export default function FimatheExperience() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#0071e3]">Fimathe Experience</p>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#3a84ff]">Fimathe Experience</p>
             <h2 id="experience-title" className="text-3xl font-semibold text-white sm:text-4xl tracking-tight">Aprendizado que acontece junto</h2>
             <p className="mt-4 text-base leading-7 text-[#8a8a8d]">Um pouco da comunidade, dos encontros e da experiência por trás do Método Fimathe.</p>
           </div>

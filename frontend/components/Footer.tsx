@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Footer() {
   return (
     <footer className="bg-[#121212] border-t border-[#3a3a3c]">
@@ -10,25 +12,25 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">Conteúdo</h4>
             <ul className="space-y-2">
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos">Cursos</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos/videos">Vídeos</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/artigos">Artigos</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/certificados">Certificados</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/manual">Manual</a></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos">Cursos</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/cursos/videos">Vídeos</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/artigos">Artigos</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/certificados">Certificados</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/manual">Manual</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">Ferramentas</h4>
             <ul className="space-y-2">
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/ea">Expert Advisor</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/relogio">Relógio Forex</a></li>
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/metodo-fimathe">Método Fimathe</a></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/ea">Expert Advisor</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/relogio">Relógio Forex</Link></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/metodo-fimathe">Método Fimathe</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">Navegação</h4>
             <ul className="space-y-2">
-              <li><a className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/site-map">Mapa do Site</a></li>
+              <li><Link className="text-[#8a8a8d] text-sm hover:text-white transition-colors duration-200" href="/sitemap">Mapa do Site</Link></li>
             </ul>
           </div>
         </div>

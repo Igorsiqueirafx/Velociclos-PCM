@@ -2,14 +2,24 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { signOut } from '@/app/lib/auth/config'
+import { createClient } from '@/app/lib/supabase/client'
+import { logEvent } from '@/lib/logging'
 
 export default function LogoutPage() {
   const router = useRouter()
 
   useEffect(() => {
-    signOut({ redirectTo: '/auth/login' }).catch(() => {
+    const supabase = createClient()
+    void supabase.auth.signOut().then(({ error }) => {
+      if (error) {
+        logEvent('supabase_sign_out', 'error', 'Failed to sign out from Supabase', {
+          error: error.message,
+        })
+        return
+      }
+
       router.replace('/auth/login')
+      router.refresh()
     })
   }, [router])
 

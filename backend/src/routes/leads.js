@@ -18,6 +18,21 @@ module.exports = (subscribersRepo) => {
     }
   });
 
+  router.post('/access-check', authMiddleware, validateBody(['email']), async (req, res) => {
+    try {
+      const email = typeof req.body.email === 'string' ? req.body.email.trim() : '';
+      if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: 'Email inválido' });
+      }
+
+      const subscriber = await subscribersRepo.findByEmail(email);
+      return res.json({ hasAccess: Boolean(subscriber) });
+    } catch (error) {
+      logError('leads:access-check', error);
+      return res.status(500).json({ error: 'Failed to check download access' });
+    }
+  });
+
   router.post('/', leadRateLimit, validateBody(['email']), authMiddleware, async (req, res) => {
     try {
       const { email, name, phone, utm_campaign, utm_source, utm_medium, utm_content } = req.body;
