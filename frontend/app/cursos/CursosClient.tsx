@@ -110,41 +110,48 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
           <p className="text-[#a0a0a0]">Em breve novos conteúdos serão adicionados.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {courses.map((course) => (
-            <button
-              key={course.id}
-              onClick={() => loadModules(course.id)}
-              className="text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
-            >
-              <AppleCard hover className="h-full overflow-hidden">
-                <div className="relative aspect-video">
-                  <Image
-                    src={course.thumbnail || '/placeholder-course.jpg'}
-                    alt={course.title}
-                    fill
-                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
-                      <i className="fas fa-play text-white text-xl ml-1" aria-hidden="true" />
+        <section className="py-16 bg-[#121212]" aria-labelledby="cursos-heading">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="cursos-heading" className="sr-only">Cursos Disponíveis</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {courses.map((course) => (
+                <button
+                  key={course.id}
+                  onClick={() => loadModules(course.id)}
+                  className="text-left focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
+                  aria-label={`Abrir curso: ${course.title}`}
+                >
+                  <AppleCard hover className="h-full overflow-hidden glass-card hover-lift">
+                    <div className="relative aspect-video">
+                      <Image
+                        src={course.thumbnail || '/placeholder-course.jpg'}
+                        alt={course.title}
+                        fill
+                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                        loading="lazy"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-14 h-14 bg-[#0071e3] rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg group-hover:shadow-[#0071e3]/40">
+                          <i className="fas fa-play text-white text-xl ml-1" aria-hidden="true" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-white mb-1 line-clamp-1">
-                    {course.title}
-                  </h3>
-                  <p className="text-sm text-[#8a8a8d] line-clamp-2">
-                    {course.description || 'Curso completo do Método Fimathe.'}
-                  </p>
-                </div>
-              </AppleCard>
-            </button>
-          ))}
-        </div>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold text-white mb-1 line-clamp-1">
+                        {course.title}
+                      </h3>
+                      <p className="text-sm text-[#8a8a8d] line-clamp-2">
+                        {course.description || 'Curso completo do Método Fimathe.'}
+                      </p>
+                    </div>
+                  </AppleCard>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
 
       {selectedCourse && (

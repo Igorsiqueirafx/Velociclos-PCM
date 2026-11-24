@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 import IntroVideoOverlay from '@/components/IntroVideoOverlay'
 import AppleCard from '@/components/AppleCard'
+import Image from 'next/image'
 
 type Aula = {
   id: string
@@ -31,16 +32,28 @@ export default function MetodoFimathePage() {
         <IntroVideoOverlay onComplete={handleIntroComplete} />
       )}
 
-      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10"></div>
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden" aria-label="Hero do Método Fimathe">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/bg-capa-marcelo.webp"
+            alt=""
+            fill
+            className="object-cover opacity-60"
+            aria-hidden="true"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#0071e3]/20 rounded-full blur-3xl opacity-60 animate-pulse" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#6567f1]/20 rounded-full blur-3xl opacity-60 animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <div className="max-w-3xl glass-card rounded-3xl p-8 sm:p-12 hover-lift">
+            <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6 border border-[#0071e3]/20">
               <i className="fas fa-graduation-cap" aria-hidden="true"></i>
               <span>Curso Completo</span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-6 leading-tight tracking-tight">
-              O <span className="text-[#0071e3]">Método Fimathe</span>
+              O <span className="gradient-text">Método Fimathe</span>
               <span className="block">A Nova Análise Gráfica</span>
             </h1>
             <p className="text-[#8a8a8d] text-lg mb-8">
@@ -60,17 +73,17 @@ export default function MetodoFimathePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#121212]">
+      <section className="py-20 bg-[#121212]" aria-labelledby="playlist-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-white mb-3 flex items-center justify-center gap-3">
+            <h2 id="playlist-heading" className="text-3xl font-semibold text-white mb-3 flex items-center justify-center gap-3">
               <i className="fas fa-book-open text-[#0071e3]" aria-hidden="true"></i>
-              Playlist do Método Fimathe
+              <span className="gradient-text">Playlist do Método Fimathe</span>
             </h2>
             <p className="text-[#8a8a8d]">Assista todas as aulas diretamente no site.</p>
           </div>
 
-          <div className="mb-12 rounded-2xl overflow-hidden border border-[#3a3a3c] bg-[#1e1e1e]">
+          <div className="mb-12 rounded-2xl overflow-hidden border border-[#3a3a3c] bg-[#1e1e1e] glass-subtle">
             <div className="bg-gradient-to-r from-[#0071e3]/10 to-transparent p-6 border-b border-[#3a3a3c]">
               <div className="flex items-center gap-3 mb-2">
                 <i className="fas fa-crown text-[#0071e3]" aria-hidden="true"></i>
@@ -94,7 +107,7 @@ export default function MetodoFimathePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {aulas.map((aula) => (
-              <AppleCard key={aula.id} hover>
+              <AppleCard key={aula.id} hover className="glass-card hover-lift" aria-label={`Aula: ${aula.title}`}>
                 <div className="aspect-video">
                   <ResponsiveVideoEmbed
                     videoId={aula.videoId}

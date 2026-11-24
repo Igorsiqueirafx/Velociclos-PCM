@@ -51,14 +51,26 @@ export default function EaPage() {
 
   return (
     <>
-      <section className="relative min-h-[70vh] flex items-center bg-cover bg-top bg-no-repeat bg-[url('/bg-capa-marcelo.webp')]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10"></div>
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden" aria-label="Hero do Expert Advisor">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/bg-capa-marcelo.webp"
+            alt=""
+            fill
+            className="object-cover opacity-60"
+            aria-hidden="true"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#0071e3]/20 rounded-full blur-3xl opacity-60 animate-pulse" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#6567f1]/20 rounded-full blur-3xl opacity-60 animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[50vh]">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 glass-card rounded-3xl p-8 sm:p-12 hover-lift">
               <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight tracking-tight">
                 Expert Advisor
-                <span className="block text-[#0071e3]">Velociclos PCM</span>
+                <span className="block gradient-text">Velociclos PCM</span>
               </h1>
               <p className="text-[#8a8a8d] text-lg">
                 Instale, configure e use o seu sistema automatizado no MetaTrader com segurança.
@@ -81,13 +93,13 @@ export default function EaPage() {
 
             <div className="relative flex justify-center">
               <div className="relative group">
-<Image
-              src="/ea-screenshot.webp"
-              alt="Expert Advisor Velociclos PCM"
-              fill
-              className="w-full max-w-md rounded-2xl shadow-lg transition-transform duration-500 ease-out group-hover:scale-105"
-              loading="lazy"
-            />
+                <Image
+                  src="/ea-screenshot.webp"
+                  alt="Expert Advisor Velociclos PCM"
+                  fill
+                  className="w-full max-w-md rounded-2xl shadow-lg transition-transform duration-500 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
                 <div
                   className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                   onClick={openVideo}
@@ -107,11 +119,12 @@ export default function EaPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#121212]">
+      <section className="py-20 bg-[#121212]" aria-labelledby="features-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="features-heading" className="sr-only">Recursos do Expert Advisor</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {features.map((item) => (
-              <AppleCard key={item.title} className="p-8 text-center">
+              <AppleCard key={item.title} className="p-8 text-center glass-card hover-lift" aria-label={item.title}>
                 <div className="w-16 h-16 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-full flex items-center justify-center mx-auto mb-4">
                   <i className={`fas ${item.icon} text-2xl text-white`} aria-hidden="true"></i>
                 </div>

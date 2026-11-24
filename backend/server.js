@@ -114,8 +114,8 @@ const seed = async () => {
       course_id: course.id,
       title: 'Aula 1 - Introdução',
       description: 'Introdução ao método.',
-      video_id: 'dQw4w9WgXcQ',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+      video_id: 'L3XbYm_WOQA',
+      thumbnail: 'https://img.youtube.com/vi/L3XbYm_WOQA/mqdefault.jpg',
       duration: 600,
       order_index: 1,
       is_published: true,
@@ -126,8 +126,8 @@ const seed = async () => {
       course_id: course.id,
       title: 'Aula 2 - Conceitos básicos',
       description: 'Conceitos básicos.',
-      video_id: 'dQw4w9WgXcQ',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+      video_id: 'tgH0fjnGOlk',
+      thumbnail: 'https://img.youtube.com/vi/tgH0fjnGOlk/mqdefault.jpg',
       duration: 800,
       order_index: 2,
       is_published: true,
@@ -138,10 +138,51 @@ const seed = async () => {
       course_id: course.id,
       title: 'Aula 3 - Prática',
       description: 'Aplicação prática.',
-      video_id: 'dQw4w9WgXcQ',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+      video_id: 'zlx26zrcDOg',
+      thumbnail: 'https://img.youtube.com/vi/zlx26zrcDOg/mqdefault.jpg',
       duration: 900,
       order_index: 1,
+      is_published: true,
+    });
+
+    const course2 = await coursesRepo.create({
+      title: 'Método Fimathe - Análise de Ouro',
+      slug: 'metodo-fimathe-ouro',
+      description: 'Análise técnica aplicada ao ouro (XAUUSD) usando o método Fimathe.',
+      thumbnail: 'https://img.youtube.com/vi/SaR-4Dp_0AI/maxresdefault.jpg',
+      category: 'ouro',
+      is_published: true,
+      order_index: 2,
+    });
+
+    const module3 = await modulesRepo.create({
+      course_id: course2.id,
+      title: 'Módulo 1 - Ouro',
+      description: 'Fundamentos da análise de ouro com Fimathe.',
+      order_index: 1,
+    });
+
+    await lessonsRepo.create({
+      module_id: module3.id,
+      course_id: course2.id,
+      title: 'Aula 1 - Estrutura do Ouro',
+      description: 'Como ler a estrutura de preços do XAUUSD.',
+      video_id: 'ynkO0RpRrVo',
+      thumbnail: 'https://img.youtube.com/vi/ynkO0RpRrVo/mqdefault.jpg',
+      duration: 750,
+      order_index: 1,
+      is_published: true,
+    });
+
+    await lessonsRepo.create({
+      module_id: module3.id,
+      course_id: course2.id,
+      title: 'Aula 2 - Zona Neutra no Ouro',
+      description: 'Identificando a zona neutra no mercado de ouro.',
+      video_id: 'rYd_oE_z7vo',
+      thumbnail: 'https://img.youtube.com/vi/rYd_oE_z7vo/mqdefault.jpg',
+      duration: 850,
+      order_index: 2,
       is_published: true,
     });
   }
@@ -153,6 +194,10 @@ const seed = async () => {
       { title: 'Zona Neutra e Canal de Referência: o coração da Fimathe', slug: 'zona-neutra-canal', excerpt: 'Entenda a zona neutra, o canal de referência e o stop fora da caixinha.', category: 'metodo', is_published: true },
       { title: '5 Mitos sobre Mesas Proprietárias no Forex', slug: 'mitos-prop-firms', excerpt: 'Existem muitos mitos sobre mesas proprietárias circulando no mercado.', category: 'forex', is_published: true },
       { title: 'Operar em Notícias: quando evitar e quando aproveitar a volatilidade', slug: 'noticias-volatility', excerpt: 'Muitos evitam notícias por medo; a volatilidade pode ser aliada.', category: 'estrategia', is_published: true },
+      { title: 'Gestão de Risco: o pilar que separa traders consistentes dos que perdem', slug: 'gestao-risco-trader', excerpt: 'Sem gestão de risco, a melhor estratégia do mundo não salva sua conta.', category: 'estrategia', is_published: true },
+      { title: 'Análise de Múltiplos Timeframes: como alinhar tendência e entrada', slug: 'multitimeframe-entrada', excerpt: 'Aprenda a usar timeframes superiores para filtrar sinais e aumentar a assertividade.', category: 'metodo', is_published: true },
+      { title: 'Psicologia do Trading: controle emocional em momentos de volatilidade', slug: 'psicologia-trading', excerpt: 'A mente do trader é o maior ativo ou o maior risco. Aprenda a dominar suas emoções.', category: 'psicologia', is_published: true },
+      { title: 'Backtesting Manual: como validar sua estratégia antes de operar', slug: 'backtesting-manual', excerpt: 'Valide sua estratégia com dados históricos antes de arriscar capital real.', category: 'estrategia', is_published: true },
     ];
     for (const a of articles) {
       await articlesRepo.create({ ...a, content: '', cover_image: '', tags: [], author: 'Marcelo Ferreira', published_at: new Date().toISOString() });

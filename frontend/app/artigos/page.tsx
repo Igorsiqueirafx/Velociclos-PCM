@@ -6,6 +6,18 @@ import ArtigosClient from './ArtigosClient'
 export const metadata: Metadata = {
   title: 'Artigos - Velociclos PCM | Trading, Forex e Mesas Proprietárias',
   description: 'Artigos completos sobre Forex, trading e mesas proprietárias. Conteúdo exclusivo sobre análise técnica, gestão de risco e estratégias Fimathe.',
+  openGraph: {
+    title: 'Artigos - Velociclos PCM | Trading, Forex e Mesas Proprietárias',
+    description: 'Artigos completos sobre Forex, trading e mesas proprietárias. Conteúdo exclusivo sobre análise técnica, gestão de risco e estratégias Fimathe.',
+    type: 'website',
+    images: [{ url: '/og-artigos.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Artigos - Velociclos PCM | Trading, Forex e Mesas Proprietárias',
+    description: 'Artigos completos sobre Forex, trading e mesas proprietárias.',
+    images: ['/og-artigos.png'],
+  },
 }
 
 export const dynamic = 'force-dynamic'

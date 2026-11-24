@@ -1,7 +1,6 @@
 'use client'
 
 import AppleButton from '@/components/AppleButton'
-import Image from 'next/image'
 
 export default function CursosHero() {
   return (

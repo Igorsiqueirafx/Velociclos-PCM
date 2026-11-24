@@ -8,6 +8,18 @@ import AppleButton from '@/components/AppleButton'
 export const metadata: Metadata = {
   title: 'Cursos e Aulas - Velociclos PCM',
   description: 'Acesse todas as aulas sobre o Método Fimathe. Cursos organizados por tema: Forex, Ouro, Análise Técnica e mais.',
+  openGraph: {
+    title: 'Cursos e Aulas - Velociclos PCM',
+    description: 'Acesse todas as aulas sobre o Método Fimathe. Cursos organizados por tema: Forex, Ouro, Análise Técnica e mais.',
+    type: 'website',
+    images: [{ url: '/og-cursos.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cursos e Aulas - Velociclos PCM',
+    description: 'Acesse todas as aulas sobre o Método Fimathe.',
+    images: ['/og-cursos.png'],
+  },
 }
 
 export const dynamic = 'force-dynamic'

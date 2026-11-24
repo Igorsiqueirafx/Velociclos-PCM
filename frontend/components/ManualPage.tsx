@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import AppleCard from '@/components/AppleCard'
 
 type ManualStep = {
@@ -102,41 +103,55 @@ const manualSections: ManualSection[] = [
 
 export default function ManualPage() {
   return (
-    <div className="py-16 bg-[#121212]">
+    <div className="py-16 bg-[#121212]" aria-label="Manual do Usuário">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <section className="mb-16">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <i className="fas fa-book-open" aria-hidden="true"></i>
-              <span>Documentação Oficial</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-6 tracking-tight">
-              Manual do Usuário
-            </h1>
-            <p className="text-[#8a8a8d] text-lg mb-8">
-              Guia completo para instalar, configurar e operar o Expert Advisor Velociclos PCM no MetaTrader 5.
-            </p>
-            <div className="flex gap-8 flex-wrap mb-8">
-              <div className="flex flex-col">
-                <span className="text-3xl font-semibold text-[#0071e3]">v7.33</span>
-                <span className="text-sm text-[#8a8a8d]">Versão Atual</span>
+          <div className="relative max-w-3xl glass-card rounded-3xl p-8 sm:p-12 hover-lift overflow-hidden">
+            <div className="absolute -top-12 -right-12 w-64 h-64 bg-[#0071e3]/10 rounded-full blur-3xl" aria-hidden="true" />
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6 border border-[#0071e3]/20">
+                <i className="fas fa-book-open" aria-hidden="true"></i>
+                <span>Documentação Oficial</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-semibold text-[#0071e3]">MT5</span>
-                <span className="text-sm text-[#8a8a8d]">Plataforma</span>
+              <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-6 tracking-tight">
+                <span className="gradient-text">Manual do Usuário</span>
+              </h1>
+              <p className="text-[#8a8a8d] text-lg mb-8">
+                Guia completo para instalar, configurar e operar o Expert Advisor Velociclos PCM no MetaTrader 5.
+              </p>
+              <div className="flex gap-8 flex-wrap mb-8">
+                <div className="flex flex-col">
+                  <span className="text-3xl font-semibold text-[#0071e3]">v7.33</span>
+                  <span className="text-sm text-[#8a8a8d]">Versão Atual</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-3xl font-semibold text-[#0071e3]">MT5</span>
+                  <span className="text-sm text-[#8a8a8d]">Plataforma</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-3xl font-semibold text-[#0071e3]">5</span>
+                  <span className="text-sm text-[#8a8a8d]">Configurações</span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-semibold text-[#0071e3]">5</span>
-                <span className="text-sm text-[#8a8a8d]">Configurações</span>
+              <div className="mt-8 flex items-center justify-center">
+                <Image
+                  src="/IMG_0975_new.jpg"
+                  alt="Igor Siqueira - Fundador do Velociclos PCM"
+                  width={400}
+                  height={480}
+                  className="aspect-[3/4] object-cover rounded-xl border border-[#3a3a3c] shadow-lg hover:border-[#0071e3]/50 transition-colors duration-300"
+                  priority
+                  loading="eager"
+                />
               </div>
             </div>
           </div>
         </section>
 
         {manualSections.map((section) => (
-          <section key={section.id} className="mb-16">
+          <section key={section.id} className="mb-16" aria-labelledby={section.id}>
             <div className="mb-8">
-              <h2 className="text-3xl font-semibold text-white flex items-center gap-3 mb-3">
+              <h2 id={section.id} className="text-3xl font-semibold text-white flex items-center gap-3 mb-3">
                 <i className={`fas ${section.icon}`} aria-hidden="true"></i>
                 {section.title}
               </h2>
@@ -146,7 +161,7 @@ export default function ManualPage() {
             {section.steps && (
               <div className="space-y-6">
                 {section.steps.map((step) => (
-                  <div key={step.number} className="flex gap-4">
+                  <div key={step.number} className="flex gap-4 glass-card rounded-2xl p-6 hover-lift">
                     <div className="flex-shrink-0 w-10 h-10 bg-[#0071e3] text-white rounded-full flex items-center justify-center font-semibold">
                       {step.number}
                     </div>
@@ -155,7 +170,7 @@ export default function ManualPage() {
                       <p className="text-[#8a8a8d] mb-2">
                         {step.content}{' '}
                         {step.link && (
-                          <a href={step.link} className="text-[#0071e3] hover:underline">
+                          <a href={step.link} className="text-[#0071e3] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3] rounded">
                             {step.linkText}
                           </a>
                         )}
@@ -181,7 +196,7 @@ export default function ManualPage() {
             {section.modes && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {section.modes.map((mode) => (
-                  <AppleCard key={mode.title} hover className="h-full">
+                  <AppleCard key={mode.title} hover className="h-full glass-card hover-lift">
                     <div className="p-8">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#0071e3] to-[#6567f1] rounded-xl flex items-center justify-center text-white">

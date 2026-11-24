@@ -48,15 +48,17 @@ export default function ClockPage() {
   const formattedTime = useMemo(() => formatTime(now), [now, formatTime])
 
   return (
-    <section className="py-16 bg-[#121212]">
+    <section className="py-16 bg-[#121212]" aria-label="Mapa de Sessões Forex">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <AppleCard className="overflow-hidden">
+        <AppleCard className="overflow-hidden glass-card hover-lift" aria-label="Sessões Forex em tempo real">
           <div className="border-b border-[#3a3a3c] p-6">
             <div className="flex items-center gap-3">
               <i className="fas fa-globe-americas text-2xl text-[#0071e3]" aria-hidden="true"></i>
-              <h2 className="text-2xl font-semibold text-white">Mapa de Sessões Forex</h2>
+              <h2 className="text-2xl font-semibold text-white">
+                <span className="gradient-text">Mapa de Sessões Forex</span>
+              </h2>
             </div>
-            <div className="text-[#0071e3] font-mono text-lg mt-2">
+            <div className="text-[#0071e3] font-mono text-lg mt-2" aria-label="Horário atual GMT">
               {formattedTime}
             </div>
           </div>
@@ -64,7 +66,7 @@ export default function ClockPage() {
           <div className="p-6">
             <div className="forex-hours-table">
               <h3 className="text-[#dcdcdc] mb-4">Horários das Sessões Forex (GMT)</h3>
-              <table className="w-full border-collapse">
+              <table className="w-full border-collapse" role="grid" aria-label="Horários das sessões Forex">
                 <thead>
                   <tr>
                     <th className="text-left p-3 text-[#0071e3] font-semibold" scope="col">Sessão</th>
