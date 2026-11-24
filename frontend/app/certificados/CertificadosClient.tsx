@@ -83,20 +83,24 @@ export default function CertificadosClient({ initialCertificates }: Certificados
 
 function CertificatesHero() {
   return (
-    <section className="relative min-h-[60vh] flex items-center bg-[#0a0a12]">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#121212]/80 z-10" />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-12">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6">
+    <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a12]/95 via-[#121212]/85 to-[#121212]" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#0071e3]/20 rounded-full blur-3xl opacity-60 animate-pulse" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#6567f1]/20 rounded-full blur-3xl opacity-60 animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-16">
+        <div className="max-w-3xl glass-card rounded-3xl p-8 sm:p-12 hover-lift">
+          <div className="inline-flex items-center gap-2 bg-[#0071e3]/10 text-[#0071e3] px-4 py-2 rounded-full text-sm font-medium mb-6 border border-[#0071e3]/20">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             <span>Autoridade & Credibilidade</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Certificados
+            <span className="gradient-text">Certificados</span>
           </h1>
-          <p className="text-[#8a8a8d] text-lg leading-relaxed max-w-2xl">
+          <p className="text-[#b0b0b0] text-lg leading-relaxed max-w-2xl">
             Credenciais que habilitam Igor Siqueira a desenvolver este ecossistema e divulgar tecnicamente o método Fimathe de Marcelo Ferreira, com a missão de democratizar o acesso ao Mercado Forex.
           </p>
         </div>
@@ -134,7 +138,7 @@ function CertificatesSection({ certificates, filter, onFilterChange, onSelectCer
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
                   filter === option.value
                     ? 'bg-[#0071e3] text-white border-[#0071e3] shadow-md shadow-black/20'
-                    : 'bg-[#1e1e1e]/50 text-[#8a8a8d] border-[#3a3a3c] hover:text-white hover:border-[#0071e3]'
+                    : 'glass-subtle text-[#8a8a8d] border-[#3a3a3c] hover:text-white hover:border-[#0071e3]'
                 }`}
               >
                 {option.label}
@@ -148,7 +152,7 @@ function CertificatesSection({ certificates, filter, onFilterChange, onSelectCer
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {certificates.map((cert) => (
-              <AppleCard key={cert.id} hover className="h-full overflow-hidden">
+              <AppleCard key={cert.id} hover className="h-full overflow-hidden glass-card hover-lift">
                 <button
                   className="text-left w-full h-full flex flex-col focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2"
                   onClick={() => onSelectCert(cert.image)}
