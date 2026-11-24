@@ -66,7 +66,7 @@ export default function HomeHero() {
           <div className="flex flex-col gap-8">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tighter">
               Opere o
-              <span className="text-[#0071e3]">Mercado</span>
+              <span className="gradient-text"> Mercado</span>
               <span className="block">24/7 com Velociclos PCM</span>
             </h1>
             <p className="text-lg sm:text-xl text-[#b0b0b0] max-w-2xl leading-relaxed">
@@ -93,13 +93,15 @@ export default function HomeHero() {
           </div>
 
           <div className="relative flex justify-center" aria-hidden="true">
-            <div className="relative">
+            <div className="relative glass-card rounded-2xl p-2 shadow-2xl hover:scale-[1.02] transition-transform duration-500">
               <Image
-              src="/background marcelos.png"
-              alt="Marcelo analisando gráficos"
-              fill
-              className="rounded-lg object-cover border border-[#3a3a3c] shadow-lg"
-            />
+                src="/background marcelos.png"
+                alt="Marcelo analisando gráficos"
+                width={480}
+                height={600}
+                className="rounded-xl object-cover"
+                priority
+              />
             </div>
           </div>
         </div>
