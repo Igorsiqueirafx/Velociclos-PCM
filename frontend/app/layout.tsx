@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
-  title: 'Velociclos PCM - Automação de Mercado | Opere com Liberdade!',
+  metadataBase: new URL('https://velociclos.vercel.app'),
   description: 'Automação de Mercado - Velociclos PCM. Opere com liberdade usando Expert Advisor, método Fimathe e cursos gratuitos.',
   keywords: 'trading, forex, ouro, expert advisor, automação, fimathe, cursos grátis',
   authors: [{ name: 'Velociclos' }],
