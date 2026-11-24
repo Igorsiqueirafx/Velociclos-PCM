@@ -145,6 +145,30 @@ const seed = async () => {
       is_published: true,
     });
   }
+
+  const existingArticles = await articlesRepo.findAll({});
+  if (existingArticles.length === 0) {
+    const articles = [
+      { title: 'Como a Fimathe simplificou a análise gráfica', slug: 'fimathe-simplificou-analise', excerpt: 'A Fimathe nasceu da união de Fibonacci e matemática para corrigir falhas da análise clássica.', category: 'metodo', is_published: true },
+      { title: 'Zona Neutra e Canal de Referência: o coração da Fimathe', slug: 'zona-neutra-canal', excerpt: 'Entenda a zona neutra, o canal de referência e o stop fora da caixinha.', category: 'metodo', is_published: true },
+      { title: '5 Mitos sobre Mesas Proprietárias no Forex', slug: 'mitos-prop-firms', excerpt: 'Existem muitos mitos sobre mesas proprietárias circulando no mercado.', category: 'forex', is_published: true },
+      { title: 'Operar em Notícias: quando evitar e quando aproveitar a volatilidade', slug: 'noticias-volatility', excerpt: 'Muitos evitam notícias por medo; a volatilidade pode ser aliada.', category: 'estrategia', is_published: true },
+    ];
+    for (const a of articles) {
+      await articlesRepo.create({ ...a, content: '', cover_image: '', tags: [], author: 'Marcelo Ferreira', published_at: new Date().toISOString() });
+    }
+  }
+
+  const existingPages = await pagesRepo.findAll({});
+  if (existingPages.length === 0) {
+    const pages = [
+      { title: 'Manual do Expert Advisor', slug: 'manual', excerpt: 'Guia completo de instalação e configuração do EA Velociclos.', content: 'Conteúdo do manual do EA.', is_published: true },
+      { title: 'Sobre o Velociclos', slug: 'sobre', excerpt: 'Conheça o projeto Velociclos PCM.', content: 'Sobre o projeto.', is_published: true },
+    ];
+    for (const p of pages) {
+      await pagesRepo.create({ ...p, cover_image: '', sort_order: 0, meta_title: p.title, meta_description: p.excerpt });
+    }
+  }
 };
 
 seed().catch((e) => logError('server:seed', e));

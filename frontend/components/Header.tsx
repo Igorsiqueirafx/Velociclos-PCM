@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'Início', href: '/' },
@@ -50,7 +51,7 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3" aria-label="Velociclos - Página inicial">
-            <img src="/logo f.png" alt="" className="h-9 w-9 object-contain" aria-hidden="true" />
+            <Image src="/logo f.png" alt="" width={32} height={32} className="h-9 w-9 object-contain" aria-hidden="true" />
             <span className="text-xl font-semibold text-white tracking-[-0.01em]">Velociclos</span>
           </Link>
 
