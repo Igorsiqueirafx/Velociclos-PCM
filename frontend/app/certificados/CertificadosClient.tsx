@@ -85,7 +85,14 @@ function CertificatesHero() {
   return (
     <section className="relative min-h-[60vh] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a12]/95 via-[#121212]/85 to-[#121212]" />
+        <Image
+          src="/certificados/Metodo Fimathe.webp"
+          alt=""
+          fill
+          className="object-cover opacity-20"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a12]/90 via-[#121212]/85 to-[#121212]" />
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#0071e3]/20 rounded-full blur-3xl opacity-60 animate-pulse" />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#6567f1]/20 rounded-full blur-3xl opacity-60 animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
