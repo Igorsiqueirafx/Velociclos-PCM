@@ -1,4 +1,5 @@
 import AppleButton from '@/components/AppleButton'
+import Image from 'next/image'
 
 export default function AboutMarcelo() {
   return (
@@ -6,11 +7,13 @@ export default function AboutMarcelo() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative flex justify-center">
-            <img
+            <Image
               src="/Marcelo olhando pra cima.png"
               alt="Marcelo Ferreira - Criador do Método Fimathe"
+              width={600}
+              height={700}
               className="w-full max-w-md rounded-xl shadow-lg"
-              loading="lazy"
+              sizes="(max-width: 1024px) 100vw, 600px"
             />
           </div>
           <div>
@@ -23,7 +26,7 @@ export default function AboutMarcelo() {
             <p className="text-[#8a8a8d] mb-6">
               Sua trajetória e os conteúdos da metodologia fazem parte deste ambiente digital oficial da Fimathe.
             </p>
-            <img src="/logo-fimathe.webp" alt="Fimathe Logo" className="h-12 mb-6" loading="lazy" />
+            <Image src="/logo-fimathe.webp" alt="Fimathe Logo" width={48} height={48} className="h-12 mb-6" />
             <div className="flex flex-wrap gap-4">
               <AppleButton href="https://portalfimathe.com/marcelo-ferreira" aria-label="Conhecer a história de Marcelo Ferreira no Portal Fimathe">
                 História oficial

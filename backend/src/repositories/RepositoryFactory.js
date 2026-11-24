@@ -9,8 +9,8 @@ class RepositoryFactory {
       return this.repositories;
     }
 
-    const useSupabase = config.useSupabase !== false;
-    const useInMemory = config.useInMemory || process.env.USE_IN_MEMORY === 'true';
+    const useSupabase = config.useSupabase === true;
+    const useInMemory = config.useInMemory !== false && process.env.USE_IN_MEMORY !== 'false';
 
     if (useSupabase && !useInMemory) {
       const SupabaseCourseRepository = require('./implementations/SupabaseCourseRepository');

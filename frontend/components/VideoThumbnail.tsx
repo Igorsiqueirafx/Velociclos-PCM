@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useCallback } from 'react'
+import Image from 'next/image'
 import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -71,12 +72,12 @@ export default function VideoThumbnail({
           {!imageLoaded && (
             <div className="absolute inset-0 skeleton" />
           )}
-          <img
+          <Image
             src={imageError ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : thumbnail}
             alt={title}
-            className={`w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            fill
+            className={`object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
-            decoding="async"
             onLoad={onImageLoad}
             onError={onImageError}
           />

@@ -1,28 +1,27 @@
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+type AuthError = { message?: string } | null
 
-export async function createClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+interface MockAuth {
+  getUser: () => Promise<{ data: { user: { id: string; email: string } | null }; error: AuthError }>
+  signOut: () => Promise<{ error: AuthError }>
+  signInWithPassword: (credentials?: unknown) => Promise<{ error: AuthError }>
+  signInWithOAuth: (options?: unknown) => Promise<{ error: AuthError }>
+  exchangeCodeForSession: (code?: string) => Promise<{ error: AuthError }>
+  getClaims: () => Promise<{ data: { claims: Record<string, unknown> }; error: AuthError }>
+}
 
-  if (!url || !publishableKey) {
-    throw new Error('Supabase public environment variables are not configured')
-  }
+interface MockClient {
+  auth: MockAuth
+}
 
-  const cookieStore = await cookies()
-
-  return createServerClient(url, publishableKey, {
-    cookies: {
-      getAll: () => cookieStore.getAll(),
-      setAll: (cookiesToSet) => {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options)
-          })
-        } catch {
-          // Server Components cannot write cookies; middleware persists refreshed sessions.
-        }
-      },
+export async function createClient(): Promise<MockClient> {
+  return {
+    auth: {
+      getUser: async () => ({ data: { user: { id: 'local-user', email: 'local@velociclos' } }, error: null }),
+      signOut: async () => ({ error: null }),
+      signInWithPassword: async () => ({ error: null }),
+      signInWithOAuth: async () => ({ error: null }),
+      exchangeCodeForSession: async () => ({ error: null }),
+      getClaims: async () => ({ data: { claims: {} }, error: null }),
     },
-  })
+  }
 }

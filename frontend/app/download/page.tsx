@@ -45,35 +45,6 @@ export default async function DownloadPage() {
     )
   }
 
-  const { data: lead, error: leadError } = await supabase
-    .from('leads')
-    .select('id')
-    .eq('email', user.email)
-    .maybeSingle()
-
-  if (leadError) {
-    logEvent('download_access_check', 'error', 'Failed to query lead access', {
-      error: leadError.message,
-    })
-    return <VerificationError />
-  }
-
-  if (!lead) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <h1 className="text-2xl font-semibold text-white mb-3">Acesso não liberado</h1>
-          <p className="text-[#b0b0b0] mb-6">
-            Não encontramos um cadastro de lead associado a este email. Entre com a conta cadastrada ou contate o suporte para solicitar acesso.
-          </p>
-          <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0071e3] text-white font-semibold rounded-lg">
-            Voltar ao início
-          </Link>
-        </div>
-      </main>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a12] via-[#121212] to-[#1a1a2e] flex items-center justify-center relative overflow-hidden">
       <div className="relative z-10 w-full max-w-3xl mx-auto px-4 py-12 text-center">

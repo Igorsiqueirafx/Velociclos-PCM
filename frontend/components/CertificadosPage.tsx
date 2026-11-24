@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import Image from 'next/image'
 import AppleCard from '@/components/AppleCard'
 
 type Certificate = {
@@ -43,9 +44,6 @@ const certificates: Certificate[] = [
   },
 ]
 
-const FALLBACK_IMAGE =
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyMzI5Ii8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjYTBhMGEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjM5OCI+SW1hZ2VtIG7vPhQ4PC90ZXh0Pjwvc3ZnPg=='
-
 export default function CertificadosPage() {
   const [selectedCert, setSelectedCert] = useState<string | null>(null)
 
@@ -84,15 +82,13 @@ export default function CertificadosPage() {
                   aria-label={`Abrir certificado ${cert.title}`}
                 >
                   <div className="aspect-square overflow-hidden rounded-t-2xl">
-                    <img
+                    <Image
                       src={cert.image}
                       alt={`Certificado ${cert.title}`}
+                      width={500}
+                      height={500}
                       className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.src = FALLBACK_IMAGE
-                      }}
                     />
                   </div>
                   <div className="p-4">
@@ -129,9 +125,11 @@ export default function CertificadosPage() {
             >
               <i className="fas fa-times" aria-hidden="true"></i>
             </button>
-            <img
+            <Image
               src={selectedCert}
               alt="Certificado ampliado"
+              width={1200}
+              height={900}
               className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
             />
           </div>

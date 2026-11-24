@@ -1,5 +1,6 @@
 ﻿'use client'
 
+import Image from 'next/image'
 import AppleCard from '@/components/AppleCard'
 
 interface VideoCardCompactProps {
@@ -16,12 +17,12 @@ export default function VideoCardCompact({ _videoId: _v, title, thumbnail, publi
     <AppleCard hover className="h-full cursor-pointer" onClick={onPlay}>
       <div className="flex gap-3 p-3">
         <div className="relative w-32 aspect-video rounded-lg overflow-hidden flex-shrink-0 bg-[#121212]">
-          <img
+          <Image
             src={thumbnail}
             alt={title}
-            className="w-full h-full object-cover transition-opacity duration-300"
+            fill
+            className="object-cover transition-opacity duration-300"
             loading="lazy"
-            decoding="async"
           />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <div className="w-8 h-8 bg-[#0071e3] rounded-full flex items-center justify-center">

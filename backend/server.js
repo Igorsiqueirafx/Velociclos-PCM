@@ -68,7 +68,7 @@ function saveJSON(filePath, data) {
 }
 
 // Initialize repositories with in-memory fallback for local development
-const useInMemory = process.env.USE_IN_MEMORY === 'true';
+const useInMemory = process.env.USE_IN_MEMORY !== 'false';
 repositoryFactory.initialize({ useInMemory });
 const repos = repositoryFactory.getRepositories();
 
@@ -178,7 +178,7 @@ app.get('/api/admin/status', authMiddleware, async (req, res) => {
       status: 'ok',
       timestamp: new Date().toISOString(),
       counts,
-      persistence: process.env.USE_IN_MEMORY === 'true' ? 'in-memory' : 'supabase',
+      persistence: process.env.USE_IN_MEMORY !== 'false' ? 'in-memory' : 'supabase',
     });
   } catch (error) {
     logError('admin:status', error);

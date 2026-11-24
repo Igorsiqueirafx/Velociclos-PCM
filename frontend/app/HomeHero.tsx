@@ -3,6 +3,7 @@
 import AppleButton from '@/components/AppleButton'
 import { logEvent } from '@/lib/logging'
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 
 export default function HomeHero() {
   const [backgroundMotionAllowed, setBackgroundMotionAllowed] = useState(false)
@@ -37,10 +38,11 @@ export default function HomeHero() {
   return (
     <section className="relative min-h-[70vh] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src="/bg-capa-marcelo.png"
           alt=""
           aria-hidden="true"
+          fill
           className="absolute inset-0 h-full w-full object-cover opacity-30"
         />
         <video
@@ -92,11 +94,12 @@ export default function HomeHero() {
 
           <div className="relative flex justify-center" aria-hidden="true">
             <div className="relative">
-              <img
-                src="/background marcelos.png"
-                alt="Marcelo analisando gráficos"
-                className="w-80 h-80 sm:w-96 sm:h-96 rounded-lg object-cover border border-[#3a3a3c] shadow-lg"
-              />
+              <Image
+              src="/background marcelos.png"
+              alt="Marcelo analisando gráficos"
+              fill
+              className="rounded-lg object-cover border border-[#3a3a3c] shadow-lg"
+            />
             </div>
           </div>
         </div>

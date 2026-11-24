@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getPublishedArticles, FALLBACK_ARTICLES, type ArticleRow } from '@/lib/repositories/articles'
 import { logEvent } from '@/lib/logging'
 
@@ -104,11 +105,12 @@ export default async function ArtigoPage({ params }: PageProps) {
 
             {article.cover_image && (
               <div className="relative aspect-video rounded-xl overflow-hidden mb-10 border border-[#3a3a3c]">
-                <img
-                  src={article.cover_image}
-                  alt={article.title}
-                  className="w-full h-full object-cover"
-                />
+<Image
+              src={article.cover_image}
+              alt={article.title}
+              fill
+              className="w-full h-full object-cover"
+            />
               </div>
             )}
 

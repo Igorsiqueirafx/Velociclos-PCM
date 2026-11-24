@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { logEvent } from '@/lib/logging'
 import { useCourseData } from './use-course-data'
 import AppleCard from '@/components/AppleCard'
@@ -118,15 +119,12 @@ export default function CursosClient({ initialCourses }: CursosClientProps) {
             >
               <AppleCard hover className="h-full overflow-hidden">
                 <div className="relative aspect-video">
-                  <img
+                  <Image
                     src={course.thumbnail || '/placeholder-course.jpg'}
                     alt={course.title}
+                    fill
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = 'https://via.placeholder.com/320x180/1e1e1e/8a8a8d?text=Sem+thumbnail'
-                    }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                   <div className="absolute inset-0 flex items-center justify-center">

@@ -1,6 +1,7 @@
 'use client'
 
 import { YouTubePlaylist, YouTubeVideo, CATEGORY_LABELS } from '@/lib/youtube'
+import Image from 'next/image'
 import AppleCard from '@/components/AppleCard'
 import VideoCard from '@/components/VideoCard'
 
@@ -9,11 +10,12 @@ export default function PlaylistCard({ playlist, videos, index }: { playlist: Yo
     <AppleCard className="overflow-hidden" style={{ animationDelay: `${index * 100}ms` }}>
       <div className="p-6 sm:p-8 border-b border-[#3a3a3c]/50">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="relative w-full sm:w-48 h-28 rounded-xl overflow-hidden flex-shrink-0">
-            <img
+          <div className="relative w-full sm:w-48 h-28 overflow-hidden rounded-xl flex-shrink-0">
+            <Image
               src={playlist.thumbnail}
               alt={playlist.title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

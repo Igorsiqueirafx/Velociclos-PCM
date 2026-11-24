@@ -240,9 +240,11 @@ function CertificateModal({ selectedCert, onClose }: CertificateModalProps) {
       className="max-w-4xl max-h-[90vh] mx-4"
     >
       {selectedCert && (
-        <img
+        <Image
           src={selectedCert}
           alt="Certificado ampliado"
+          width={1200}
+          height={900}
           className="max-w-full max-h-[85vh] object-contain rounded-lg"
         />
       )}

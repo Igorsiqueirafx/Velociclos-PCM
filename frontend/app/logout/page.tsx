@@ -10,7 +10,8 @@ export default function LogoutPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    void supabase.auth.signOut().then(({ error }) => {
+    void supabase.auth.signOut().then((result) => {
+      const error = result.error as { message?: string } | null
       if (error) {
         logEvent('supabase_sign_out', 'error', 'Failed to sign out from Supabase', {
           error: error.message,

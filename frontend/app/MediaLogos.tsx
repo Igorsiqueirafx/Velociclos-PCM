@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 export default function MediaLogos() {
   return (
     <section className="py-16 bg-[#121212]" aria-labelledby="media-title">
@@ -18,9 +20,11 @@ export default function MediaLogos() {
             aria-label="Matéria Forbes: Marcelo Ferreira, do delivery a trader milionário"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
-            <img
+            <Image
               src="/logo forbes link matéria add.png"
               alt="Logo Forbes"
+              width={64}
+              height={64}
               className="h-10 sm:h-14 object-contain grayscale opacity-70 transition-[filter,opacity] duration-300 ease-in-out hover:grayscale-0 hover:opacity-100"
               loading="lazy"
             />
@@ -32,9 +36,11 @@ export default function MediaLogos() {
             aria-label="Matéria Istoé: Youtuber Marcelo Ferreira faz sucesso com dicas de investimento"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
-            <img
+            <Image
               src="/istoe materia logo add link.png"
               alt="Logo Istoé"
+              width={64}
+              height={64}
               className="h-8 sm:h-12 object-contain grayscale opacity-70 transition-[filter,opacity] duration-300 ease-in-out hover:grayscale-0 hover:opacity-100"
               loading="lazy"
             />
@@ -46,9 +52,11 @@ export default function MediaLogos() {
             aria-label="Matéria Investing.com: Primeiro contato com forex do brasileiro é com pirâmide financeira"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
-            <img
+            <Image
               src="/logo investing matéria add link.png"
               alt="Logo Investing.com"
+              width={64}
+              height={64}
               className="h-10 sm:h-14 object-contain grayscale opacity-70 transition-[filter,opacity] duration-300 ease-in-out hover:grayscale-0 hover:opacity-100"
               loading="lazy"
             />
@@ -60,9 +68,11 @@ export default function MediaLogos() {
             aria-label="Matéria Criptofácio sobre o Método Fimathe"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
-            <img
+            <Image
               src="/criptofacio add link materia.png"
               alt="Logo Criptofácio"
+              width={64}
+              height={64}
               className="h-8 sm:h-12 object-contain grayscale opacity-70 transition-[filter,opacity] duration-300 ease-in-out hover:grayscale-0 hover:opacity-100"
               loading="lazy"
             />
@@ -74,9 +84,11 @@ export default function MediaLogos() {
             aria-label="Matéria Extra: Trader Marcelo Ferreira cria técnica que democratiza análise de gráficos"
             className="block focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 focus:ring-offset-[#121212] rounded"
           >
-            <img
+            <Image
               src="/extra add link matéria.png"
               alt="Logo Extra"
+              width={64}
+              height={64}
               className="h-8 sm:h-12 object-contain grayscale opacity-70 transition-[filter,opacity] duration-300 ease-in-out hover:grayscale-0 hover:opacity-100"
               loading="lazy"
             />

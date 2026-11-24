@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useCallback } from 'react'
+import Image from 'next/image'
 import ResponsiveVideoEmbed from '@/components/ResponsiveVideoEmbed'
 import type { Course, Module, Lesson } from './CursosClient'
 
@@ -94,9 +95,11 @@ export default function CourseModal({
                       } focus:outline-none focus:ring-1 focus:ring-[#0071e3]`}
                     >
                       {lesson.thumbnail ? (
-                        <img
+                        <Image
                           src={lesson.thumbnail}
                           alt={lesson.title}
+                          width={80}
+                          height={48}
                           className="w-20 h-12 object-cover rounded flex-shrink-0"
                           loading="lazy"
                         />

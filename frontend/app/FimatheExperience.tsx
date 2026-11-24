@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import Image from 'next/image'
 
 const IMAGES = [
   { src: '/carrossel/1.webp', alt: 'Encontro presencial de alunos do Método Fimathe Experience' },
@@ -92,11 +93,11 @@ function CarouselThumbnails({ images, currentIndex, onGoToSlide }: CarouselThumb
             type="button"
             aria-label={`Ver miniatura ${index + 1}`}
             aria-current={index === currentIndex ? 'true' : 'false'}
-            className={`flex-shrink-0 aspect-[4/3] w-28 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] ${index === currentIndex ? 'border-[#0071e3] opacity-100 ring-2 ring-[#0071e3]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
+            className={`flex-shrink-0 relative aspect-[4/3] w-28 sm:w-40 overflow-hidden rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] ${index === currentIndex ? 'border-[#0071e3] opacity-100 ring-2 ring-[#0071e3]/50' : 'border-transparent opacity-60 hover:opacity-100'}`}
             onClick={() => onGoToSlide(index)}
             scroll-snap-align="center"
           >
-            <img src={image.src} alt="" aria-hidden="true" className="h-full w-full object-cover" loading="lazy" />
+            <Image src={image.src} alt="" aria-hidden="true" fill className="object-cover" />
           </button>
         ))}
       </div>
@@ -133,13 +134,7 @@ function CarouselSlide({ image, index, currentIndex, totalSlides }: CarouselSlid
       aria-label={`${index + 1} de ${totalSlides}`}
       aria-hidden={!isActive}
     >
-      <img
-        src={image.src}
-        alt={isActive ? image.alt : ''}
-        className="h-full w-full object-cover"
-        loading={isActive || index === (currentIndex + 1) % totalSlides ? 'eager' : 'lazy'}
-        draggable="false"
-      />
+<Image src={image.src} alt={isActive ? image.alt : ''} fill priority={isActive || index === (currentIndex + 1) % totalSlides} className="object-cover" draggable="false" />
     </div>
   )
 }

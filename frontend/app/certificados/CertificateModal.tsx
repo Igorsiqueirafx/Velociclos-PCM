@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Image from 'next/image'
 
 interface CertificateModalProps {
   imageUrl: string | null
@@ -39,9 +40,11 @@ export default function CertificateModal({ imageUrl, onClose }: CertificateModal
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <img
+        <Image
           src={imageUrl}
           alt="Certificado ampliado"
+          width={1200}
+          height={900}
           className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
         />
       </div>
