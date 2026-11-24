@@ -1,12 +1,16 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-[#121212] border-t border-[#3a3a3c]">
+    <footer className="glass-header border-t border-[#3a3a3c]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-3 tracking-tight">Velociclos</h3>
+            <div className="flex items-center gap-3 mb-3">
+              <Image src="/logo f.png" alt="Velociclos" width={32} height={32} className="h-8 w-8 object-contain drop-shadow-[0_0_8px_rgba(0,113,227,0.4)]" />
+              <h3 className="text-lg font-semibold text-white tracking-tight">Velociclos</h3>
+            </div>
             <p className="text-[#8a8a8d] text-sm leading-relaxed">Automação de mercado com liberdade. Trading 24/7 com o método Fimathe.</p>
           </div>
           <div>

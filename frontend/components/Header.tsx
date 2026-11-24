@@ -51,7 +51,7 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3" aria-label="Velociclos - Página inicial">
-            <Image src="/logo f.png" alt="" width={32} height={32} className="h-9 w-9 object-contain" aria-hidden="true" />
+            <Image src="/logo f.png" alt="" width={32} height={32} className="h-9 w-9 object-contain drop-shadow-[0_0_8px_rgba(0,113,227,0.4)]" aria-hidden="true" />
             <span className="text-xl font-semibold text-white tracking-[-0.01em]">Velociclos</span>
           </Link>
 
